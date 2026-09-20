@@ -1,0 +1,469 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b18cba61fe2b904ab665403234c5bcf, type: 3}
+  m_Name: Prologue_Intro
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.PrologueDefinition
+  id: PROLOGUE_INTRO
+  displayName: "\uC778\uD2B8\uB85C \u2014 \uCD9C\uBC1C \uC804"
+  beats:
+  - backdropName: "\uAE30\uCC28\uC5ED \u2014 \uD50C\uB7AB\uD3FC"
+    backdrop: {fileID: 0}
+    lines:
+      note: "\uB3C4\uCC29"
+      lines:
+      - speaker: 0
+        text: "\uC99D\uAE30\uAC00 \uD50C\uB7AB\uD3FC\uC744 \uD55C \uBC88 \uC4F8\uACE0
+          \uC9C0\uB098\uAC14\uB2E4. \uCD9C\uBC1C\uAE4C\uC9C0\uB294 \uC544\uC9C1 \uC2DC\uAC04\uC774
+          \uB0A8\uC544 \uC788\uC5C8\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 0
+        text: "\uBCF8\uBD80\uC5D0\uC11C \uC628 \uC804\uBCF4\uC5D0\uB294 \uC0AC\uAC74\uC758
+          \uC774\uB984 \uB300\uC2E0 \uC5F4\uCC28 \uBC88\uD638\uC640 \uC2DC\uAC01\uB9CC
+          \uC801\uD600 \uC788\uC5C8\uB2E4. \uADF8\uB9AC\uACE0 \uD55C \uC904, '\uBCF4\uC870
+          \uC218\uC0AC\uAD00\uC774 \uB3D9\uD589\uD568'."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 2
+        text: "\u2026\uBCF4\uC870\uB77C. \uD63C\uC790\uAC00 \uD3B8\uD55C\uB370."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    interaction:
+      prompt: 
+      documentTitle: 
+      documentBody: 
+      afterReading:
+        note: 
+        lines: []
+        trustDelta: 0
+        endsInterrogation: 0
+  - backdropName: "\uAE30\uCC28\uC5ED \u2014 \uB300\uD569\uC2E4 \uD14C\uC774\uBE14"
+    backdrop: {fileID: 0}
+    lines:
+      note: "\uD14C\uC774\uBE14"
+      lines:
+      - speaker: 0
+        text: "\uB2F9\uC2E0\uC740 \uB300\uD569\uC2E4 \uAD6C\uC11D \uD14C\uC774\uBE14\uC5D0
+          \uC549\uC544 \uAE30\uB2E4\uB9AC\uAE30\uB85C \uD588\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 0
+        text: "\uD14C\uC774\uBE14 \uC704\uC5D0\uB294 \uC544\uC9C1 \uD3EC\uC7A5\uC744
+          \uB9C8\uCE58\uC9C0 \uBABB\uD55C \uD734\uB300\uC6A9 \uD0C0\uC790\uAE30 \uD55C
+          \uB300\uC640, \uBA87 \uBC88\uC744 \uC2DC\uB3C4\uD558\uB2E4 \uACB0\uAD6D
+          \uD3EC\uAE30\uD55C \uBD89\uC740 \uB9AC\uBCF8\uC774 \uB298\uC5B4\uC838 \uC788\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 0
+        text: "\uADF8 \uC606\uC73C\uB85C\uB294 \uBC18\uCBE4 \uB0A8\uC740 \uC0CC\uB4DC\uC704\uCE58\uC640,
+          \uC794\uC744 \uB4E4\uC5C8\uB2E4 \uB193\uC740 \uC790\uB9AC\uB9C8\uB2E4 \uB0A8\uC740
+          \uB3D9\uADF8\uB780 \uCEE4\uD53C \uC790\uAD6D."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 2
+        text: "\uB9E4\uB4ED \uD558\uB098\uAC00 \uC0AC\uB78C\uC744 \uC774\uB807\uAC8C\uAE4C\uC9C0
+          \uBB34\uB825\uD558\uAC8C \uB9CC\uB4E4 \uC904\uC774\uC57C."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    interaction:
+      prompt: 
+      documentTitle: 
+      documentBody: 
+      afterReading:
+        note: 
+        lines: []
+        trustDelta: 0
+        endsInterrogation: 0
+  - backdropName: "\uAE30\uCC28\uC5ED \u2014 \uC804\uB2EC\uBC1B\uC740 \uC11C\uB958"
+    backdrop: {fileID: 0}
+    lines:
+      note: "\uC11C\uB958\uB97C \uAEBC\uB0B8\uB2E4"
+      lines:
+      - speaker: 0
+        text: "\uAC00\uBC29\uC5D0\uC11C \uC5B4\uC81C \uC804\uB2EC\uBC1B\uC740 \uC11C\uB958\uB97C
+          \uAEBC\uB0C8\uB2E4. \uB3D9\uD589\uD560 \uBCF4\uC870 \uC218\uC0AC\uAD00\uC758
+          \uC778\uC801\uC0AC\uD56D\uC774\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 2
+        text: "\uC74C\u2026"
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    interaction:
+      prompt: "\uC11C\uB958\uB97C \uB4E4\uC5EC\uB2E4\uBCF8\uB2E4"
+      documentTitle: "\uBCF4\uC870 \uC218\uC0AC\uAD00 \uC778\uC801\uC0AC\uD56D"
+      documentBody: "\uC131\uBA85 : \uC138\uD53C\n\uC18C\uC18D : \uBCF8\uBD80 \uC9C1\uD560
+        \xB7 \uC784\uC2DC \uBC30\uCE58\n\uB3D9\uD589 \uC0AC\uC720 : \uD604\uC7A5
+        \uAE30\uB85D \uBC0F \uC9C4\uC220 \uC815\uB9AC\n\n\uD2B9\uAE30\uC0AC\uD56D\n 
+        \xB7 <hl>\uC21C\uAC04 \uAE30\uC5B5 \uB2A5\uB825</hl> \u2014 \uACF5\uC778
+        \uB3C4\uC7A5 \uC788\uC74C\n  \xB7 \uC18D\uAE30\uC0AC \uC790\uACA9\n\n\uBE44\uACE0
+        : (\uACF5\uB780)"
+      afterReading:
+        note: "\uB9CC\uB144\uD544\uB85C \uD55C \uC904 \uC801\uB294\uB2E4"
+        lines:
+        - speaker: 2
+          text: "\uC21C\uAC04 \uAE30\uC5B5 \uB2A5\uB825\uC5D0 \uACF5\uC778 \uB3C4\uC7A5\uAE4C\uC9C0.
+            \uC11C\uB958\uC0C1\uC73C\uB85C\uB294 \uB098\uBB34\uB784 \uB370\uAC00
+            \uC5C6\uAD70."
+          expression: 0
+          stageDirection: 
+          reaction:
+            clueId: 
+            openDelay: 0
+            window: 2.5
+            expression: 3
+            blurredFromRecallDepth: 2
+          autoGrantClueId: 
+        - speaker: 0
+          text: "\uCD9C\uBC1C \uC2DC\uAC01\uC774 \uC9C0\uB0AC\uB2E4. \uB2F9\uC2E0\uC740
+            \uB9CC\uB144\uD544\uC744 \uAEBC\uB0B4 \uBE44\uACE0\uB780\uC5D0 \uD55C
+            \uC904\uC744 \uC801\uC5C8\uB2E4."
+          expression: 0
+          stageDirection: 
+          reaction:
+            clueId: 
+            openDelay: 0
+            window: 2.5
+            expression: 3
+            blurredFromRecallDepth: 2
+          autoGrantClueId: 
+        - speaker: 0
+          text: "\u2015 <hl>\uC2DC\uAC04 \uC57D\uC18D\uC5D0 \uB300\uD55C \uAC1C\uB150\uC774
+            \uBD80\uC871\uD568.</hl>"
+          expression: 0
+          stageDirection: 
+          reaction:
+            clueId: 
+            openDelay: 0
+            window: 2.5
+            expression: 3
+            blurredFromRecallDepth: 2
+          autoGrantClueId: 
+        - speaker: 2
+          text: "\u2026\uCCAB \uC904\uBD80\uD130 \uC774\uB7F0 \uAC78 \uC801\uAC8C
+            \uB420 \uC904\uC740 \uBAB0\uB790\uB294\uB370."
+          expression: 0
+          stageDirection: 
+          reaction:
+            clueId: 
+            openDelay: 0
+            window: 2.5
+            expression: 3
+            blurredFromRecallDepth: 2
+          autoGrantClueId: 
+        trustDelta: 0
+        endsInterrogation: 0
+  - backdropName: "\uAE30\uCC28\uC5ED \u2014 \uD50C\uB7AB\uD3FC"
+    backdrop: {fileID: 0}
+    lines:
+      note: "\uC870\uC218\uC758 \uB4F1\uC7A5"
+      lines:
+      - speaker: 0
+        text: "\uADF8\uB54C \uD50C\uB7AB\uD3FC \uC800\uD3B8\uC5D0\uC11C \uB204\uAD70\uAC00
+          \uC228\uCC28\uAC8C \uB2EC\uB824\uC654\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uC548\uB155\uD558\uC138\uC694 \uC870\uC0AC\uAD00\uB2D8\u2026! \uD558,
+          \uD558\u2026"
+        expression: 3
+        stageDirection: "(\uBB34\uB98E\uC744 \uC9DA\uACE0 \uC228\uC744 \uACE0\uB974\uBA70)"
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uC774\uBC88 \uC0AC\uAC74\uC5D0 \uB300\uD55C \uAC1C\uC694 \uD30C\uC77C\uC785\uB2C8\uB2E4!"
+        expression: 1
+        stageDirection: "(\uC228\uB3C4 \uACE0\uB974\uAE30 \uC804\uC5D0 \uD30C\uC77C\uBD80\uD130
+          \uB0B4\uBBFC\uB2E4)"
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 2
+        text: "\u2026\uC778\uC0AC\uBCF4\uB2E4 \uC11C\uB958\uAC00 \uBA3C\uC800 \uB098\uC624\uB294
+          \uAC74 \uB098\uC058\uC9C0 \uC54A\uAD70."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 1
+        text: "\uBC1B\uC8E0. \u2026\uCD9C\uBC1C\uD558\uC8E0."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    interaction:
+      prompt: 
+      documentTitle: 
+      documentBody: 
+      afterReading:
+        note: 
+        lines: []
+        trustDelta: 0
+        endsInterrogation: 0
+  - backdropName: "\uAE30\uCC28\uC5ED \u2014 \uAC1C\uCC30\uAD6C"
+    backdrop: {fileID: 0}
+    lines:
+      note: "\uD0C0\uC790\uAE30"
+      lines:
+      - speaker: 3
+        text: "\uC557, \uC870\uC0AC\uAD00\uB2D8. \uC800 \uD0C0\uC790\uAE30\uB294\uC694?"
+        expression: 0
+        stageDirection: "(\uD14C\uC774\uBE14 \uCABD\uC744 \uAC00\uB9AC\uD0A4\uBA70)"
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 1
+        text: "\u2026\uC800 \uD0C0\uC790\uAE30\uB3C4 \uCC59\uACA8\uC694. \uB2F9\uC2E0
+          \uAC81\uB2C8\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\u2026\uB124? \uC800, \uC815\uB9D0\uC694?!"
+        expression: 6
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 0
+        text: "\uC870\uC218\uB294 \uD0C0\uC790\uAE30\uB97C \uB450 \uD314\uB85C \uB04C\uC5B4\uC548\uACE0
+          \uC885\uC885\uAC78\uC74C\uC73C\uB85C \uB4A4\uB97C \uB530\uB77C\uC654\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 2
+        text: "\uB9AC\uBCF8\uC740\u2026 \uBB50, \uB450\uACE0 \uAC00\uB3C4 \uC0C1\uAD00\uC5C6\uACA0\uC9C0."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    interaction:
+      prompt: 
+      documentTitle: 
+      documentBody: 
+      afterReading:
+        note: 
+        lines: []
+        trustDelta: 0
+        endsInterrogation: 0
+  - backdropName: "\uAE30\uCC28 \u2014 \uAC1D\uC2E4"
+    backdrop: {fileID: 0}
+    lines:
+      note: "\uC790\uB9AC\uC5D0 \uC549\uB2E4"
+      lines:
+      - speaker: 0
+        text: "\uAC1D\uC2E4\uC740 \uC870\uC6A9\uD588\uB2E4. \uCC3D\uBC16\uC73C\uB85C
+          \uC5ED\uC0AC\uAC00 \uCC9C\uCC9C\uD788 \uBC00\uB824\uB098\uAE30 \uC2DC\uC791\uD588\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 0
+        text: "\uB2F9\uC2E0\uC740 \uAC74\uB124\uBC1B\uC740 \uAC1C\uC694 \uD30C\uC77C\uC744
+          \uD14C\uC774\uBE14 \uC704\uC5D0 \uD3BC\uCE58\uACE0, \uC0C8\uB85C \uCEE4\uD53C\uB97C
+          \uD55C \uC794 \uC2DC\uCF30\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uC815\uB9AC\uB294 \uC81C\uAC00 \uD560\uAC8C\uC694! \uC21C\uC11C\uB300\uB85C
+          \uB193\uC544\uB458\uAE4C\uC694?"
+        expression: 1
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 1
+        text: "\u2026\uADF8\uB300\uB85C \uB450\uC138\uC694. \uC7A0\uAE50 \uB2E4\uB140\uC624\uACA0\uC2B5\uB2C8\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 0
+        text: "\uB2F9\uC2E0\uC740 \uB9CC\uB144\uD544\uC744 \uC11C\uB958 \uBB49\uCE58
+          \uC704\uC5D0 \uC62C\uB824\uB450\uACE0 \uC790\uB9AC\uB97C \uBE44\uC6E0\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 2
+        text: "\u2026\uAE08\uBC29 \uB3CC\uC544\uC62C \uD14C\uB2C8\uAE4C."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    interaction:
+      prompt: 
+      documentTitle: 
+      documentBody: 
+      afterReading:
+        note: 
+        lines: []
+        trustDelta: 0
+        endsInterrogation: 0
+  nextSceneName: Tutorial_Chapter
