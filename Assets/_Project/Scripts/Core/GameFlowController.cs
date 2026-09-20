@@ -27,6 +27,7 @@ namespace ItIsYou.Core
 
         [Header("페이즈 컨트롤러")]
         [SerializeField] private InvestigationController investigation;
+        [SerializeField] private SuspectSelectController suspectSelect;
         [SerializeField] private InterrogationController interrogation;
 
         [Header("UI")]
@@ -62,6 +63,9 @@ namespace ItIsYou.Core
         /// <summary>챕터를 끝까지 마쳤다. (지목한 용의자 id)</summary>
         public event Action<string> ChapterCompleted;
 
+        /// <summary>새 단서를 얻었다. HUD 가 피드백을 띄운다.</summary>
+        public event Action<ClueDefinition> ClueCollected;
+
         private void Start()
         {
             if (chapter != null) BeginChapter(chapter);
@@ -78,6 +82,11 @@ namespace ItIsYou.Core
                 clueTray.TooltipOpened += OnTooltipOpened;
                 clueTray.TooltipClosed += OnTooltipClosed;
             }
+
+            // 단서가 늘면 그 자리에서 목록을 다시 그린다.
+            // 심문이 끝난 뒤에만 갱신하면, 밑줄을 눌러 증언을 주웠는데도
+            // 화면에는 아무 일도 일어나지 않은 것처럼 보인다 — 실제로 그랬다.
+            Session.Clues.ClueAdded += OnClueAdded;
 
             StartCoroutine(RunChapter());
         }
@@ -122,9 +131,29 @@ namespace ItIsYou.Core
             while (!collectionDone) yield return null;
             investigation.ReadyToAdvance -= OnReady;
 
+            // ---- 누구부터 심문할지 고른다 ----
+            // 두 사람을 자리에 앉히는 대화도 이 화면에서 이어진다.
+            SuspectDefinition picked = null;
+            if (suspectSelect != null)
+            {
+                void OnPicked(SuspectDefinition s) => picked = s;
+                suspectSelect.Picked += OnPicked;
+
+                yield return Transition(GamePhase.SuspectSelect);
+                suspectSelect.Begin(chapter);
+
+                while (picked == null) yield return null;
+                suspectSelect.Picked -= OnPicked;
+            }
+
             // ---- 1차 심문 ----
-            SetPhase(GamePhase.Interrogation1);
-            yield return RunInterrogationRound(chapter.FirstRoundSuspects);
+            // 고른 상대만 상대한다. 나머지 인물의 심문 스크립트는 아직 없다.
+            var round = picked != null
+                ? new List<SuspectDefinition> { picked }
+                : new List<SuspectDefinition>(chapter.FirstRoundSuspects);
+
+            yield return Transition(GamePhase.Interrogation1);
+            yield return RunInterrogationRound(round);
             if (Session.IsGameOver) yield break;
 
             // ---- 단서 조합 ----
@@ -216,6 +245,13 @@ namespace ItIsYou.Core
             yield return fader.Transition(() => SetPhase(next));
         }
 
+        /// <summary>새 단서를 얻었다. 목록을 즉시 갱신하고 바깥에도 알린다.</summary>
+        private void OnClueAdded(ClueDefinition clue)
+        {
+            if (clueTray != null) clueTray.Rebuild(Session.Clues);
+            ClueCollected?.Invoke(clue);
+        }
+
         private void SetPhase(GamePhase phase)
         {
             if (Phase == phase) return;
@@ -253,7 +289,11 @@ namespace ItIsYou.Core
                 clueTray.TooltipOpened -= OnTooltipOpened;
                 clueTray.TooltipClosed -= OnTooltipClosed;
             }
-            if (Session != null) Session.GameOverTriggered -= OnGameOver;
+            if (Session != null)
+            {
+                Session.GameOverTriggered -= OnGameOver;
+                Session.Clues.ClueAdded -= OnClueAdded;
+            }
         }
     }
 }

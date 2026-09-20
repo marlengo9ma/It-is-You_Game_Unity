@@ -243,9 +243,24 @@ namespace ItIsYou.EditorTools
                 .Set("onTokensExhausted", Seq("타임 토큰 소진",
                     Line(SpeakerId.Narration, "기차의 흔들림이 한 박자 느려졌다. 더 붙잡고 있을 시간은 없다."),
                     Line(SpeakerId.Assistant, "…저, 이제 정리 좀 도와드려도 될까요?", ExpressionId.Nervous)))
+                .Set("onEnterInterrogation", TutorialScript.SepiOpening())
+                .Set("idleRounds", TutorialScript.SepiIdleRounds())
+                .Set("selectable", true)
                 .Set("onIdle", Seq("무반응",
                     Line(SpeakerId.Assistant, "…수사관님?", ExpressionId.Nervous,
                         "(침묵이 길어지자 눈치를 본다)")));
+
+            // ---- 검은 고양이 ----
+            // 기획: 튜토리얼에서는 가이드가 조수를 먼저 고르게 유도하므로,
+            // 지금은 고를 수 없게 잠가 둔다. 심문 대사는 시나리오가 확정되면 채운다.
+            var cat = Ed.CreateOrLoad<SuspectDefinition>(SuspectFolder, "Suspect_Cat");
+            cat.Set("id", "CAT")
+               .Set("displayName", "검은 고양이")
+               .Set("speaker", SpeakerId.Cat)
+               .Set("profile", "기차 안을 제집처럼 돌아다니던 녀석. 사건 당시 테이블 위에 있었다.")
+               .Set("timeTokens", 4)
+               .Set("selectable", false)
+               .Set("lockedReason", "…먼저 사람부터 상대하지.");
 
             // ============================================================ 챕터
 
@@ -266,8 +281,11 @@ namespace ItIsYou.EditorTools
                         Line(SpeakerId.Inner, "필요한 건 찾은 것 같긴 한데… 조금만 더 살펴볼까?")))
                    .Set("gateBlocked", Seq("수집 부족",
                         Line(SpeakerId.Inner, "뭔가 부족해. 조금 더 꼼꼼하게 봐야겠어.")))
-                   .Set("firstRoundSuspects", Ed.L(sepi))
-                   .Set("accusationTargets", Ed.L(sepi));
+                   .Set("beforeSuspectSelect", TutorialScript.BeforeSuspectSelect())
+                   .Set("suspectSelectTalk", TutorialScript.SuspectSelectTalk())
+                   .Set("suspectSelectPrompt", "누구부터 이야기를 들어볼까.")
+                   .Set("firstRoundSuspects", Ed.L(sepi, cat))
+                   .Set("accusationTargets", Ed.L(sepi, cat));
 
             // ============================================================ 색인
 
@@ -277,12 +295,12 @@ namespace ItIsYou.EditorTools
                 Ed.L(ribbon, coffee, glimpse, sawIt, catFlinch),
                 Ed.L(choiceFriendly, choiceAggressive, choiceRibbon),
                 Ed.L(objRibbon, objCoffee, objGlimpse, objPapers, objTypewriter, objCat),
-                Ed.L(sepi));
+                Ed.L(sepi, cat));
 
             Ed.Save(ribbon, coffee, glimpse, sawIt, catFlinch,
                     objRibbon, objCoffee, objGlimpse, objPapers, objTypewriter, objCat,
                     choiceFriendly, choiceAggressive, choiceRibbon,
-                    sepi, chapter, db);
+                    sepi, cat, chapter, db);
             AssetDatabase.Refresh();
 
             Debug.Log("[It is You] 튜토리얼 데이터 생성 완료 — " +

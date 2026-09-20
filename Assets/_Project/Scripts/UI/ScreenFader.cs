@@ -19,15 +19,27 @@ namespace ItIsYou.UI
         [Tooltip("완전히 덮인 채로 머무는 시간(초).")]
         [SerializeField] private float holdSeconds = 0.25f;
 
-        private void Awake()
+        private void Awake() => Clear();
+
+        private void Clear()
         {
             if (group == null) group = GetComponent<CanvasGroup>();
-            if (group != null)
-            {
-                group.alpha = 0f;
-                group.blocksRaycasts = false;
-            }
+            if (group == null) return;
+            group.alpha = 0f;
+            group.blocksRaycasts = false;
         }
+
+#if UNITY_EDITOR
+        // 이 막은 화면 전체를 덮는 검은 판이다. 알파가 1인 채로 씬에 저장되면
+        // 플레이를 누르기 전의 게임 뷰가 통째로 까맣게 보인다 — 실제로 한 번 그랬다.
+        // 에디터에서는 항상 걷힌 상태로 둔다.
+        private void Reset() => Clear();
+        private void OnValidate()
+        {
+            if (Application.isPlaying) return;
+            Clear();
+        }
+#endif
 
         /// <summary>덮었다가 걷는다. 사이에 화면을 갈아 끼우려면 <paramref name="between"/> 을 넘긴다.</summary>
         public IEnumerator Transition(System.Action between = null)

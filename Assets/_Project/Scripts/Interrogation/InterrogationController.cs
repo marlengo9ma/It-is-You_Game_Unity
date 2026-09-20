@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using ItIsYou.Characters;
 using ItIsYou.Clues;
@@ -65,8 +65,39 @@ namespace ItIsYou.Interrogation
             Subscribe();
 
             dialogue.SyncCollected(inventory.OwnedIds);
+
+            // 심문은 듣는 구간이다. 말하는 속도로 나오고, 넘길 수 없다.
+            dialogue?.SetPacing(slowSpeech: true, allowSkip: false);
+
             _session.Begin();
+            StartCoroutine(OpenRoutine());
+        }
+
+        /// <summary>
+        /// 심문에 막 들어갔을 때 상대가 먼저 한 마디 한다.
+        ///
+        /// 선택지부터 띄우면 플레이어가 무엇을 묻는 자리인지 모른 채 고르게 된다.
+        /// 상대가 먼저 입을 떼야 "지금부터 이 사람을 상대한다"가 성립한다.
+        /// </summary>
+        private IEnumerator OpenRoutine()
+        {
+            var opening = _session.Suspect.OnEnterInterrogation;
+            if (opening != null && !opening.IsEmpty)
+            {
+                _busy = true;
+                if (choiceList != null) choiceList.Clear();
+                _session.Idle.Hold();
+
+                LogSequence(opening, null);
+                yield return dialogue.Play(opening);
+
+                _busy = false;
+                _session.Idle.Release();
+                _session.Idle.Restart();
+            }
+
             RebuildChoices();
+            if (choiceList != null) choiceList.SetInteractable(true);
         }
 
         private void Subscribe()
@@ -193,7 +224,8 @@ namespace ItIsYou.Interrogation
         private IEnumerator RunStep(InterrogationStep step, ChoiceTone? tone)
         {
             _busy = true;
-            if (choiceList != null) choiceList.SetInteractable(false);
+            // 말하는 도중에 끼어드는 행동은 강압에 해당한다. 그래서 강압 선택지만 살려 둔다.
+            if (choiceList != null) choiceList.SetInteractableExcept(ChoiceTone.Aggressive);
 
             // 대사가 나오는 동안에는 무반응 타이머를 멈춘다. 읽는 시간은 플레이어의 침묵이 아니다.
             _session.Idle.Hold();
@@ -222,6 +254,7 @@ namespace ItIsYou.Interrogation
                 if (choiceList != null) choiceList.Clear();
                 cursor?.ResetState();
                 DriveClockAudio(0f);
+                dialogue?.SetPacing(slowSpeech: false, allowSkip: true);
                 Finished?.Invoke(step.EndReason);
                 yield break;
             }

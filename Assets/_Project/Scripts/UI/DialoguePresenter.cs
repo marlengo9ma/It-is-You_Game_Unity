@@ -28,11 +28,24 @@ namespace ItIsYou.UI
         [SerializeField] private Camera uiCamera;
 
         [Header("타자기")]
-        [Tooltip("초당 출력 글자 수.")]
+        [Tooltip("초당 출력 글자 수. 평범한 대화 구간에서 쓴다.")]
         [SerializeField] private float charactersPerSecond = 45f;
+
+        [Tooltip("심문 중의 초당 출력 글자 수. 실제로 말하는 속도에 맞춰 느리게.")]
+        [SerializeField] private float speakingCharactersPerSecond = 16f;
 
         [Tooltip("문장부호에서 추가로 쉬는 시간(초).")]
         [SerializeField] private float punctuationPause = 0.12f;
+
+        [Header("빨리 감기")]
+        [Tooltip("좌클릭을 이만큼 유지하면 빨리 감기가 걸린다(초).")]
+        [SerializeField] private float holdToFastForwardSeconds = 2f;
+
+        [Tooltip("빨리 감기 배속.")]
+        [SerializeField] private float fastForwardMultiplier = 2f;
+
+        [Tooltip("넘기기가 막힌 구간에서 한 줄이 끝난 뒤 다음 줄까지 두는 시간(초).")]
+        [SerializeField] private float autoAdvanceSeconds = 1.1f;
 
         [Header("화자 표기")]
         [SerializeField] private string protagonistName = "나";
@@ -67,6 +80,12 @@ namespace ItIsYou.UI
         private bool _visible;
         private bool _hidden;
 
+        // 심문 중에는 대사를 넘길 수 없다. 대신 좌클릭을 길게 눌러 빨리 감는다.
+        private bool _allowSkip = true;
+        private bool _slowSpeech;
+        private float _holdSeconds;
+        private bool _fastForward;
+
         public bool IsPlaying => _playing != null;
         public DialogueLine CurrentLine => _currentLine;
 
@@ -75,6 +94,63 @@ namespace ItIsYou.UI
 
         /// <summary>플레이어가 대사창을 치워 둔 상태인가.</summary>
         public bool IsHidden => _hidden;
+
+        /// <summary>지금 빨리 감기가 걸려 있는가. 캐릭터 애니메이션도 이 값을 따라간다.</summary>
+        public bool IsFastForwarding => _fastForward;
+
+        /// <summary>빨리 감기가 켜지거나 꺼졌다. (배속)</summary>
+        public event Action<float> FastForwardChanged;
+
+        /// <summary>
+        /// 구간에 맞는 말투를 정한다.
+        ///
+        /// 심문은 상대의 말을 듣는 구간이라 넘길 수 없고, 읽는 속도가 아니라
+        /// 말하는 속도로 나온다. 평범한 대화는 반대로 플레이어가 속도를 쥔다.
+        /// </summary>
+        public void SetPacing(bool slowSpeech, bool allowSkip)
+        {
+            _slowSpeech = slowSpeech;
+            _allowSkip = allowSkip;
+            if (allowSkip) SetFastForward(false);
+        }
+
+        private float CharsPerSecond
+        {
+            get
+            {
+                var basis = _slowSpeech ? speakingCharactersPerSecond : charactersPerSecond;
+                return _fastForward ? basis * Mathf.Max(1f, fastForwardMultiplier) : basis;
+            }
+        }
+
+        private void SetFastForward(bool on)
+        {
+            if (_fastForward == on) return;
+            _fastForward = on;
+            FastForwardChanged?.Invoke(on ? Mathf.Max(1f, fastForwardMultiplier) : 1f);
+        }
+
+        /// <summary>
+        /// 좌클릭을 길게 누르면 빨리 감기. UI 위 어디를 눌러도 걸리도록
+        /// 이벤트 시스템이 아니라 마우스 상태를 직접 본다.
+        /// </summary>
+        private void Update()
+        {
+            if (_allowSkip) return;
+
+            var mouse = UnityEngine.InputSystem.Mouse.current;
+            var pressed = mouse != null && mouse.leftButton.isPressed;
+
+            if (!pressed)
+            {
+                _holdSeconds = 0f;
+                SetFastForward(false);
+                return;
+            }
+
+            _holdSeconds += Time.unscaledDeltaTime;
+            if (_holdSeconds >= holdToFastForwardSeconds) SetFastForward(true);
+        }
 
         private void Awake()
         {
@@ -177,7 +253,22 @@ namespace ItIsYou.UI
             LineCompleted?.Invoke(line);
 
             // 플레이어가 넘길 때까지 기다린다. 그 동안 리액션 창은 계속 살아 있다.
-            while (!_advanceRequested) yield return null;
+            if (_allowSkip)
+            {
+                while (!_advanceRequested) yield return null;
+            }
+            else
+            {
+                // 심문에서는 넘길 수 없다. 읽을 만큼만 두고 알아서 다음 줄로 간다.
+                // 리액션을 포착할 창이 이 사이에도 살아 있어야 하므로 코루틴은 건드리지 않는다.
+                var hold = autoAdvanceSeconds;
+                var t = 0f;
+                while (t < hold)
+                {
+                    t += Time.unscaledDeltaTime * (_fastForward ? Mathf.Max(1f, fastForwardMultiplier) : 1f);
+                    yield return null;
+                }
+            }
 
             if (reactionRoutine != null) StopCoroutine(reactionRoutine);
             CloseReactionWindow();
@@ -192,11 +283,10 @@ namespace ItIsYou.UI
             bodyLabel.ForceMeshUpdate();
             var total = bodyLabel.textInfo.characterCount;
             var shown = 0;
-            var perChar = charactersPerSecond <= 0f ? 0f : 1f / charactersPerSecond;
 
             while (shown < total)
             {
-                if (_advanceRequested)
+                if (_allowSkip && _advanceRequested)
                 {
                     // 출력 중 클릭하면 즉시 전부 보여주고, 그 클릭은 넘기기로 치지 않는다.
                     _advanceRequested = false;
@@ -206,11 +296,14 @@ namespace ItIsYou.UI
                 shown++;
                 bodyLabel.maxVisibleCharacters = shown;
 
-                var wait = perChar;
+                // 배속은 매 글자마다 다시 읽는다. 누르고 있는 도중에 걸려도 바로 빨라지도록.
+                var cps = CharsPerSecond;
+                var wait = cps <= 0f ? 0f : 1f / cps;
                 if (shown - 1 < total)
                 {
                     var c = bodyLabel.textInfo.characterInfo[shown - 1].character;
-                    if (c == '.' || c == ',' || c == '?' || c == '!' || c == '…') wait += punctuationPause;
+                    if (c == '.' || c == ',' || c == '?' || c == '!' || c == '…')
+                        wait += _fastForward ? punctuationPause / Mathf.Max(1f, fastForwardMultiplier) : punctuationPause;
                 }
 
                 if (wait > 0f) yield return new WaitForSecondsRealtime(wait);
@@ -249,7 +342,7 @@ namespace ItIsYou.UI
             // 밑줄 구간을 눌렀는지 먼저 본다. 눌렀다면 대사를 넘기지 않는다.
             if (bodyLabel != null)
             {
-                var linkIndex = TMP_TextUtilities.FindIntersectingLink(bodyLabel, eventData.position, uiCamera);
+                var linkIndex = TMP_TextUtilities.FindIntersectingLink(bodyLabel, eventData.position, ResolveCamera());
                 if (linkIndex >= 0)
                 {
                     var link = bodyLabel.textInfo.linkInfo[linkIndex];
@@ -262,7 +355,24 @@ namespace ItIsYou.UI
                 }
             }
 
+            // 심문에서는 눌러도 넘어가지 않는다. 밑줄 구간을 집는 것만 의미가 있다.
+            if (!_allowSkip) return;
             RequestAdvance();
+        }
+
+        /// <summary>
+        /// 링크 판정에 쓸 카메라.
+        ///
+        /// Screen Space - Overlay 캔버스에서는 null 이어야 좌표가 맞는다.
+        /// 필드에 직접 적어 두면 캔버스 설정을 바꿨을 때 조용히 어긋나므로,
+        /// 실제 캔버스를 보고 정한다.
+        /// </summary>
+        private Camera ResolveCamera()
+        {
+            if (uiCamera != null) return uiCamera;
+            var canvas = bodyLabel != null ? bodyLabel.canvas : null;
+            if (canvas == null) return null;
+            return canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
         }
 
         /// <summary>바깥에서도 넘기기를 요청할 수 있게 열어 둔다. (스페이스 키 등)</summary>

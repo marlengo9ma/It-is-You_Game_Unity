@@ -56,6 +56,7 @@ namespace ItIsYou.Core
                 flow.PhaseChanged += OnPhaseChanged;
                 flow.GameOver += OnGameOver;
                 flow.ChapterCompleted += OnChapterCompleted;
+                flow.ClueCollected += OnClueCollected;
             }
 
             if (clueTray != null)
@@ -91,6 +92,7 @@ namespace ItIsYou.Core
                 flow.PhaseChanged -= OnPhaseChanged;
                 flow.GameOver -= OnGameOver;
                 flow.ChapterCompleted -= OnChapterCompleted;
+                flow.ClueCollected -= OnClueCollected;
             }
             if (clueTray != null)
             {
@@ -172,6 +174,25 @@ namespace ItIsYou.Core
         {
             characterClickTarget?.SetArmed(open);
             if (open) SetStatus("지금 — 상대를 클릭하세요");
+        }
+
+        /// <summary>
+        /// 단서를 주운 순간의 피드백.
+        ///
+        /// 목록에 칸이 하나 느는 것만으로는 우측 구석이라 눈에 안 띈다.
+        /// 무엇을 주웠는지 종류까지 적어 줘야 "방금 그 클릭이 먹혔다"가 읽힌다.
+        /// </summary>
+        private void OnClueCollected(ClueDefinition clue)
+        {
+            if (clue == null) return;
+            var kind = clue.Kind switch
+            {
+                ClueKind.Testimony => "증언",
+                ClueKind.Reaction => "정황",
+                ClueKind.Deduced => "추론",
+                _ => "단서"
+            };
+            SetStatus($"+ {kind} 수집 — 우측 목록에 추가되었습니다");
         }
 
         private void OnTutorialLesson(PressureVerdict verdict)

@@ -98,6 +98,61 @@ namespace ItIsYou.EditorTools
             N("꽤나 애용하던 만년필이기도 한 만큼, 소녀에게 행방을 물어보려 뒤쪽을 바라보는 순간,"),
             N("당신은 수사관으로서의 ‘감’을 느꼈다."));
 
+        /// <summary>단서 수집이 끝나고, 두 사람을 자리에 앉히기까지.</summary>
+        public static DialogueSequence BeforeSuspectSelect() => Seq("두 용의자를 자리에 앉히다",
+            N("당신은 대부분 정돈이 되었으나, 어딘가 어색하게 주변을 정돈하고 있던 조수를 나즈막히 불러 " +
+              "멈추게 하고 고양이가 엎드려있는 테이블 자리에 앉아 소녀를 부른다."),
+            P("보조 수사관? 잠시 이리로 와 앉아보도록."),
+            A(".. 네? 저, 저요?", ExpressionId.Surprised),
+            N("그런 분위기 탓일까? 늘어지게 하품만 하던 검은 고양이가 스윽하고 당신의 눈치를 보더니, " +
+              "마치 어딘가로 도망가려는 듯 자세를 일으키려 한다."),
+            N("당신은 그런 고양이에게 조차, 마치 ‘너도 가만히 있어’라는 듯이 날카롭게 째려보았고"),
+            N("그런 당신의 카리스마에 무서움을 느꼈는지 당신의 눈치를 보고는 애초부터 움직일 생각이 " +
+              "없었다는 듯이 다시 자세를 고쳐 앉았다."),
+            P("…"),
+            Line(SpeakerId.Cat, "…..먁."),
+            P("그래, 너도 포함이야"),
+            N("그렇게 두 용의자(?)를 자리에 앉힌 뒤, 당신은 진지한 눈으로 재차 주변과 두 사람을 " +
+              "흝어보며 말을 꺼냈다."));
+
+        /// <summary>
+        /// 용의자 선택 화면에서 먼저 오가는 대화.
+        ///
+        /// 원문의 &lt;움찔하는 두 캐릭터&gt; 같은 연출 지시는 지문 칸으로 옮겼다.
+        /// 본문에 꺾쇠를 그대로 두면 TMP 가 서식 태그로 읽어 통째로 지워 버린다.
+        /// </summary>
+        public static DialogueSequence SuspectSelectTalk() => Seq("두 용의자 앞에서",
+            Line(SpeakerId.Protagonist, "그래서 누구죠? 제 만년필을 가져간 녀석이",
+                ExpressionId.Neutral, "(움찔하는 두 캐릭터)"),
+            A("네? 만,만년필이요? 저는 당연히 어지른 거를 혼내실 줄 알았어요.", ExpressionId.Flustered),
+            Line(SpeakerId.Cat, "…뭬웅."),
+            P("뭐, 어지럽인건 이 고양이가 들어온게 원인일 거라고 생각했는데, 제가 틀린건가요?"),
+            A("그으…건 그렇죠", ExpressionId.Nervous, "(눈을 피하며 땀이 삐질)"),
+            Line(SpeakerId.Cat, "", ExpressionId.Sly, "(고개 피함 / 대충 꼬리 살랑)"));
+
+        /// <summary>세피 심문에 막 들어갔을 때의 첫 마디.</summary>
+        public static DialogueSequence SepiOpening() => Seq("세피 심문 시작",
+            A("하하, 만년필이라…주변에 떨어지지 않았을까요?", ExpressionId.Smile));
+
+        /// <summary>
+        /// 무반응 판정 회차별 반응.
+        ///
+        /// 회차가 올라갈수록 화제를 돌리고, 끝에는 당신 쪽을 걱정하기 시작한다.
+        /// 같은 줄이 반복되면 침묵이 쌓이고 있다는 것이 전달되지 않는다.
+        /// </summary>
+        public static System.Collections.Generic.List<DialogueSequence> SepiIdleRounds()
+            => new System.Collections.Generic.List<DialogueSequence>
+            {
+                Seq("무반응 1회차",
+                    A("제,제가 신경써서 조금 더 찾아볼테니까요!", ExpressionId.Nervous,
+                      "(당신의 기분을 살핀다)")),
+                Seq("무반응 2회차",
+                    A("…아니면 새로 사시는 건 어때요? 아까 보니까 기차내 매점에서 다양한 잡화도 팔던 걸요?",
+                      ExpressionId.Smile)),
+                Seq("무반응 3회차",
+                    A("…저기, 수사관님? / 괜찮으신거죠…?", ExpressionId.Nervous)),
+            };
+
         // ============================================================== 헬퍼
         // 화자별로 짧은 이름을 둔 이유는, 원문을 옮겨 적을 때
         // 문장보다 코드가 길어지지 않게 하기 위해서다.

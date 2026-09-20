@@ -87,6 +87,9 @@ namespace ItIsYou.Interrogation
         /// <summary>신뢰도 누적 변화량. 최종 지목 판정에서 쓴다.</summary>
         public int TrustDelta { get; private set; }
 
+        /// <summary>지금까지 무반응 판정이 몇 번 났는가. 회차마다 반응이 달라진다.</summary>
+        public int IdleRounds { get; private set; }
+
         /// <summary>심문이 끝났다. (사유)</summary>
         public event Action<InterrogationEndReason> Ended;
 
@@ -281,11 +284,14 @@ namespace ItIsYou.Interrogation
         {
             if (IsOver) return InterrogationStep.Nothing;
 
+            IdleRounds++;
             Tokens.Spend(1, TimeTokenPool.SpendReason.Idle);
             Idle.Restart();
 
             if (IsOver) return InterrogationStep.Nothing; // 토큰 소진으로 이미 끝났다
-            return new InterrogationStep(_suspect.OnIdle, null, PressureVerdict.None,
+
+            // 회차마다 다른 줄을 쓴다. 같은 말이 반복되면 침묵에 값이 붙지 않는다.
+            return new InterrogationStep(_suspect.GetIdle(IdleRounds), null, PressureVerdict.None,
                 false, InterrogationEndReason.PlayerEnded, false);
         }
 

@@ -54,8 +54,21 @@ namespace ItIsYou.Data
         [Tooltip("타임 토큰을 모두 소진해 심문이 자동 종료될 때의 대사.")]
         [SerializeField] private DialogueSequence onTokensExhausted = new DialogueSequence();
 
-        [Tooltip("30초 무반응 판정이 났을 때의 대사.")]
+        [Tooltip("심문에 막 들어갔을 때 이 인물이 먼저 꺼내는 말. 이 대사가 끝나야 선택지가 열린다.")]
+        [SerializeField] private DialogueSequence onEnterInterrogation = new DialogueSequence();
+
+        [Tooltip("무반응 판정 1회차 대사. 목록이 비어 있으면 아래 onIdle 을 쓴다.")]
+        [SerializeField] private List<DialogueSequence> idleRounds = new List<DialogueSequence>();
+
+        [Tooltip("회차별 대사가 동나면 쓰는 기본 무반응 대사.")]
         [SerializeField] private DialogueSequence onIdle = new DialogueSequence();
+
+        [Header("용의자 선택 화면")]
+        [Tooltip("이 인물을 플레이어가 고를 수 있는가. 튜토리얼에서는 고양이를 잠가 둔다.")]
+        [SerializeField] private bool selectable = true;
+
+        [Tooltip("고를 수 없을 때 카드에 표시할 사유.")]
+        [SerializeField] private string lockedReason = "아직은 아니다.";
 
         public string Id => id;
         public string DisplayName => string.IsNullOrEmpty(displayName) ? id : displayName;
@@ -73,7 +86,25 @@ namespace ItIsYou.Data
         public DialogueSequence ToneAlternationWarning => toneAlternationWarning;
         public DialogueSequence ToneAlternationGameOver => toneAlternationGameOver;
         public DialogueSequence OnTokensExhausted => onTokensExhausted;
+        public DialogueSequence OnEnterInterrogation => onEnterInterrogation;
         public DialogueSequence OnIdle => onIdle;
+        public bool Selectable => selectable;
+        public string LockedReason => lockedReason;
+
+        /// <summary>
+        /// 무반응 판정 <paramref name="round"/> 회차(1부터)의 대사.
+        ///
+        /// 회차마다 반응이 달라야 "기다리는 쪽도 불편해지고 있다"가 읽힌다.
+        /// 같은 줄이 계속 반복되면 침묵에 값이 붙지 않는다.
+        /// 목록을 다 쓰면 마지막 줄을 계속 쓴다.
+        /// </summary>
+        public DialogueSequence GetIdle(int round)
+        {
+            if (idleRounds == null || idleRounds.Count == 0) return onIdle;
+            var index = Mathf.Clamp(round - 1, 0, idleRounds.Count - 1);
+            var seq = idleRounds[index];
+            return (seq != null && !seq.IsEmpty) ? seq : onIdle;
+        }
 
         public ChoiceDefinition FindChoice(string choiceId)
         {

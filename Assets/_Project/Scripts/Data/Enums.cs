@@ -22,7 +22,10 @@ namespace ItIsYou.Data
         PreIncidentTalk = 9,
 
         /// <summary>일러스트 컷씬. 화면 전체가 컷 하나로 덮인다.</summary>
-        Cutscene = 10
+        Cutscene = 10,
+
+        /// <summary>누구부터 심문할지 플레이어가 고르는 화면. 심문과 같은 레이아웃을 쓴다.</summary>
+        SuspectSelect = 11
     }
 
     /// <summary>단서의 출처. UI 표기와 조합 규칙이 종류별로 달라진다.</summary>

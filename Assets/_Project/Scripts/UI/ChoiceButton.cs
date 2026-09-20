@@ -32,6 +32,22 @@ namespace ItIsYou.UI
 
         private ChoiceDefinition _definition;
         private Action<ChoiceDefinition> _onClick;
+        private bool _affordable = true;
+
+        /// <summary>이 버튼이 들고 있는 선택지의 성향.</summary>
+        public ChoiceTone Tone => _definition != null ? _definition.Tone : ChoiceTone.Special;
+
+        /// <summary>
+        /// 바깥에서 일시적으로 잠근다.
+        ///
+        /// 토큰이 모자라 원래 못 누르는 버튼은 풀어 줘도 계속 잠겨 있어야 하므로,
+        /// 두 조건을 곱한다.
+        /// </summary>
+        public void SetLocked(bool locked)
+        {
+            if (button != null) button.interactable = _affordable && !locked;
+            if (usedDim != null && locked) usedDim.alpha = Mathf.Min(usedDim.alpha, 0.45f);
+        }
 
         private void Awake()
         {
@@ -57,6 +73,7 @@ namespace ItIsYou.UI
             if (usedDim != null)
                 usedDim.alpha = view.TimesUsed > 0 ? 0.72f : 1f;
 
+            _affordable = view.Affordable;
             if (button != null) button.interactable = view.Affordable;
         }
 

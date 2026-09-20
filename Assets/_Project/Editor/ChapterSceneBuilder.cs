@@ -393,6 +393,77 @@ namespace ItIsYou.EditorTools
                 cutsceneImg.preserveAspect = true;
             }
 
+            // ================================================== 용의자 선택 화면
+            // 심문과 같은 구획을 쓴다. 좌측은 대화 구간처럼 비워 두고,
+            // 가운데 무대에 두 사람이 나란히 앉아 있다.
+
+            var selectScreen = UI("Screen_SuspectSelect", root);
+            var selectRt = selectScreen.GetComponent<RectTransform>();
+            // 단서 패널 앞에서 멈춘다. 배경이 화면 끝까지 가면 목록을 덮어 버린다.
+            Anchor(selectRt, V(0, 0), V(1, 1), V(L.Gutter, L.BandBottom), V(L.ClueLeft - L.Gap, L.BandTop));
+
+            var selectBg = Img("Backdrop", selectRt, new Color32(0x1E, 0x22, 0x27, 0xFF));
+            Stretch(selectBg.rectTransform);
+            selectBg.raycastTarget = false;
+
+            var selectTag = Text("Tag", selectBg.rectTransform, "객실  —  게임플레이 배경 (아트 대기)",
+                T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Center);
+            Anchor(selectTag.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 6), V(0, -L.Unit * 2));
+
+            var selectPrompt = Text("Prompt", selectRt, "", T.Body, P.Brass, TextAlignmentOptions.Center);
+            Anchor(selectPrompt.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 14), V(0, -L.Unit * 7));
+
+            // 두 사람. 자리는 심문 화면의 인물 위치와 어긋나지 않게 잡는다.
+            var cardSlots = new (string name, float x0, float x1)[]
+            {
+                ("Card_0", 0.30f, 0.50f),
+                ("Card_1", 0.56f, 0.72f),
+            };
+
+            var suspectCards = new List<SuspectCard>();
+            foreach (var slot in cardSlots)
+            {
+                var card = UI(slot.name, selectRt);
+                var cardRt = card.GetComponent<RectTransform>();
+                Anchor(cardRt, V(slot.x0, 0.06f), V(slot.x1, 0.86f), Vector2.zero, Vector2.zero);
+
+                var portrait = card.AddComponent<Image>();
+                portrait.color = new Color32(0x33, 0x39, 0x41, 0xFF);
+                var cardButton = card.AddComponent<Button>();
+                cardButton.targetGraphic = portrait;
+                var cardColors = cardButton.colors;
+                cardColors.highlightedColor = new Color(1.12f, 1.12f, 1.12f, 1f);
+                cardColors.pressedColor = new Color(0.88f, 0.88f, 0.88f, 1f);
+                cardColors.disabledColor = new Color(0.72f, 0.72f, 0.72f, 1f);
+                cardButton.colors = cardColors;
+
+                var cardGroup = card.AddComponent<CanvasGroup>();
+                var cardOutline = card.AddComponent<Outline>();
+                cardOutline.effectColor = P.Brass;
+                cardOutline.effectDistance = new Vector2(3f, -3f);
+                cardOutline.enabled = false;
+
+                var cardName = Text("Name", cardRt, "", T.Choice, P.Ink, TextAlignmentOptions.Bottom);
+                Anchor(cardName.rectTransform, V(0, 0), V(1, 0), V(0, L.Unit * 2), V(0, L.Unit * 8));
+
+                var cardState = Text("State", cardRt, "", T.Caption, P.InkSoft, TextAlignmentOptions.Center);
+                cardState.textWrappingMode = TextWrappingModes.Normal;
+                Anchor(cardState.rectTransform, V(0, 0.42f), V(1, 0.58f), Vector2.zero, Vector2.zero);
+
+                var art = Text("Art", cardRt, "(아트 대기)", T.Caption,
+                    new Color32(0x6E, 0x74, 0x7B, 0xFF), TextAlignmentOptions.Top);
+                Anchor(art.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 6), V(0, -L.Unit * 2));
+
+                var cardView = card.AddComponent<SuspectCard>();
+                cardView.Set("button", cardButton)
+                        .Set("portrait", portrait)
+                        .Set("nameLabel", cardName)
+                        .Set("stateLabel", cardState)
+                        .Set("highlight", cardOutline)
+                        .Set("group", cardGroup);
+                suspectCards.Add(cardView);
+            }
+
             // 대사창은 새로 만든 전면 배경들보다 위에 있어야 한다.
             dialoguePanel.transform.SetAsLastSibling();
 
@@ -497,6 +568,9 @@ namespace ItIsYou.EditorTools
             var faderImg = Img("ScreenFader", root, Color.black);
             Stretch(faderImg.rectTransform);
             var faderGroup = faderImg.gameObject.AddComponent<CanvasGroup>();
+            // 알파 1로 저장되면 플레이 전 게임 뷰가 통째로 까맣게 보인다.
+            faderGroup.alpha = 0f;
+            faderGroup.blocksRaycasts = false;
             var fader = faderImg.gameObject.AddComponent<ScreenFader>();
             fader.Set("group", faderGroup)
                  .Set("fadeSeconds", 0.4f)
@@ -516,6 +590,11 @@ namespace ItIsYou.EditorTools
                          .Set("advanceButton", goInterrogate.Item2)
                          .Set("progressLabel", progressLabel);
 
+            var selectController = systems.AddComponent<SuspectSelectController>();
+            selectController.Set("dialogue", presenter)
+                            .Set("cards", suspectCards)
+                            .Set("promptLabel", selectPrompt);
+
             var interrogation = systems.AddComponent<InterrogationController>();
             interrogation.Set("database", db)
                          .Set("dialogue", presenter)
@@ -527,6 +606,7 @@ namespace ItIsYou.EditorTools
                 .Set("chapter", chapter)
                 .Set("fader", fader)
                 .Set("investigation", investigation)
+                .Set("suspectSelect", selectController)
                 .Set("interrogation", interrogation)
                 .Set("dialogue", presenter)
                 .Set("clueTray", clueTrayView)
@@ -542,7 +622,7 @@ namespace ItIsYou.EditorTools
 
             var binder = systems.AddComponent<PhaseScreenBinder>();
             binder.Set("flow", flow)
-                  .Set("groups", BuildScreenGroups(talkScreen, cutsceneScreen,
+                  .Set("groups", BuildScreenGroups(talkScreen, cutsceneScreen, selectScreen,
                                                     collectScreen, interrogateScreen, accuseScreen,
                                                     cluePanel.gameObject))
                   .Set("alwaysVisible", new List<GameObject> { dialoguePanel.gameObject });
@@ -587,6 +667,7 @@ namespace ItIsYou.EditorTools
 
             talkScreen.SetActive(false);
             cutsceneScreen.SetActive(false);
+            selectScreen.SetActive(false);
             collectScreen.SetActive(false);
             interrogateScreen.SetActive(false);
             accuseScreen.SetActive(false);
@@ -621,7 +702,7 @@ namespace ItIsYou.EditorTools
             return list;
         }
 
-        private static object BuildScreenGroups(GameObject talk, GameObject cutscene,
+        private static object BuildScreenGroups(GameObject talk, GameObject cutscene, GameObject select,
             GameObject collect, GameObject interrogate, GameObject accuse, GameObject cluePanel)
         {
             var list = new List<PhaseScreenBinder.ScreenGroup>
@@ -634,6 +715,10 @@ namespace ItIsYou.EditorTools
                 new PhaseScreenBinder.ScreenGroup {
                     root = cutscene,
                     phases = new List<GamePhase> { GamePhase.Cutscene }
+                },
+                new PhaseScreenBinder.ScreenGroup {
+                    root = select,
+                    phases = new List<GamePhase> { GamePhase.SuspectSelect }
                 },
                 new PhaseScreenBinder.ScreenGroup {
                     root = collect,
@@ -652,7 +737,7 @@ namespace ItIsYou.EditorTools
                 new PhaseScreenBinder.ScreenGroup {
                     root = cluePanel,
                     phases = new List<GamePhase> {
-                        GamePhase.ClueCollection, GamePhase.Interrogation1,
+                        GamePhase.ClueCollection, GamePhase.SuspectSelect, GamePhase.Interrogation1,
                         GamePhase.Deduction, GamePhase.Interrogation2, GamePhase.Accusation
                     }
                 }

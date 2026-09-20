@@ -33,10 +33,35 @@ namespace ItIsYou.UI
 
         public void SetInteractable(bool value)
         {
-            if (root == null) return;
-            root.interactable = value;
-            root.blocksRaycasts = value;
-            root.alpha = value ? 1f : 0.45f;
+            if (root != null)
+            {
+                root.interactable = value;
+                root.blocksRaycasts = value;
+                root.alpha = value ? 1f : 0.45f;
+            }
+            for (int i = 0; i < _pool.Count; i++) _pool[i].SetLocked(!value);
+        }
+
+        /// <summary>
+        /// 대사가 나오는 동안 선택지를 잠그되, 한 성향만 열어 둔다.
+        ///
+        /// 기획: 말하는 도중에 끼어드는 행동은 강압에 해당한다. 그래서 강압 선택지만
+        /// 살아 있고 나머지는 잠긴다. 목록 전체를 CanvasGroup 으로 끄면 열어 둔 것까지
+        /// 같이 죽으므로, 버튼마다 따로 잠근다.
+        /// </summary>
+        public void SetInteractableExcept(ChoiceTone keepEnabled)
+        {
+            if (root != null)
+            {
+                root.interactable = true;
+                root.blocksRaycasts = true;
+                root.alpha = 1f;
+            }
+            for (int i = 0; i < _pool.Count; i++)
+            {
+                if (!_pool[i].gameObject.activeSelf) continue;
+                _pool[i].SetLocked(_pool[i].Tone != keepEnabled);
+            }
         }
 
         public void Rebuild(IReadOnlyList<ChoiceView> choices)

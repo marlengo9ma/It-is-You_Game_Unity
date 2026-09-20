@@ -183,6 +183,71 @@ MonoBehaviour:
       autoGrantClueId: 
     trustDelta: 0
     endsInterrogation: 0
+  onEnterInterrogation:
+    note: "\uC138\uD53C \uC2EC\uBB38 \uC2DC\uC791"
+    lines:
+    - speaker: 3
+      text: "\uD558\uD558, \uB9CC\uB144\uD544\uC774\uB77C\u2026\uC8FC\uBCC0\uC5D0
+        \uB5A8\uC5B4\uC9C0\uC9C0 \uC54A\uC558\uC744\uAE4C\uC694?"
+      expression: 1
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0
+  idleRounds:
+  - note: "\uBB34\uBC18\uC751 1\uD68C\uCC28"
+    lines:
+    - speaker: 3
+      text: "\uC81C,\uC81C\uAC00 \uC2E0\uACBD\uC368\uC11C \uC870\uAE08 \uB354 \uCC3E\uC544\uBCFC\uD14C\uB2C8\uAE4C\uC694!"
+      expression: 2
+      stageDirection: "(\uB2F9\uC2E0\uC758 \uAE30\uBD84\uC744 \uC0B4\uD540\uB2E4)"
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0
+  - note: "\uBB34\uBC18\uC751 2\uD68C\uCC28"
+    lines:
+    - speaker: 3
+      text: "\u2026\uC544\uB2C8\uBA74 \uC0C8\uB85C \uC0AC\uC2DC\uB294 \uAC74 \uC5B4\uB54C\uC694?
+        \uC544\uAE4C \uBCF4\uB2C8\uAE4C \uAE30\uCC28\uB0B4 \uB9E4\uC810\uC5D0\uC11C
+        \uB2E4\uC591\uD55C \uC7A1\uD654\uB3C4 \uD314\uB358 \uAC78\uC694?"
+      expression: 1
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0
+  - note: "\uBB34\uBC18\uC751 3\uD68C\uCC28"
+    lines:
+    - speaker: 3
+      text: "\u2026\uC800\uAE30, \uC218\uC0AC\uAD00\uB2D8? / \uAD1C\uCC2E\uC73C\uC2E0\uAC70\uC8E0\u2026?"
+      expression: 2
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0
   onIdle:
     note: "\uBB34\uBC18\uC751"
     lines:
@@ -200,3 +265,5 @@ MonoBehaviour:
       autoGrantClueId: 
     trustDelta: 0
     endsInterrogation: 0
+  selectable: 1
+  lockedReason: "\uC544\uC9C1\uC740 \uC544\uB2C8\uB2E4."

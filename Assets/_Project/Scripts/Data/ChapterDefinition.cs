@@ -58,6 +58,16 @@ namespace ItIsYou.Data
         [Tooltip("진행 불가일 때의 대사.")]
         [SerializeField] private DialogueSequence gateBlocked = new DialogueSequence();
 
+        [Header("용의자 선택")]
+        [Tooltip("단서 수집이 끝나고, 두 사람을 자리에 앉히기까지의 대사.")]
+        [SerializeField] private DialogueSequence beforeSuspectSelect = new DialogueSequence();
+
+        [Tooltip("용의자 선택 화면에서 먼저 오가는 대화.")]
+        [SerializeField] private DialogueSequence suspectSelectTalk = new DialogueSequence();
+
+        [Tooltip("대화가 끝난 뒤 선택을 재촉하는 한 줄.")]
+        [SerializeField] private string suspectSelectPrompt = "누구부터 이야기를 들어볼까.";
+
         [Header("심문")]
         [Tooltip("1차 심문에서 상대할 대상. 튜토리얼에서는 조수와 고양이.")]
         [SerializeField] private List<SuspectDefinition> firstRoundSuspects = new List<SuspectDefinition>();
@@ -119,6 +129,10 @@ namespace ItIsYou.Data
         public DialogueSequence GatePass => gatePass;
         public DialogueSequence GateWarn => gateWarn;
         public DialogueSequence GateBlocked => gateBlocked;
+
+        public DialogueSequence BeforeSuspectSelect => beforeSuspectSelect;
+        public DialogueSequence SuspectSelectTalk => suspectSelectTalk;
+        public string SuspectSelectPrompt => suspectSelectPrompt;
 
         public IReadOnlyList<SuspectDefinition> FirstRoundSuspects => firstRoundSuspects;
         /// <summary>
