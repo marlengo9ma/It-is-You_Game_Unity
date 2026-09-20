@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using ItIsYou.Characters;
@@ -47,6 +47,7 @@ namespace ItIsYou.Core
 
         private readonly Queue<SuspectDefinition> _pending = new Queue<SuspectDefinition>();
 
+        public ChapterDefinition Chapter => chapter;
         public GameSession Session { get; private set; }
         public GamePhase Phase { get; private set; } = GamePhase.None;
 

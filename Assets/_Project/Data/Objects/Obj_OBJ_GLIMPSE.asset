@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8863fa260cf69b46b089cb7342564d5, type: 3}
+  m_Name: Obj_OBJ_GLIMPSE
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.InteractableDefinition
+  id: OBJ_GLIMPSE
+  kind: 1
+  hoverLabel: "\uACE0\uC591\uC774 \uC544\uB798"
+  onInspect:
+  - speaker: 2
+    text: "\uC800 \uACE0\uC591\uC774, \uC544\uAE4C\uBD80\uD130 \uC800 \uC790\uC138
+      \uADF8\uB300\uB85C\uAD70."
+    expression: 0
+    stageDirection: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  - speaker: 4
+    text: "\u2026\uC6E8\uC639."
+    expression: 9
+    stageDirection: "(\uAF2C\uB9AC\uB97C \uC0B4\uB791\uC774\uBA70 \uC790\uC138\uB97C
+      \uACE0\uCCD0 \uC549\uB294\uB2E4)"
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  - speaker: 2
+    text: "\uBC1C \uC544\uB798\uB85C \uBB54\uAC00 \uBE44\uC8FD \uB098\uC640 \uC788\uB2E4."
+    expression: 0
+    stageDirection: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  onReinspect:
+  - speaker: 2
+    text: "\uB354 \uBCFC \uAC83\uC740 \uC5C6\uC5B4 \uBCF4\uC778\uB2E4."
+    expression: 0
+    stageDirection: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  grantedClue: {fileID: 11400000, guid: 8aab43e5671f5c1498a76ff2c16c3422, type: 2}
+  closeUpImage: {fileID: 0}

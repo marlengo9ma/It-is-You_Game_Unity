@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8863fa260cf69b46b089cb7342564d5, type: 3}
+  m_Name: Obj_OBJ_RIBBON
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.InteractableDefinition
+  id: OBJ_RIBBON
+  kind: 1
+  hoverLabel: "\uAD6C\uACA8\uC9C4 \uB048"
+  onInspect:
+  - speaker: 2
+    text: "\u2026\uAE30\uCC28\uC5ED \uD14C\uC774\uBE14\uC5D0 \uB450\uACE0 \uC628
+      \uC904 \uC54C\uC558\uB358 \uB9AC\uBCF8\uC774\uAD70."
+    expression: 0
+    stageDirection: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  - speaker: 3
+    text: "\uC544, \uADF8\uAC70 \uC81C\uAC00 \uD0C0\uC790\uAE30\uB791 \uAC19\uC774
+      \uCC59\uACA8\uC654\uC5B4\uC694! \uC798\uD588\uC8E0?"
+    expression: 1
+    stageDirection: "(\uBFCC\uB4EF\uD55C \uD45C\uC815)"
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  - speaker: 2
+    text: "\u2026\uC6D0\uB798 \uC774\uB7F0 \uC0C1\uD0DC\uB294 \uC544\uB2C8\uC5C8\uB294\uB370."
+    expression: 0
+    stageDirection: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  onReinspect:
+  - speaker: 2
+    text: "\uB354 \uBCFC \uAC83\uC740 \uC5C6\uC5B4 \uBCF4\uC778\uB2E4."
+    expression: 0
+    stageDirection: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  grantedClue: {fileID: 11400000, guid: f256a648fff234641a381c55e33ce466, type: 2}
+  closeUpImage: {fileID: 0}

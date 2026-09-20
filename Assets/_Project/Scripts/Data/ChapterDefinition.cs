@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace ItIsYou.Data
@@ -73,6 +73,9 @@ namespace ItIsYou.Data
         [Tooltip("기억 짐작에서 조수의 도움을 쓸 때 드는 추가 타임 토큰.")]
         [SerializeField] private int assistRecallTokenCost = 1;
 
+        [Tooltip("선택지 대사가 전부 끝난 뒤, 무반응 타이머가 다시 돌기까지의 유예 시간(초).")]
+        [SerializeField] private float idleGraceAfterDialogueSeconds = 5f;
+
         [Header("조합 / 지목")]
         [SerializeField] private List<CombinationRecipe> recipes = new List<CombinationRecipe>();
 
@@ -96,8 +99,11 @@ namespace ItIsYou.Data
         public DialogueSequence GateBlocked => gateBlocked;
 
         public IReadOnlyList<SuspectDefinition> FirstRoundSuspects => firstRoundSuspects;
-        public IReadOnlyList<SuspectDefinition> SecondRoundSuspects =>
-            (secondRoundSuspects != null && secondRoundSuspects.Count > 0) ? secondRoundSuspects : firstRoundSuspects;
+        /// <summary>
+        /// 2차 심문 대상. 비워 두면 2차 심문이 없는 챕터라는 뜻이다.
+        /// 1차와 같은 인물을 다시 만나려면 명시적으로 다시 넣는다 — 암묵적 반복은 사고를 부른다.
+        /// </summary>
+        public IReadOnlyList<SuspectDefinition> SecondRoundSuspects => secondRoundSuspects;
 
         public int AggressionWarnAt => aggressionWarnAt;
         public int AggressionRefuseAt => aggressionRefuseAt;
@@ -107,6 +113,7 @@ namespace ItIsYou.Data
         public int ToneAlternationGameOverAt => toneAlternationGameOverAt;
         public float IdleSeconds => idleSeconds;
         public int AssistRecallTokenCost => Mathf.Max(0, assistRecallTokenCost);
+        public float IdleGraceAfterDialogueSeconds => Mathf.Max(0f, idleGraceAfterDialogueSeconds);
 
         public IReadOnlyList<CombinationRecipe> Recipes => recipes;
         public IReadOnlyList<SuspectDefinition> AccusationTargets =>

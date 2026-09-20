@@ -5,6 +5,7 @@ using ItIsYou.Clues;
 using ItIsYou.Data;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ItIsYou.UI
 {
@@ -27,12 +28,16 @@ namespace ItIsYou.UI
         [SerializeField] private TMP_Text tooltipTitle;
         [SerializeField] private TMP_Text tooltipBody;
 
+        [Tooltip("툴팁을 닫는 버튼. 여기에 연결해 두면 런타임에 스스로 붙는다.")]
+        [SerializeField] private Button closeButton;
+
         [Tooltip("툴팁을 닫은 뒤에도 타이머를 더 멈춰 두는 시간(초). 기획 범위 1~20초.")]
         [SerializeField] private float tooltipGraceSeconds = 3f;
 
         private readonly List<ClueSlot> _pool = new List<ClueSlot>();
         private ClueInventory _inventory;
         private Coroutine _grace;
+        private bool _tooltipOpen;
 
         /// <summary>툴팁이 열렸다. 무반응 타이머를 멈출 시점.</summary>
         public event Action TooltipOpened;
@@ -43,9 +48,20 @@ namespace ItIsYou.UI
         /// <summary>단서를 처음 읽었다. 표시 명칭이 바뀐다.</summary>
         public event Action<ClueDefinition> ClueRead;
 
+        public bool IsTooltipOpen => _tooltipOpen;
+
         private void Awake()
         {
+            // 씬 빌더가 에디터에서 AddListener 로 붙인 연결은 저장되지 않는다.
+            // 그래서 버튼 연결은 런타임에 여기서 직접 한다.
+            if (closeButton != null) closeButton.onClick.AddListener(CloseTooltip);
             if (tooltipRoot != null) tooltipRoot.SetActive(false);
+            _tooltipOpen = false;
+        }
+
+        private void OnDestroy()
+        {
+            if (closeButton != null) closeButton.onClick.RemoveListener(CloseTooltip);
         }
 
         public void Rebuild(ClueInventory inventory)
@@ -83,21 +99,34 @@ namespace ItIsYou.UI
 
             if (tooltipRoot != null) tooltipRoot.SetActive(true);
 
-            if (_grace != null) StopCoroutine(_grace);
-            TooltipOpened?.Invoke();
+            if (_grace != null) { StopCoroutine(_grace); _grace = null; }
+
+            if (!_tooltipOpen)
+            {
+                _tooltipOpen = true;
+                TooltipOpened?.Invoke();
+            }
 
             if (firstRead)
             {
                 ClueRead?.Invoke(clue);
-                Rebuild(_inventory);
+                RebuildSlotsOnly();
             }
         }
 
+        /// <summary>툴팁을 닫는다. 닫기 버튼과 외부 모두 이걸 부른다.</summary>
         public void CloseTooltip()
         {
             if (tooltipRoot != null) tooltipRoot.SetActive(false);
+
+            if (!_tooltipOpen) return;
+            _tooltipOpen = false;
+
             if (_grace != null) StopCoroutine(_grace);
-            _grace = StartCoroutine(GraceRoutine());
+            _grace = isActiveAndEnabled ? StartCoroutine(GraceRoutine()) : null;
+
+            // 비활성 상태라 코루틴을 못 돌리면 유예 없이 바로 알린다.
+            if (_grace == null) TooltipClosed?.Invoke();
         }
 
         private IEnumerator GraceRoutine()
@@ -107,6 +136,19 @@ namespace ItIsYou.UI
 
             _grace = null;
             TooltipClosed?.Invoke();
+        }
+
+        /// <summary>목록만 다시 그린다. 툴팁 상태는 건드리지 않는다.</summary>
+        private void RebuildSlotsOnly()
+        {
+            if (_inventory == null) return;
+            var ids = _inventory.OrderedIds;
+            for (int i = 0; i < _pool.Count && i < ids.Count; i++)
+            {
+                var clue = _inventory.Get(ids[i]);
+                if (clue == null) continue;
+                _pool[i].Bind(clue, _inventory.HasBeenRead(clue.Id), OnSlotClicked);
+            }
         }
 
         private void EnsurePool(int needed)

@@ -24,6 +24,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0c98b4a968f250243a0c3b72f68fd9f7, type: 2}
   - {fileID: 11400000, guid: b759028a5b302aa41a0eebc5ab6620ab, type: 2}
   - {fileID: 11400000, guid: 44ac597c82db03e418d181f55871762f, type: 2}
-  interactables: []
+  interactables:
+  - {fileID: 11400000, guid: df8215003a264724287f12e25dd5ab81, type: 2}
+  - {fileID: 11400000, guid: 29c81ed7c5af9ff4a98f7c1ee49826e1, type: 2}
+  - {fileID: 11400000, guid: ae5dee96ffb54ec4bb1d888357be1760, type: 2}
+  - {fileID: 11400000, guid: 8f225b54c97350e4f9865b82ef3dd74b, type: 2}
+  - {fileID: 11400000, guid: 780b09ff10a12b944b141184d801d765, type: 2}
+  - {fileID: 11400000, guid: 31bd28d785f7bbe498275501983b62f5, type: 2}
   suspects:
   - {fileID: 11400000, guid: c1b4967bab60ba2458ad0375dca13f8b, type: 2}

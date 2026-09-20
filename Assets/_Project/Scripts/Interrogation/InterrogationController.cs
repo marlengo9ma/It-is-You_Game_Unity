@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using ItIsYou.Characters;
 using ItIsYou.Clues;
@@ -195,6 +195,9 @@ namespace ItIsYou.Interrogation
             _busy = true;
             if (choiceList != null) choiceList.SetInteractable(false);
 
+            // 대사가 나오는 동안에는 무반응 타이머를 멈춘다. 읽는 시간은 플레이어의 침묵이 아니다.
+            _session.Idle.Hold();
+
             var distortion = _session.Recall.CurrentDistortion();
 
             if (step.Main != null && !step.Main.IsEmpty)
@@ -225,6 +228,13 @@ namespace ItIsYou.Interrogation
 
             RebuildChoices();
             if (choiceList != null) choiceList.SetInteractable(true);
+
+            // 스크립트가 전부 끝나고 유예 시간이 지난 뒤에야 타이머가 다시 돈다.
+            var grace = _session.Chapter.IdleGraceAfterDialogueSeconds;
+            if (grace > 0f) yield return new WaitForSecondsRealtime(grace);
+
+            _session.Idle.Release();
+            _session.Idle.Restart();
         }
 
         private void LogSequence(DialogueSequence sequence, ChoiceTone? tone)

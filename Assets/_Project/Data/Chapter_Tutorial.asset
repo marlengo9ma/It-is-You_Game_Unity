@@ -19,8 +19,21 @@ MonoBehaviour:
     note: "\uC0AC\uAC74 \uBC1C\uC0DD"
     lines:
     - speaker: 0
-      text: "\uB2F9\uC2E0\uC740 \uB2E4\uC18C \uC5C9\uB9DD\uC774 \uB41C \uD14C\uC774\uBE14\uACFC
-        \uC8FC\uBCC0 \uBC14\uB2E5, \uADF8\uB9AC\uACE0 \uC5B4\uC9C8\uB7EC\uC9C4 \uC8FC\uBCC0\uC744
+      text: "\uAE30\uCC28\uC5D0 \uC62C\uB77C\uD0C0\uACE0 \uC57D\uAC04\uC758 \uC2DC\uAC04\uC774
+        \uD750\uB978 \uB4A4, \uB2F9\uC2E0\uC740 \uC7A0\uC2DC \uC790\uB9AC\uB97C \uBE44\uC6E0\uB2E4
+        \uB3CC\uC544\uC654\uB2E4."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      text: "\uB2E4\uC18C \uC5C9\uB9DD\uC774 \uB41C \uD14C\uC774\uBE14\uACFC \uC8FC\uBCC0
+        \uBC14\uB2E5, \uADF8\uB9AC\uACE0 \uC5B4\uC9C8\uB7EC\uC9C4 \uC8FC\uBCC0\uC744
         \uC815\uB3C8\uD558\uBA70 \uC77C\uBD80\uB7EC \uB2F9\uC2E0\uC758 \uB208\uC744
         \uD53C\uD558\uB294 \uB4EF\uD55C \uC18C\uB140\uC640, \uC65C\uC778\uC9C0\uB294
         \uBAA8\uB974\uACA0\uC9C0\uB9CC \uD14C\uC774\uBE14 \uC704\uC5D0\uC11C \uB9CC\uC871\uC2A4\uB7EC\uC6B4
@@ -47,6 +60,17 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       autoGrantClueId: 
+    - speaker: 4
+      text: "\uC6E8\uC639."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
     - speaker: 2
       text: "\u2026\uC544\uAE4C \uC11C\uB958 \uBB49\uCE58\uC640 \uD568\uAED8 \uD14C\uC774\uBE14\uC5D0
         \uC62C\uB824\uB193\uACE0 \uAC14\uB358 \uACE0\uAE09 \uB9CC\uB144\uD544\uC774
@@ -60,9 +84,9 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       autoGrantClueId: 
-    - speaker: 1
-      text: "\uADF8\uB798\uC11C \uB204\uAD6C\uC8E0? \uC81C \uB9CC\uB144\uD544\uC744
-        \uAC00\uC838\uAC04 \uB140\uC11D\uC774."
+    - speaker: 2
+      text: "\uC218\uC0AC\uAD00\uC73C\uB85C\uC11C\uC758 '\uAC10'\uC774 \uC654\uB2E4.
+        \uC8FC\uBCC0\uBD80\uD130 \uC0B4\uD3B4\uBCF4\uC790."
       expression: 0
       stageDirection: 
       reaction:
@@ -74,22 +98,63 @@ MonoBehaviour:
       autoGrantClueId: 
     trustDelta: 0
     endsInterrogation: 0
-  sceneObjects: []
+  sceneObjects:
+  - {fileID: 11400000, guid: df8215003a264724287f12e25dd5ab81, type: 2}
+  - {fileID: 11400000, guid: 29c81ed7c5af9ff4a98f7c1ee49826e1, type: 2}
+  - {fileID: 11400000, guid: ae5dee96ffb54ec4bb1d888357be1760, type: 2}
+  - {fileID: 11400000, guid: 8f225b54c97350e4f9865b82ef3dd74b, type: 2}
+  - {fileID: 11400000, guid: 780b09ff10a12b944b141184d801d765, type: 2}
+  - {fileID: 11400000, guid: 31bd28d785f7bbe498275501983b62f5, type: 2}
   passThreshold: 1
   warnThreshold: 0.7
   gatePass:
-    note: 
-    lines: []
+    note: "\uC218\uC9D1 100%"
+    lines:
+    - speaker: 2
+      text: "\uC74C, \uC774 \uC815\uB3C4\uBA74 \uCDA9\uBD84\uD558\uACA0\uAD70."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
     trustDelta: 0
     endsInterrogation: 0
   gateWarn:
-    note: 
-    lines: []
+    note: "\uC218\uC9D1 70% \uC774\uC0C1"
+    lines:
+    - speaker: 2
+      text: "\uD544\uC694\uD55C \uAC74 \uCC3E\uC740 \uAC83 \uAC19\uAE34 \uD55C\uB370\u2026
+        \uC870\uAE08\uB9CC \uB354 \uC0B4\uD3B4\uBCFC\uAE4C?"
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
     trustDelta: 0
     endsInterrogation: 0
   gateBlocked:
-    note: 
-    lines: []
+    note: "\uC218\uC9D1 \uBD80\uC871"
+    lines:
+    - speaker: 2
+      text: "\uBB54\uAC00 \uBD80\uC871\uD574. \uC870\uAE08 \uB354 \uAF3C\uAF3C\uD558\uAC8C
+        \uBD10\uC57C\uACA0\uC5B4."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
     trustDelta: 0
     endsInterrogation: 0
   firstRoundSuspects:
@@ -103,6 +168,7 @@ MonoBehaviour:
   toneAlternationGameOverAt: 2
   idleSeconds: 30
   assistRecallTokenCost: 1
+  idleGraceAfterDialogueSeconds: 5
   recipes: []
   accusationTargets:
   - {fileID: 11400000, guid: c1b4967bab60ba2458ad0375dca13f8b, type: 2}

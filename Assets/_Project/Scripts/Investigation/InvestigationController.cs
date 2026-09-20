@@ -1,10 +1,12 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using ItIsYou.Clues;
 using ItIsYou.Data;
 using ItIsYou.UI;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ItIsYou.Investigation
 {
@@ -26,6 +28,12 @@ namespace ItIsYou.Investigation
         [SerializeField] private DialoguePresenter dialogue;
         [SerializeField] private CursorController cursor;
         [SerializeField] private ClueTrayView clueTray;
+
+        [Tooltip("다음 페이즈로 넘어가는 버튼. 에디터에서 붙인 연결은 저장되지 않으므로 런타임에 직접 잇는다.")]
+        [SerializeField] private Button advanceButton;
+
+        [Tooltip("수집 상황 표시. 남은 개수를 직접 세어 주지는 않는다 — 몇 개가 더 있는지 알려주면 탐색이 아니라 체크리스트가 된다.")]
+        [SerializeField] private TMP_Text progressLabel;
 
         private ChapterDefinition _chapter;
         private ClueInventory _inventory;
@@ -59,8 +67,15 @@ namespace ItIsYou.Investigation
                 obj.SetEnabled(true);
             }
 
+            if (advanceButton != null)
+            {
+                advanceButton.onClick.RemoveListener(RequestAdvance);
+                advanceButton.onClick.AddListener(RequestAdvance);
+            }
+
             dialogue.SyncCollected(inventory.OwnedIds);
             RefreshTray();
+            RefreshProgress();
         }
 
         private void OnDisable()
@@ -107,6 +122,7 @@ namespace ItIsYou.Investigation
                 ClueCollected?.Invoke(def.GrantedClue);
             }
 
+            RefreshProgress();
             _busy = false;
             SetObjectsEnabled(true);
         }
@@ -170,8 +186,20 @@ namespace ItIsYou.Investigation
 
         private void RefreshTray()
         {
-            if (clueTray == null) return;
-            clueTray.Rebuild(_inventory);
+            if (clueTray != null) clueTray.Rebuild(_inventory);
+            RefreshProgress();
+        }
+
+        /// <summary>조사한 곳과 남은 곳을 알린다. 단서 개수는 드러내지 않는다.</summary>
+        private void RefreshProgress()
+        {
+            if (progressLabel == null) return;
+            var seen = 0;
+            for (int i = 0; i < sceneObjects.Count; i++)
+            {
+                if (sceneObjects[i] != null && sceneObjects[i].Inspected) seen++;
+            }
+            progressLabel.text = $"살펴본 곳  {seen} / {sceneObjects.Count}";
         }
     }
 }

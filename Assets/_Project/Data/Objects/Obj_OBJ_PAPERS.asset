@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8863fa260cf69b46b089cb7342564d5, type: 3}
+  m_Name: Obj_OBJ_PAPERS
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.InteractableDefinition
+  id: OBJ_PAPERS
+  kind: 0
+  hoverLabel: "\uD750\uD2B8\uB7EC\uC9C4 \uC11C\uB958"
+  onInspect:
+  - speaker: 2
+    text: "\uC0AC\uAC74 \uAC1C\uC694 \uC11C\uB958\uC640 \uC624\uB298\uC790 \uC2E0\uBB38.
+      \uCEE4\uD53C \uC790\uAD6D\uC774 \uB3D9\uADF8\uB797\uAC8C \uBC88\uC838 \uC788\uB2E4."
+    expression: 0
+    stageDirection: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  - speaker: 3
+    text: "\uC8C4\uC1A1\uD574\uC694, \uC815\uB9AC\uD558\uB2E4\uAC00 \uC21C\uC11C\uAC00
+      \uC11E\uC5EC\uBC84\uB824\uC11C\u2026"
+    expression: 5
+    stageDirection: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  onReinspect:
+  - speaker: 2
+    text: "\uB354 \uBCFC \uAC83\uC740 \uC5C6\uC5B4 \uBCF4\uC778\uB2E4."
+    expression: 0
+    stageDirection: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  grantedClue: {fileID: 0}
+  closeUpImage: {fileID: 0}
