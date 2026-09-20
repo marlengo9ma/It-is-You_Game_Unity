@@ -1,0 +1,24 @@
+{
+    "name": "ItIsYou.Runtime",
+    "rootNamespace": "ItIsYou",
+    "references": [
+        "UnityEngine.UI",
+        "Unity.TextMeshPro",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.live2d.cubism",
+            "expression": "",
+            "define": "LIVE2D_CUBISM"
+        }
+    ],
+    "noEngineReferences": false
+}

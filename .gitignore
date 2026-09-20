@@ -1,0 +1,56 @@
+# Unity generated
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]serSettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Asset meta data for ignored folders
+/[Aa]ssets/[Aa]ssetStoreTools*
+/[Aa]ssets/Plugins/Editor/JetBrains*
+
+# Visual Studio / Rider / VS Code
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Builds / packages
+*.apk
+*.aab
+*.unitypackage
+*.app
+ExportedObj/
+
+# Crash reports
+sysinfo.txt
+crashlytics-build.properties
+
+# Addressables
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+/[Ll]ibrary/com.unity.addressables/aa/*
+
+# 개인 작업 파일
+unity-skills.zip
+*.tmp
+_git-setup.*
