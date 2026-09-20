@@ -253,19 +253,11 @@ namespace ItIsYou.EditorTools
             chapter.Set("id", "CH_TUTORIAL")
                    .Set("displayName", "튜토리얼 — 누가 그랬지?")
                    .Set("isTutorial", true)
-                   .Set("intro", Seq("사건 발생",
-                        Line(SpeakerId.Narration,
-                            "기차에 올라타고 약간의 시간이 흐른 뒤, 당신은 잠시 자리를 비웠다 돌아왔다."),
-                        Line(SpeakerId.Narration,
-                            "다소 엉망이 된 테이블과 주변 바닥, 그리고 어질러진 주변을 정돈하며 " +
-                            "일부러 당신의 눈을 피하는 듯한 소녀와, 왜인지는 모르겠지만 테이블 위에서 " +
-                            "만족스러운 표정으로 식빵을 굽고 있는 검은 고양이 한 마리를 마주했다."),
-                        Line(SpeakerId.Assistant, "하하… 어서 오세요, 수사관님. 금방 정리할게요. 조금만 기다려주세요!",
-                            ExpressionId.Nervous),
-                        Line(SpeakerId.Cat, "웨옹.", ExpressionId.Neutral),
-                        Line(SpeakerId.Inner,
-                            "…아까 서류 뭉치와 함께 테이블에 올려놓고 갔던 고급 만년필이 보이지 않는군."),
-                        Line(SpeakerId.Inner, "수사관으로서의 '감'이 왔다. 주변부터 살펴보자.")))
+                   .Set("preIncidentTalk", TutorialScript.PreIncidentTalk())
+                   .Set("cutsceneName", "일러스트 컷씬#1 — 주인공 독백")
+                   .Set("cutscene", TutorialScript.Cutscene())
+                   .Set("afterCutsceneTalk", TutorialScript.AfterCutsceneTalk())
+                   .Set("intro", TutorialScript.Incident())
                    .Set("sceneObjects", Ed.L(objRibbon, objCoffee, objGlimpse,
                                              objPapers, objTypewriter, objCat))
                    .Set("gatePass", Seq("수집 100%",

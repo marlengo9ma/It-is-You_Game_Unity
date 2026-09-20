@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using ItIsYou.Characters;
@@ -31,6 +31,8 @@ namespace ItIsYou.Core
 
         [Header("UI")]
         [SerializeField] private DialoguePresenter dialogue;
+        [Tooltip("<화면 전환> 표기가 있는 자리에서 화면을 덮었다 걷는다.")]
+        [SerializeField] private ScreenFader fader;
         [SerializeField] private ClueTrayView clueTray;
         [SerializeField] private CursorController cursor;
 
@@ -82,13 +84,35 @@ namespace ItIsYou.Core
 
         private IEnumerator RunChapter()
         {
-            // ---- Intro ----
-            SetPhase(GamePhase.Intro);
+            // ---- 사건 이전: [게임플레이 배경_캐릭터 씬] ----
+            SetPhase(GamePhase.PreIncidentTalk);
+            if (chapter.PreIncidentTalk != null && !chapter.PreIncidentTalk.IsEmpty)
+                yield return dialogue.Play(chapter.PreIncidentTalk);
+
+            // ---- [일러스트 컷씬#1] ----
+            // 화장실 칸으로 자리를 옮기는 장면이다. 같은 배경 위에서 대사만 이어지면
+            // 장소가 바뀐 것이 읽히지 않으므로, 화면을 한 번 덮었다 걷는다.
+            if (chapter.Cutscene != null && !chapter.Cutscene.IsEmpty)
+            {
+                yield return Transition(GamePhase.Cutscene);
+                yield return dialogue.Play(chapter.Cutscene);
+            }
+
+            // ---- 컷씬에서 돌아온 뒤: 다시 [게임플레이 배경_캐릭터 씬] ----
+            if (chapter.AfterCutsceneTalk != null && !chapter.AfterCutsceneTalk.IsEmpty)
+            {
+                yield return Transition(GamePhase.PreIncidentTalk);
+                yield return dialogue.Play(chapter.AfterCutsceneTalk);
+            }
+
+            // ---- <화면 전환> 사건 진행 #1 ----
+            yield return Transition(GamePhase.Intro);
             if (chapter.Intro != null && !chapter.Intro.IsEmpty)
                 yield return dialogue.Play(chapter.Intro);
 
             // ---- 단서 수집 ----
-            SetPhase(GamePhase.ClueCollection);
+            // 기획서의 <튜토리얼 시작> <사건 시작/진입 연출> 자리.
+            yield return Transition(GamePhase.ClueCollection);
             var collectionDone = false;
             void OnReady(CollectionGate _) => collectionDone = true;
 
@@ -179,6 +203,17 @@ namespace ItIsYou.Core
                 return characterBindings[i].view as ICharacterView;
             }
             return null;
+        }
+
+        /// <summary>화면을 덮은 채로 페이즈를 갈아 끼우고 다시 걷는다.</summary>
+        private IEnumerator Transition(GamePhase next)
+        {
+            if (fader == null)
+            {
+                SetPhase(next);
+                yield break;
+            }
+            yield return fader.Transition(() => SetPhase(next));
         }
 
         private void SetPhase(GamePhase phase)

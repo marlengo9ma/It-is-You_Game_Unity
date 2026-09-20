@@ -11,7 +11,18 @@ namespace ItIsYou.Data
         Interrogation2 = 5, // Phase.End 2차 심문
         Accusation = 6,     // 범인 지목
         Ending = 7,
-        GameOver = 8
+        GameOver = 8,
+
+        // ---- 사건 발생 이전 ----
+        // 기획서에서 튜토리얼 챕터는 <화면 전환> 으로 두 번 끊긴다.
+        // [게임플레이 배경_캐릭터 씬] → [일러스트 컷씬#1] → 다시 [게임플레이 배경_캐릭터 씬]
+        // → <화면 전환> 사건 진행 #1. 그 앞의 두 구간을 따로 둔다.
+
+        /// <summary>사건 발생 전의 평범한 대화. 페이즈 규칙이 적용되지 않는다.</summary>
+        PreIncidentTalk = 9,
+
+        /// <summary>일러스트 컷씬. 화면 전체가 컷 하나로 덮인다.</summary>
+        Cutscene = 10
     }
 
     /// <summary>단서의 출처. UI 표기와 조합 규칙이 종류별로 달라진다.</summary>

@@ -62,11 +62,19 @@ namespace ItIsYou.UI
         private DialogueLine _currentLine;
         private string _openReactionClueId;
 
+        // 대사가 있느냐(_visible)와, 플레이어가 창을 치워 뒀느냐(_hidden)는 별개다.
+        // 둘을 섞으면 창을 숨긴 채 다음 대사가 오는 순간 멋대로 다시 켜진다.
+        private bool _visible;
+        private bool _hidden;
+
         public bool IsPlaying => _playing != null;
         public DialogueLine CurrentLine => _currentLine;
 
         /// <summary>리액션 수집 창이 지금 열려 있는가.</summary>
         public bool ReactionWindowOpen => !string.IsNullOrEmpty(_openReactionClueId);
+
+        /// <summary>플레이어가 대사창을 치워 둔 상태인가.</summary>
+        public bool IsHidden => _hidden;
 
         private void Awake()
         {
@@ -268,11 +276,28 @@ namespace ItIsYou.UI
 
         private void SetVisible(bool visible)
         {
-            if (root == null) return;
-            root.alpha = visible ? 1f : 0f;
-            root.interactable = visible;
-            root.blocksRaycasts = visible;
+            _visible = visible;
+            ApplyVisibility();
         }
+
+        /// <summary>플레이어가 대사창을 잠시 치워 둔다. 그림을 보려고 누르는 버튼이다.</summary>
+        public void SetHidden(bool hidden)
+        {
+            _hidden = hidden;
+            ApplyVisibility();
+        }
+
+        private void ApplyVisibility()
+        {
+            if (root == null) return;
+            var shown = _visible && !_hidden;
+            root.alpha = shown ? 1f : 0f;
+            root.interactable = shown;
+            root.blocksRaycasts = shown;
+        }
+
+        /// <summary>대사 로그가 같은 표기를 쓰도록 화자 이름을 열어 둔다.</summary>
+        public string SpeakerLabelFor(SpeakerId speaker) => SpeakerName(speaker);
 
         private string SpeakerName(SpeakerId speaker) => speaker switch
         {

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using ItIsYou.Characters;
 using ItIsYou.Core;
@@ -339,6 +339,168 @@ namespace ItIsYou.EditorTools
             avlg.childForceExpandHeight = false;
             avlg.childAlignment = TextAnchor.UpperCenter;
 
+            // =================================================== 사건 이전 화면
+            // 기획서의 [게임플레이 배경_캐릭터 씬]. 사건이 터지기 전의 객실이며,
+            // 사건 직후의 인트로 대사도 같은 배경 위에서 이어진다.
+
+            var talkScreen = UI("Screen_Talk", root);
+            var talkRt = talkScreen.GetComponent<RectTransform>();
+            Anchor(talkRt, V(0, 0), V(1, 1), V(L.Gutter, L.BandBottom), V(-L.Gutter, L.BandTop));
+
+            var talkBg = Img("Backdrop", talkRt, new Color32(0x1E, 0x22, 0x27, 0xFF));
+            Stretch(talkBg.rectTransform);
+            talkBg.raycastTarget = false;
+
+            var talkTag = Text("Tag", talkBg.rectTransform, "객실  —  게임플레이 배경 (아트 대기)",
+                T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Center);
+            Anchor(talkTag.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 6), V(0, -L.Unit * 2));
+
+            var talkSepi = Img("Sepi_Placeholder", talkRt, new Color32(0x33, 0x39, 0x41, 0xFF));
+            Anchor(talkSepi.rectTransform, V(0.52f, 0f), V(0.82f, 0.92f), Vector2.zero, Vector2.zero);
+            talkSepi.raycastTarget = false;
+            var talkSepiTag = Text("Label", talkSepi.rectTransform, "세피\n(아트 대기)", T.Caption,
+                P.InkSoft, TextAlignmentOptions.Center);
+            Stretch(talkSepiTag.rectTransform);
+
+            var talkCat = Img("Cat_Placeholder", talkRt, new Color32(0x2A, 0x2F, 0x36, 0xFF));
+            Anchor(talkCat.rectTransform, V(0.18f, 0.08f), V(0.34f, 0.34f), Vector2.zero, Vector2.zero);
+            talkCat.raycastTarget = false;
+            var talkCatTag = Text("Label", talkCat.rectTransform, "검은 고양이\n(아트 대기)", T.Caption,
+                new Color32(0x6E, 0x74, 0x7B, 0xFF), TextAlignmentOptions.Center);
+            Stretch(talkCatTag.rectTransform);
+
+            // ---- [일러스트 컷씬#1] ----
+            var cutsceneScreen = UI("Screen_Cutscene", root);
+            var cutsceneRt = cutsceneScreen.GetComponent<RectTransform>();
+            Anchor(cutsceneRt, V(0, 0), V(1, 1), V(L.Gutter, L.BandBottom), V(-L.Gutter, L.BandTop));
+
+            var cutsceneImg = Img("Image", cutsceneRt, new Color32(0x15, 0x18, 0x1C, 0xFF));
+            Stretch(cutsceneImg.rectTransform);
+            cutsceneImg.raycastTarget = false;
+
+            var cutsceneLabel = Text("Label", cutsceneRt, "", T.Display,
+                new Color32(0x5A, 0x61, 0x69, 0xFF), TextAlignmentOptions.Center);
+            cutsceneLabel.textWrappingMode = TextWrappingModes.Normal;
+            Anchor(cutsceneLabel.rectTransform, V(0.1f, 0.35f), V(0.9f, 0.65f), Vector2.zero, Vector2.zero);
+
+            cutsceneLabel.text = chapter.CutsceneName;
+            cutsceneLabel.gameObject.SetActive(chapter.CutsceneImage == null);
+            if (chapter.CutsceneImage != null)
+            {
+                cutsceneImg.sprite = chapter.CutsceneImage;
+                cutsceneImg.color = Color.white;
+                cutsceneImg.preserveAspect = true;
+            }
+
+            // 대사창은 새로 만든 전면 배경들보다 위에 있어야 한다.
+            dialoguePanel.transform.SetAsLastSibling();
+
+            // ================================================== 대화 도구
+            // 로그와 창 숨기기. 평범한 대화 구간에서만 나타난다.
+            var toolbar = UI("DialogueToolbar", root);
+            var toolbarRt = toolbar.GetComponent<RectTransform>();
+            Anchor(toolbarRt, V(1, 0), V(1, 0),
+                V(-L.Gutter - 368f, L.DialogueTop + L.Unit), V(-L.Gutter, L.DialogueTop + L.Unit * 7));
+
+            var toolbarLayout = toolbar.AddComponent<HorizontalLayoutGroup>();
+            toolbarLayout.spacing = L.Unit;
+            toolbarLayout.childControlWidth = true;
+            toolbarLayout.childControlHeight = true;
+            toolbarLayout.childForceExpandWidth = true;
+            toolbarLayout.childForceExpandHeight = true;
+            toolbarLayout.childAlignment = TextAnchor.MiddleRight;
+
+            var logBtn = PlainButton("LogButton", toolbarRt, "지난 대사", T.Caption);
+            var hideBtn = PlainButton("HideButton", toolbarRt, "대화창 숨기기", T.Caption);
+
+            // ---- 로그 창 ----
+            // 로그를 여는 순간만큼은 뒤의 장면을 눌러도 아무 일이 없어야 한다.
+            var logRoot = UI("DialogueLog", root);
+            var logRootRt = logRoot.GetComponent<RectTransform>();
+            Stretch(logRootRt);
+
+            var logScrim = Img("Scrim", logRootRt, new Color(0f, 0f, 0f, 0.66f));
+            Stretch(logScrim.rectTransform);
+
+            var logPanel = Img("Panel", logRootRt, new Color32(0x16, 0x19, 0x1D, 0xFF));
+            var logRt = logPanel.rectTransform;
+            Anchor(logRt, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-560f, -368f), V(560f, 368f));
+
+            var logTitle = Text("Title", logRt, "지난 대사", T.Label, P.Brass, TextAlignmentOptions.Left);
+            Spaced(logTitle);
+            Anchor(logTitle.rectTransform, V(0, 1), V(1, 1), V(L.Pad * 2, -L.Unit * 9), V(-L.Pad * 2, -L.Unit * 4));
+
+            var logRule = Img("Rule", logRt, P.Rule);
+            Anchor(logRule.rectTransform, V(0, 1), V(1, 1), V(L.Pad * 2, -L.Unit * 11), V(-L.Pad * 2, -L.Unit * 11 + 2f));
+            logRule.raycastTarget = false;
+
+            var scrollGo = UI("Scroll", logRt);
+            var scrollRt = scrollGo.GetComponent<RectTransform>();
+            Anchor(scrollRt, V(0, 0), V(1, 1), V(L.Pad * 2, L.Unit * 11), V(-L.Pad * 2, -L.Unit * 13));
+            var scrollRect = scrollGo.AddComponent<ScrollRect>();
+            scrollRect.horizontal = false;
+            scrollRect.movementType = ScrollRect.MovementType.Clamped;
+            scrollRect.scrollSensitivity = 32f;
+
+            var viewport = UI("Viewport", scrollRt);
+            var viewportRt = viewport.GetComponent<RectTransform>();
+            Stretch(viewportRt);
+            viewport.AddComponent<RectMask2D>();
+
+            var content = UI("Content", viewportRt);
+            var contentRt = content.GetComponent<RectTransform>();
+            contentRt.anchorMin = new Vector2(0f, 1f);
+            contentRt.anchorMax = new Vector2(1f, 1f);
+            contentRt.pivot = new Vector2(0.5f, 1f);
+            contentRt.offsetMin = Vector2.zero;
+            contentRt.offsetMax = Vector2.zero;
+            var fitter = content.AddComponent<ContentSizeFitter>();
+            fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            var contentLayout = content.AddComponent<VerticalLayoutGroup>();
+            contentLayout.childControlWidth = true;
+            contentLayout.childControlHeight = true;
+            contentLayout.childForceExpandWidth = true;
+            contentLayout.childForceExpandHeight = false;
+
+            var logBody = Text("Body", contentRt, "", T.Choice, P.Ink, TextAlignmentOptions.TopLeft);
+            logBody.textWrappingMode = TextWrappingModes.Normal;
+            logBody.lineSpacing = 12f;
+
+            scrollRect.viewport = viewportRt;
+            scrollRect.content = contentRt;
+
+            var logEmpty = Text("Empty", logRt, "아직 지나간 대사가 없습니다.", T.Caption, P.InkSoft,
+                TextAlignmentOptions.Center);
+            Anchor(logEmpty.rectTransform, V(0, 0.5f), V(1, 0.5f), V(0, -L.Unit * 3), V(0, L.Unit * 3));
+
+            var logClose = PlainButton("Close", logRt, "닫기", T.Choice);
+            Anchor(logClose.Item1, V(0.5f, 0), V(0.5f, 0), V(-96f, L.Unit * 3), V(96f, L.Unit * 3 + 56f));
+
+            // ---- 창을 숨긴 동안 화면을 덮는 투명 버튼 ----
+            var catcher = PlainButton("RestoreCatcher", root, "", T.Caption);
+            Stretch(catcher.Item1);
+            var catcherImg = catcher.Item1.GetComponent<Image>();
+            catcherImg.color = new Color(0f, 0f, 0f, 0f);
+            catcherImg.sprite = null;
+            var catcherColors = catcher.Item2.colors;
+            catcherColors.highlightedColor = Color.white;
+            catcherColors.pressedColor = Color.white;
+            catcher.Item2.colors = catcherColors;
+            catcher.Item1.Find("Label").gameObject.SetActive(false);
+
+            var catcherHint = Text("Hint", catcher.Item1, "아무 곳이나 누르면 대화창이 돌아옵니다",
+                T.Caption, new Color32(0x8A, 0x90, 0x98, 0xFF), TextAlignmentOptions.BottomRight);
+            Anchor(catcherHint.rectTransform, V(0.4f, 0), V(1, 0), V(0, L.Gutter), V(-L.Gutter, L.Gutter + 32f));
+
+            // ---- 화면 전환 막 ----
+            var faderImg = Img("ScreenFader", root, Color.black);
+            Stretch(faderImg.rectTransform);
+            var faderGroup = faderImg.gameObject.AddComponent<CanvasGroup>();
+            var fader = faderImg.gameObject.AddComponent<ScreenFader>();
+            fader.Set("group", faderGroup)
+                 .Set("fadeSeconds", 0.4f)
+                 .Set("holdSeconds", 0.25f);
+
             // ========================================================== 시스템
 
             var systems = new GameObject("Systems");
@@ -362,6 +524,7 @@ namespace ItIsYou.EditorTools
             var flow = systems.AddComponent<GameFlowController>();
             flow.Set("database", db)
                 .Set("chapter", chapter)
+                .Set("fader", fader)
                 .Set("investigation", investigation)
                 .Set("interrogation", interrogation)
                 .Set("dialogue", presenter)
@@ -378,8 +541,34 @@ namespace ItIsYou.EditorTools
 
             var binder = systems.AddComponent<PhaseScreenBinder>();
             binder.Set("flow", flow)
-                  .Set("groups", BuildScreenGroups(collectScreen, interrogateScreen, accuseScreen))
-                  .Set("alwaysVisible", new List<GameObject> { cluePanel.gameObject, dialoguePanel.gameObject });
+                  .Set("groups", BuildScreenGroups(talkScreen, cutsceneScreen,
+                                                    collectScreen, interrogateScreen, accuseScreen,
+                                                    cluePanel.gameObject))
+                  .Set("alwaysVisible", new List<GameObject> { dialoguePanel.gameObject });
+
+            var logView = systems.AddComponent<DialogueLogView>();
+            logView.Set("dialogue", presenter)
+                   .Set("root", logRoot)
+                   .Set("body", logBody)
+                   .Set("scroll", scrollRect)
+                   .Set("closeButton", logClose.Item2)
+                   .Set("emptyLabel", logEmpty);
+
+            var toolbarView = systems.AddComponent<DialogueToolbar>();
+            toolbarView.Set("flow", flow)
+                       .Set("dialogue", presenter)
+                       .Set("log", logView)
+                       .Set("root", toolbar)
+                       .Set("logButton", logBtn.Item2)
+                       .Set("hideButton", hideBtn.Item2)
+                       .Set("restoreCatcher", catcher.Item1.gameObject)
+                       .Set("restoreButton", catcher.Item2)
+                       .Set("visiblePhases", new List<GamePhase>
+                       {
+                           GamePhase.PreIncidentTalk,
+                           GamePhase.Cutscene,
+                           GamePhase.Intro
+                       });
 
             var hud = systems.AddComponent<ChapterHud>();
             hud.Set("flow", flow)
@@ -395,9 +584,14 @@ namespace ItIsYou.EditorTools
                .Set("chapterTitle", titleLabel)
                .Set("endInterrogationButton", endBtn.Item2);
 
+            talkScreen.SetActive(false);
+            cutsceneScreen.SetActive(false);
             collectScreen.SetActive(false);
             interrogateScreen.SetActive(false);
             accuseScreen.SetActive(false);
+            logRoot.SetActive(false);
+            catcher.Item1.gameObject.SetActive(false);
+            toolbar.SetActive(false);
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, ScenePath);
@@ -426,10 +620,20 @@ namespace ItIsYou.EditorTools
             return list;
         }
 
-        private static object BuildScreenGroups(GameObject collect, GameObject interrogate, GameObject accuse)
+        private static object BuildScreenGroups(GameObject talk, GameObject cutscene,
+            GameObject collect, GameObject interrogate, GameObject accuse, GameObject cluePanel)
         {
             var list = new List<PhaseScreenBinder.ScreenGroup>
             {
+                // 사건 이전의 대화와 사건 직후의 인트로는 같은 배경을 쓴다.
+                new PhaseScreenBinder.ScreenGroup {
+                    root = talk,
+                    phases = new List<GamePhase> { GamePhase.PreIncidentTalk, GamePhase.Intro }
+                },
+                new PhaseScreenBinder.ScreenGroup {
+                    root = cutscene,
+                    phases = new List<GamePhase> { GamePhase.Cutscene }
+                },
                 new PhaseScreenBinder.ScreenGroup {
                     root = collect,
                     phases = new List<GamePhase> { GamePhase.ClueCollection }
@@ -441,6 +645,15 @@ namespace ItIsYou.EditorTools
                 new PhaseScreenBinder.ScreenGroup {
                     root = accuse,
                     phases = new List<GamePhase> { GamePhase.Accusation }
+                },
+                // 단서 목록은 단서가 생기는 구간부터 보인다.
+                // 사건이 터지기도 전에 빈 목록을 띄워 두면 무엇을 하는 화면인지 흐려진다.
+                new PhaseScreenBinder.ScreenGroup {
+                    root = cluePanel,
+                    phases = new List<GamePhase> {
+                        GamePhase.ClueCollection, GamePhase.Interrogation1,
+                        GamePhase.Deduction, GamePhase.Interrogation2, GamePhase.Accusation
+                    }
                 }
             };
             return list;

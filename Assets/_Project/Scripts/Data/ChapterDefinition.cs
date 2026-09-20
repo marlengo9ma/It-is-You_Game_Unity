@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ItIsYou.Data
@@ -18,7 +18,24 @@ namespace ItIsYou.Data
                  "대신 관련 설명 팝업이 뜬다.")]
         [SerializeField] private bool isTutorial;
 
-        [Header("인트로")]
+        [Header("사건 이전")]
+        [Tooltip("[게임플레이 배경_캐릭터 씬] — 기차에 오른 뒤의 평범한 대화.")]
+        [SerializeField] private DialogueSequence preIncidentTalk = new DialogueSequence();
+
+        [Tooltip("[일러스트 컷씬#1] 의 컷 이름. 그림이 없는 동안 화면에 표시된다.")]
+        [SerializeField] private string cutsceneName = "일러스트 컷씬";
+
+        [Tooltip("컷씬의 그림. 비어 있으면 더미 판이 표시된다.")]
+        [SerializeField] private Sprite cutsceneImage;
+
+        [Tooltip("[일러스트 컷씬#1] — 주인공 독백.")]
+        [SerializeField] private DialogueSequence cutscene = new DialogueSequence();
+
+        [Tooltip("컷씬에서 돌아온 뒤의 대화. 다시 [게임플레이 배경_캐릭터 씬].")]
+        [SerializeField] private DialogueSequence afterCutsceneTalk = new DialogueSequence();
+
+        [Header("인트로 (사건 발생)")]
+        [Tooltip("<화면 전환> 사건 진행 #1 부터의 대사.")]
         [SerializeField] private DialogueSequence intro = new DialogueSequence();
 
         [Header("단서 수집 페이즈")]
@@ -90,6 +107,11 @@ namespace ItIsYou.Data
         public string DisplayName => string.IsNullOrEmpty(displayName) ? id : displayName;
         public bool IsTutorial => isTutorial;
 
+        public DialogueSequence PreIncidentTalk => preIncidentTalk;
+        public string CutsceneName => cutsceneName;
+        public Sprite CutsceneImage => cutsceneImage;
+        public DialogueSequence Cutscene => cutscene;
+        public DialogueSequence AfterCutsceneTalk => afterCutsceneTalk;
         public DialogueSequence Intro => intro;
         public IReadOnlyList<InteractableDefinition> SceneObjects => sceneObjects;
         public float PassThreshold => passThreshold;

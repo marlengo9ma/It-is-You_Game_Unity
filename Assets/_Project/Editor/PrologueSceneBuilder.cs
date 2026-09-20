@@ -1,5 +1,4 @@
 using ItIsYou.Core;
-using ItIsYou.UI;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -13,18 +12,20 @@ using K = ItIsYou.EditorTools.UiKit;
 namespace ItIsYou.EditorTools
 {
     /// <summary>
-    /// 도입부 씬을 조립한다.
+    /// 인트로 카툰 씬을 조립한다.
     ///
-    /// 챕터 씬과 대사창의 위치·크기·글자 크기를 정확히 같게 맞췄다.
-    /// 인트로에서 챕터로 넘어갈 때 대사창이 조금이라도 움직이면
-    /// 장면이 이어지지 않고 끊긴 것처럼 보이기 때문이다.
+    /// 대사창이 없다. 카툰 파트는 텍스트를 읽는 구간이 아니라 그림이 넘어가는 구간이라,
+    /// 화면에는 컷 한 장과 "누르면 다음" 안내만 둔다.
+    ///
+    /// 컷 안의 서류만 예외다. 그 자리에는 클릭 가능한 더미 오브젝트를 놓고,
+    /// 그림이 들어오면 스프라이트만 끼우면 되도록 위치를 컷 데이터가 정하게 했다.
     /// </summary>
     public static class PrologueSceneBuilder
     {
         private const string SceneFolder = "Assets/_Project/Scenes";
         private const string ScenePath = SceneFolder + "/Prologue.unity";
-        
-        [MenuItem("It is You/4. 인트로 씬 생성", priority = 11)]
+
+        [MenuItem("It is You/4. 인트로 카툰 씬 생성", priority = 11)]
         public static void Build()
         {
             K.Prepare();
@@ -33,134 +34,142 @@ namespace ItIsYou.EditorTools
             var prologue = PrologueDataBuilder.Build();
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            var root = K.Boot(P.Bg);
+            var root = K.Boot(Color.black);
 
-            // ---------------------------------------------------------- 배경
-            var backdrop = K.Img("Backdrop", root, new Color32(0x1E, 0x22, 0x27, 0xFF));
-            K.Stretch(backdrop.rectTransform);
-            backdrop.raycastTarget = false;
+            var bg = K.Img("Background", root, Color.black);
+            K.Stretch(bg.rectTransform);
+            bg.raycastTarget = false;
 
-            // 아트가 없는 동안에는 장면 이름을 띄워, 어디를 보고 있는지 알 수 있게 한다.
-            var backdropLabel = K.Text("BackdropLabel", root, "", T.Display,
-                new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Center);
-            backdropLabel.characterSpacing = 8f;
-            K.Anchor(backdropLabel.rectTransform, K.V(0, 0.5f), K.V(1, 0.5f),
-                K.V(L.Gutter, -L.Unit * 6), K.V(-L.Gutter, L.Unit * 6));
+            // ============================================================ 컷
+            var cut = K.UI("Cut", root);
+            var cutRt = cut.GetComponent<RectTransform>();
+            K.Stretch(cutRt);
+            var cutGroup = cut.AddComponent<CanvasGroup>();
 
-            // ------------------------------------------------------ 대사창
-            // 챕터 씬과 같은 수치를 쓴다. 씬이 바뀌어도 창이 제자리에 있어야 한다.
-            var dialoguePanel = K.Img("DialoguePanel", root, P.PanelSunk);
-            var dlgRt = dialoguePanel.rectTransform;
-            K.Anchor(dlgRt, K.V(0, 0), K.V(1, 0),
-                K.V(L.Gutter, L.Gutter), K.V(-L.Gutter, L.DialogueTop));
-            var dlgGroup = dialoguePanel.gameObject.AddComponent<CanvasGroup>();
+            var cutImage = K.Img("Image", cutRt, new Color32(0x1E, 0x22, 0x27, 0xFF));
+            K.Stretch(cutImage.rectTransform);
+            cutImage.raycastTarget = false;
 
-            var speaker = K.Text("Speaker", dlgRt, "", T.Choice, P.Brass, TextAlignmentOptions.Left);
-            K.Anchor(speaker.rectTransform, K.V(0, 1), K.V(0.5f, 1),
-                K.V(L.Unit * 4, -L.Unit * 7), K.V(0, -L.Unit * 3));
+            // 그림이 없는 동안에는 컷 번호와 이름을 띄워, 어느 장면인지 알 수 있게 한다.
+            var cutLabel = K.Text("Label", cutRt, "", T.Display,
+                new Color32(0x5A, 0x61, 0x69, 0xFF), TextAlignmentOptions.Center);
+            cutLabel.textWrappingMode = TextWrappingModes.Normal;
+            cutLabel.lineSpacing = 22f;
+            K.Anchor(cutLabel.rectTransform, K.V(0.12f, 0.3f), K.V(0.88f, 0.7f), Vector2.zero, Vector2.zero);
 
-            var direction = K.Text("StageDirection", dlgRt, "", T.Caption, P.InkSoft, TextAlignmentOptions.Left);
-            direction.fontStyle = FontStyles.Italic;
-            K.Anchor(direction.rectTransform, K.V(0, 1), K.V(1, 1),
-                K.V(L.Unit * 4, -L.Unit * 11), K.V(-L.Unit * 4, -L.Unit * 7));
+            // 컷 전체가 하나의 버튼이다. 클릭 = 다음 컷.
+            var advanceMade = K.Button("AdvanceArea", cutRt, "", T.Caption);
+            K.Stretch(advanceMade.rect);
+            var advanceImg = advanceMade.rect.GetComponent<Image>();
+            advanceImg.color = new Color(0f, 0f, 0f, 0f);   // 보이지 않지만 눌린다
+            advanceImg.sprite = null;
+            advanceMade.label.gameObject.SetActive(false);
+            var advColors = advanceMade.button.colors;
+            advColors.highlightedColor = Color.white;
+            advColors.pressedColor = Color.white;
+            advanceMade.button.colors = advColors;
 
-            var body = K.Text("Body", dlgRt, "", T.Body, P.Ink, TextAlignmentOptions.TopLeft);
-            body.textWrappingMode = TextWrappingModes.Normal;
-            body.lineSpacing = 16f;
-            body.raycastTarget = true;
-            K.Anchor(body.rectTransform, K.V(0, 0), K.V(1, 1),
-                K.V(L.Unit * 4, L.Unit * 6), K.V(-L.Unit * 4, -L.Unit * 12));
+            // 컷 안의 더미 오브젝트. 자리와 크기는 컷 데이터가 정한다.
+            var propMade = K.Button("Prop", cutRt, "", T.Caption);
+            var propRt = propMade.rect;
+            var propImg = propRt.GetComponent<Image>();
+            // 둥근 버튼 스프라이트를 쓰면 그림 위에 버튼이 떠 있는 것처럼 보인다.
+            // 여기 놓이는 것은 버튼이 아니라 "컷 안의 물건"이라서 각진 판으로 둔다.
+            propImg.sprite = null;
+            propImg.color = new Color32(0x39, 0x3F, 0x47, 0xFF);
+            var propColors = propMade.button.colors;
+            propColors.highlightedColor = new Color(1.25f, 1.25f, 1.25f, 1f);
+            propColors.pressedColor = new Color(0.9f, 0.9f, 0.9f, 1f);
+            propMade.button.colors = propColors;
+            propMade.label.gameObject.SetActive(true);
+            propMade.label.alignment = TextAlignmentOptions.Center;
+            propMade.label.fontSize = T.Choice;
 
-            var advance = K.Text("AdvanceIndicator", dlgRt, "▼", T.Caption, P.Brass, TextAlignmentOptions.Right);
-            K.Anchor(advance.rectTransform, K.V(1, 0), K.V(1, 0),
-                K.V(-L.Unit * 8, L.Unit * 2), K.V(-L.Unit * 3, L.Unit * 5));
+            var propOutline = propRt.gameObject.AddComponent<Outline>();
+            propOutline.effectColor = P.Brass;
+            propOutline.effectDistance = new Vector2(2f, -2f);
 
-            var presenter = dialoguePanel.gameObject.AddComponent<DialoguePresenter>();
-            presenter.Set("root", dlgGroup)
-                     .Set("speakerLabel", speaker)
-                     .Set("bodyLabel", body)
-                     .Set("stageDirectionLabel", direction)
-                     .Set("advanceIndicator", advance.gameObject)
-                     .Set("uiCamera", (Camera)null);
+            var propHint = K.Text("Hint", propRt, "클릭", T.Caption, P.Brass, TextAlignmentOptions.Bottom);
+            K.Anchor(propHint.rectTransform, K.V(0, 0), K.V(1, 0), K.V(0, L.Unit), K.V(0, L.Unit * 4));
 
-            // --------------------------------------------------- 상호작용 버튼
-            // 대사창 바로 위 가운데. 대사를 읽다가 시선을 크게 옮기지 않아도 되는 자리다.
-            var interactionRoot = K.UI("Interaction", root);
-            var interRt = interactionRoot.GetComponent<RectTransform>();
-            K.Anchor(interRt, K.V(0.5f, 0), K.V(0.5f, 0),
-                K.V(-240f, L.BandBottom), K.V(240f, L.BandBottom + 80f));
+            // ======================================================== 진행 안내
+            var hint = K.UI("AdvanceHint", root);
+            var hintRt = hint.GetComponent<RectTransform>();
+            K.Anchor(hintRt, K.V(1, 0), K.V(1, 0),
+                K.V(-L.Gutter - 320f, L.Gutter), K.V(-L.Gutter, L.Gutter + 40f));
 
-            var interactionMade = K.Button("Button", interRt, "들여다본다", T.Choice);
-            K.Stretch(interactionMade.rect);
-            var interactionOutline = interactionMade.rect.gameObject.AddComponent<Outline>();
-            interactionOutline.effectColor = P.Brass;
-            interactionOutline.effectDistance = new Vector2(2f, -2f);
-
-            // ------------------------------------------------------ 서류 팝업
-            var documentRoot = K.UI("Document", root);
-            var docRootRt = documentRoot.GetComponent<RectTransform>();
-            K.Stretch(docRootRt);
-
-            var scrim = K.Img("Scrim", docRootRt, new Color(0f, 0f, 0f, 0.62f));
-            K.Stretch(scrim.rectTransform);
-
-            var docPanel = K.Img("Panel", docRootRt, P.Panel);
-            K.Anchor(docPanel.rectTransform, K.V(0.5f, 0.5f), K.V(0.5f, 0.5f),
-                K.V(-384f, -304f), K.V(384f, 304f));   // 768 x 608
-            // 둥근 모서리 스프라이트를 이 크기로 늘리면 모서리 반경까지 같이 커져
-            // 종이가 아니라 커다란 버튼처럼 보인다. 서류는 각진 판으로 둔다.
-
-            var docTitle = K.Text("Title", docPanel.rectTransform, "", T.Display, P.Brass,
-                TextAlignmentOptions.TopLeft);
-            K.Anchor(docTitle.rectTransform, K.V(0, 1), K.V(1, 1),
-                K.V(L.Pad * 2, -L.Unit * 12), K.V(-L.Pad * 2, -L.Unit * 5));
-
-            var docRule = K.Img("Rule", docPanel.rectTransform, P.Rule);
-            K.Anchor(docRule.rectTransform, K.V(0, 1), K.V(1, 1),
-                K.V(L.Pad * 2, -L.Unit * 14), K.V(-L.Pad * 2, -L.Unit * 14 + 2f));
-            docRule.raycastTarget = false;
-
-            var docBody = K.Text("Body", docPanel.rectTransform, "", T.Body, P.Ink,
-                TextAlignmentOptions.TopLeft);
-            docBody.textWrappingMode = TextWrappingModes.Normal;
-            docBody.lineSpacing = 14f;
-            K.Anchor(docBody.rectTransform, K.V(0, 0), K.V(1, 1),
-                K.V(L.Pad * 2, L.Unit * 12), K.V(-L.Pad * 2, -L.Unit * 17));
-
-            var docClose = K.Button("Close", docPanel.rectTransform, "닫기", T.Choice);
-            K.Anchor(docClose.rect, K.V(0.5f, 0), K.V(0.5f, 0),
-                K.V(-96f, L.Unit * 3), K.V(96f, L.Unit * 3 + 56f));
+            var hintLabel = K.Text("Label", hintRt, "화면을 누르면 다음 컷  ▼", T.Caption,
+                new Color32(0x8A, 0x90, 0x98, 0xFF), TextAlignmentOptions.Right);
+            K.Stretch(hintLabel.rectTransform);
 
             // ---------------------------------------------------- 건너뛰기
             var skip = K.Button("Skip", root, "건너뛰기  ▶▶", T.Caption);
             K.Anchor(skip.rect, K.V(1, 1), K.V(1, 1),
                 K.V(-L.Gutter - 184f, -L.Gutter - 56f), K.V(-L.Gutter, -L.Gutter));
 
-            // ---------------------------------------------------- 컨트롤러
+            // ========================================================== 팝업
+            // 스킵 버튼보다 뒤에 만들어 위로 오게 한다. 팝업이 떠 있는 동안에는
+            // 서류를 덮는 것이 아무것도 없어야 한다.
+            var popupRoot = K.UI("Popup", root);
+            var popupRootRt = popupRoot.GetComponent<RectTransform>();
+            K.Stretch(popupRootRt);
+
+            var scrim = K.Img("Scrim", popupRootRt, new Color(0f, 0f, 0f, 0.72f));
+            K.Stretch(scrim.rectTransform);
+
+            var popupPanel = K.Img("Panel", popupRootRt, P.Panel);
+            K.Anchor(popupPanel.rectTransform, K.V(0.5f, 0.5f), K.V(0.5f, 0.5f),
+                K.V(-384f, -304f), K.V(384f, 304f));   // 768 x 608
+            // 서류 그림은 패널의 배경과 별개의 오브젝트여야 한다.
+            // 같은 Image 를 쓰면 그림이 없을 때 패널까지 같이 사라진다.
+            var popupArt = K.Img("Art", popupPanel.rectTransform, Color.white);
+            K.Anchor(popupArt.rectTransform, K.V(0, 0), K.V(1, 1),
+                K.V(L.Pad, L.Unit * 11), K.V(-L.Pad, -L.Pad));
+            popupArt.preserveAspect = true;
+            popupArt.raycastTarget = false;
+            popupArt.enabled = false;
+
+            var popupPlaceholder = K.Text("Placeholder", popupPanel.rectTransform, "", T.Body, P.Ink,
+                TextAlignmentOptions.TopLeft);
+            popupPlaceholder.textWrappingMode = TextWrappingModes.Normal;
+            popupPlaceholder.lineSpacing = 14f;
+            K.Anchor(popupPlaceholder.rectTransform, K.V(0, 0), K.V(1, 1),
+                K.V(L.Pad * 2, L.Unit * 12), K.V(-L.Pad * 2, -L.Unit * 6));
+
+            var popupClose = K.Button("Close", popupPanel.rectTransform, "닫기", T.Choice);
+            K.Anchor(popupClose.rect, K.V(0.5f, 0), K.V(0.5f, 0),
+                K.V(-96f, L.Unit * 3), K.V(96f, L.Unit * 3 + 56f));
+
+            // ====================================================== 컨트롤러
             var systems = new GameObject("Systems");
             var controller = systems.AddComponent<PrologueController>();
             controller.Set("prologue", prologue)
-                      .Set("dialogue", presenter)
-                      .Set("backdropImage", backdrop)
-                      .Set("backdropLabel", backdropLabel)
-                      .Set("interactionRoot", interactionRoot)
-                      .Set("interactionButton", interactionMade.button)
-                      .Set("interactionLabel", interactionMade.label)
-                      .Set("documentRoot", documentRoot)
-                      .Set("documentTitle", docTitle)
-                      .Set("documentBody", docBody)
-                      .Set("documentCloseButton", docClose.button)
+                      .Set("cutImage", cutImage)
+                      .Set("cutLabel", cutLabel)
+                      .Set("cutGroup", cutGroup)
+                      .Set("crossFadeSeconds", 0.28f)
+                      .Set("advanceArea", advanceMade.button)
+                      .Set("advanceHint", hint)
+                      .Set("propRoot", propRt)
+                      .Set("propButton", propMade.button)
+                      .Set("propImage", propImg)
+                      .Set("propLabel", propMade.label)
+                      .Set("popupRoot", popupRoot)
+                      .Set("popupImage", popupArt)
+                      .Set("popupPlaceholder", popupPlaceholder)
+                      .Set("popupCloseButton", popupClose.button)
                       .Set("skipButton", skip.button);
 
-            interactionRoot.SetActive(false);
-            documentRoot.SetActive(false);
+            propRt.gameObject.SetActive(false);
+            popupRoot.SetActive(false);
+            hint.SetActive(false);
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.Refresh();
 
-            Debug.Log($"[It is You] 인트로 씬 생성 완료 — {ScenePath}\n" +
-                      $"장면 {prologue.Beats.Count}개 · 끝나면 {prologue.NextSceneName} 로 넘어감");
+            Debug.Log($"[It is You] 인트로 카툰 씬 생성 완료 — {ScenePath}\n" +
+                      $"컷 {prologue.Cuts.Count}장 · 끝나면 {prologue.NextSceneName} 로 넘어감");
         }
     }
 }
