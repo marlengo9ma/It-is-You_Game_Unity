@@ -323,7 +323,8 @@ namespace ItIsYou.EditorTools
 
             var accusePanel = Img("Panel", accuseRt, P.Panel);
             Anchor(accusePanel.rectTransform, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-320f, -200f), V(320f, 200f));
-            accusePanel.sprite = _uiSprite;
+            // 둥근 모서리 스프라이트를 이 크기로 늘리면 모서리 반경까지 커져 거대한 버튼처럼 보인다.
+            accusePanel.color = new Color32(0x16, 0x19, 0x1D, 0xFF);
 
             var accusePrompt = Text("Prompt", accusePanel.rectTransform, "", T.Body, P.Ink, TextAlignmentOptions.Center);
             Anchor(accusePrompt.rectTransform, V(0, 1), V(1, 1), V(L.Pad, -L.Unit * 12), V(-L.Pad, -L.Unit * 5));
