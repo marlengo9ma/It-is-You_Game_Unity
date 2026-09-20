@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e905b03c8b5cee4380ffdc07426baf9, type: 3}
+  m_Name: Clue_REA_CAT_FLINCH
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.ClueDefinition
+  id: REA_CAT_FLINCH
+  kind: 2
+  unreadName: ???
+  readName: "\uACE0\uC591\uC774 \uC774\uC57C\uAE30\uC5D0 \uAD73\uB294 \uD45C\uC815"
+  tooltip: "\uB9AC\uBCF8\uC758 \uC0C1\uD0DC\uB97C \uC774\uC57C\uAE30\uD558\uBA70
+    '\uACE0\uC591\uC774'\uB77C\uB294 \uB2E8\uC5B4\uB97C \uAEBC\uB0C8\uC744 \uB54C,
+    <hl>\uC870\uC218\uC758 \uD45C\uC815\uC774 \uBD80\uC790\uC5F0\uC2A4\uB7FD\uAC8C
+    \uAD73\uACE0 \uC2DC\uC120\uC774 \uD754\uB4E4\uB838\uB2E4.</hl>\n\n\uB9AC\uBCF8\uC774
+    \uB354\uB7EC\uC6CC\uC9C4 \uAC83 \uC790\uCCB4\uB294 \uC228\uAE38 \uC77C\uC774
+    \uC544\uB2C8\uB2E4. <hl>\uB2E4\uB978 \uC774\uC720\uAC00 \uC788\uB294 \uB4EF\uD55C
+    \uBC18\uC751\uC774\uB2E4.</hl>"
+  icon: {fileID: 0}
+  isKeyClue: 1
+  countsTowardCompletion: 0

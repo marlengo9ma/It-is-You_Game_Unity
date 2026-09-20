@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c134848bc83fa43a150ff7e4e0fbbd, type: 3}
+  m_Name: Choice_CH_SEPI_FRIENDLY
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.ChoiceDefinition
+  id: CH_SEPI_FRIENDLY
+  tone: 0
+  label: "\uB0B4\uAC00 \uB9E4\uC6B0 \uC544\uB07C\uB294 \uB9CC\uB144\uD544\uC774\uB77C.
+    \uADF8\uB7EC\uB2C8 \uD589\uBC29\uC744 \uAF2D \uC54C\uB824\uC8FC\uC5C8\uC74C \uD569\uB2C8\uB2E4."
+  labelWhenInformed: 
+  labelSwapClueIds: []
+  availableFromStart: 1
+  requiredClueIds: []
+  requiredChoiceIds: []
+  appearsWhenTokensAtOrBelow: 0
+  passes:
+  - note: "1\uD68C\uCC28 \u2014 \uBD24\uB2E4\uB294 \uAC83\uAE4C\uC9C0\uB294 \uC778\uC815"
+    lines:
+    - speaker: 1
+      text: "\uB0B4\uAC00 \uB9E4\uC6B0 \uC544\uB07C\uB294 \uB9CC\uB144\uD544\uC774\uB77C.
+        \uADF8\uB7EC\uB2C8 \uD589\uBC29\uC744 \uAF2D \uC54C\uB824\uC8FC\uC5C8\uC74C
+        \uD569\uB2C8\uB2E4."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      text: "\uC0AC, \uC0AC\uC2E4\uC740\u2026 <clue=TES_SAW_IT>\uC544\uAE4C \uBD24\uB358
+        \uAC83 \uAC19\uAE34 \uD55C\uB370\uC694\u2026</clue>"
+      expression: 2
+      stageDirection: "(\uACE0\uC591\uC774\uC640 \uB2F9\uC2E0\uC744 \uBC88\uAC08\uC544\uBCF4\uBA70
+        \uACE0\uBBFC\uD558\uB294 \uBAA8\uC2B5)"
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 1
+      text: "\uC624, \uB2E4\uD589\uC774\uB124\uC694. \uADF8\uB798\uC11C \uC5B4\uB514\uC11C
+        \uBD24\uC744\uAE4C\uC694?"
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      text: "\uC74C\u2026\uC5ED\uC2DC \uC798 \uBAA8\uB974\uACA0\uC5B4\uC694. \uC8C4\uC1A1\uD574\uC694,
+        \uC218\uC0AC\uAD00\uB2D8\u2026"
+      expression: 5
+      stageDirection: "(\uACE0\uBBFC\uD558\uB294 \uB4EF \uB208\uC744 \uAC10\uACE0
+        \uC0DD\uAC01\uD558\uB294 \uB4EF \uD558\uB2E4\uAC00, \uC791\uC740 \uD55C\uC228
+        \uD6C4, \uBBF8\uC548\uD558\uB2E4\uB294 \uB4EF \uC605\uC740 \uBBF8\uC18C\uB97C
+        \uC9C0\uC73C\uBA70)"
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 2
+      text: "\uAC70\uC9D3\uB9D0\uC744 \uD558\uB294 \uAC83 \uAC19\uAD70\u2026 \uC774\uC720\uB294
+        \uBAA8\uB974\uACA0\uC9C0\uB9CC\uC11C\uB3C4 \uC77C\uB2E8 \uB9CC\uB144\uD544\uC744
+        \uBAA8\uB974\uB294 \uBC18\uC751\uC740 \uC544\uB2C8\uC57C."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0
+  - note: "2\uD68C\uCC28 \u2014 \uB208\uCE58\uB97C \uBCF8\uB2E4"
+    lines:
+    - speaker: 1
+      text: "\uC815\uB9D0 \uC544\uBB34\uAC83\uB3C4 \uAE30\uC5B5\uB098\uC9C0 \uC54A\uC2B5\uB2C8\uAE4C?"
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      text: "\u2026\uD639\uC2DC \uBB34\uC2A8 \uBB38\uC81C\uB77C\uB3C4 \uC788\uC744\uAE4C\uC694\u2026?"
+      expression: 2
+      stageDirection: "(\uACC4\uC18D \uB208\uCE58\uB97C \uBCF4\uBA70)"
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0
+  tokenCost: 1
+  consumeOnUse: 0
+  unlocksChoiceIds: []

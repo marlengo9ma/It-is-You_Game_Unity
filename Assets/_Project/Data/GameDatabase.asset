@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a0e46aaa66f38d4d94de6b6f0c3697b, type: 3}
+  m_Name: GameDatabase
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.GameDatabase
+  chapters:
+  - {fileID: 11400000, guid: 66264f36504241f46a705b856d8964b1, type: 2}
+  clues:
+  - {fileID: 11400000, guid: f256a648fff234641a381c55e33ce466, type: 2}
+  - {fileID: 11400000, guid: eb3c4ca4ede0dcb4a9f38700f97fca34, type: 2}
+  - {fileID: 11400000, guid: 8aab43e5671f5c1498a76ff2c16c3422, type: 2}
+  - {fileID: 11400000, guid: 606b1efa492f0df47a750ef081f777fc, type: 2}
+  - {fileID: 11400000, guid: a19f5ba9d7edfc148a4dbde23dc8ec02, type: 2}
+  choices:
+  - {fileID: 11400000, guid: 0c98b4a968f250243a0c3b72f68fd9f7, type: 2}
+  - {fileID: 11400000, guid: b759028a5b302aa41a0eebc5ab6620ab, type: 2}
+  - {fileID: 11400000, guid: 44ac597c82db03e418d181f55871762f, type: 2}
+  interactables: []
+  suspects:
+  - {fileID: 11400000, guid: c1b4967bab60ba2458ad0375dca13f8b, type: 2}

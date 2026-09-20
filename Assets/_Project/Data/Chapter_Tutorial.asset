@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42532e48e847c4649a73c0d158be7823, type: 3}
+  m_Name: Chapter_Tutorial
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.ChapterDefinition
+  id: CH_TUTORIAL
+  displayName: "\uD29C\uD1A0\uB9AC\uC5BC \u2014 \uB204\uAC00 \uADF8\uB7AC\uC9C0?"
+  isTutorial: 1
+  intro:
+    note: "\uC0AC\uAC74 \uBC1C\uC0DD"
+    lines:
+    - speaker: 0
+      text: "\uB2F9\uC2E0\uC740 \uB2E4\uC18C \uC5C9\uB9DD\uC774 \uB41C \uD14C\uC774\uBE14\uACFC
+        \uC8FC\uBCC0 \uBC14\uB2E5, \uADF8\uB9AC\uACE0 \uC5B4\uC9C8\uB7EC\uC9C4 \uC8FC\uBCC0\uC744
+        \uC815\uB3C8\uD558\uBA70 \uC77C\uBD80\uB7EC \uB2F9\uC2E0\uC758 \uB208\uC744
+        \uD53C\uD558\uB294 \uB4EF\uD55C \uC18C\uB140\uC640, \uC65C\uC778\uC9C0\uB294
+        \uBAA8\uB974\uACA0\uC9C0\uB9CC \uD14C\uC774\uBE14 \uC704\uC5D0\uC11C \uB9CC\uC871\uC2A4\uB7EC\uC6B4
+        \uD45C\uC815\uC73C\uB85C \uC2DD\uBE75\uC744 \uAD7D\uACE0 \uC788\uB294 \uAC80\uC740
+        \uACE0\uC591\uC774 \uD55C \uB9C8\uB9AC\uB97C \uB9C8\uC8FC\uD588\uB2E4."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      text: "\uD558\uD558\u2026 \uC5B4\uC11C \uC624\uC138\uC694, \uC218\uC0AC\uAD00\uB2D8.
+        \uAE08\uBC29 \uC815\uB9AC\uD560\uAC8C\uC694. \uC870\uAE08\uB9CC \uAE30\uB2E4\uB824\uC8FC\uC138\uC694!"
+      expression: 2
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 2
+      text: "\u2026\uC544\uAE4C \uC11C\uB958 \uBB49\uCE58\uC640 \uD568\uAED8 \uD14C\uC774\uBE14\uC5D0
+        \uC62C\uB824\uB193\uACE0 \uAC14\uB358 \uACE0\uAE09 \uB9CC\uB144\uD544\uC774
+        \uBCF4\uC774\uC9C0 \uC54A\uB294\uAD70."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 1
+      text: "\uADF8\uB798\uC11C \uB204\uAD6C\uC8E0? \uC81C \uB9CC\uB144\uD544\uC744
+        \uAC00\uC838\uAC04 \uB140\uC11D\uC774."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0
+  sceneObjects: []
+  passThreshold: 1
+  warnThreshold: 0.7
+  gatePass:
+    note: 
+    lines: []
+    trustDelta: 0
+    endsInterrogation: 0
+  gateWarn:
+    note: 
+    lines: []
+    trustDelta: 0
+    endsInterrogation: 0
+  gateBlocked:
+    note: 
+    lines: []
+    trustDelta: 0
+    endsInterrogation: 0
+  firstRoundSuspects:
+  - {fileID: 11400000, guid: c1b4967bab60ba2458ad0375dca13f8b, type: 2}
+  secondRoundSuspects: []
+  aggressionWarnAt: 3
+  aggressionRefuseAt: 4
+  objectSpamWarnAt: 3
+  objectSpamRefuseAt: 4
+  toneAlternationWarnAt: 1
+  toneAlternationGameOverAt: 2
+  idleSeconds: 30
+  assistRecallTokenCost: 1
+  recipes: []
+  accusationTargets:
+  - {fileID: 11400000, guid: c1b4967bab60ba2458ad0375dca13f8b, type: 2}
+  cannonicalCulpritId: 

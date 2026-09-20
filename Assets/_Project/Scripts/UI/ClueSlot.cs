@@ -19,7 +19,13 @@ namespace ItIsYou.UI
     {
         [SerializeField] private Button button;
         [SerializeField] private Image icon;
+
+        [Tooltip("이름표 글자.")]
         [SerializeField] private TMP_Text hoverLabel;
+
+        [Tooltip("이름표를 통째로 켜고 끌 오브젝트. 글자 뒤에 배경이 있을 때 그 배경을 넣는다. " +
+                 "비워 두면 글자 오브젝트 자체를 켜고 끈다.")]
+        [SerializeField] private GameObject hoverRoot;
 
         [Tooltip("아직 읽지 않은 단서에 붙는 표시.")]
         [SerializeField] private GameObject unreadBadge;
@@ -33,10 +39,13 @@ namespace ItIsYou.UI
 
         public ClueDefinition Clue => _clue;
 
+        private GameObject HoverTarget =>
+            hoverRoot != null ? hoverRoot : (hoverLabel != null ? hoverLabel.gameObject : null);
+
         private void Awake()
         {
             if (button != null) button.onClick.AddListener(HandleClick);
-            if (hoverLabel != null) hoverLabel.gameObject.SetActive(false);
+            SetHoverVisible(false);
         }
 
         private void OnDestroy()
@@ -62,18 +71,24 @@ namespace ItIsYou.UI
             // 읽기 전에는 이 단서가 쓸모 있는지조차 알려주지 않는다.
             // 읽어야 알 수 있다는 것이 이 게임의 수집 설계다.
             if (usableBadge != null) usableBadge.SetActive(hasBeenRead && clue.HasUsableHighlight);
+
+            // 다시 바인딩되면 이름표는 접어 둔다.
+            SetHoverVisible(false);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (hoverLabel == null || _clue == null) return;
-            hoverLabel.text = _clue.DisplayName(_read);
-            hoverLabel.gameObject.SetActive(true);
+            if (_clue == null) return;
+            if (hoverLabel != null) hoverLabel.text = _clue.DisplayName(_read);
+            SetHoverVisible(true);
         }
 
-        public void OnPointerExit(PointerEventData eventData)
+        public void OnPointerExit(PointerEventData eventData) => SetHoverVisible(false);
+
+        private void SetHoverVisible(bool visible)
         {
-            if (hoverLabel != null) hoverLabel.gameObject.SetActive(false);
+            var target = HoverTarget;
+            if (target != null) target.SetActive(visible);
         }
 
         private void HandleClick()

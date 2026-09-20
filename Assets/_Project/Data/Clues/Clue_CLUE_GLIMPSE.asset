@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e905b03c8b5cee4380ffdc07426baf9, type: 3}
+  m_Name: Clue_CLUE_GLIMPSE
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.ClueDefinition
+  id: CLUE_GLIMPSE
+  kind: 0
+  unreadName: ???
+  readName: "\uACE0\uC591\uC774 \uC544\uB798\uC5D0 \uAE54\uB9B0 \uBB34\uC5B8\uAC00"
+  tooltip: "\uC5B4\uB514\uC11C \uB9CE\uC774 \uBCF8 \uB4EF\uD55C \uD615\uD0DC\uC758
+    \uC77C\uBD80\uBD84. <hl>\uC9C0\uAE08\uC740 \uACE0\uC591\uC774\uC758 \uC544\uB798\uC5D0
+    \uAE54\uB824\uC788\uB2E4.</hl>\n\n\uC544\uB9C8 \uB2F9\uC2E0\uC774 \uCC3E\uACE0\uC788\uB294
+    \uBB3C\uAC74\uC758 \uC77C\uBD80\uBD84 \uC77C\uC9C0\uB3C4 \uBAA8\uB978\uB2E4."
+  icon: {fileID: 0}
+  isKeyClue: 1
+  countsTowardCompletion: 1
