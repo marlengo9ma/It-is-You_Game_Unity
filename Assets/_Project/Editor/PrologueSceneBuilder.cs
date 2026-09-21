@@ -142,6 +142,8 @@ namespace ItIsYou.EditorTools
 
             // ====================================================== 컨트롤러
             var systems = new GameObject("Systems");
+            var settingsMenu = SettingsUiBuilder.BuildSettings(root, systems);
+            SettingsUiBuilder.BuildPause(root, systems, settingsMenu);
             var controller = systems.AddComponent<PrologueController>();
             controller.Set("prologue", prologue)
                       .Set("cutImage", cutImage)

@@ -673,6 +673,12 @@ namespace ItIsYou.EditorTools
                      .Set("card", titleBand.rectTransform)
                      .Set("label", titleText);
 
+            // ---- 설정 / 일시 정지 (막 아래, 다른 팝업 위) ----
+            var systems = new GameObject("Systems");
+            ItIsYou.EditorTools.UiKit.Prepare();
+            var settingsMenu = ItIsYou.EditorTools.SettingsUiBuilder.BuildSettings(root, systems);
+            var pauseMenu = ItIsYou.EditorTools.SettingsUiBuilder.BuildPause(root, systems, settingsMenu);
+
             // ---- 화면 전환 막 ----
             var faderImg = Img("ScreenFader", root, Color.black);
             Stretch(faderImg.rectTransform);
@@ -687,7 +693,6 @@ namespace ItIsYou.EditorTools
 
             // ========================================================== 시스템
 
-            var systems = new GameObject("Systems");
             var cursor = systems.AddComponent<CursorController>();
             clickTarget.Set("hitArea", charImg).Set("cursor", cursor);
 
@@ -711,7 +716,8 @@ namespace ItIsYou.EditorTools
                          .Set("choiceList", choiceListView)
                          .Set("cursor", cursor)
                          .Set("titleCard", titleCard)
-                         .Set("tutorialPopup", popupView);
+                         .Set("tutorialPopup", popupView)
+                         .Set("pauseMenu", pauseMenu);
 
             var flow = systems.AddComponent<GameFlowController>();
             flow.Set("database", db)

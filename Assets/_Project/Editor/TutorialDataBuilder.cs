@@ -86,12 +86,17 @@ namespace ItIsYou.EditorTools
             // 겉모습으로는 둘을 구분할 수 없어야 한다. 마우스 오버 반응도 동일하다.
             // 클릭 시 화면 중앙에 이미지 팝업 + 설명 대사(툴팁의 >> 줄, 있는 것만) + 목록 수집.
 
-            var objRibbon = Obj("OBJ_RIBBON", InteractableKind.Special, "구겨진 끈", ribbon);
-            var objCoffee = Obj("OBJ_COFFEE", InteractableKind.Special, "쓰러진 잔", coffee);
-            var objGlimpse = Obj("OBJ_GLIMPSE", InteractableKind.Special, "고양이 아래", glimpse);
+            // [임시] 아래 네 오브젝트의 수집 대사는 원문에 없고, 이전 버전에서 지어 넣은 것을 유지한다 (TutorialScript 참고).
+            var objRibbon = Obj("OBJ_RIBBON", InteractableKind.Special, "구겨진 끈", ribbon,
+                TutorialScript.RibbonInspect().ToArray());
+            var objCoffee = Obj("OBJ_COFFEE", InteractableKind.Special, "쓰러진 잔", coffee,
+                TutorialScript.CoffeeInspect().ToArray());
+            var objGlimpse = Obj("OBJ_GLIMPSE", InteractableKind.Special, "고양이 아래", glimpse,
+                TutorialScript.GlimpseInspect().ToArray());
             var objNewspaper = Obj("OBJ_NEWSPAPER", InteractableKind.Ordinary, "펼쳐진 신문", newspaper,
                 TutorialScript.NewspaperInspect().ToArray());
-            var objTypewriter = Obj("OBJ_TYPEWRITER", InteractableKind.Ordinary, "휴대용 타자기", typewriter);
+            var objTypewriter = Obj("OBJ_TYPEWRITER", InteractableKind.Ordinary, "휴대용 타자기", typewriter,
+                TutorialScript.TypewriterInspect().ToArray());
             var objRoomInfo = Obj("OBJ_ROOMINFO", InteractableKind.Ordinary, "객실 안내", roomInfo,
                 TutorialScript.RoomInfoInspect().ToArray());
 

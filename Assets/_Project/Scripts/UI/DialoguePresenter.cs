@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ItIsYou.Core;
 using ItIsYou.Data;
 using TMPro;
 using UnityEngine;
@@ -118,7 +119,8 @@ namespace ItIsYou.UI
         {
             get
             {
-                var basis = _slowSpeech ? speakingCharactersPerSecond : charactersPerSecond;
+                // 평범한 대화만 설정의 글자 속도를 따른다. 심문의 말하는 속도는 연출이라 고정이다.
+                var basis = _slowSpeech ? speakingCharactersPerSecond : charactersPerSecond * Mathf.Max(0.25f, GameSettings.TextSpeed);
                 return _fastForward ? basis * Mathf.Max(1f, fastForwardMultiplier) : basis;
             }
         }
@@ -136,7 +138,7 @@ namespace ItIsYou.UI
         /// </summary>
         private void Update()
         {
-            if (_allowSkip) return;
+            if (_allowSkip || PauseMenu.IsPaused) return;
 
             var mouse = UnityEngine.InputSystem.Mouse.current;
             var pressed = mouse != null && mouse.leftButton.isPressed;
@@ -256,6 +258,7 @@ namespace ItIsYou.UI
             if (_allowSkip)
             {
                 while (!_advanceRequested) yield return null;
+                while (PauseMenu.IsPaused) yield return null;
             }
             else
             {
@@ -265,6 +268,7 @@ namespace ItIsYou.UI
                 var t = 0f;
                 while (t < hold)
                 {
+                    if (PauseMenu.IsPaused) { yield return null; continue; }
                     t += Time.unscaledDeltaTime * (_fastForward ? Mathf.Max(1f, fastForwardMultiplier) : 1f);
                     yield return null;
                 }
@@ -286,6 +290,7 @@ namespace ItIsYou.UI
 
             while (shown < total)
             {
+                if (PauseMenu.IsPaused) { yield return null; continue; }
                 if (_allowSkip && _advanceRequested)
                 {
                     // 출력 중 클릭하면 즉시 전부 보여주고, 그 클릭은 넘기기로 치지 않는다.

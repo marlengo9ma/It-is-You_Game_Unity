@@ -101,7 +101,7 @@ namespace ItIsYou.Core
         private void Update()
         {
             // 마우스뿐 아니라 스페이스/엔터로도 넘길 수 있게 둔다.
-            if (!_acceptingAdvance) return;
+            if (!_acceptingAdvance || ItIsYou.UI.PauseMenu.IsPaused) return;
             var kb = UnityEngine.InputSystem.Keyboard.current;
             if (kb == null) return;
             if (kb.spaceKey.wasPressedThisFrame || kb.enterKey.wasPressedThisFrame)

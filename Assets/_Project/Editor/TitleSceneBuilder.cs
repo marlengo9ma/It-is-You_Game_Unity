@@ -134,10 +134,12 @@ namespace ItIsYou.EditorTools
 
             // -------------------------------------------------------- 컨트롤러
             var systems = new GameObject("Systems");
+            var settingsMenu = SettingsUiBuilder.BuildSettings(root, systems);
             var title = systems.AddComponent<TitleController>();
             title.Set("newGameButton", newGame)
                  .Set("continueButton", continueGame)
                  .Set("settingsButton", settings)
+                 .Set("settings", settingsMenu)
                  .Set("quitButton", quit)
                  .Set("versionLabel", version)
                  .Set("caret", caret)

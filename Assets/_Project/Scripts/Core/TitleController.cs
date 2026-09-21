@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ItIsYou.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,6 +23,9 @@ namespace ItIsYou.Core
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button quitButton;
 
+        [Header("설정")]
+        [SerializeField] private SettingsMenu settings;
+
         [Header("표시")]
         [SerializeField] private TMP_Text versionLabel;
         [SerializeField] private TMP_Text caret;
@@ -43,10 +47,11 @@ namespace ItIsYou.Core
         {
             if (newGameButton != null) newGameButton.onClick.AddListener(OnNewGame);
             if (quitButton != null) quitButton.onClick.AddListener(OnQuit);
+            if (settingsButton != null) settingsButton.onClick.AddListener(OnSettings);
 
             // 아직 없는 기능은 눌리지 않게 둔다. 눌러도 아무 일 없는 버튼보다 낫다.
             if (continueButton != null) continueButton.interactable = false;
-            if (settingsButton != null) settingsButton.interactable = false;
+            if (settingsButton != null) settingsButton.interactable = settings != null;
 
             if (versionLabel != null)
                 versionLabel.text = $"v{Application.version}  ·  개발 빌드";
@@ -59,6 +64,7 @@ namespace ItIsYou.Core
         {
             if (newGameButton != null) newGameButton.onClick.RemoveListener(OnNewGame);
             if (quitButton != null) quitButton.onClick.RemoveListener(OnQuit);
+            if (settingsButton != null) settingsButton.onClick.RemoveListener(OnSettings);
         }
 
         private void Update()
@@ -97,6 +103,11 @@ namespace ItIsYou.Core
         }
 
         private void OnNewGame() => SceneManager.LoadScene(SceneRoutes.Prologue);
+
+        private void OnSettings()
+        {
+            if (settings != null) settings.Open();
+        }
 
         private void OnQuit()
         {

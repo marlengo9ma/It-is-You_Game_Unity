@@ -32,6 +32,9 @@ namespace ItIsYou.Interrogation
         [Tooltip("튜토리얼 챕터의 설명 팝업.")]
         [SerializeField] private TutorialPopupView tutorialPopup;
 
+        [Tooltip("일시 정지 메뉴. 열려 있는 동안 무반응 타이머를 멈춘다.")]
+        [SerializeField] private PauseMenu pauseMenu;
+
         [Header("연출")]
         [Tooltip("무반응 타이머가 차오를수록 커지는 시계 초침 소리.")]
         [SerializeField] private AudioSource clockTickSource;
@@ -115,6 +118,7 @@ namespace ItIsYou.Interrogation
 
         private void Subscribe()
         {
+            if (pauseMenu != null) pauseMenu.PauseChanged += OnPauseChanged;
             if (choiceList != null) choiceList.ChoiceSelected += OnChoiceSelected;
             if (dialogue != null)
             {
@@ -125,6 +129,7 @@ namespace ItIsYou.Interrogation
 
         private void Unsubscribe()
         {
+            if (pauseMenu != null) pauseMenu.PauseChanged -= OnPauseChanged;
             if (choiceList != null) choiceList.ChoiceSelected -= OnChoiceSelected;
             if (dialogue != null)
             {
@@ -135,6 +140,14 @@ namespace ItIsYou.Interrogation
         }
 
         private void OnDisable() => Unsubscribe();
+
+        /// <summary>기획: "게임 일시 정지 - 타이머 일시 정지".</summary>
+        private void OnPauseChanged(bool paused)
+        {
+            if (_session == null || _session.IsOver) return;
+            if (paused) _session.Idle.Hold();
+            else _session.Idle.Release();
+        }
 
         // ------------------------------------------------------------- 루프
 

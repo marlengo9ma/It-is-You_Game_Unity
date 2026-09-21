@@ -188,6 +188,40 @@ namespace ItIsYou.EditorTools
             N("당신은 옆에서 꼼지락 거리며 정돈을 하고 있는 조수를 잠시 바라봤다가 시선을 거둔다."),
         };
 
+        // ---------------------------------------------- [임시] 수집 시 대사 (원문 없음)
+        // 노션 원문에는 이 네 오브젝트의 >> 줄이 없다. 아래는 이전 버전에서 임의로 지어 넣은 대사로,
+        // 제작자 확인 후 '그대로 남겨 두기'로 결정된 것. 원문이 생기면 교체한다.
+
+        /// <summary>[임시] 리본 끈을 처음 살펴볼 때.</summary>
+        public static List<DialogueLine> RibbonInspect() => new List<DialogueLine>
+        {
+            I("…기차역 테이블에 두고 온 줄 알았던 리본이군."),
+            A("아, 그거 제가 타자기랑 같이 챙겨왔어요! 잘했죠?", ExpressionId.Smile, "(뿌듯한 표정)"),
+            I("…원래 이런 상태는 아니었는데."),
+        };
+
+        /// <summary>[임시] 쏟아진 커피를 처음 살펴볼 때.</summary>
+        public static List<DialogueLine> CoffeeInspect() => new List<DialogueLine>
+        {
+            I("방금 시킨 커피다. 잔은 멀쩡한데 내용물이 전부 밖에 있군."),
+            A("그, 그건… 제가 치우려던 참이었어요.", ExpressionId.Nervous, "(시선을 피하며)"),
+        };
+
+        /// <summary>[임시] 고양이 아래의 무언가를 처음 살펴볼 때.</summary>
+        public static List<DialogueLine> GlimpseInspect() => new List<DialogueLine>
+        {
+            I("저 고양이, 아까부터 저 자세 그대로군."),
+            Line(SpeakerId.Cat, "…웨옹.", ExpressionId.Sly, "(꼬리를 살랑이며 자세를 고쳐 앉는다)"),
+            I("발 아래로 뭔가 비죽 나와 있다."),
+        };
+
+        /// <summary>[임시] 휴대용 타자기를 처음 살펴볼 때.</summary>
+        public static List<DialogueLine> TypewriterInspect() => new List<DialogueLine>
+        {
+            I("선물로 준 휴대용 타자기다. 벌써 자기 물건처럼 쓰고 있군."),
+            A("이거 정말 좋아요! 속기할 때 손목이 하나도 안 아파요.", ExpressionId.Smile),
+        };
+
         // ================================================================ 용의자 선택
 
         /// <summary>단서 수집이 끝나고, 두 사람을 자리에 앉히기까지.</summary>
