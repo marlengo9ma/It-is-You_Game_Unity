@@ -20,10 +20,11 @@ MonoBehaviour:
   labelSwapClueIds: []
   availableFromStart: 1
   requiredClueIds: []
+  requiredPromotedClueIds: []
   requiredChoiceIds: []
   appearsWhenTokensAtOrBelow: 0
   passes:
-  - note: "1\uD68C\uCC28 \u2014 \uBD24\uB2E4\uB294 \uAC83\uAE4C\uC9C0\uB294 \uC778\uC815"
+  - note: "A \u2014 \uBD24\uB2E4\uB294 \uAC83\uAE4C\uC9C0\uB294 \uC778\uC815"
     lines:
     - speaker: 1
       text: "\uB0B4\uAC00 \uB9E4\uC6B0 \uC544\uB07C\uB294 \uB9CC\uB144\uD544\uC774\uB77C.
@@ -39,7 +40,7 @@ MonoBehaviour:
         blurredFromRecallDepth: 2
       autoGrantClueId: 
     - speaker: 3
-      text: "\uC0AC, \uC0AC\uC2E4\uC740\u2026 <clue=TES_SAW_IT>\uC544\uAE4C \uBD24\uB358
+      text: "\uC0AC,\uC0AC\uC2E4\uC740\u2026 <clue=TES_SAW_IT>\uC544\uAE4C \uBD24\uB358
         \uAC83 \uAC19\uAE34 \uD55C\uB370\uC694\u2026</clue>"
       expression: 2
       stageDirection: "(\uACE0\uC591\uC774\uC640 \uB2F9\uC2E0\uC744 \uBC88\uAC08\uC544\uBCF4\uBA70
@@ -79,7 +80,7 @@ MonoBehaviour:
         blurredFromRecallDepth: 2
       autoGrantClueId: 
     - speaker: 2
-      text: "\uAC70\uC9D3\uB9D0\uC744 \uD558\uB294 \uAC83 \uAC19\uAD70\u2026 \uC774\uC720\uB294
+      text: "\uAC70\uC9D3\uB9D0\uC744 \uD558\uB294 \uAC83 \uAC19\uAD70\u2026\uC774\uC720\uB294
         \uBAA8\uB974\uACA0\uC9C0\uB9CC\uC11C\uB3C4 \uC77C\uB2E8 \uB9CC\uB144\uD544\uC744
         \uBAA8\uB974\uB294 \uBC18\uC751\uC740 \uC544\uB2C8\uC57C."
       expression: 0
@@ -93,19 +94,9 @@ MonoBehaviour:
       autoGrantClueId: 
     trustDelta: 0
     endsInterrogation: 0
-  - note: "2\uD68C\uCC28 \u2014 \uB208\uCE58\uB97C \uBCF8\uB2E4"
+  idleFollowUp:
+    note: "A \u2014 \uC2DC\uAC04 \uACBD\uACFC"
     lines:
-    - speaker: 1
-      text: "\uC815\uB9D0 \uC544\uBB34\uAC83\uB3C4 \uAE30\uC5B5\uB098\uC9C0 \uC54A\uC2B5\uB2C8\uAE4C?"
-      expression: 0
-      stageDirection: 
-      reaction:
-        clueId: 
-        openDelay: 0
-        window: 2.5
-        expression: 3
-        blurredFromRecallDepth: 2
-      autoGrantClueId: 
     - speaker: 3
       text: "\u2026\uD639\uC2DC \uBB34\uC2A8 \uBB38\uC81C\uB77C\uB3C4 \uC788\uC744\uAE4C\uC694\u2026?"
       expression: 2

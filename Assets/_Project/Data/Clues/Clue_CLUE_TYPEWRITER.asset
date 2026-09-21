@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e905b03c8b5cee4380ffdc07426baf9, type: 3}
+  m_Name: Clue_CLUE_TYPEWRITER
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.ClueDefinition
+  id: CLUE_TYPEWRITER
+  kind: 0
+  unreadName: "\uD0C0\uC790\uAE30"
+  readName: "\uD734\uB300\uC6A9 \uD0C0\uC790\uAE30"
+  tooltip: "\uB2F9\uC2E0\uC774 \uC0C8\uB86D\uAC8C \uBC30\uCE58\uB41C \uBCF4\uC870
+    \uC218\uC0AC\uAD00\uC5D0\uAC8C \uC120\uBB3C\uD55C \uC720\uBA85\uD55C \uBE0C\uB79C\uB4DC\uC758
+    \uD734\uB300\uC6A9 \uD0C0\uC790\uAE30\uC774\uB2E4.\n\uACE0\uAE09\uC9C4 \uC804\uC6A9
+    \uCF00\uC774\uC2A4 \uAC00\uBC29\uB3C4 \uC788\uC73C\uBA70, \uD734\uB300\uD558\uAE30
+    \uD3B8\uD558\uAC8C \uAC00\uBCCD\uAC8C \uAC1C\uB7C9\uB41C \uB098\uB984 \uC911\uC0C1\uAE09\uC758
+    \uD0C0\uC790\uAE30\uB85C \uCD08\uBA74\uC758 \uC778\uBB3C\uC5D0\uAC8C \uC8FC\uB294
+    \uC120\uBB3C\uB85C\uB294 \uC870\uAE08 \uACFC\uD55C \uAC10\uC774 \uC788\uC5C8\uB098
+    \uC2F6\uC740 \uC0DD\uAC01\uC774 \uB4E0\uB2E4.\n\uADF8\uC0C8\uC5D0 \uC0AC\uC6A9\uD574\uBCF4\uC558\uB294\uC9C0
+    \uACE0\uD1B5 \uC8FC\uC81C\uB97C \uCC3E\uC744 \uC218 \uC5C6\uB294 \uC5EC\uB7EC
+    \uC7A1\uB2E4\uD55C \uAE00\uB4E4\uC774 \uC801\uD600\uC788\uB2E4."
+  icon: {fileID: 0}
+  closeUpImage: {fileID: 0}
+  isKeyClue: 0
+  countsTowardCompletion: 1

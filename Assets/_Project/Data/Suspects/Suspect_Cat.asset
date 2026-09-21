@@ -61,6 +61,11 @@ MonoBehaviour:
     lines: []
     trustDelta: 0
     endsInterrogation: 0
+  onEndInterrogation:
+    note: 
+    lines: []
+    trustDelta: 0
+    endsInterrogation: 0
   idleRounds: []
   onIdle:
     note: 

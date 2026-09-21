@@ -8,13 +8,18 @@ namespace ItIsYou.Clues
     /// 수집한 단서 보관함. MonoBehaviour 가 아니라 순수 C# 이라
     /// 플레이 모드 없이도 규칙을 테스트할 수 있다.
     ///
-    /// 읽음 여부를 따로 들고 있는 이유는, 기획서의 2단계 명칭 규칙 때문이다.
-    /// 수집만 한 단서는 ??? 로, 목록에서 한 번 읽은 단서는 세부 명칭으로 표시된다.
+    /// 세 가지 상태를 따로 든다 — 기획서의 규칙이 세 단계이기 때문이다.
+    /// <list type="bullet">
+    /// <item>수집 — 목록에 들어왔다. ??? 또는 단순 명칭으로 보인다.</item>
+    /// <item>읽음 — 열람창을 한 번 열었다. 세부 명칭으로 보인다.</item>
+    /// <item>승격 — 툴팁의 강조 구간을 눌러 '수집 오브젝트'가 '단서 오브젝트'가 됐다. 금색 테두리.</item>
+    /// </list>
     /// </summary>
     public class ClueInventory
     {
         private readonly Dictionary<string, ClueDefinition> _owned = new Dictionary<string, ClueDefinition>();
         private readonly HashSet<string> _read = new HashSet<string>();
+        private readonly HashSet<string> _promoted = new HashSet<string>();
         private readonly List<string> _order = new List<string>();
 
         /// <summary>새 단서를 얻었을 때. 이미 가진 단서면 발생하지 않는다.</summary>
@@ -22,6 +27,9 @@ namespace ItIsYou.Clues
 
         /// <summary>단서를 처음 읽었을 때. 표시 명칭이 바뀌는 시점이다.</summary>
         public event Action<ClueDefinition> ClueRead;
+
+        /// <summary>수집 오브젝트가 단서 오브젝트로 승격됐을 때.</summary>
+        public event Action<ClueDefinition> CluePromoted;
 
         public int Count => _owned.Count;
 
@@ -44,6 +52,28 @@ namespace ItIsYou.Clues
         }
 
         public bool HasBeenRead(string clueId) => !string.IsNullOrEmpty(clueId) && _read.Contains(clueId);
+
+        /// <summary>
+        /// 심문에서 제시할 수 있는 상태인가. 승격된 수집 오브젝트이거나,
+        /// 얻는 순간부터 단서인 증언·리액션·추론이면 참.
+        /// </summary>
+        public bool IsPromoted(string clueId)
+        {
+            var clue = Get(clueId);
+            if (clue == null) return false;
+            if (clue.Kind != ClueKind.Object) return true;
+            return _promoted.Contains(clueId);
+        }
+
+        public bool HasAllPromoted(IReadOnlyList<string> clueIds)
+        {
+            if (clueIds == null || clueIds.Count == 0) return true;
+            for (int i = 0; i < clueIds.Count; i++)
+            {
+                if (!IsPromoted(clueIds[i])) return false;
+            }
+            return true;
+        }
 
         public ClueDefinition Get(string clueId)
             => (!string.IsNullOrEmpty(clueId) && _owned.TryGetValue(clueId, out var c)) ? c : null;
@@ -70,6 +100,17 @@ namespace ItIsYou.Clues
             return true;
         }
 
+        /// <summary>툴팁의 강조 구간을 눌러 단서 오브젝트로 승격한다. 처음 승격됐으면 true.</summary>
+        public bool Promote(string clueId)
+        {
+            var clue = Get(clueId);
+            if (clue == null || !clue.IsPromotable) return false;
+            if (!_promoted.Add(clueId)) return false;
+
+            CluePromoted?.Invoke(clue);
+            return true;
+        }
+
         /// <summary>UI 에 뿌릴 표시 이름. 읽기 전에는 ??? 또는 단순 명칭.</summary>
         public string DisplayName(string clueId)
         {
@@ -92,11 +133,13 @@ namespace ItIsYou.Clues
         {
             _owned.Clear();
             _read.Clear();
+            _promoted.Clear();
             _order.Clear();
         }
 
         /// <summary>세이브 복원용.</summary>
-        public void Restore(IEnumerable<ClueDefinition> owned, IEnumerable<string> readIds)
+        public void Restore(IEnumerable<ClueDefinition> owned, IEnumerable<string> readIds,
+            IEnumerable<string> promotedIds = null)
         {
             Clear();
             if (owned != null)
@@ -114,6 +157,13 @@ namespace ItIsYou.Clues
                 foreach (var id in readIds)
                 {
                     if (_owned.ContainsKey(id)) _read.Add(id);
+                }
+            }
+            if (promotedIds != null)
+            {
+                foreach (var id in promotedIds)
+                {
+                    if (_owned.ContainsKey(id)) _promoted.Add(id);
                 }
             }
         }

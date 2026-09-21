@@ -57,6 +57,9 @@ namespace ItIsYou.Data
         [Tooltip("심문에 막 들어갔을 때 이 인물이 먼저 꺼내는 말. 이 대사가 끝나야 선택지가 열린다.")]
         [SerializeField] private DialogueSequence onEnterInterrogation = new DialogueSequence();
 
+        [Tooltip("플레이어가 '심문 종료'를 눌러 수동으로 끝낼 때의 대사. 다음 인물로 넘어가는 다리.")]
+        [SerializeField] private DialogueSequence onEndInterrogation = new DialogueSequence();
+
         [Tooltip("무반응 판정 1회차 대사. 목록이 비어 있으면 아래 onIdle 을 쓴다.")]
         [SerializeField] private List<DialogueSequence> idleRounds = new List<DialogueSequence>();
 
@@ -87,9 +90,13 @@ namespace ItIsYou.Data
         public DialogueSequence ToneAlternationGameOver => toneAlternationGameOver;
         public DialogueSequence OnTokensExhausted => onTokensExhausted;
         public DialogueSequence OnEnterInterrogation => onEnterInterrogation;
+        public DialogueSequence OnEndInterrogation => onEndInterrogation;
         public DialogueSequence OnIdle => onIdle;
         public bool Selectable => selectable;
         public string LockedReason => lockedReason;
+
+        /// <summary>회차별 무반응 대사가 몇 벌 있는가. 다 쓰고 나면 페널티 설명 팝업의 트리거가 된다.</summary>
+        public int IdleRoundCount => idleRounds != null ? idleRounds.Count : 0;
 
         /// <summary>
         /// 무반응 판정 <paramref name="round"/> 회차(1부터)의 대사.

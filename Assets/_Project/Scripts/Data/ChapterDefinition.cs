@@ -75,6 +75,14 @@ namespace ItIsYou.Data
         [Tooltip("2차 심문에서 상대할 대상. 비어 있으면 1차와 동일하게 쓴다.")]
         [SerializeField] private List<SuspectDefinition> secondRoundSuspects = new List<SuspectDefinition>();
 
+        [Tooltip("심문에 막 들어갈 때 화면 가운데 잠깐 뜨는 제목. {name} 이 용의자 이름으로 바뀐다. " +
+                 "기획: <용의자 ‘세피’ 심문 시작> *텍스트 이미지 애니메이션 및 소리 연출")]
+        [SerializeField] private string interrogationTitleFormat = "용의자 ‘{name}’ 심문 시작";
+
+        [Header("튜토리얼 팝업")]
+        [Tooltip("숫자마다 페이지가 나뉜 설명 팝업. 트리거마다 한 챕터에 한 번만 뜬다.")]
+        [SerializeField] private List<TutorialPopupDefinition> tutorialPopups = new List<TutorialPopupDefinition>();
+
         [Header("페널티 수치")]
         [Tooltip("강압 선택지를 몇 번 누르면 경고가 뜨는지. 기획 기준 3")]
         [SerializeField] private int aggressionWarnAt = 3;
@@ -141,6 +149,9 @@ namespace ItIsYou.Data
         /// </summary>
         public IReadOnlyList<SuspectDefinition> SecondRoundSuspects => secondRoundSuspects;
 
+        public string InterrogationTitleFormat => interrogationTitleFormat;
+        public IReadOnlyList<TutorialPopupDefinition> TutorialPopups => tutorialPopups;
+
         public int AggressionWarnAt => aggressionWarnAt;
         public int AggressionRefuseAt => aggressionRefuseAt;
         public int ObjectSpamWarnAt => objectSpamWarnAt;
@@ -155,6 +166,25 @@ namespace ItIsYou.Data
         public IReadOnlyList<SuspectDefinition> AccusationTargets =>
             (accusationTargets != null && accusationTargets.Count > 0) ? accusationTargets : firstRoundSuspects;
         public string CannonicalCulpritId => cannonicalCulpritId;
+
+        /// <summary>심문 진입 제목. 형식이 비어 있으면 띄우지 않는다.</summary>
+        public string BuildInterrogationTitle(SuspectDefinition suspect)
+        {
+            if (string.IsNullOrEmpty(interrogationTitleFormat) || suspect == null) return string.Empty;
+            return interrogationTitleFormat.Replace("{name}", suspect.DisplayName);
+        }
+
+        /// <summary>해당 트리거의 튜토리얼 팝업. 튜토리얼 챕터가 아니거나 없으면 null.</summary>
+        public TutorialPopupDefinition FindTutorialPopup(TutorialPopupTrigger trigger)
+        {
+            if (!isTutorial || tutorialPopups == null) return null;
+            for (int i = 0; i < tutorialPopups.Count; i++)
+            {
+                var p = tutorialPopups[i];
+                if (p != null && p.Trigger == trigger && !p.IsEmpty) return p;
+            }
+            return null;
+        }
 
         /// <summary>수집률 계산에 포함되는 단서 전체.</summary>
         public IEnumerable<ClueDefinition> EnumerateCountedClues()

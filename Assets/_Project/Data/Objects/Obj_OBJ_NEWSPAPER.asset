@@ -10,15 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8863fa260cf69b46b089cb7342564d5, type: 3}
-  m_Name: Obj_OBJ_CAT
+  m_Name: Obj_OBJ_NEWSPAPER
   m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.InteractableDefinition
-  id: OBJ_CAT
+  id: OBJ_NEWSPAPER
   kind: 0
-  hoverLabel: "\uAC80\uC740 \uACE0\uC591\uC774"
+  hoverLabel: "\uD3BC\uCCD0\uC9C4 \uC2E0\uBB38"
   onInspect:
   - speaker: 2
-    text: "\uAE30\uCC28 \uC548\uC744 \uC81C\uC9D1\uCC98\uB7FC \uB3CC\uC544\uB2E4\uB2C8\uB358
-      \uB140\uC11D\uC774\uB2E4."
+    text: "\uC88B\uAC8C \uBD10\uC8FC\uB294 \uAC74 \uACE0\uB9D9\uC9C0\uB9CC \uC624\uD788\uB824
+      \uC774\uB7F0 \uC870\uBA85 \uB54C\uBB38\uC5D0 \uAD00\uB828 \uC2DC\uD5D8\uB4E4\uC774
+      \uAE50\uAE50\uD574\uC838\uC11C \uC2E0\uC785\uB4E4\uC774 \uC798 \uC548 \uB4E4\uC5B4\uC628\uB2E8
+      \uB9D0\uC774\uC8E0."
     expression: 0
     stageDirection: 
     reaction:
@@ -28,32 +30,9 @@ MonoBehaviour:
       expression: 3
       blurredFromRecallDepth: 2
     autoGrantClueId: 
-  - speaker: 4
-    text: "\uBA01."
-    expression: 0
-    stageDirection: "(\uB298\uC5B4\uC9C0\uAC8C \uD558\uD488)"
-    reaction:
-      clueId: 
-      openDelay: 0
-      window: 2.5
-      expression: 3
-      blurredFromRecallDepth: 2
-    autoGrantClueId: 
-  - speaker: 3
-    text: "\uADC0\uC5FD\uC8E0? \uC544\uAE4C\uBD80\uD130 \uACC4\uC18D \uC800\uAE30
-      \uC549\uC544 \uC788\uC5B4\uC694."
-    expression: 1
-    stageDirection: 
-    reaction:
-      clueId: 
-      openDelay: 0
-      window: 2.5
-      expression: 3
-      blurredFromRecallDepth: 2
-    autoGrantClueId: 
-  onReinspect:
   - speaker: 2
-    text: "\uB354 \uBCFC \uAC83\uC740 \uC5C6\uC5B4 \uBCF4\uC778\uB2E4."
+    text: "\uC5B4\uC11C \uBE68\uB9AC \uC778\uC6D0 \uCDA9\uB2F9\uC774 \uB418\uC5B4\uC57C\uC9C0
+      \uC774\uB7F0 \uC7A5\uAE30 \uCD9C\uC7A5\uB3C4 \uC5C6\uC5B4\uC9C8\uD150\uB370\u2026"
     expression: 0
     stageDirection: 
     reaction:
@@ -63,5 +42,18 @@ MonoBehaviour:
       expression: 3
       blurredFromRecallDepth: 2
     autoGrantClueId: 
-  grantedClue: {fileID: 0}
+  - speaker: 0
+    text: "\uB2F9\uC2E0\uC740 \uC791\uC740 \uD55C\uC228\uC744 \uC26C\uBA70, \uC2E0\uBB38\uC744
+      \uB36E\uC5B4 \uD574\uB2F9 \uAE30\uC0AC\uB97C \uC678\uBA74\uD588\uB2E4."
+    expression: 0
+    stageDirection: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  onReinspect: []
+  grantedClue: {fileID: 11400000, guid: 481aa418cbab67c478f1a827341110f6, type: 2}
   closeUpImage: {fileID: 0}

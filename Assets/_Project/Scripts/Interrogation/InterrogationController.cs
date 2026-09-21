@@ -26,6 +26,12 @@ namespace ItIsYou.Interrogation
         [SerializeField] private ChoiceListView choiceList;
         [SerializeField] private CursorController cursor;
 
+        [Tooltip("심문 진입 시 가운데 떠오르는 제목. <용의자 ‘세피’ 심문 시작>")]
+        [SerializeField] private TitleCardView titleCard;
+
+        [Tooltip("튜토리얼 챕터의 설명 팝업.")]
+        [SerializeField] private TutorialPopupView tutorialPopup;
+
         [Header("연출")]
         [Tooltip("무반응 타이머가 차오를수록 커지는 시계 초침 소리.")]
         [SerializeField] private AudioSource clockTickSource;
@@ -74,27 +80,34 @@ namespace ItIsYou.Interrogation
         }
 
         /// <summary>
-        /// 심문에 막 들어갔을 때 상대가 먼저 한 마디 한다.
+        /// 심문에 막 들어갔을 때 — 제목이 떠오르고, 상대가 먼저 한 마디 한다.
         ///
         /// 선택지부터 띄우면 플레이어가 무엇을 묻는 자리인지 모른 채 고르게 된다.
         /// 상대가 먼저 입을 떼야 "지금부터 이 사람을 상대한다"가 성립한다.
+        /// 그 뒤에 튜토리얼 팝업 1 — "[대사 이후, 튜토리얼 팝업_1 창 실행]".
         /// </summary>
         private IEnumerator OpenRoutine()
         {
+            _busy = true;
+            if (choiceList != null) choiceList.Clear();
+            _session.Idle.Hold();
+
+            var title = _session.Chapter.BuildInterrogationTitle(_session.Suspect);
+            if (titleCard != null && !string.IsNullOrEmpty(title))
+                yield return titleCard.Play(title);
+
             var opening = _session.Suspect.OnEnterInterrogation;
             if (opening != null && !opening.IsEmpty)
             {
-                _busy = true;
-                if (choiceList != null) choiceList.Clear();
-                _session.Idle.Hold();
-
                 LogSequence(opening, null);
                 yield return dialogue.Play(opening);
-
-                _busy = false;
-                _session.Idle.Release();
-                _session.Idle.Restart();
             }
+
+            yield return ShowTutorial(TutorialPopupTrigger.AfterSuspectOpening);
+
+            _busy = false;
+            _session.Idle.Release();
+            _session.Idle.Restart();
 
             RebuildChoices();
             if (choiceList != null) choiceList.SetInteractable(true);
@@ -162,7 +175,7 @@ namespace ItIsYou.Interrogation
             StartCoroutine(RunStep(_session.SelectInterrogationObject(target), null));
         }
 
-        /// <summary>플레이어가 직접 심문을 끝낸다.</summary>
+        /// <summary>플레이어가 직접 심문을 끝낸다. 용의자의 마무리 대사가 있으면 그것을 먼저 듣는다.</summary>
         public void EndManually()
         {
             if (_busy || !IsRunning) return;
@@ -234,6 +247,10 @@ namespace ItIsYou.Interrogation
 
             if (step.Main != null && !step.Main.IsEmpty)
             {
+                // 밑줄 구간·리액션이 처음 나오기 직전에 수집 방법을 설명한다 (튜토리얼 팝업 2).
+                if (DialogueMarkup.HasCollectable(step.Main))
+                    yield return ShowTutorial(TutorialPopupTrigger.BeforeFirstCollectableLine);
+
                 LogSequence(step.Main, tone);
                 yield return dialogue.Play(step.Main, distortion.TextCorruption, _session.Recall.EffectiveDepth);
             }
@@ -246,6 +263,14 @@ namespace ItIsYou.Interrogation
 
             if (step.TutorialLesson)
                 TutorialLessonRequested?.Invoke(step.Verdict);
+
+            // 첫 선택지의 대사가 끝난 뒤 — 기억 짐작 설명 (튜토리얼 팝업 3).
+            if (tone.HasValue && _session.ChoicesMade == 1)
+                yield return ShowTutorial(TutorialPopupTrigger.AfterFirstChoice);
+
+            // 페널티에 대한 첫 설명. 먼저 오는 계기에서 한 번만.
+            if (step.PenaltyLesson || step.TutorialLesson)
+                yield return ShowTutorial(TutorialPopupTrigger.OnFirstPenalty);
 
             _busy = false;
 
@@ -268,6 +293,15 @@ namespace ItIsYou.Interrogation
 
             _session.Idle.Release();
             _session.Idle.Restart();
+        }
+
+        /// <summary>튜토리얼 팝업을 한 번만 띄운다. 떠 있는 동안 타이머는 이미 멈춰 있다(RunStep/OpenRoutine 이 Hold 중).</summary>
+        private IEnumerator ShowTutorial(TutorialPopupTrigger trigger)
+        {
+            if (tutorialPopup == null || _session == null) yield break;
+            var popup = _session.Chapter.FindTutorialPopup(trigger);
+            if (popup == null || tutorialPopup.HasShown(popup)) yield break;
+            yield return tutorialPopup.ShowOnce(popup);
         }
 
         private void LogSequence(DialogueSequence sequence, ChoiceTone? tone)

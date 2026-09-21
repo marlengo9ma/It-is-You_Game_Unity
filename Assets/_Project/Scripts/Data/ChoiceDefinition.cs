@@ -39,6 +39,9 @@ namespace ItIsYou.Data
         [Tooltip("이 단서들을 모두 가져야 선택지가 나타난다.")]
         [SerializeField] private List<string> requiredClueIds = new List<string>();
 
+        [Tooltip("이 수집품들을 목록에서 읽고 강조 구간을 눌러 '단서 오브젝트'로 만들어 두어야 선택지가 나타난다.")]
+        [SerializeField] private List<string> requiredPromotedClueIds = new List<string>();
+
         [Tooltip("이 선택지 id 들을 먼저 선택해야 나타난다.")]
         [SerializeField] private List<string> requiredChoiceIds = new List<string>();
 
@@ -48,6 +51,9 @@ namespace ItIsYou.Data
         [Header("진행")]
         [Tooltip("첫 선택부터 순서대로 재생되는 대사 묶음. 끝에 도달한 뒤에는 마지막 묶음이 반복된다.")]
         [SerializeField] private List<DialogueSequence> passes = new List<DialogueSequence>();
+
+        [Tooltip("이 선택지를 고른 뒤 처음 오는 무반응 판정에서, 회차 대사 대신 나오는 대사. 시나리오의 <시간 경과> 구간.")]
+        [SerializeField] private DialogueSequence idleFollowUp = new DialogueSequence();
 
         [Tooltip("이 선택지가 소비하는 타임 토큰. 보통 1.")]
         [SerializeField] private int tokenCost = 1;
@@ -64,10 +70,13 @@ namespace ItIsYou.Data
         public bool ConsumeOnUse => consumeOnUse;
         public bool AvailableFromStart => availableFromStart;
         public IReadOnlyList<string> RequiredClueIds => requiredClueIds;
+        public IReadOnlyList<string> RequiredPromotedClueIds => requiredPromotedClueIds;
         public IReadOnlyList<string> RequiredChoiceIds => requiredChoiceIds;
         public int AppearsWhenTokensAtOrBelow => appearsWhenTokensAtOrBelow;
         public IReadOnlyList<string> UnlocksChoiceIds => unlocksChoiceIds;
         public IReadOnlyList<DialogueSequence> Passes => passes;
+        public DialogueSequence IdleFollowUp => idleFollowUp;
+        public bool HasIdleFollowUp => idleFollowUp != null && !idleFollowUp.IsEmpty;
 
         /// <summary>교차 선택 게임오버 판정에 포함되는 성향인가. 친근/강압만 해당한다.</summary>
         public bool CountsForToneAlternation => tone == ChoiceTone.Friendly || tone == ChoiceTone.Aggressive;

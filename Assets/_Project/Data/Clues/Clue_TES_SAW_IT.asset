@@ -22,5 +22,6 @@ MonoBehaviour:
     \uB2F5\uD558\uC9C0 \uC54A\uC558\uB2E4.</hl> \uBAA8\uB978\uB2E4\uB294 \uBC18\uC751\uACFC\uB294
     \uBD84\uBA85\uD788 \uB2E4\uB974\uB2E4."
   icon: {fileID: 0}
+  closeUpImage: {fileID: 0}
   isKeyClue: 0
   countsTowardCompletion: 0

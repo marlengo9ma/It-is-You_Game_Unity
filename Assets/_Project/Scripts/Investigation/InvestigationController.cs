@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using ItIsYou.Clues;
@@ -14,7 +14,8 @@ namespace ItIsYou.Investigation
     /// 단서 수집 페이즈의 진행자.
     ///
     /// 씬에 놓인 <see cref="InteractableObject"/> 들을 모아 붙이고,
-    /// 클릭할 때마다 대사를 재생하고 단서를 넣는다.
+    /// 클릭할 때마다 화면 중앙에 이미지 팝업을 띄우고, 설명 대사를 재생하고, 우측 목록에 넣는다.
+    /// 일반 오브젝트도 '수집 오브젝트'로 목록에 들어간다 — 단서로 정리하는 것은 열람창의 일이다.
     /// 페이즈를 끝내려 할 때는 <see cref="CollectionGate"/> 로 수집률을 판정한다.
     /// </summary>
     [AddComponentMenu("It is You/Investigation Controller")]
@@ -28,6 +29,9 @@ namespace ItIsYou.Investigation
         [SerializeField] private DialoguePresenter dialogue;
         [SerializeField] private CursorController cursor;
         [SerializeField] private ClueTrayView clueTray;
+
+        [Tooltip("오브젝트를 눌렀을 때 화면 중앙에 뜨는 이미지 팝업.")]
+        [SerializeField] private CloseUpPopup closeUp;
 
         [Tooltip("다음 페이즈로 넘어가는 버튼. 에디터에서 붙인 연결은 저장되지 않으므로 런타임에 직접 잇는다.")]
         [SerializeField] private Button advanceButton;
@@ -98,9 +102,15 @@ namespace ItIsYou.Investigation
         private void OnClicked(InteractableObject obj)
         {
             if (_busy || obj == null || obj.Definition == null) return;
+            if (clueTray != null && clueTray.IsTooltipOpen) return;
             StartCoroutine(InspectRoutine(obj));
         }
 
+        /// <summary>
+        /// 기획: "좌클릭 시 &gt;&gt; 화면 중앙에 단서의 이미지 팝업과 &lt;주인공&gt; 혹은 &lt;조수&gt;의
+        /// 설명 대사 출력 및 우측 ui내에 수집".
+        /// 팝업 → 대사(있으면) → 수집 순서다. 대사가 없는 오브젝트는 팝업을 한 번 눌러 닫는다.
+        /// </summary>
         private IEnumerator InspectRoutine(InteractableObject obj)
         {
             _busy = true;
@@ -111,10 +121,17 @@ namespace ItIsYou.Investigation
             var lines = obj.Inspected ? def.OnReinspect : def.OnInspect;
             obj.MarkInspected();
 
+            var label = def.GrantedClue != null ? def.GrantedClue.UnreadName : def.HoverLabel;
+            if (closeUp != null) closeUp.Show(def.CloseUpImage, label);
+
             if (lines != null && lines.Count > 0)
                 yield return dialogue.Play(new DialogueSequence(lines, def.Id));
+            else if (closeUp != null)
+                yield return closeUp.WaitForDismiss();
 
-            // 특수 오브젝트라면 단서를 넣는다. 일반 오브젝트는 대사만 나오고 끝난다.
+            if (closeUp != null) closeUp.Hide();
+
+            // 일반 오브젝트도 '수집 오브젝트'로 목록에 들어간다.
             if (def.GrantsClue && _inventory.Add(def.GrantedClue))
             {
                 dialogue.NotifyCollected(def.GrantedClue.Id);
@@ -131,6 +148,7 @@ namespace ItIsYou.Investigation
         public void RequestAdvance()
         {
             if (_busy) return;
+            if (clueTray != null && clueTray.IsTooltipOpen) return;
             StartCoroutine(AdvanceRoutine());
         }
 

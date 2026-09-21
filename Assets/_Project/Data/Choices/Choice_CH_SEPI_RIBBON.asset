@@ -15,18 +15,19 @@ MonoBehaviour:
   id: CH_SEPI_RIBBON
   tone: 2
   label: "\uC774 \uB9AC\uBCF8\uC740 \uBD84\uBA85 \uAE30\uCC28\uC5ED\uC5D0 \uB450\uACE0
-    \uC654\uB358 \uAC70 \uAC19\uC740\uB370\u2026"
-  labelWhenInformed: "\uC774 \uB9AC\uBCF8, \uACE0\uC591\uC774 \uD138\uC774 \uBC15\uD600
-    \uC788\uAD70\uC694. \uC5B4\uB5BB\uAC8C \uB41C \uAC81\uB2C8\uAE4C?"
-  labelSwapClueIds:
-  - REA_CAT_FLINCH
+    \uC654\uB358 \uAC70 \uAC19\uC740\uB370 \uD0C0\uC790\uAE30\uB791 \uAC19\uC774
+    \uCC59\uACA8\uC654\uC5C8\uB098\uBCF4\uAD70\uC694?"
+  labelWhenInformed: 
+  labelSwapClueIds: []
   availableFromStart: 1
   requiredClueIds:
+  - CLUE_RIBBON
+  requiredPromotedClueIds:
   - CLUE_RIBBON
   requiredChoiceIds: []
   appearsWhenTokensAtOrBelow: 0
   passes:
-  - note: "1\uD68C\uCC28 \u2014 \uACE0\uC591\uC774 \uB2E8\uC5B4\uC5D0\uC11C \uAD73\uB294\uB2E4"
+  - note: "C \u2014 \uACE0\uC591\uC774 \uB2E8\uC5B4\uC5D0\uC11C \uAD73\uB294\uB2E4"
     lines:
     - speaker: 1
       text: "\uC774 \uB9AC\uBCF8\uC740 \uBD84\uBA85 \uAE30\uCC28\uC5ED\uC5D0 \uB450\uACE0
@@ -56,6 +57,7 @@ MonoBehaviour:
       autoGrantClueId: 
     - speaker: 3
       text: "\uD5C9 \uD639\uC2DC \uC800\uD76C \uC9D0\uC774 \uC544\uB2C8\uC600\uB098\uC694?!
+        \uB204\uAD70\uAC00\uC758 \uC18C\uC911\uD55C \uB9AC\uBCF8\uC774\uC600\uB2E4\uB358\uAC74\u2026
         \uC774\uBBF8 \uAE30\uCC28\uB294 \uCD9C\uBC1C\uD574 \uBC84\uB838\uB294\uB370
         \uC5B4\uB5BB\uAC8C\uD558\uC8E0, \uC218\uC0AC\uAD00\uB2D8?"
       expression: 6
@@ -86,8 +88,8 @@ MonoBehaviour:
         \uB450\uACE0\uAC00\uC2DC\uB2E4\uB2C8, \uC81C\uAC00 \uC548 \uAC00\uC838\uC654\uC74C
         \uC5B4\uCA54\uBED4 \uD588\uC5B4\uC694?"
       expression: 1
-      stageDirection: "(\uC548\uC2EC\uD55C \uB4EF \uD558\uB2E4\uAC00, \uC7A5\uB09C\uC2A4\uB7EC\uC6B4
-        \uD45C\uC815\uC73C\uB85C)"
+      stageDirection: "(\uB2F9\uC2E0\uC758 \uB9D0\uC5D0 \uC548\uC2EC\uD55C \uB4EF
+        \uD558\uB2E4\uAC00, \uC7A5\uB09C\uC2A4\uB7EC\uC6B4 \uD45C\uC815\uC73C\uB85C)"
       reaction:
         clueId: 
         openDelay: 0
@@ -109,9 +111,12 @@ MonoBehaviour:
         blurredFromRecallDepth: 2
       autoGrantClueId: 
     - speaker: 3
-      text: "\uADF8, \uADF8\uB7EC\uAC8C\uC694. \uD558, \uD558\uD56B\u2026"
+      text: "\uADF8,\uADF8\uB7EC\uAC8C\uC694. \uD558,\uD558\uD56B\u2026"
       expression: 3
-      stageDirection: "(\uACB0\uAD6D \uC2DC\uC120\uC744 \uD53C\uD558\uBA70 \uC5BC\uBC84\uBB34\uB9B0\uB2E4)"
+      stageDirection: "(\uB2F9\uC2E0\uC758 \uACE0\uC591\uC774\uB77C\uB294 \uB2E8\uC5B4\uC5D0
+        \uB300\uD55C \uBC18\uC751\uC73C\uB85C \uB2E4\uC18C \uBE44\uC774\uC0C1\uC801\uC778
+        \uB2F9\uD639\uAC10\uC744 \uBCF4\uC5EC\uC8FC\uBA70) (\uACB0\uAD6D \uC2DC\uC120\uC744
+        \uD53C\uD558\uBA70 \uC5BC\uBA38\uBB34\uB9B0\uB2E4)"
       reaction:
         clueId: REA_CAT_FLINCH
         openDelay: 0.35
@@ -134,32 +139,9 @@ MonoBehaviour:
       autoGrantClueId: 
     trustDelta: 0
     endsInterrogation: 0
-  - note: "2\uD68C\uCC28 \u2014 \uB354 \uCE90\uBB3C\uC5B4\uB3C4 \uB9D0\uC744 \uB3CC\uB9B0\uB2E4"
-    lines:
-    - speaker: 1
-      text: "\uB9AC\uBCF8 \uC774\uC57C\uAE30\uB97C \uB354 \uD574\uBCFC\uAE4C\uC694."
-      expression: 0
-      stageDirection: 
-      reaction:
-        clueId: 
-        openDelay: 0
-        window: 2.5
-        expression: 3
-        blurredFromRecallDepth: 2
-      autoGrantClueId: 
-    - speaker: 3
-      text: "\uADF8, \uADF8\uAC83\uBCF4\uB2E4 \uB9CC\uB144\uD544\uC744 \uBA3C\uC800
-        \uCC3E\uC544\uC57C \uD558\uC9C0 \uC54A\uC744\uAE4C\uC694? \uC81C\uAC00 \uB354
-        \uCC3E\uC544\uBCFC\uAC8C\uC694!"
-      expression: 2
-      stageDirection: "(\uD654\uC81C\uB97C \uB3CC\uB9AC\uB824\uB294 \uB4EF \uBD80\uC0B0\uC2A4\uB7FD\uAC8C)"
-      reaction:
-        clueId: 
-        openDelay: 0
-        window: 2.5
-        expression: 3
-        blurredFromRecallDepth: 2
-      autoGrantClueId: 
+  idleFollowUp:
+    note: 
+    lines: []
     trustDelta: 0
     endsInterrogation: 0
   tokenCost: 1

@@ -63,6 +63,7 @@ namespace ItIsYou.Core
             {
                 clueTray.TooltipOpened += OnTooltipOpened;
                 clueTray.TooltipClosed += OnTooltipClosed;
+                clueTray.CluePromoted += OnCluePromoted;
             }
 
             SetTokenVisible(false);
@@ -98,6 +99,7 @@ namespace ItIsYou.Core
             {
                 clueTray.TooltipOpened -= OnTooltipOpened;
                 clueTray.TooltipClosed -= OnTooltipClosed;
+                clueTray.CluePromoted -= OnCluePromoted;
             }
         }
 
@@ -133,7 +135,7 @@ namespace ItIsYou.Core
             SetStatus(phase switch
             {
                 GamePhase.Intro => "화면을 눌러 넘기세요",
-                GamePhase.ClueCollection => "살펴볼 곳을 눌러 단서를 모으세요",
+                GamePhase.ClueCollection => "살펴볼 곳을 눌러 수집하고, 우측 목록에서 읽어 보세요",
                 GamePhase.Interrogation1 => "좌측 선택지를 고르세요",
                 GamePhase.Deduction => "단서를 정리하는 중…",
                 GamePhase.Interrogation2 => "좌측 선택지를 고르세요",
@@ -190,9 +192,15 @@ namespace ItIsYou.Core
                 ClueKind.Testimony => "증언",
                 ClueKind.Reaction => "정황",
                 ClueKind.Deduced => "추론",
-                _ => "단서"
+                _ => "수집품"
             };
-            SetStatus($"+ {kind} 수집 — 우측 목록에 추가되었습니다");
+            SetStatus($"+ {kind} — 우측 목록에 추가되었습니다");
+        }
+
+        private void OnCluePromoted(ClueDefinition clue)
+        {
+            if (clue == null) return;
+            SetStatus($"‘{clue.ReadName}’ 을(를) 단서로 정리했습니다");
         }
 
         private void OnTutorialLesson(PressureVerdict verdict)

@@ -130,35 +130,18 @@ namespace ItIsYou.EditorTools
 
             var clueGrid = UI("Grid", clueRt);
             var gridRt = clueGrid.GetComponent<RectTransform>();
-            Anchor(gridRt, V(0, 1), V(1, 1), V(L.Pad, -L.Unit * 44), V(-L.Pad, -L.Unit * 9));
+            Anchor(gridRt, V(0, 0), V(1, 1), V(L.Pad, L.Pad), V(-L.Pad, -L.Unit * 9));
             var glg = clueGrid.AddComponent<GridLayoutGroup>();
             glg.cellSize = new Vector2(96f, 96f);
             glg.spacing = new Vector2(L.Unit, L.Unit);
             glg.childAlignment = TextAnchor.UpperLeft;
 
-            var tooltip = Img("Tooltip", clueRt, P.PanelSunk);
-            Anchor(tooltip.rectTransform, V(0, 0), V(1, 0), V(L.Pad, L.Pad), V(-L.Pad, L.Unit * 52));
-            tooltip.sprite = _uiSprite;
-
-            var tipTitle = Text("TipTitle", tooltip.rectTransform, "", T.Choice, P.Ink, TextAlignmentOptions.TopLeft);
-            Anchor(tipTitle.rectTransform, V(0, 1), V(1, 1), V(L.Pad, -L.Unit * 7), V(-L.Pad, -L.Unit * 2));
-
-            var tipBody = Text("TipBody", tooltip.rectTransform, "", T.Caption + 1f, P.InkSoft, TextAlignmentOptions.TopLeft);
-            tipBody.textWrappingMode = TextWrappingModes.Normal;
-            tipBody.lineSpacing = 12f;
-            Anchor(tipBody.rectTransform, V(0, 0), V(1, 1), V(L.Pad, L.Unit * 7), V(-L.Pad, -L.Unit * 8));
-
-            var tipClose = PlainButton("Close", tooltip.rectTransform, "닫기", T.Caption);
-            Anchor(tipClose.Item1, V(0.5f, 0), V(0.5f, 0), V(-64f, L.Unit * 2), V(64f, L.Unit * 6));
+            var clueHint = Text("Hint", clueRt, "칸을 누르면 열람", T.Caption, P.InkSoft, TextAlignmentOptions.BottomLeft);
+            Anchor(clueHint.rectTransform, V(0, 0), V(1, 0), V(L.Pad, L.Unit), V(-L.Pad, L.Unit * 4));
 
             var clueTrayView = cluePanel.gameObject.AddComponent<ClueTrayView>();
             clueTrayView.Set("container", gridRt)
-                        .Set("slotPrefab", cluePrefab)
-                        .Set("tooltipRoot", tooltip.gameObject)
-                        .Set("tooltipTitle", tipTitle)
-                        .Set("tooltipBody", tipBody)
-                        .Set("closeButton", tipClose.Item2);
-            tooltip.gameObject.SetActive(false);
+                        .Set("slotPrefab", cluePrefab);
 
             // ---- 대사창 (항상 보임) ----
             var dialoguePanel = Img("DialoguePanel", root, P.PanelSunk);
@@ -210,15 +193,24 @@ namespace ItIsYou.EditorTools
                 TextAlignmentOptions.Center);
             Anchor(stageHint.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 6), V(0, -L.Unit * 2));
 
+            // 고양이는 클릭 대상이 아니라 무대 위 인물이다. 그 아래로 비죽 나온 것만 핫스팟.
+            var stageCat = Img("Cat_Placeholder", stage.rectTransform, new Color32(0x24, 0x29, 0x2F, 0xFF));
+            Anchor(stageCat.rectTransform, V(0.56f, 0.50f), V(0.86f, 0.84f), Vector2.zero, Vector2.zero);
+            stageCat.raycastTarget = false;
+            var stageCatTag = Text("Label", stageCat.rectTransform, "검은 고양이\n(아트 대기)", T.Caption,
+                new Color32(0x5A, 0x61, 0x69, 0xFF), TextAlignmentOptions.Center);
+            Stretch(stageCatTag.rectTransform);
+
             // 핫스팟 여섯 개. 일반/특수의 겉모습은 완전히 같아야 한다.
+            // 〈시스템 기획〉: 리본 · 커피잔 · 언듯 보이는 무언가(특수) / 신문 · 타자기 · 객실 정보(일반)
             var hotspotRects = new (string id, float x0, float y0, float x1, float y1)[]
             {
-                ("OBJ_PAPERS",     0.05f, 0.14f, 0.34f, 0.44f),
+                ("OBJ_NEWSPAPER",  0.05f, 0.14f, 0.34f, 0.44f),
                 ("OBJ_COFFEE",     0.38f, 0.26f, 0.53f, 0.52f),
                 ("OBJ_TYPEWRITER", 0.58f, 0.10f, 0.88f, 0.40f),
                 ("OBJ_RIBBON",     0.20f, 0.52f, 0.40f, 0.68f),
-                ("OBJ_CAT",        0.56f, 0.50f, 0.86f, 0.84f),
-                ("OBJ_GLIMPSE",    0.50f, 0.46f, 0.60f, 0.56f)   // 고양이 아래로 비죽 나온 부분
+                ("OBJ_ROOMINFO",   0.90f, 0.56f, 0.99f, 0.86f),   // 벽의 객실 안내판
+                ("OBJ_GLIMPSE",    0.50f, 0.46f, 0.60f, 0.56f)    // 고양이 아래로 비죽 나온 부분
             };
 
             var sceneObjects = new List<InteractableObject>();
@@ -234,6 +226,7 @@ namespace ItIsYou.EditorTools
 
                 var spotLabel = Text("Label", spot.rectTransform, def.HoverLabel, T.Caption,
                     new Color32(0x6E, 0x74, 0x7B, 0xFF), TextAlignmentOptions.Center);
+                spotLabel.textWrappingMode = TextWrappingModes.Normal;
                 Stretch(spotLabel.rectTransform);
 
                 var outline = spot.gameObject.AddComponent<Outline>();
@@ -464,6 +457,41 @@ namespace ItIsYou.EditorTools
                 suspectCards.Add(cardView);
             }
 
+            // ================================================== 클로즈업 팝업
+            // 수집 페이즈에서 오브젝트를 누르면 화면 중앙에 뜨는 이미지. 대사창보다 아래에 둔다 —
+            // 설명 대사가 팝업 위로 읽혀야 하기 때문이다.
+            var closeUpRoot = UI("CloseUpPopup", root);
+            Stretch(closeUpRoot.GetComponent<RectTransform>());
+
+            var closeUpScrim = Img("Scrim", closeUpRoot.transform, new Color(0f, 0f, 0f, 0.55f));
+            Stretch(closeUpScrim.rectTransform);
+
+            var closeUpPanel = Img("Panel", closeUpRoot.transform, new Color32(0x16, 0x19, 0x1D, 0xFF));
+            Anchor(closeUpPanel.rectTransform, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-344f, -232f), V(344f, 296f));
+
+            var closeUpImg = Img("Image", closeUpPanel.rectTransform, new Color32(0x2E, 0x34, 0x3B, 0xFF));
+            Anchor(closeUpImg.rectTransform, V(0, 0), V(1, 1), V(L.Pad, L.Unit * 9), V(-L.Pad, -L.Pad));
+            closeUpImg.preserveAspect = true;
+            closeUpImg.raycastTarget = false;
+
+            var closeUpPlaceholder = Text("Placeholder", closeUpImg.rectTransform, "(이미지 대기)", T.Caption,
+                new Color32(0x6E, 0x74, 0x7B, 0xFF), TextAlignmentOptions.Center);
+            closeUpPlaceholder.textWrappingMode = TextWrappingModes.Normal;
+            Stretch(closeUpPlaceholder.rectTransform);
+
+            var closeUpCaption = Text("Caption", closeUpPanel.rectTransform, "", T.Choice, P.Ink, TextAlignmentOptions.Center);
+            Anchor(closeUpCaption.rectTransform, V(0, 0), V(1, 0), V(L.Pad, L.Unit * 3), V(-L.Pad, L.Unit * 8));
+
+            var closeUpHint = Text("Hint", closeUpPanel.rectTransform, "누르면 닫힘", T.Caption, P.InkSoft, TextAlignmentOptions.Right);
+            Anchor(closeUpHint.rectTransform, V(0, 0), V(1, 0), V(L.Pad, L.Unit * 0.5f), V(-L.Pad, L.Unit * 3));
+
+            var closeUpView = closeUpRoot.AddComponent<CloseUpPopup>();
+            closeUpView.Set("root", closeUpRoot)
+                       .Set("image", closeUpImg)
+                       .Set("caption", closeUpCaption)
+                       .Set("placeholder", closeUpPlaceholder)
+                       .Set("continueHint", closeUpHint.gameObject);
+
             // 대사창은 새로 만든 전면 배경들보다 위에 있어야 한다.
             dialoguePanel.transform.SetAsLastSibling();
 
@@ -506,40 +534,10 @@ namespace ItIsYou.EditorTools
             Anchor(logRule.rectTransform, V(0, 1), V(1, 1), V(L.Pad * 2, -L.Unit * 11), V(-L.Pad * 2, -L.Unit * 11 + 2f));
             logRule.raycastTarget = false;
 
-            var scrollGo = UI("Scroll", logRt);
-            var scrollRt = scrollGo.GetComponent<RectTransform>();
-            Anchor(scrollRt, V(0, 0), V(1, 1), V(L.Pad * 2, L.Unit * 11), V(-L.Pad * 2, -L.Unit * 13));
-            var scrollRect = scrollGo.AddComponent<ScrollRect>();
-            scrollRect.horizontal = false;
-            scrollRect.movementType = ScrollRect.MovementType.Clamped;
-            scrollRect.scrollSensitivity = 32f;
-
-            var viewport = UI("Viewport", scrollRt);
-            var viewportRt = viewport.GetComponent<RectTransform>();
-            Stretch(viewportRt);
-            viewport.AddComponent<RectMask2D>();
-
-            var content = UI("Content", viewportRt);
-            var contentRt = content.GetComponent<RectTransform>();
-            contentRt.anchorMin = new Vector2(0f, 1f);
-            contentRt.anchorMax = new Vector2(1f, 1f);
-            contentRt.pivot = new Vector2(0.5f, 1f);
-            contentRt.offsetMin = Vector2.zero;
-            contentRt.offsetMax = Vector2.zero;
-            var fitter = content.AddComponent<ContentSizeFitter>();
-            fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-            var contentLayout = content.AddComponent<VerticalLayoutGroup>();
-            contentLayout.childControlWidth = true;
-            contentLayout.childControlHeight = true;
-            contentLayout.childForceExpandWidth = true;
-            contentLayout.childForceExpandHeight = false;
-
-            var logBody = Text("Body", contentRt, "", T.Choice, P.Ink, TextAlignmentOptions.TopLeft);
+            var logScroll = BuildScroll("Scroll", logRt, V(L.Pad * 2, L.Unit * 11), V(-L.Pad * 2, -L.Unit * 13));
+            var logBody = Text("Body", logScroll.content, "", T.Choice, P.Ink, TextAlignmentOptions.TopLeft);
             logBody.textWrappingMode = TextWrappingModes.Normal;
             logBody.lineSpacing = 12f;
-
-            scrollRect.viewport = viewportRt;
-            scrollRect.content = contentRt;
 
             var logEmpty = Text("Empty", logRt, "아직 지나간 대사가 없습니다.", T.Caption, P.InkSoft,
                 TextAlignmentOptions.Center);
@@ -564,6 +562,117 @@ namespace ItIsYou.EditorTools
                 T.Caption, new Color32(0x8A, 0x90, 0x98, 0xFF), TextAlignmentOptions.BottomRight);
             Anchor(catcherHint.rectTransform, V(0.4f, 0), V(1, 0), V(0, L.Gutter), V(-L.Gutter, L.Gutter + 32f));
 
+            // ================================================== 단서 열람창
+            // 〈시스템 기획〉: 기존 화면이 반투명하게 어두워지며, 화면 중앙에 단서의 이미지 및
+            // 우측에 스크롤 가능한 텍스트 툴팁 창이 팝업된다. 강조 구간을 누르면 단서 오브젝트가 된다.
+            var readingRoot = UI("ClueReadingWindow", root);
+            Stretch(readingRoot.GetComponent<RectTransform>());
+
+            var readingScrim = Img("Scrim", readingRoot.transform, new Color(0f, 0f, 0f, 0.72f));
+            Stretch(readingScrim.rectTransform);
+
+            var readingPanel = Img("Panel", readingRoot.transform, new Color32(0x16, 0x19, 0x1D, 0xFF));
+            var readingRt = readingPanel.rectTransform;
+            Anchor(readingRt, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-640f, -360f), V(640f, 360f));
+
+            var readingImg = Img("Image", readingRt, new Color32(0x2E, 0x34, 0x3B, 0xFF));
+            Anchor(readingImg.rectTransform, V(0, 0), V(0.5f, 1), V(L.Pad * 2, L.Unit * 12), V(-L.Unit, -L.Pad * 2));
+            readingImg.preserveAspect = true;
+            readingImg.raycastTarget = false;
+
+            var readingPlaceholder = Text("Placeholder", readingImg.rectTransform, "(이미지 대기)", T.Caption,
+                new Color32(0x6E, 0x74, 0x7B, 0xFF), TextAlignmentOptions.Center);
+            readingPlaceholder.textWrappingMode = TextWrappingModes.Normal;
+            Stretch(readingPlaceholder.rectTransform);
+
+            var readingTitle = Text("Title", readingRt, "", T.Display, P.Ink, TextAlignmentOptions.TopLeft);
+            Anchor(readingTitle.rectTransform, V(0.5f, 1), V(1, 1), V(L.Unit, -L.Unit * 10), V(-L.Pad * 2, -L.Pad * 2));
+
+            var readingRule = Img("Rule", readingRt, P.Rule);
+            Anchor(readingRule.rectTransform, V(0.5f, 1), V(1, 1), V(L.Unit, -L.Unit * 11), V(-L.Pad * 2, -L.Unit * 11 + 2f));
+            readingRule.raycastTarget = false;
+
+            var readingScroll = BuildScroll("Scroll", readingRt, V(-1f, L.Unit * 12), V(-L.Pad * 2, -L.Unit * 13));
+            readingScroll.scroll.GetComponent<RectTransform>().anchorMin = V(0.5f, 0);
+            readingScroll.scroll.GetComponent<RectTransform>().offsetMin = V(L.Unit, L.Unit * 12);
+
+            var readingBody = Text("Body", readingScroll.content, "", T.Body, P.Ink, TextAlignmentOptions.TopLeft);
+            readingBody.textWrappingMode = TextWrappingModes.Normal;
+            readingBody.lineSpacing = 14f;
+            readingBody.raycastTarget = true;   // 강조 구간을 눌러야 한다
+            readingBody.gameObject.AddComponent<TmpLinkClickRelay>();
+
+            var promoteHint = Text("PromoteHint", readingRt, "", T.Caption, P.Brass, TextAlignmentOptions.BottomLeft);
+            Anchor(promoteHint.rectTransform, V(0.5f, 0), V(1, 0), V(L.Unit, L.Unit * 5), V(-L.Pad * 2 - 160f, L.Unit * 10));
+
+            var readingClose = PlainButton("Close", readingRt, "닫기", T.Choice);
+            Anchor(readingClose.Item1, V(1, 0), V(1, 0), V(-L.Pad * 2 - 144f, L.Unit * 4), V(-L.Pad * 2, L.Unit * 4 + 56f));
+
+            clueTrayView.Set("tooltipRoot", readingRoot)
+                        .Set("tooltipImage", readingImg)
+                        .Set("tooltipImagePlaceholder", readingPlaceholder)
+                        .Set("tooltipTitle", readingTitle)
+                        .Set("tooltipBody", readingBody)
+                        .Set("tooltipScroll", readingScroll.scroll)
+                        .Set("promoteHint", promoteHint)
+                        .Set("closeButton", readingClose.Item2);
+
+            // ================================================== 튜토리얼 팝업
+            var popupRoot = UI("TutorialPopup", root);
+            Stretch(popupRoot.GetComponent<RectTransform>());
+
+            var popupScrim = Img("Scrim", popupRoot.transform, new Color(0f, 0f, 0f, 0.7f));
+            Stretch(popupScrim.rectTransform);
+
+            var popupPanel = Img("Panel", popupRoot.transform, new Color32(0x16, 0x19, 0x1D, 0xFF));
+            var popupRt = popupPanel.rectTransform;
+            Anchor(popupRt, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-480f, -320f), V(480f, 320f));
+
+            var popupTitle = Text("Title", popupRt, "", T.Label, P.Brass, TextAlignmentOptions.Left);
+            Spaced(popupTitle);
+            Anchor(popupTitle.rectTransform, V(0, 1), V(1, 1), V(L.Pad * 2, -L.Unit * 9), V(-L.Pad * 2, -L.Unit * 4));
+
+            var popupRule = Img("Rule", popupRt, P.Rule);
+            Anchor(popupRule.rectTransform, V(0, 1), V(1, 1), V(L.Pad * 2, -L.Unit * 11), V(-L.Pad * 2, -L.Unit * 11 + 2f));
+            popupRule.raycastTarget = false;
+
+            var popupScroll = BuildScroll("Scroll", popupRt, V(L.Pad * 2, L.Unit * 12), V(-L.Pad * 2, -L.Unit * 13));
+            var popupBody = Text("Body", popupScroll.content, "", T.Body, P.Ink, TextAlignmentOptions.TopLeft);
+            popupBody.textWrappingMode = TextWrappingModes.Normal;
+            popupBody.lineSpacing = 14f;
+
+            var popupPage = Text("Page", popupRt, "", T.Caption, P.InkSoft, TextAlignmentOptions.BottomLeft);
+            Anchor(popupPage.rectTransform, V(0, 0), V(0.5f, 0), V(L.Pad * 2, L.Unit * 4), V(0, L.Unit * 10));
+
+            var popupNext = PlainButton("Next", popupRt, "다음", T.Choice);
+            Anchor(popupNext.Item1, V(1, 0), V(1, 0), V(-L.Pad * 2 - 160f, L.Unit * 4), V(-L.Pad * 2, L.Unit * 4 + 56f));
+
+            var popupView = popupRoot.AddComponent<TutorialPopupView>();
+            popupView.Set("root", popupRoot)
+                     .Set("titleLabel", popupTitle)
+                     .Set("bodyLabel", popupBody)
+                     .Set("pageLabel", popupPage)
+                     .Set("scroll", popupScroll.scroll)
+                     .Set("nextButton", popupNext.Item2)
+                     .Set("nextLabel", popupNext.Item1.Find("Label").GetComponent<TMP_Text>());
+
+            // ================================================== 심문 시작 제목
+            var titleRoot = UI("TitleCard", root);
+            Stretch(titleRoot.GetComponent<RectTransform>());
+            var titleGroup = titleRoot.AddComponent<CanvasGroup>();
+
+            var titleBand = Img("Band", titleRoot.transform, new Color(0f, 0f, 0f, 0.78f));
+            Anchor(titleBand.rectTransform, V(0, 0.5f), V(1, 0.5f), V(0, -96f), V(0, 96f));
+
+            var titleText = Text("Label", titleBand.rectTransform, "", T.Display + 12f, P.Brass, TextAlignmentOptions.Center);
+            titleText.characterSpacing = 6f;
+            Stretch(titleText.rectTransform);
+
+            var titleCard = titleRoot.AddComponent<TitleCardView>();
+            titleCard.Set("group", titleGroup)
+                     .Set("card", titleBand.rectTransform)
+                     .Set("label", titleText);
+
             // ---- 화면 전환 막 ----
             var faderImg = Img("ScreenFader", root, Color.black);
             Stretch(faderImg.rectTransform);
@@ -587,6 +696,7 @@ namespace ItIsYou.EditorTools
                          .Set("dialogue", presenter)
                          .Set("cursor", cursor)
                          .Set("clueTray", clueTrayView)
+                         .Set("closeUp", closeUpView)
                          .Set("advanceButton", goInterrogate.Item2)
                          .Set("progressLabel", progressLabel);
 
@@ -599,7 +709,9 @@ namespace ItIsYou.EditorTools
             interrogation.Set("database", db)
                          .Set("dialogue", presenter)
                          .Set("choiceList", choiceListView)
-                         .Set("cursor", cursor);
+                         .Set("cursor", cursor)
+                         .Set("titleCard", titleCard)
+                         .Set("tutorialPopup", popupView);
 
             var flow = systems.AddComponent<GameFlowController>();
             flow.Set("database", db)
@@ -631,7 +743,7 @@ namespace ItIsYou.EditorTools
             logView.Set("dialogue", presenter)
                    .Set("root", logRoot)
                    .Set("body", logBody)
-                   .Set("scroll", scrollRect)
+                   .Set("scroll", logScroll.scroll)
                    .Set("closeButton", logClose.Item2)
                    .Set("emptyLabel", logEmpty);
 
@@ -674,13 +786,17 @@ namespace ItIsYou.EditorTools
             logRoot.SetActive(false);
             catcher.Item1.gameObject.SetActive(false);
             toolbar.SetActive(false);
+            closeUpRoot.SetActive(false);
+            readingRoot.SetActive(false);
+            popupRoot.SetActive(false);
+            titleRoot.SetActive(false);
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.Refresh();
 
             Debug.Log($"[It is You] 튜토리얼 챕터 씬 생성 완료 — {ScenePath}\n" +
-                      "Play → 인트로 대사 → 단서 수집(핫스팟 6) → 심문 → 지목");
+                      "Play → 인트로 대사 → 단서 수집(핫스팟 6 · 클로즈업 · 열람창) → 심문(제목 · 튜토리얼 팝업) → 지목");
         }
 
         // ====================================================== 리플렉션 보조
@@ -803,6 +919,16 @@ namespace ItIsYou.EditorTools
             var button = go.AddComponent<Button>();
             button.targetGraphic = bg;
 
+            // 승격된 칸의 금색 테두리. 바깥으로 3px 나온 놋쇠 판 위에 바탕색 판을 겹쳐 테두리만 남긴다.
+            var frame = Img("PromotedFrame", rt, P.Brass);
+            Anchor(frame.rectTransform, V(0, 0), V(1, 1), V(-3f, -3f), V(3f, 3f));
+            frame.sprite = _uiSprite;
+            frame.raycastTarget = false;
+            var frameInner = Img("Inner", frame.rectTransform, P.Surface);
+            Anchor(frameInner.rectTransform, V(0, 0), V(1, 1), V(3f, 3f), V(-3f, -3f));
+            frameInner.sprite = _uiSprite;
+            frameInner.raycastTarget = false;
+
             var icon = Img("Icon", rt, new Color(1f, 1f, 1f, 0f));
             Anchor(icon.rectTransform, V(0, 0), V(1, 1), V(L.Unit, L.Unit), V(-L.Unit, -L.Unit));
             icon.preserveAspect = true;
@@ -830,7 +956,9 @@ namespace ItIsYou.EditorTools
                 .Set("hoverLabel", hoverText)
                 .Set("hoverRoot", hoverBg.gameObject)
                 .Set("unreadBadge", unread.gameObject)
-                .Set("usableBadge", usable.gameObject);
+                .Set("usableBadge", usable.gameObject)
+                .Set("promotedFrame", frame.gameObject);
+            frame.gameObject.SetActive(false);
 
             var prefab = PrefabUtility.SaveAsPrefabAsset(go, PrefabFolder + "/ClueSlot.prefab");
             Object.DestroyImmediate(go);
@@ -911,6 +1039,43 @@ namespace ItIsYou.EditorTools
             var text = Text("Label", rt, label, size, P.Ink, TextAlignmentOptions.Center);
             Stretch(text.rectTransform);
             return (rt, button);
+        }
+
+        /// <summary>세로 스크롤 영역. 내용은 위에서 아래로 쌓이고 높이에 맞춰 늘어난다.</summary>
+        private static (ScrollRect scroll, RectTransform content) BuildScroll(string name, Transform parent,
+            Vector2 offsetMin, Vector2 offsetMax)
+        {
+            var scrollGo = UI(name, parent);
+            var scrollRt = scrollGo.GetComponent<RectTransform>();
+            Anchor(scrollRt, V(0, 0), V(1, 1), offsetMin, offsetMax);
+            var scrollRect = scrollGo.AddComponent<ScrollRect>();
+            scrollRect.horizontal = false;
+            scrollRect.movementType = ScrollRect.MovementType.Clamped;
+            scrollRect.scrollSensitivity = 32f;
+
+            var viewport = UI("Viewport", scrollRt);
+            var viewportRt = viewport.GetComponent<RectTransform>();
+            Stretch(viewportRt);
+            viewport.AddComponent<RectMask2D>();
+
+            var content = UI("Content", viewportRt);
+            var contentRt = content.GetComponent<RectTransform>();
+            contentRt.anchorMin = new Vector2(0f, 1f);
+            contentRt.anchorMax = new Vector2(1f, 1f);
+            contentRt.pivot = new Vector2(0.5f, 1f);
+            contentRt.offsetMin = Vector2.zero;
+            contentRt.offsetMax = Vector2.zero;
+            var fitter = content.AddComponent<ContentSizeFitter>();
+            fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            var contentLayout = content.AddComponent<VerticalLayoutGroup>();
+            contentLayout.childControlWidth = true;
+            contentLayout.childControlHeight = true;
+            contentLayout.childForceExpandWidth = true;
+            contentLayout.childForceExpandHeight = false;
+
+            scrollRect.viewport = viewportRt;
+            scrollRect.content = contentRt;
+            return (scrollRect, contentRt);
         }
 
         private static void Stretch(RectTransform rt)

@@ -40,8 +40,15 @@ namespace ItIsYou.Interrogation
         /// <summary>튜토리얼이라 페널티가 유예됐다. UI 는 설명 팝업을 띄워야 한다.</summary>
         public readonly bool TutorialLesson;
 
+        /// <summary>
+        /// 페널티에 대한 첫 설명을 띄울 자리. 강압 선택지 뒤의 시간 경과 대사가 끝났을 때,
+        /// 무반응 회차 대사가 동났을 때, 어떤 페널티 판정이든 처음 났을 때.
+        /// 실제로 띄울지(한 번만)는 컨트롤러가 정한다.
+        /// </summary>
+        public readonly bool PenaltyLesson;
+
         public InterrogationStep(DialogueSequence main, DialogueSequence follow, PressureVerdict verdict,
-            bool ends, InterrogationEndReason endReason, bool tutorialLesson)
+            bool ends, InterrogationEndReason endReason, bool tutorialLesson, bool penaltyLesson = false)
         {
             Main = main;
             Follow = follow;
@@ -49,6 +56,7 @@ namespace ItIsYou.Interrogation
             Ends = ends;
             EndReason = endReason;
             TutorialLesson = tutorialLesson;
+            PenaltyLesson = penaltyLesson;
         }
 
         public static InterrogationStep Nothing =>
@@ -73,6 +81,10 @@ namespace ItIsYou.Interrogation
         private readonly HashSet<string> _consumedChoiceIds = new HashSet<string>();
         private readonly HashSet<string> _inspectedObjectIds = new HashSet<string>();
 
+        // 직전에 고른 선택지의 <시간 경과> 대사. 다음 무반응 판정에서 회차 대사 대신 나온다.
+        private DialogueSequence _pendingIdleFollowUp;
+        private ChoiceTone _pendingIdleFollowUpTone;
+
         public TimeTokenPool Tokens { get; }
         public PressureTracker Pressure { get; }
         public IdleTimer Idle { get; }
@@ -87,8 +99,11 @@ namespace ItIsYou.Interrogation
         /// <summary>신뢰도 누적 변화량. 최종 지목 판정에서 쓴다.</summary>
         public int TrustDelta { get; private set; }
 
-        /// <summary>지금까지 무반응 판정이 몇 번 났는가. 회차마다 반응이 달라진다.</summary>
+        /// <summary>지금까지 무반응 판정이 몇 번 났는가(선택지 뒤의 시간 경과는 세지 않는다). 회차마다 반응이 달라진다.</summary>
         public int IdleRounds { get; private set; }
+
+        /// <summary>메인 선택지를 몇 번 골랐는가. 첫 선택 뒤 튜토리얼 팝업의 트리거가 된다.</summary>
+        public int ChoicesMade { get; private set; }
 
         /// <summary>심문이 끝났다. (사유)</summary>
         public event Action<InterrogationEndReason> Ended;
@@ -152,6 +167,10 @@ namespace ItIsYou.Interrogation
         {
             if (!_inventory.HasAll(choice.RequiredClueIds)) return false;
 
+            // 단서 제시 선택지는 수집품을 '단서 오브젝트'로 승격해 두어야 열린다.
+            // 기획: "이를 누를 시, 해당 오브젝트는 단순 '수집 오브젝트'에서 '단서 오브젝트'로 변경된다."
+            if (!_inventory.HasAllPromoted(choice.RequiredPromotedClueIds)) return false;
+
             var required = choice.RequiredChoiceIds;
             if (required != null)
             {
@@ -180,6 +199,7 @@ namespace ItIsYou.Interrogation
             var pass = choice.GetPass(used);
 
             _choiceUseCount[choice.Id] = used + 1;
+            ChoicesMade++;
             if (choice.ConsumeOnUse) _consumedChoiceIds.Add(choice.Id);
 
             var unlocks = choice.UnlocksChoiceIds;
@@ -187,6 +207,10 @@ namespace ItIsYou.Interrogation
             {
                 for (int i = 0; i < unlocks.Count; i++) _unlockedChoiceIds.Add(unlocks[i]);
             }
+
+            // 이 선택지 뒤에 <시간 경과> 대사가 있으면 다음 침묵에서 그 줄이 나온다.
+            _pendingIdleFollowUp = choice.HasIdleFollowUp ? choice.IdleFollowUp : null;
+            _pendingIdleFollowUpTone = choice.Tone;
 
             Tokens.Spend(choice.TokenCost, TimeTokenPool.SpendReason.Choice);
             Idle.Restart();
@@ -207,6 +231,8 @@ namespace ItIsYou.Interrogation
             var firstTime = _inspectedObjectIds.Add(target.Id);
             var lines = firstTime ? target.OnInspect : target.OnReinspect;
             var sequence = new DialogueSequence(lines, target.Id);
+
+            _pendingIdleFollowUp = null;
 
             Tokens.Spend(1, TimeTokenPool.SpendReason.InterrogationObject);
             Idle.Restart();
@@ -276,23 +302,38 @@ namespace ItIsYou.Interrogation
 
         // ------------------------------------------------------------------ 종료
 
-        /// <summary>플레이어가 직접 심문을 끝낸다.</summary>
-        public InterrogationStep EndManually() => Finish(InterrogationEndReason.PlayerEnded, null);
+        /// <summary>
+        /// 플레이어가 직접 심문을 끝낸다. 기획: "최종적으로 수동으로 페이즈를 종료시키거나".
+        /// 용의자의 마무리 대사가 있으면 그것이 다음 인물로 넘어가는 다리가 된다.
+        /// </summary>
+        public InterrogationStep EndManually() => Finish(InterrogationEndReason.PlayerEnded, _suspect.OnEndInterrogation);
 
         /// <summary>무반응 판정이 났을 때 컨트롤러가 호출한다.</summary>
         public InterrogationStep ApplyIdlePenalty()
         {
             if (IsOver) return InterrogationStep.Nothing;
 
-            IdleRounds++;
             Tokens.Spend(1, TimeTokenPool.SpendReason.Idle);
             Idle.Restart();
 
             if (IsOver) return InterrogationStep.Nothing; // 토큰 소진으로 이미 끝났다
 
+            // 직전 선택지에 <시간 경과> 대사가 붙어 있으면 그것이 먼저다.
+            // 강압 선택지의 시간 경과 뒤에는 페널티 설명 팝업이 이어진다.
+            if (_pendingIdleFollowUp != null)
+            {
+                var followUp = _pendingIdleFollowUp;
+                _pendingIdleFollowUp = null;
+                var lesson = _pendingIdleFollowUpTone == ChoiceTone.Aggressive;
+                return new InterrogationStep(followUp, null, PressureVerdict.None,
+                    false, InterrogationEndReason.PlayerEnded, false, lesson);
+            }
+
             // 회차마다 다른 줄을 쓴다. 같은 말이 반복되면 침묵에 값이 붙지 않는다.
+            IdleRounds++;
+            var exhausted = _suspect.IdleRoundCount > 0 && IdleRounds >= _suspect.IdleRoundCount;
             return new InterrogationStep(_suspect.GetIdle(IdleRounds), null, PressureVerdict.None,
-                false, InterrogationEndReason.PlayerEnded, false);
+                false, InterrogationEndReason.PlayerEnded, false, exhausted);
         }
 
         private void OnTokensExhausted()
@@ -307,6 +348,7 @@ namespace ItIsYou.Interrogation
         {
             var follow = PickVerdictDialogue(verdict);
             var terminal = PressureTracker.IsTerminal(verdict);
+            var penaltyLesson = verdict != PressureVerdict.None;
 
             // 튜토리얼 챕터는 페널티가 붙어도 심문을 끊지 않는다.
             // 대신 무엇을 잘못했는지 설명 팝업을 띄운다.
@@ -325,23 +367,23 @@ namespace ItIsYou.Interrogation
 
                 Tokens.DrainAll();
                 MarkOver(reason);
-                return new InterrogationStep(main, follow, verdict, true, reason, false);
+                return new InterrogationStep(main, follow, verdict, true, reason, false, penaltyLesson);
             }
 
             if (forcedEnd && !IsOver)
             {
                 MarkOver(InterrogationEndReason.PlayerEnded);
                 return new InterrogationStep(main, follow, verdict, true,
-                    InterrogationEndReason.PlayerEnded, tutorialLesson);
+                    InterrogationEndReason.PlayerEnded, tutorialLesson, penaltyLesson);
             }
 
             // 토큰 소진으로 이미 끝났다면 그 사유를 그대로 전한다.
             if (IsOver)
                 return new InterrogationStep(main, _suspect.OnTokensExhausted, verdict, true,
-                    EndReason, tutorialLesson);
+                    EndReason, tutorialLesson, penaltyLesson);
 
             return new InterrogationStep(main, follow, verdict, false,
-                InterrogationEndReason.PlayerEnded, tutorialLesson);
+                InterrogationEndReason.PlayerEnded, tutorialLesson, penaltyLesson);
         }
 
         private DialogueSequence PickVerdictDialogue(PressureVerdict verdict) => verdict switch

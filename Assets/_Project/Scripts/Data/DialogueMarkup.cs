@@ -9,7 +9,8 @@ namespace ItIsYou.Data
     /// <list type="bullet">
     /// <item><c>&lt;clue=ID&gt;문구&lt;/clue&gt;</c> — 심문 중 클릭해 증언으로 수집 가능한 구간.
     /// TMP 의 link + underline 으로 변환된다.</item>
-    /// <item><c>&lt;hl&gt;문구&lt;/hl&gt;</c> — 단서 툴팁에서 "단서로 쓸 수 있음"을 알리는 강조 구간.</item>
+    /// <item><c>&lt;hl&gt;문구&lt;/hl&gt;</c> — 단서 툴팁에서 "단서로 쓸 수 있음"을 알리는 강조 구간.
+    /// 열람창에서는 이 구간을 눌러 수집 오브젝트를 단서 오브젝트로 승격한다.</item>
     /// </list>
     ///
     /// 기획 문서를 그대로 옮겨 적을 수 있도록 태그 문법을 단순하게 유지한다.
@@ -25,6 +26,9 @@ namespace ItIsYou.Data
 
         /// <summary>기본 강조 색. 단서로 쓸 수 있는 구간에 쓴다.</summary>
         public const string HighlightColor = "#C9A227";
+
+        /// <summary>열람창에서 강조 구간에 붙는 TMP 링크 id.</summary>
+        public const string PromoteLinkId = "promote";
 
         /// <summary>본문에 들어 있는 모든 단서 id 를 등장 순서대로 돌려준다.</summary>
         public static IEnumerable<string> ExtractClueIds(string source)
@@ -65,6 +69,29 @@ namespace ItIsYou.Data
             return result;
         }
 
+        /// <summary>
+        /// 열람창 툴팁용 변환.
+        /// 아직 승격되지 않은 수집 오브젝트라면 강조 구간이 밑줄 링크가 되어 누를 수 있고,
+        /// 승격된 뒤에는 밑줄 없이 강조색만 남는다.
+        /// </summary>
+        public static string ToTooltipRichText(string source, bool promotable, bool promoted)
+        {
+            if (string.IsNullOrEmpty(source)) return string.Empty;
+
+            var result = ClueTag.Replace(source, m => m.Groups["body"].Value);
+
+            if (promotable && !promoted)
+            {
+                result = HighlightTag.Replace(result, m =>
+                    $"<link=\"{PromoteLinkId}\"><u><color={HighlightColor}>{m.Groups["body"].Value}</color></u></link>");
+            }
+            else
+            {
+                result = HighlightTag.Replace(result, m => $"<color={HighlightColor}>{m.Groups["body"].Value}</color>");
+            }
+            return result;
+        }
+
         /// <summary>마크업을 모두 벗긴 평문. 로그나 검색에 쓴다.</summary>
         public static string ToPlainText(string source)
         {
@@ -72,6 +99,21 @@ namespace ItIsYou.Data
             var result = ClueTag.Replace(source, m => m.Groups["body"].Value);
             result = HighlightTag.Replace(result, m => m.Groups["body"].Value);
             return result;
+        }
+
+        /// <summary>이 대사 묶음에 클릭해 수집할 거리(밑줄 구간 또는 리액션)가 있는가.</summary>
+        public static bool HasCollectable(DialogueSequence sequence)
+        {
+            if (sequence == null || sequence.IsEmpty) return false;
+            var lines = sequence.Lines;
+            for (int i = 0; i < lines.Count; i++)
+            {
+                var line = lines[i];
+                if (line == null) continue;
+                if (line.HasReaction) return true;
+                if (!string.IsNullOrEmpty(line.Text) && ClueTag.IsMatch(line.Text)) return true;
+            }
+            return false;
         }
     }
 }
