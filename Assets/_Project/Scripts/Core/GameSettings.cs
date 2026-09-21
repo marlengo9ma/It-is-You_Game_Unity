@@ -84,15 +84,19 @@ namespace ItIsYou.Core
 
         // ---------------------------------------------------------------- 저장
 
+        /// <summary>기본값이 바뀌면 올린다. 이전 버전에서 저장된 화면 설정은 버리고 새 기본값을 쓴다.</summary>
+        private const int DisplayDefaultsVersion = 2;   // 2: 창 모드 1280x720 (2026-09-22)
+        private const string KeyDisplayVersion = "settings.displayVersion";
+
         public static void Load()
         {
-            DisplayMode = (DisplayModeOption)PlayerPrefs.GetInt(KeyDisplayMode, (int)DisplayModeOption.Fullscreen);
-            Aspect = (AspectOption)PlayerPrefs.GetInt(KeyAspect, (int)AspectOption.Wide16x9);
-
-            var native = NativeResolution();
-            var defaultRes = ClosestPreset(Wide, native);
-            Width = PlayerPrefs.GetInt(KeyWidth, defaultRes.x);
-            Height = PlayerPrefs.GetInt(KeyHeight, defaultRes.y);
+            var staleDisplay = PlayerPrefs.GetInt(KeyDisplayVersion, 0) < DisplayDefaultsVersion;
+            DisplayMode = staleDisplay ? DisplayModeOption.Windowed
+                : (DisplayModeOption)PlayerPrefs.GetInt(KeyDisplayMode, (int)DisplayModeOption.Windowed);
+            Aspect = staleDisplay ? AspectOption.Wide16x9
+                : (AspectOption)PlayerPrefs.GetInt(KeyAspect, (int)AspectOption.Wide16x9);
+            Width = staleDisplay ? 1280 : PlayerPrefs.GetInt(KeyWidth, 1280);
+            Height = staleDisplay ? 720 : PlayerPrefs.GetInt(KeyHeight, 720);
 
             MasterVolume = PlayerPrefs.GetFloat(KeyMaster, 0.8f);
             BgmVolume = PlayerPrefs.GetFloat(KeyBgm, 0.8f);
@@ -117,16 +121,17 @@ namespace ItIsYou.Core
             PlayerPrefs.SetInt(KeyMuted, Muted ? 1 : 0);
             PlayerPrefs.SetFloat(KeyTextSpeed, TextSpeed);
             PlayerPrefs.SetInt(KeyGuideMode, GuideMode ? 1 : 0);
+            PlayerPrefs.SetInt(KeyDisplayVersion, DisplayDefaultsVersion);
             PlayerPrefs.Save();
         }
 
         public static void ResetToDefaults()
         {
-            DisplayMode = DisplayModeOption.Fullscreen;
+            // 기본은 창 모드 1280x720 (2026-09-22 제작자 지시). 전체 화면은 설정에서 고른다.
+            DisplayMode = DisplayModeOption.Windowed;
             Aspect = AspectOption.Wide16x9;
-            var def = ClosestPreset(Wide, NativeResolution());
-            Width = def.x;
-            Height = def.y;
+            Width = 1280;
+            Height = 720;
             MasterVolume = 0.8f;
             BgmVolume = 0.8f;
             SfxVolume = 0.8f;

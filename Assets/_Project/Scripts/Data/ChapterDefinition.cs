@@ -102,8 +102,8 @@ namespace ItIsYou.Data
         [Tooltip("친근/강압 교차를 몇 번 하면 게임오버인지. 기획 기준 2")]
         [SerializeField] private int toneAlternationGameOverAt = 2;
 
-        [Tooltip("무반응으로 판정하기까지의 실제 시간(초). 기획 기준 30")]
-        [SerializeField] private float idleSeconds = 30f;
+        [Tooltip("무반응으로 판정하기까지의 실제 시간(초). 기획 기준 15 (2026-09-22, 이전 30)")]
+        [SerializeField] private float idleSeconds = 15f;
 
         [Tooltip("기억 짐작에서 조수의 도움을 쓸 때 드는 추가 타임 토큰.")]
         [SerializeField] private int assistRecallTokenCost = 1;

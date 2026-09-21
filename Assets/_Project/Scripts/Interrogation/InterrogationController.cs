@@ -36,15 +36,8 @@ namespace ItIsYou.Interrogation
         [SerializeField] private PauseMenu pauseMenu;
 
         [Header("연출")]
-        [Tooltip("무반응 타이머가 차오를수록 커지는 시계 초침 소리.")]
-        [SerializeField] private AudioSource clockTickSource;
-
-        [Tooltip("무반응 타이머가 끝까지 찼을 때 초침이 도달할 최대 볼륨.")]
-        [Range(0f, 1f)]
-        [SerializeField] private float clockMaxVolume = 0.8f;
-
-        [Tooltip("초침이 커지는 만큼 줄어드는 나머지 사운드.")]
-        [SerializeField] private AudioSource ambienceSource;
+        [Tooltip("무반응 타이머가 7초를 넘기면 초침이 커지고 나머지 사운드가 줄어드는 연출.")]
+        [SerializeField] private IdleTensionAudio tension;
 
         private InterrogationSession _session;
         private ICharacterView _characterView;
@@ -156,21 +149,12 @@ namespace ItIsYou.Interrogation
             if (!IsRunning) return;
 
             _session.Tick(Time.unscaledDeltaTime);
-            DriveClockAudio(_session.Idle.Progress);
-        }
 
-        /// <summary>
-        /// 무반응이 다가올수록 초침 소리가 커지고 나머지 사운드가 줄어든다.
-        /// 기획서가 이 요소를 "플레이어에게 실질적인 스트레스를 주는 요소"로 규정했으므로,
-        /// 시각 표시보다 청각 변화를 우선한다.
-        /// </summary>
-        private void DriveClockAudio(float progress)
-        {
-            if (clockTickSource != null)
-                clockTickSource.volume = Mathf.Lerp(0f, clockMaxVolume, progress);
-
-            if (ambienceSource != null)
-                ambienceSource.volume = Mathf.Lerp(1f, 0.25f, progress);
+            // 무반응이 다가올수록 초침 소리가 커지고 나머지 사운드가 줄어든다.
+            // 기획서가 이 요소를 "플레이어에게 실질적인 스트레스를 주는 요소"로 규정했으므로,
+            // 시각 표시보다 청각 변화를 우선한다. 타이머가 멈춰 있으면 연출도 그 자리에 선다.
+            if (tension != null)
+                tension.Drive(_session.Idle.ElapsedSeconds, _session.Idle.ThresholdSeconds);
         }
 
         // ------------------------------------------------------------- 입력
@@ -291,7 +275,7 @@ namespace ItIsYou.Interrogation
             {
                 if (choiceList != null) choiceList.Clear();
                 cursor?.ResetState();
-                DriveClockAudio(0f);
+                tension?.Clear();
                 dialogue?.SetPacing(slowSpeech: false, allowSkip: true);
                 Finished?.Invoke(step.EndReason);
                 yield break;

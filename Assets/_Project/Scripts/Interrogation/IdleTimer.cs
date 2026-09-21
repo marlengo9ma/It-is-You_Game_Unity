@@ -27,6 +27,10 @@ namespace ItIsYou.Interrogation
         /// <summary>0~1 진행도. 시계 초침 소리를 키우고 나머지 사운드를 줄이는 데 쓴다.</summary>
         public float Progress => _threshold <= 0f ? 0f : Mathf.Clamp01(_elapsed / _threshold);
 
+        /// <summary>지금까지 흐른 실제 시간(초). 초침 연출의 시작 시점 계산에 쓴다.</summary>
+        public float ElapsedSeconds => _elapsed;
+        public float ThresholdSeconds => _threshold;
+
         public bool IsHeld => _holdCount > 0;
         public bool IsRunning => _running;
         public float Remaining => Mathf.Max(0f, _threshold - _elapsed);

@@ -1091,7 +1091,7 @@ MonoBehaviour:
   objectSpamRefuseAt: 4
   toneAlternationWarnAt: 1
   toneAlternationGameOverAt: 2
-  idleSeconds: 30
+  idleSeconds: 15
   assistRecallTokenCost: 1
   idleGraceAfterDialogueSeconds: 5
   recipes: []

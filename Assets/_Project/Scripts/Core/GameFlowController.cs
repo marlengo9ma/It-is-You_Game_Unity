@@ -266,7 +266,8 @@ namespace ItIsYou.Core
             GameOver?.Invoke(kind);
         }
 
-        // 툴팁이 떠 있는 동안 무반응 타이머를 멈춘다.
+        // 열람창이 떠 있는 동안 무반응 타이머를 멈춘다. 닫으면 3초 뒤(ClueTrayView 의 유예) 멈춘 자리에서 이어 간다.
+        // 읽는 행동은 침묵을 끊는 게 아니라 잠시 미루는 것이라, 0으로 되돌리지 않는다.
         private void OnTooltipOpened()
         {
             if (interrogation != null && interrogation.IsRunning)
@@ -278,7 +279,6 @@ namespace ItIsYou.Core
             if (interrogation != null && interrogation.IsRunning)
             {
                 interrogation.Session.Idle.Release();
-                interrogation.Session.Idle.Restart();
             }
         }
 

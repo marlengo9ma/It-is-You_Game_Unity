@@ -710,6 +710,22 @@ namespace ItIsYou.EditorTools
                             .Set("cards", suspectCards)
                             .Set("promptLabel", selectPrompt);
 
+            // ---- 무반응 연출 사운드 (클립은 아직 없음 — ClockTick 의 AudioSource 에 초침 루프를 끼우면 된다) ----
+            var audioRoot = new GameObject("Audio");
+            audioRoot.transform.SetParent(systems.transform, false);
+            var clockGo = new GameObject("ClockTick", typeof(AudioSource), typeof(ItIsYou.Core.SoundChannel));
+            clockGo.transform.SetParent(audioRoot.transform, false);
+            var clockSrc = clockGo.GetComponent<AudioSource>();
+            clockSrc.playOnAwake = false; clockSrc.loop = true; clockSrc.volume = 0f;
+            clockGo.GetComponent<ItIsYou.Core.SoundChannel>().Set("kind", ItIsYou.Core.SoundChannelKind.Sfx).Set("baseVolume", 0f).Set("duckable", false);
+            var bgmGo = new GameObject("Bgm", typeof(AudioSource), typeof(ItIsYou.Core.SoundChannel));
+            bgmGo.transform.SetParent(audioRoot.transform, false);
+            var bgmSrc = bgmGo.GetComponent<AudioSource>();
+            bgmSrc.playOnAwake = true; bgmSrc.loop = true; bgmSrc.volume = 1f;
+            bgmGo.GetComponent<ItIsYou.Core.SoundChannel>().Set("kind", ItIsYou.Core.SoundChannelKind.Bgm).Set("baseVolume", 1f).Set("duckable", true);
+            var tension = systems.AddComponent<IdleTensionAudio>();
+            tension.Set("clockTick", clockSrc).Set("startSeconds", 7f).Set("clockMaxVolume", 0.85f).Set("duckFloor", 0.25f);
+
             var interrogation = systems.AddComponent<InterrogationController>();
             interrogation.Set("database", db)
                          .Set("dialogue", presenter)
@@ -717,7 +733,8 @@ namespace ItIsYou.EditorTools
                          .Set("cursor", cursor)
                          .Set("titleCard", titleCard)
                          .Set("tutorialPopup", popupView)
-                         .Set("pauseMenu", pauseMenu);
+                         .Set("pauseMenu", pauseMenu)
+                         .Set("tension", tension);
 
             var flow = systems.AddComponent<GameFlowController>();
             flow.Set("database", db)
