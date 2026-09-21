@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using ItIsYou.Characters;
 using ItIsYou.Clues;
 using ItIsYou.Data;
+using ItIsYou.Deduction;
 using ItIsYou.Interrogation;
 using ItIsYou.Investigation;
 using ItIsYou.UI;
@@ -29,6 +30,7 @@ namespace ItIsYou.Core
         [SerializeField] private InvestigationController investigation;
         [SerializeField] private SuspectSelectController suspectSelect;
         [SerializeField] private InterrogationController interrogation;
+        [SerializeField] private DeductionController deduction;
 
         [Header("UI")]
         [SerializeField] private DialoguePresenter dialogue;
@@ -36,6 +38,8 @@ namespace ItIsYou.Core
         [SerializeField] private ScreenFader fader;
         [SerializeField] private ClueTrayView clueTray;
         [SerializeField] private CursorController cursor;
+        [Tooltip("게임오버 화면. 실패한 페이즈의 시작으로 되돌아가는 버튼이 있다.")]
+        [SerializeField] private GameOverView gameOverView;
 
         [Header("캐릭터")]
         [Tooltip("용의자 id 와 화면 위 캐릭터 뷰를 짝지어 둔다.")]
@@ -88,7 +92,7 @@ namespace ItIsYou.Core
             // 화면에는 아무 일도 일어나지 않은 것처럼 보인다 — 실제로 그랬다.
             Session.Clues.ClueAdded += OnClueAdded;
 
-            StartCoroutine(RunChapter());
+            _chapterRoutine = StartCoroutine(RunChapter());
         }
 
         private IEnumerator RunChapter()
@@ -153,22 +157,58 @@ namespace ItIsYou.Core
                 : new List<SuspectDefinition>(chapter.FirstRoundSuspects);
 
             yield return Transition(GamePhase.Interrogation1);
-            yield return RunInterrogationRound(round);
-            if (Session.IsGameOver) yield break;
-
-            // ---- 단서 조합 ----
-            SetPhase(GamePhase.Deduction);
-            if (Session.CheckDeductionDeadlock(chapter))
+            yield return RunInterrogationRound(round, 1);
+            if (Session.IsGameOver)
             {
-                // 필요한 조합을 만들 수 없다 — 자기 비하 엔딩.
-                Session.TriggerGameOver(GameOverKind.SelfLoathing);
+                yield return ShowGameOver(allowRetry: false, retryText: null);
                 yield break;
             }
 
+            yield return RunFromDeduction(round);
+        }
+
+        /// <summary>단서 조합 → 2차 심문 → 지목 → 결말. 디버그 점프의 진입점이기도 하다.</summary>
+        private IEnumerator RunFromDeduction(List<SuspectDefinition> round)
+        {
+            // ---- 단서 조합 ----
+            // 잉크가 다 마른 채 또 틀리면 자기 비하 게임오버. 게임오버는 남되, 복귀 지점은 조합의 시작이다.
+            while (true)
+            {
+                yield return Transition(GamePhase.Deduction);
+                var deductionDone = false;
+                var deductionOk = false;
+                void OnDeduced(bool ok) { deductionOk = ok; deductionDone = true; }
+
+                if (deduction != null)
+                {
+                    deduction.Finished += OnDeduced;
+                    deduction.Begin(chapter, Session.Clues);
+                    while (!deductionDone) yield return null;
+                    deduction.Finished -= OnDeduced;
+                }
+                else deductionOk = true;
+
+                if (deductionOk) break;
+
+                Session.TriggerGameOver(GameOverKind.SelfLoathing);
+                var retry = false;
+                yield return ShowGameOver(allowRetry: true, retryText: "단서 조합부터 다시", onRetry: () => retry = true);
+                if (!retry) yield break;
+                Session.ClearGameOver();
+            }
+
             // ---- 2차 심문 ----
-            SetPhase(GamePhase.Interrogation2);
-            yield return RunInterrogationRound(chapter.SecondRoundSuspects);
-            if (Session.IsGameOver) yield break;
+            // 1차와 같은 규칙. 조합에서 만든 추론이 단서 제시 선택지를 연다.
+            var secondRound = chapter.SecondRoundSuspects != null && chapter.SecondRoundSuspects.Count > 0
+                ? new List<SuspectDefinition>(chapter.SecondRoundSuspects)
+                : round;
+            yield return Transition(GamePhase.Interrogation2);
+            yield return RunInterrogationRound(secondRound, 2);
+            if (Session.IsGameOver)
+            {
+                yield return ShowGameOver(allowRetry: false, retryText: null);
+                yield break;
+            }
 
             // ---- 범인 지목 ----
             SetPhase(GamePhase.Accusation);
@@ -179,7 +219,57 @@ namespace ItIsYou.Core
             ChapterCompleted?.Invoke(Session.AccusedSuspectId);
         }
 
-        private IEnumerator RunInterrogationRound(IReadOnlyList<SuspectDefinition> suspects)
+        private Coroutine _chapterRoutine;
+
+        /// <summary>
+        /// 디버그 — 앞 페이즈를 건너뛰고 단서 조합부터 시작한다. 씬의 모든 수집 오브젝트 단서와
+        /// 지정한 추가 단서를 가진 상태로 만든다. 에디터·테스트용.
+        /// </summary>
+        public void DebugJumpToDeduction(IEnumerable<ClueDefinition> extraClues = null, bool giveAllSceneClues = true)
+        {
+            if (_chapterRoutine != null) StopCoroutine(_chapterRoutine);
+            StopAllCoroutines();
+            dialogue?.Stop();
+
+            if (giveAllSceneClues && chapter.SceneObjects != null)
+            {
+                for (int i = 0; i < chapter.SceneObjects.Count; i++)
+                {
+                    var obj = chapter.SceneObjects[i];
+                    if (obj != null && obj.GrantedClue != null) Session.Clues.Add(obj.GrantedClue);
+                }
+            }
+            if (extraClues != null)
+            {
+                foreach (var c in extraClues) if (c != null) Session.Clues.Add(c);
+            }
+
+            var round = new List<SuspectDefinition>();
+            if (chapter.FirstRoundSuspects != null && chapter.FirstRoundSuspects.Count > 0)
+                round.Add(chapter.FirstRoundSuspects[0]);
+            _chapterRoutine = StartCoroutine(RunFromDeduction(round));
+        }
+
+        /// <summary>
+        /// 게임오버 화면을 띄우고 플레이어의 선택을 기다린다. 재시도가 허용되면 그 버튼을 눌렀을 때 돌아온다.
+        /// 타이틀로 가는 버튼은 씬을 갈아 끼우므로 이 코루틴은 그냥 죽는다.
+        /// </summary>
+        private IEnumerator ShowGameOver(bool allowRetry, string retryText, Action onRetry = null)
+        {
+            if (gameOverView == null) yield break;
+
+            var chosen = false;
+            void OnRetry() => chosen = true;
+            gameOverView.RetryRequested += OnRetry;
+            gameOverView.Show(Session.GameOver, allowRetry, retryText);
+
+            while (!chosen) yield return null;
+            gameOverView.RetryRequested -= OnRetry;
+            gameOverView.Hide();
+            onRetry?.Invoke();
+        }
+
+        private IEnumerator RunInterrogationRound(IReadOnlyList<SuspectDefinition> suspects, int round)
         {
             _pending.Clear();
             if (suspects != null)
@@ -200,7 +290,7 @@ namespace ItIsYou.Core
                 void OnFinished(InterrogationEndReason r) { reason = r; finished = true; }
 
                 interrogation.Finished += OnFinished;
-                interrogation.Begin(chapter, suspect, Session.Clues, view);
+                interrogation.Begin(chapter, suspect, Session.Clues, view, round);
 
                 while (!finished) yield return null;
                 interrogation.Finished -= OnFinished;

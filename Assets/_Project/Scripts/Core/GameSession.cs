@@ -93,6 +93,9 @@ namespace ItIsYou.Core
 
         // ------------------------------------------------------------ 게임오버
 
+        /// <summary>게임오버 뒤 실패한 페이즈의 시작으로 되돌아갈 때. 단서·성향은 그대로 둔다.</summary>
+        public void ClearGameOver() => GameOver = GameOverKind.None;
+
         public void TriggerGameOver(GameOverKind kind)
         {
             if (kind == GameOverKind.None || IsGameOver) return;

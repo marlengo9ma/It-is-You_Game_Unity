@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c134848bc83fa43a150ff7e4e0fbbd, type: 3}
+  m_Name: Choice_CH_SEPI2_AGGRESSIVE
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.ChoiceDefinition
+  id: CH_SEPI2_AGGRESSIVE
+  tone: 1
+  label: "\uC228\uAE30\uB294 \uAC8C \uC788\uC8E0."
+  labelWhenInformed: 
+  labelSwapClueIds: []
+  availableFromStart: 1
+  requiredClueIds: []
+  requiredPromotedClueIds: []
+  requiredChoiceIds: []
+  appearsWhenTokensAtOrBelow: 0
+  showLockedPlaceholder: 0
+  lockedLabel: ???
+  passes:
+  - note: "[\uC784\uC2DC] 2\uCC28 B \uAC15\uC555"
+    lines:
+    - speaker: 3
+      text: "\u2026\uC5C6\uC5B4\uC694. \uC5C6\uB2E4\uB2C8\uAE4C\uC694."
+      expression: 7
+      stageDirection: "(\uC5B4\uAE68\uAC00 \uC6C0\uCE20\uB7EC\uB4E0\uB2E4)"
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0
+  idleFollowUp:
+    note: 
+    lines: []
+    trustDelta: 0
+    endsInterrogation: 0
+  tokenCost: 1
+  consumeOnUse: 0
+  unlocksChoiceIds: []

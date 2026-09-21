@@ -48,6 +48,13 @@ namespace ItIsYou.Data
         [Tooltip("남은 타임 토큰이 이 값 이하일 때만 나타난다. 0이면 조건 없음. (시간의 흐름 트리거)")]
         [SerializeField] private int appearsWhenTokensAtOrBelow = 0;
 
+        [Header("잠금 표시")]
+        [Tooltip("켜면 등장 조건(단서)을 못 채웠을 때 숨기지 않고 잠긴 채로 보여 준다. 조합의 결과가 여기서 보이게 하는 장치.")]
+        [SerializeField] private bool showLockedPlaceholder = false;
+
+        [Tooltip("잠긴 채로 보일 때의 문구.")]
+        [SerializeField] private string lockedLabel = "???";
+
         [Header("진행")]
         [Tooltip("첫 선택부터 순서대로 재생되는 대사 묶음. 끝에 도달한 뒤에는 마지막 묶음이 반복된다.")]
         [SerializeField] private List<DialogueSequence> passes = new List<DialogueSequence>();
@@ -74,6 +81,8 @@ namespace ItIsYou.Data
         public IReadOnlyList<string> RequiredChoiceIds => requiredChoiceIds;
         public int AppearsWhenTokensAtOrBelow => appearsWhenTokensAtOrBelow;
         public IReadOnlyList<string> UnlocksChoiceIds => unlocksChoiceIds;
+        public bool ShowLockedPlaceholder => showLockedPlaceholder;
+        public string LockedLabel => string.IsNullOrEmpty(lockedLabel) ? "???" : lockedLabel;
         public IReadOnlyList<DialogueSequence> Passes => passes;
         public DialogueSequence IdleFollowUp => idleFollowUp;
         public bool HasIdleFollowUp => idleFollowUp != null && !idleFollowUp.IsEmpty;

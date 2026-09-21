@@ -20,6 +20,13 @@ MonoBehaviour:
   portrait: {fileID: 0}
   timeTokens: 4
   choices: []
+  secondRoundChoices: []
+  secondRoundTokens: 0
+  onEnterSecondInterrogation:
+    note: 
+    lines: []
+    trustDelta: 0
+    endsInterrogation: 0
   interrogationObjects: []
   aggressionWarning:
     note: 

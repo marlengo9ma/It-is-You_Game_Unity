@@ -111,6 +111,25 @@ namespace ItIsYou.Data
         [Tooltip("선택지 대사가 전부 끝난 뒤, 무반응 타이머가 다시 돌기까지의 유예 시간(초).")]
         [SerializeField] private float idleGraceAfterDialogueSeconds = 5f;
 
+        [Header("단서 조합")]
+        [Tooltip("조수 문답 문항. 순서대로 나온다. 전부 맞히면 페이즈가 끝난다.")]
+        [SerializeField] private List<DeductionQuestion> deductionQuestions = new List<DeductionQuestion>();
+
+        [Tooltip("시도 자원 — 잉크 방울 수. 오답마다 하나 마른다. 0인 채로 또 틀리면 자기 비하 게임오버. 기획 시안 3")]
+        [SerializeField] private int deductionInk = 3;
+
+        [Tooltip("조합 페이즈에 들어갈 때의 대사.")]
+        [SerializeField] private DialogueSequence deductionIntro = new DialogueSequence();
+
+        [Tooltip("필요한 추론을 다 만들었을 때의 대사. 이 뒤에 2차 심문으로 넘어간다.")]
+        [SerializeField] private DialogueSequence deductionOutro = new DialogueSequence();
+
+        [Tooltip("잉크가 다 마른 채 또 틀렸을 때 — 자기 비하 게임오버 직전의 독백.")]
+        [SerializeField] private DialogueSequence selfLoathingEnding = new DialogueSequence();
+
+        [Tooltip("오답 때 무대에 뜨는 이벤트 팝업 #2 (째려보는 주인공). 비어 있으면 더미 판.")]
+        [SerializeField] private Sprite deductionGlareImage;
+
         [Header("조합 / 지목")]
         [SerializeField] private List<CombinationRecipe> recipes = new List<CombinationRecipe>();
 
@@ -124,6 +143,15 @@ namespace ItIsYou.Data
         public string Id => id;
         public string DisplayName => string.IsNullOrEmpty(displayName) ? id : displayName;
         public bool IsTutorial => isTutorial;
+
+        public IReadOnlyList<DeductionQuestion> DeductionQuestions => deductionQuestions;
+        public int DeductionInk => Mathf.Max(0, deductionInk);
+        public DialogueSequence DeductionIntro => deductionIntro;
+        public DialogueSequence DeductionOutro => deductionOutro;
+        public DialogueSequence SelfLoathingEnding => selfLoathingEnding;
+        public Sprite DeductionGlareImage => deductionGlareImage;
+        /// <summary>튜토리얼에서는 첫 오답이 잉크를 쓰지 않는다 — 심문의 페널티 유예와 같은 규칙.</summary>
+        public bool FirstDeductionMissIsFree => isTutorial;
 
         public DialogueSequence PreIncidentTalk => preIncidentTalk;
         public string CutsceneName => cutsceneName;

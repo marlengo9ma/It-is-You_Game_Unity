@@ -13,14 +13,17 @@ namespace ItIsYou.Interrogation
         public readonly bool HasUnseenContent;
         public readonly int TimesUsed;
         public readonly bool Affordable;
+        /// <summary>등장 조건을 못 채워 잠긴 채로 보이는 줄. 누를 수 없다.</summary>
+        public readonly bool Locked;
 
-        public ChoiceView(ChoiceDefinition definition, string label, bool hasUnseenContent, int timesUsed, bool affordable)
+        public ChoiceView(ChoiceDefinition definition, string label, bool hasUnseenContent, int timesUsed, bool affordable, bool locked = false)
         {
             Definition = definition;
             Label = label;
             HasUnseenContent = hasUnseenContent;
             TimesUsed = timesUsed;
             Affordable = affordable;
+            Locked = locked;
         }
     }
 
@@ -108,13 +111,17 @@ namespace ItIsYou.Interrogation
         /// <summary>심문이 끝났다. (사유)</summary>
         public event Action<InterrogationEndReason> Ended;
 
-        public InterrogationSession(ChapterDefinition chapter, SuspectDefinition suspect, ClueInventory inventory)
+        /// <summary>몇 차 심문인가 (1 또는 2). 2차는 선택지·토큰이 다를 수 있다.</summary>
+        public int Round { get; }
+
+        public InterrogationSession(ChapterDefinition chapter, SuspectDefinition suspect, ClueInventory inventory, int round = 1)
         {
             _chapter = chapter ?? throw new ArgumentNullException(nameof(chapter));
             _suspect = suspect ?? throw new ArgumentNullException(nameof(suspect));
             _inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
+            Round = Math.Max(1, round);
 
-            Tokens = new TimeTokenPool(suspect.TimeTokens);
+            Tokens = new TimeTokenPool(suspect.TokensForRound(Round));
             Pressure = new PressureTracker(chapter);
             Idle = new IdleTimer(chapter.IdleSeconds);
             Recall = new MemoryRecall();
@@ -141,7 +148,7 @@ namespace ItIsYou.Interrogation
         public List<ChoiceView> BuildChoiceList()
         {
             var result = new List<ChoiceView>();
-            var choices = _suspect.Choices;
+            var choices = _suspect.ChoicesForRound(Round);
             if (choices == null) return result;
 
             for (int i = 0; i < choices.Count; i++)
@@ -149,7 +156,13 @@ namespace ItIsYou.Interrogation
                 var choice = choices[i];
                 if (choice == null) continue;
                 if (_consumedChoiceIds.Contains(choice.Id)) continue;
-                if (!IsChoiceAvailable(choice)) continue;
+                if (!IsChoiceAvailable(choice))
+                {
+                    // 단서 제시 선택지는 추론 카드가 없으면 ??? 로 잠긴 채 보인다 — 조합의 결과가 여기서 보인다.
+                    if (choice.ShowLockedPlaceholder)
+                        result.Add(new ChoiceView(choice, choice.LockedLabel, false, 0, false, locked: true));
+                    continue;
+                }
 
                 var used = GetUseCount(choice.Id);
                 result.Add(new ChoiceView(

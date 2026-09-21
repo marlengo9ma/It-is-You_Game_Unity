@@ -4,6 +4,7 @@ using ItIsYou.Characters;
 using ItIsYou.Core;
 using ItIsYou.Data;
 using ItIsYou.Interrogation;
+using ItIsYou.Deduction;
 using ItIsYou.Investigation;
 using ItIsYou.UI;
 using TMPro;
@@ -54,6 +55,7 @@ namespace ItIsYou.EditorTools
             var choicePrefab = BuildChoiceButtonPrefab();
             var cluePrefab = BuildClueSlotPrefab();
             var plainButtonPrefab = BuildPlainButtonPrefab();
+            var candidatePrefab = BuildDeductionCandidatePrefab();
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
@@ -332,6 +334,137 @@ namespace ItIsYou.EditorTools
             avlg.childForceExpandWidth = true;
             avlg.childForceExpandHeight = false;
             avlg.childAlignment = TextAnchor.UpperCenter;
+
+            // ======================================================= 조합 화면
+            // 개선안 §II-A 조수 문답. 심문과 같은 구도 — 좌측 후보(아이콘), 무대에 팝업 #2, 우측 단서 목록.
+
+            var deductScreen = UI("Screen_Deduction", root);
+            var deductRt = deductScreen.GetComponent<RectTransform>();
+            Anchor(deductRt, V(0, 0), V(1, 1), V(L.Gutter, L.BandBottom), V(-L.Gutter, L.BandTop));
+
+            var candPanel = Img("CandidatePanel", deductRt, P.Panel);
+            var candRt = candPanel.rectTransform;
+            Anchor(candRt, V(0, 0), V(0, 1), V(0, 0), V(L.ChoiceWidth, 0));
+            var candGroup = candPanel.gameObject.AddComponent<CanvasGroup>();
+
+            var candTitle = Text("Title", candRt, "조합 — 단서로 답한다", T.Label, P.Brass, TextAlignmentOptions.Left);
+            Spaced(candTitle);
+            Anchor(candTitle.rectTransform, V(0, 1), V(1, 1), V(L.Pad, -L.Pad - 24f), V(-L.Pad, -L.Pad));
+
+            var candList = UI("List", candRt);
+            var candListRt = candList.GetComponent<RectTransform>();
+            Anchor(candListRt, V(0, 0), V(1, 1), V(L.Unit * 2, L.Unit * 6), V(-L.Unit * 2, -L.Unit * 9));
+            var cvlg = candList.AddComponent<VerticalLayoutGroup>();
+            cvlg.spacing = L.Unit;
+            cvlg.childControlHeight = false;
+            cvlg.childControlWidth = true;
+            cvlg.childForceExpandHeight = false;
+            cvlg.childForceExpandWidth = true;
+            cvlg.childAlignment = TextAnchor.UpperLeft;
+
+            var candHint = Text("Hint", candRt, "", T.Caption, P.InkSoft, TextAlignmentOptions.BottomLeft);
+            Anchor(candHint.rectTransform, V(0, 0), V(1, 0), V(L.Pad, L.Unit), V(-L.Pad, L.Unit * 5));
+
+            var candidateView = candPanel.gameObject.AddComponent<DeductionCandidateView>();
+            candidateView.Set("container", candListRt)
+                         .Set("buttonPrefab", candidatePrefab)
+                         .Set("root", candGroup)
+                         .Set("hint", candHint);
+
+            // 무대 — 조수 자리 + 잉크 + 팝업 #2
+            var deductStage = Img("Stage", deductRt, new Color32(0x1E, 0x22, 0x27, 0xFF));
+            var dStageRt = deductStage.rectTransform;
+            Anchor(dStageRt, V(0, 0), V(1, 1), V(L.ChoiceWidth + L.Gap, 0), V(-(L.ClueWidth + L.Gap), 0));
+            deductStage.raycastTarget = false;
+
+            var dStageTag = Text("Tag", dStageRt, "객실  —  게임플레이 배경 (아트 대기)", T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Top);
+            Anchor(dStageTag.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 5), V(0, -L.Unit * 2));
+
+            var dSepi = Img("Sepi_Placeholder", dStageRt, new Color32(0x3A, 0x40, 0x48, 0xFF));
+            Anchor(dSepi.rectTransform, V(0.5f, 0), V(0.5f, 0), V(-208f, 0f), V(208f, 480f));
+            dSepi.raycastTarget = false;
+            var dSepiTag = Text("Label", dSepi.rectTransform, "세피\n(아트 대기 — 묻는 쪽)", T.Caption, P.InkSoft, TextAlignmentOptions.Center);
+            Stretch(dSepiTag.rectTransform);
+
+            // 조수의 질문 — 대사창이 닫힌 뒤에도 무대 위에 남는다.
+            var questionText = Text("Question", dStageRt, "", T.Choice, P.Ink, TextAlignmentOptions.Center);
+            questionText.textWrappingMode = TextWrappingModes.Normal;
+            Anchor(questionText.rectTransform, V(0, 1), V(1, 1), V(L.Pad, -L.Unit * 16), V(-L.Pad, -L.Unit * 7));
+
+            // 잉크 방울 — 상단 우측. 숫자가 아니라 방울이다.
+            var inkCaption = Text("InkCaption", dStageRt, "잉크", T.Caption, P.InkSoft, TextAlignmentOptions.Right);
+            Spaced(inkCaption);
+            Anchor(inkCaption.rectTransform, V(1, 1), V(1, 1), V(-L.Unit * 30, -L.Unit * 5), V(-L.Unit * 16, -L.Unit * 2));
+            var inkRow = UI("InkDrops", dStageRt);
+            var inkRowRt = inkRow.GetComponent<RectTransform>();
+            Anchor(inkRowRt, V(1, 1), V(1, 1), V(-L.Unit * 15, -L.Unit * 6), V(-L.Unit * 2, -L.Unit));
+            var inkLayout = inkRow.AddComponent<HorizontalLayoutGroup>();
+            inkLayout.spacing = L.Unit;
+            inkLayout.childAlignment = TextAnchor.MiddleRight;
+            inkLayout.childControlWidth = false;
+            inkLayout.childControlHeight = false;
+            inkLayout.childForceExpandWidth = false;
+            inkLayout.childForceExpandHeight = false;
+            var dropTemplate = Img("Drop", inkRowRt, P.Brass);
+            dropTemplate.rectTransform.sizeDelta = new Vector2(28f, 28f);
+            dropTemplate.sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
+            dropTemplate.raycastTarget = false;
+            dropTemplate.gameObject.SetActive(false);
+            var inkView = inkRow.AddComponent<InkDropsView>();
+            inkView.Set("container", inkRowRt).Set("dropPrefab", dropTemplate);
+
+            // 이벤트 팝업 #2 — 째려보는 주인공. 512² 자리.
+            var glareRoot = UI("GlarePopup", dStageRt);
+            var glareRt = glareRoot.GetComponent<RectTransform>();
+            Anchor(glareRt, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-256f, -256f), V(256f, 256f));
+            var glareGroup = glareRoot.AddComponent<CanvasGroup>();
+            var glareFrame = Img("Frame", glareRt, new Color32(0x16, 0x19, 0x1D, 0xFF));
+            Stretch(glareFrame.rectTransform);
+            glareFrame.sprite = _uiSprite;
+            var glareImg = Img("Image", glareRt, new Color32(0x2E, 0x34, 0x3B, 0xFF));
+            Anchor(glareImg.rectTransform, V(0, 0), V(1, 1), V(L.Unit, L.Unit * 7), V(-L.Unit, -L.Unit));
+            glareImg.preserveAspect = true;
+            glareImg.raycastTarget = false;
+            var glarePlaceholder = Text("Placeholder", glareImg.rectTransform, "이벤트 팝업 #2\n째려보는 주인공\n(아트 대기)", T.Caption, P.InkSoft, TextAlignmentOptions.Center);
+            Stretch(glarePlaceholder.rectTransform);
+            var glareCaption = Text("Caption", glareRt, "누르면 닫힘", T.Caption, P.InkSoft, TextAlignmentOptions.Center);
+            Anchor(glareCaption.rectTransform, V(0, 0), V(1, 0), V(0, L.Unit), V(0, L.Unit * 6));
+            var glareView = glareRoot.AddComponent<GlarePopupView>();
+            glareView.Set("root", glareRoot)
+                     .Set("group", glareGroup)
+                     .Set("image", glareImg)
+                     .Set("placeholder", glarePlaceholder)
+                     .Set("caption", glareCaption);
+            glareRoot.SetActive(false);
+
+            // 추론 카드가 생길 때 단서 패널이 잠깐 놋쇠 빛으로 물든다.
+            var flashImg = Img("ConfirmFlash", clueRt, new Color(0.77f, 0.65f, 0.36f, 0.35f));
+            Stretch(flashImg.rectTransform);
+            flashImg.sprite = _uiSprite;
+            flashImg.raycastTarget = false;
+            var flashGroup = flashImg.gameObject.AddComponent<CanvasGroup>();
+            flashGroup.alpha = 0f;
+            flashGroup.blocksRaycasts = false;
+            flashGroup.interactable = false;
+
+            // ======================================================= 게임오버 화면
+            // 컷씬 #GameOver 자리. 복귀 지점은 실패한 페이즈의 시작(조합 실패 → 조합 시작).
+
+            var gameOverScreen = UI("Screen_GameOver", root);
+            Stretch(gameOverScreen.GetComponent<RectTransform>());
+            var goScrim = Img("Scrim", gameOverScreen.transform, new Color(0f, 0f, 0f, 0.82f));
+            Stretch(goScrim.rectTransform);
+            var goPanel = Img("Panel", gameOverScreen.transform, new Color32(0x16, 0x19, 0x1D, 0xFF));
+            Anchor(goPanel.rectTransform, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-360f, -220f), V(360f, 220f));
+            var goTitle = Text("Title", goPanel.rectTransform, "게임 오버", T.Display, P.Alarm, TextAlignmentOptions.Center);
+            Anchor(goTitle.rectTransform, V(0, 1), V(1, 1), V(L.Pad, -L.Unit * 14), V(-L.Pad, -L.Unit * 4));
+            var goBody = Text("Body", goPanel.rectTransform, "", T.Body, P.Ink, TextAlignmentOptions.Center);
+            goBody.textWrappingMode = TextWrappingModes.Normal;
+            Anchor(goBody.rectTransform, V(0, 0), V(1, 1), V(L.Pad * 2, L.Unit * 14), V(-L.Pad * 2, -L.Unit * 15));
+            var goRetry = PlainButton("Retry", goPanel.rectTransform, "다시 시도", T.Choice);
+            Anchor(goRetry.Item1, V(0.5f, 0), V(0.5f, 0), V(-300f, L.Unit * 4), V(-20f, L.Unit * 4 + 56f));
+            var goTitleBtn = PlainButton("ToTitle", goPanel.rectTransform, "타이틀로", T.Choice);
+            Anchor(goTitleBtn.Item1, V(0.5f, 0), V(0.5f, 0), V(20f, L.Unit * 4), V(300f, L.Unit * 4 + 56f));
 
             // =================================================== 사건 이전 화면
             // 기획서의 [게임플레이 배경_캐릭터 씬]. 사건이 터지기 전의 객실이며,
@@ -736,6 +869,24 @@ namespace ItIsYou.EditorTools
                          .Set("pauseMenu", pauseMenu)
                          .Set("tension", tension);
 
+            var deductionCtl = systems.AddComponent<DeductionController>();
+            deductionCtl.Set("dialogue", presenter)
+                        .Set("candidates", candidateView)
+                        .Set("ink", inkView)
+                        .Set("glarePopup", glareView)
+                        .Set("tutorialPopup", popupView)
+                        .Set("cursor", cursor)
+                        .Set("confirmFlash", flashGroup)
+                        .Set("questionLabel", questionText);
+
+            var gameOverView = systems.AddComponent<GameOverView>();
+            gameOverView.Set("root", gameOverScreen)
+                        .Set("title", goTitle)
+                        .Set("body", goBody)
+                        .Set("retryButton", goRetry.Item2)
+                        .Set("retryLabel", goRetry.Item1.Find("Label").GetComponent<TMP_Text>())
+                        .Set("titleButton", goTitleBtn.Item2);
+
             var flow = systems.AddComponent<GameFlowController>();
             flow.Set("database", db)
                 .Set("chapter", chapter)
@@ -743,6 +894,8 @@ namespace ItIsYou.EditorTools
                 .Set("investigation", investigation)
                 .Set("suspectSelect", selectController)
                 .Set("interrogation", interrogation)
+                .Set("deduction", deductionCtl)
+                .Set("gameOverView", gameOverView)
                 .Set("dialogue", presenter)
                 .Set("clueTray", clueTrayView)
                 .Set("cursor", cursor)
@@ -758,8 +911,8 @@ namespace ItIsYou.EditorTools
             var binder = systems.AddComponent<PhaseScreenBinder>();
             binder.Set("flow", flow)
                   .Set("groups", BuildScreenGroups(talkScreen, cutsceneScreen, selectScreen,
-                                                    collectScreen, interrogateScreen, accuseScreen,
-                                                    cluePanel.gameObject))
+                                                    collectScreen, interrogateScreen, deductScreen, accuseScreen,
+                                                    gameOverScreen, cluePanel.gameObject))
                   .Set("alwaysVisible", new List<GameObject> { dialoguePanel.gameObject });
 
             var logView = systems.AddComponent<DialogueLogView>();
@@ -842,7 +995,7 @@ namespace ItIsYou.EditorTools
         }
 
         private static object BuildScreenGroups(GameObject talk, GameObject cutscene, GameObject select,
-            GameObject collect, GameObject interrogate, GameObject accuse, GameObject cluePanel)
+            GameObject collect, GameObject interrogate, GameObject deduct, GameObject accuse, GameObject gameOver, GameObject cluePanel)
         {
             var list = new List<PhaseScreenBinder.ScreenGroup>
             {
@@ -868,8 +1021,16 @@ namespace ItIsYou.EditorTools
                     phases = new List<GamePhase> { GamePhase.Interrogation1, GamePhase.Interrogation2 }
                 },
                 new PhaseScreenBinder.ScreenGroup {
+                    root = deduct,
+                    phases = new List<GamePhase> { GamePhase.Deduction }
+                },
+                new PhaseScreenBinder.ScreenGroup {
                     root = accuse,
                     phases = new List<GamePhase> { GamePhase.Accusation }
+                },
+                new PhaseScreenBinder.ScreenGroup {
+                    root = gameOver,
+                    phases = new List<GamePhase> { GamePhase.GameOver }
                 },
                 // 단서 목록은 단서가 생기는 구간부터 보인다.
                 // 사건이 터지기도 전에 빈 목록을 띄워 두면 무엇을 하는 화면인지 흐려진다.
@@ -986,6 +1147,49 @@ namespace ItIsYou.EditorTools
             var prefab = PrefabUtility.SaveAsPrefabAsset(go, PrefabFolder + "/ClueSlot.prefab");
             Object.DestroyImmediate(go);
             return prefab.GetComponent<ClueSlot>();
+        }
+
+        private static DeductionCandidateButton BuildDeductionCandidatePrefab()
+        {
+            var go = UI("DeductionCandidate", null);
+            var rt = go.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(0f, 88f);   // 11u
+
+            var bg = go.AddComponent<Image>();
+            bg.color = P.Surface;
+            bg.sprite = _uiSprite;
+            var button = go.AddComponent<Button>();
+            button.targetGraphic = bg;
+            var group = go.AddComponent<CanvasGroup>();
+
+            var iconBg = Img("IconBg", rt, P.PanelSunk);
+            Anchor(iconBg.rectTransform, V(0, 0.5f), V(0, 0.5f), V(L.Unit * 1.5f, -32f), V(L.Unit * 1.5f + 64f, 32f));
+            iconBg.sprite = _uiSprite;
+            iconBg.raycastTarget = false;
+            var icon = Img("Icon", iconBg.rectTransform, Color.white);
+            Anchor(icon.rectTransform, V(0, 0), V(1, 1), V(4f, 4f), V(-4f, -4f));
+            icon.preserveAspect = true;
+            icon.raycastTarget = false;
+            var iconPlaceholder = Text("Placeholder", iconBg.rectTransform, "?", T.Choice, P.InkSoft, TextAlignmentOptions.Center);
+            Stretch(iconPlaceholder.rectTransform);
+
+            var label = Text("Label", rt, "???", T.Choice, P.Ink, TextAlignmentOptions.Left);
+            Anchor(label.rectTransform, V(0, 0), V(1, 1), V(L.Unit * 1.5f + 64f + L.Unit * 2, 0), V(-L.Unit * 2, 0));
+
+            var strip = Img("Strip", rt, P.Brass);
+            Anchor(strip.rectTransform, V(0, 0), V(0, 1), Vector2.zero, V(L.Unit * 0.5f, 0));
+            strip.raycastTarget = false;
+
+            var cand = go.AddComponent<DeductionCandidateButton>();
+            cand.Set("button", button)
+                .Set("icon", icon)
+                .Set("iconPlaceholder", iconPlaceholder)
+                .Set("label", label)
+                .Set("group", group);
+
+            var prefab = PrefabUtility.SaveAsPrefabAsset(go, PrefabFolder + "/DeductionCandidate.prefab");
+            Object.DestroyImmediate(go);
+            return prefab.GetComponent<DeductionCandidateButton>();
         }
 
         private static Button BuildPlainButtonPrefab()

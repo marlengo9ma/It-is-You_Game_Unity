@@ -23,6 +23,8 @@ MonoBehaviour:
   requiredPromotedClueIds: []
   requiredChoiceIds: []
   appearsWhenTokensAtOrBelow: 0
+  showLockedPlaceholder: 0
+  lockedLabel: ???
   passes:
   - note: "A \u2014 \uBD24\uB2E4\uB294 \uAC83\uAE4C\uC9C0\uB294 \uC778\uC815"
     lines:

@@ -73,8 +73,16 @@ namespace ItIsYou.UI
             if (usedDim != null)
                 usedDim.alpha = view.TimesUsed > 0 ? 0.72f : 1f;
 
-            _affordable = view.Affordable;
-            if (button != null) button.interactable = view.Affordable;
+            _affordable = view.Affordable && !view.Locked;
+            if (button != null) button.interactable = _affordable;
+
+            // 잠긴 줄: 문구는 ???, 성향 색은 죽이고, 전체를 흐리게.
+            if (view.Locked)
+            {
+                if (toneStrip != null) toneStrip.color = new Color(toneColor.r, toneColor.g, toneColor.b, 0.35f);
+                if (usedDim != null) usedDim.alpha = 0.5f;
+                if (unseenContentIcon != null) unseenContentIcon.SetActive(false);
+            }
         }
 
         private void HandleClick()

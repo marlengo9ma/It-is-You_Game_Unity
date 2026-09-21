@@ -29,6 +29,12 @@ namespace ItIsYou.Data
 
         /// <summary>기억 짐작을 처음 쓸 수 있게 됐을 때. (기억 짐작 UI 가 생기면 연결)</summary>
         OnRecallAvailable = 5,
+
+        /// <summary>단서 조합 페이즈에 들어가 조수의 첫 질문이 나오기 직전. (팝업 4)</summary>
+        BeforeDeduction = 6,
+
+        /// <summary>단서 조합에서 처음 틀렸을 때. 튜토리얼은 이 오답이 잉크를 쓰지 않는다는 설명.</summary>
+        OnDeductionFirstMiss = 7,
     }
 
     /// <summary>

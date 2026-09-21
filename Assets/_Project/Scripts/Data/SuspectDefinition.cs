@@ -29,6 +29,16 @@ namespace ItIsYou.Data
         [Tooltip("이 용의자에게 쓸 수 있는 메인 선택지 전체.")]
         [SerializeField] private List<ChoiceDefinition> choices = new List<ChoiceDefinition>();
 
+        [Header("2차 심문")]
+        [Tooltip("2차 심문에서 쓸 선택지. 비어 있으면 1차와 같은 목록을 쓴다.")]
+        [SerializeField] private List<ChoiceDefinition> secondRoundChoices = new List<ChoiceDefinition>();
+
+        [Tooltip("2차 심문의 타임 토큰. 0이면 1차와 같다. 개선안: 1차의 절반 — 짧고 세게.")]
+        [SerializeField] private int secondRoundTokens = 0;
+
+        [Tooltip("2차 심문에 들어갈 때의 첫 마디. 비어 있으면 1차의 것을 쓴다.")]
+        [SerializeField] private DialogueSequence onEnterSecondInterrogation = new DialogueSequence();
+
         [Tooltip("심문 화면 안에서 클릭할 수 있는 심문 오브젝트.")]
         [SerializeField] private List<InteractableDefinition> interrogationObjects = new List<InteractableDefinition>();
 
@@ -81,6 +91,16 @@ namespace ItIsYou.Data
         public int TimeTokens => Mathf.Max(1, timeTokens);
         public IReadOnlyList<ChoiceDefinition> Choices => choices;
         public IReadOnlyList<InteractableDefinition> InterrogationObjects => interrogationObjects;
+
+        public IReadOnlyList<ChoiceDefinition> ChoicesForRound(int round)
+            => round >= 2 && secondRoundChoices != null && secondRoundChoices.Count > 0 ? secondRoundChoices : choices;
+
+        public int TokensForRound(int round)
+            => round >= 2 && secondRoundTokens > 0 ? secondRoundTokens : TimeTokens;
+
+        public DialogueSequence OpeningForRound(int round)
+            => round >= 2 && onEnterSecondInterrogation != null && !onEnterSecondInterrogation.IsEmpty
+                ? onEnterSecondInterrogation : onEnterInterrogation;
 
         public DialogueSequence AggressionWarning => aggressionWarning;
         public DialogueSequence RefusalByFear => refusalByFear;

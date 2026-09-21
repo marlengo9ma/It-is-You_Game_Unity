@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c134848bc83fa43a150ff7e4e0fbbd, type: 3}
+  m_Name: Choice_CH_SEPI2_FRIENDLY
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.ChoiceDefinition
+  id: CH_SEPI2_FRIENDLY
+  tone: 0
+  label: "\uC870\uAE08 \uC804 \uC774\uC57C\uAE30, \uD55C \uBC88\uB9CC \uB354 \uB4E4\uB824\uC8FC\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
+  labelWhenInformed: 
+  labelSwapClueIds: []
+  availableFromStart: 1
+  requiredClueIds: []
+  requiredPromotedClueIds: []
+  requiredChoiceIds: []
+  appearsWhenTokensAtOrBelow: 0
+  showLockedPlaceholder: 0
+  lockedLabel: ???
+  passes:
+  - note: "[\uC784\uC2DC] 2\uCC28 A \uCE5C\uADFC"
+    lines:
+    - speaker: 3
+      text: "\uC544\uAE4C \uB9D0\uC500\uB4DC\uB9B0 \uADF8\uB300\uB85C\uC608\uC694.
+        \uC815\uB9D0\uB85C\uC694."
+      expression: 2
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      text: "\u2026\uB9CC\uB144\uD544\uC740, \uC544\uB9C8 \uC5B4\uB514 \uAD74\uB7EC
+        \uB4E4\uC5B4\uAC14\uACA0\uC8E0."
+      expression: 2
+      stageDirection: "(\uC2DC\uC120\uC744 \uD53C\uD55C\uB2E4)"
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0
+  idleFollowUp:
+    note: 
+    lines: []
+    trustDelta: 0
+    endsInterrogation: 0
+  tokenCost: 1
+  consumeOnUse: 0
+  unlocksChoiceIds: []

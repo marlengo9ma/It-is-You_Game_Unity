@@ -61,8 +61,6 @@ namespace ItIsYou.Core
 
             if (clueTray != null)
             {
-                clueTray.TooltipOpened += OnTooltipOpened;
-                clueTray.TooltipClosed += OnTooltipClosed;
                 clueTray.CluePromoted += OnCluePromoted;
             }
 
@@ -97,8 +95,6 @@ namespace ItIsYou.Core
             }
             if (clueTray != null)
             {
-                clueTray.TooltipOpened -= OnTooltipOpened;
-                clueTray.TooltipClosed -= OnTooltipClosed;
                 clueTray.CluePromoted -= OnCluePromoted;
             }
         }
@@ -137,7 +133,7 @@ namespace ItIsYou.Core
                 GamePhase.Intro => "화면을 눌러 넘기세요",
                 GamePhase.ClueCollection => "살펴볼 곳을 눌러 수집하고, 우측 목록에서 읽어 보세요",
                 GamePhase.Interrogation1 => "좌측 선택지를 고르세요",
-                GamePhase.Deduction => "단서를 정리하는 중…",
+                GamePhase.Deduction => "조수의 질문에 좌측의 단서로 답하세요",
                 GamePhase.Interrogation2 => "좌측 선택지를 고르세요",
                 GamePhase.Accusation => "누가 가져갔는지 지목하세요",
                 _ => string.Empty
@@ -244,22 +240,7 @@ namespace ItIsYou.Core
             SetStatus($"챕터 종료 — 지목: {accusedId} · 수집한 단서 {clues}개");
         }
 
-        // ------------------------------------------------------------ 타이머
-
-        private void OnTooltipOpened()
-        {
-            if (interrogation != null && interrogation.IsRunning)
-                interrogation.Session.Idle.Hold();
-        }
-
-        private void OnTooltipClosed()
-        {
-            if (interrogation != null && interrogation.IsRunning)
-            {
-                interrogation.Session.Idle.Release();
-                interrogation.Session.Idle.Restart();
-            }
-        }
+        // 열람창에 따른 무반응 타이머 정지/재개는 GameFlowController 가 맡는다 (한 곳에서만).
 
         private void SetStatus(string text)
         {

@@ -56,12 +56,12 @@ namespace ItIsYou.Interrogation
         // ------------------------------------------------------------- 시작
 
         public void Begin(ChapterDefinition chapter, SuspectDefinition suspect,
-            ClueInventory inventory, ICharacterView characterView)
+            ClueInventory inventory, ICharacterView characterView, int round = 1)
         {
             _inventory = inventory;
             _characterView = characterView;
 
-            _session = new InterrogationSession(chapter, suspect, inventory);
+            _session = new InterrogationSession(chapter, suspect, inventory, round);
             _session.Idle.Elapsed += OnIdleElapsed;
 
             Subscribe();
@@ -92,7 +92,7 @@ namespace ItIsYou.Interrogation
             if (titleCard != null && !string.IsNullOrEmpty(title))
                 yield return titleCard.Play(title);
 
-            var opening = _session.Suspect.OnEnterInterrogation;
+            var opening = _session.Suspect.OpeningForRound(_session.Round);
             if (opening != null && !opening.IsEmpty)
             {
                 LogSequence(opening, null);

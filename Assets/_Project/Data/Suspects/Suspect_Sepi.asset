@@ -26,6 +26,27 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0c98b4a968f250243a0c3b72f68fd9f7, type: 2}
   - {fileID: 11400000, guid: b759028a5b302aa41a0eebc5ab6620ab, type: 2}
   - {fileID: 11400000, guid: 44ac597c82db03e418d181f55871762f, type: 2}
+  secondRoundChoices:
+  - {fileID: 11400000, guid: 001942c2380f469418853cc26bc1bc28, type: 2}
+  - {fileID: 11400000, guid: 1b0b3f51c663028469fc714708048f67, type: 2}
+  - {fileID: 11400000, guid: f00e17d12cde6ef488fb1606aebd3afa, type: 2}
+  secondRoundTokens: 3
+  onEnterSecondInterrogation:
+    note: "[\uC784\uC2DC] 2\uCC28 \uC2EC\uBB38 \uC9C4\uC785"
+    lines:
+    - speaker: 3
+      text: "\u2026\uB610 \uBB3C\uC5B4\uBCF4\uC2E4 \uAC8C \uC788\uC73C\uC138\uC694?"
+      expression: 2
+      stageDirection: "(\uC790\uB9AC\uC5D0 \uB2E4\uC2DC \uC549\uC73C\uBA70)"
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0
   interrogationObjects: []
   aggressionWarning:
     note: "[\uC784\uC2DC] \uAC15\uC555 \uACBD\uACE0"
