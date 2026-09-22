@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7568a7647d7b1d049ae942c55d3cfd3f, type: 3}
+  m_Name: Hyp_PenUnderCat
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.HypothesisRecipe
+  id: HYP_PEN_UNDER_CAT
+  title: "\uB9CC\uB144\uD544\uC740 \uACE0\uC591\uC774 \uC544\uB798\uC5D0"
+  objectClueId: CLUE_GLIMPSE
+  leadClueId: TES_SAW_IT
+  result: {fileID: 11400000, guid: 1484a006556d6ee4ca3bd0b6c05d37b7, type: 2}
+  onSuccess:
+    note: "[\uC784\uC2DC] \uAC00\uC124 1 \uC131\uACF5"
+    lines:
+    - speaker: 2
+      text: "..'\uBCF8 \uC801\uC740 \uC788\uB2E4'. \uADF8\uB9AC\uACE0 \uACE0\uC591\uC774
+        \uC544\uB798\uC5D0 \uBE44\uC8FD \uB098\uC628 \uAC83."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 2
+      text: "..\uCC98\uC74C\uBD80\uD130 \uC800\uAE30 \uC788\uC5C8\uB2E4. \uC800 \uB140\uC11D\uC774
+        \uAE54\uACE0 \uC549\uC544 \uC788\uC5C8\uC744 \uBFD0."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      text: "\u2026\uC544."
+      expression: 6
+      stageDirection: "(\uACE0\uC591\uC774 \uCABD\uC744 \uBCF4\uC9C0 \uC54A\uC73C\uB824
+        \uC560\uC4F4\uB2E4)"
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0

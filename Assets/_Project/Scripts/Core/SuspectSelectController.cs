@@ -31,6 +31,10 @@ namespace ItIsYou.Core
         [SerializeField] private TMP_Text promptLabel;
 
         private ChapterDefinition _chapter;
+        private IReadOnlyList<SuspectDefinition> _suspects;
+        private ISet<string> _finished;
+        private string _prompt;
+        private bool _skipTalk;
         private bool _running;
 
         /// <summary>플레이어가 심문할 상대를 골랐다.</summary>
@@ -64,8 +68,20 @@ namespace ItIsYou.Core
         }
 
         public void Begin(ChapterDefinition chapter)
+            => BeginRound(chapter, chapter.FirstRoundSuspects, null, chapter.SuspectSelectPrompt, skipTalk: false);
+
+        /// <summary>
+        /// 2차 심문 등 — 대상과 재촉 문구를 따로 주고, 대화는 건너뛸 수 있다.
+        /// finishedIds 에 든 상대는 '이미 이야기를 마쳤다' 로 잠긴다.
+        /// </summary>
+        public void BeginRound(ChapterDefinition chapter, IReadOnlyList<SuspectDefinition> suspects,
+            ISet<string> finishedIds, string prompt, bool skipTalk)
         {
             _chapter = chapter;
+            _suspects = suspects;
+            _finished = finishedIds;
+            _prompt = prompt;
+            _skipTalk = skipTalk;
             _running = true;
             StartCoroutine(Run());
         }
@@ -78,26 +94,33 @@ namespace ItIsYou.Core
             SetArmed(false);
             if (promptLabel != null) promptLabel.text = string.Empty;
 
-            if (_chapter.BeforeSuspectSelect != null && !_chapter.BeforeSuspectSelect.IsEmpty)
-                yield return dialogue.Play(_chapter.BeforeSuspectSelect);
+            if (!_skipTalk)
+            {
+                if (_chapter.BeforeSuspectSelect != null && !_chapter.BeforeSuspectSelect.IsEmpty)
+                    yield return dialogue.Play(_chapter.BeforeSuspectSelect);
 
-            if (_chapter.SuspectSelectTalk != null && !_chapter.SuspectSelectTalk.IsEmpty)
-                yield return dialogue.Play(_chapter.SuspectSelectTalk);
+                if (_chapter.SuspectSelectTalk != null && !_chapter.SuspectSelectTalk.IsEmpty)
+                    yield return dialogue.Play(_chapter.SuspectSelectTalk);
+            }
 
-            if (promptLabel != null) promptLabel.text = _chapter.SuspectSelectPrompt;
+            if (promptLabel != null) promptLabel.text = _prompt ?? string.Empty;
             SetArmed(true);
         }
 
         private void BindCards()
         {
-            var suspects = _chapter.FirstRoundSuspects;
+            var suspects = _suspects;
             for (int i = 0; i < cards.Count; i++)
             {
                 if (cards[i] == null) continue;
 
                 var has = suspects != null && i < suspects.Count && suspects[i] != null;
                 cards[i].gameObject.SetActive(has);
-                if (has) cards[i].Bind(suspects[i]);
+                if (!has) continue;
+
+                var done = _finished != null && _finished.Contains(suspects[i].Id);
+                if (done) cards[i].Bind(suspects[i], false, "이미 이야기를 마쳤다.");
+                else cards[i].Bind(suspects[i]);
             }
         }
 

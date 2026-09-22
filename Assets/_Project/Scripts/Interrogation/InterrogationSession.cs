@@ -114,14 +114,21 @@ namespace ItIsYou.Interrogation
         /// <summary>몇 차 심문인가 (1 또는 2). 2차는 선택지·토큰이 다를 수 있다.</summary>
         public int Round { get; }
 
-        public InterrogationSession(ChapterDefinition chapter, SuspectDefinition suspect, ClueInventory inventory, int round = 1)
+        /// <summary>이야기상 이 상대의 심문이 마무리됐다(자수 등 EndsInterrogation 선택지). 2차 심문에서 다시 고를 수 없다.</summary>
+        public bool Concluded { get; private set; }
+
+        /// <summary>토큰을 바깥에서 받았는가 (2차 심문의 공용 타임 토큰).</summary>
+        public bool SharesTokens { get; }
+
+        public InterrogationSession(ChapterDefinition chapter, SuspectDefinition suspect, ClueInventory inventory, int round = 1, TimeTokenPool sharedTokens = null)
         {
             _chapter = chapter ?? throw new ArgumentNullException(nameof(chapter));
             _suspect = suspect ?? throw new ArgumentNullException(nameof(suspect));
             _inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
             Round = Math.Max(1, round);
 
-            Tokens = new TimeTokenPool(suspect.TokensForRound(Round));
+            SharesTokens = sharedTokens != null;
+            Tokens = sharedTokens ?? new TimeTokenPool(suspect.TokensForRound(Round));
             Pressure = new PressureTracker(chapter);
             Idle = new IdleTimer(chapter.IdleSeconds);
             Recall = new MemoryRecall();
@@ -385,6 +392,7 @@ namespace ItIsYou.Interrogation
 
             if (forcedEnd && !IsOver)
             {
+                Concluded = true;
                 MarkOver(InterrogationEndReason.PlayerEnded);
                 return new InterrogationStep(main, follow, verdict, true,
                     InterrogationEndReason.PlayerEnded, tutorialLesson, penaltyLesson);
@@ -420,6 +428,7 @@ namespace ItIsYou.Interrogation
         private void MarkOver(InterrogationEndReason reason)
         {
             IsOver = true;
+            Tokens.Exhausted -= OnTokensExhausted;   // 공용 토큰이면 다음 심문의 소진 알림이 이 세션으로 오면 안 된다
             EndReason = reason;
             Idle.Stop();
             Idle.ReleaseAll();

@@ -38,6 +38,9 @@ namespace ItIsYou.UI
         [Tooltip("단서 오브젝트로 승격된 칸의 금색 테두리.")]
         [SerializeField] private GameObject promotedFrame;
 
+        [Tooltip("단서 조합에서 자리에 올라간 칸의 표시. 없어도 된다.")]
+        [SerializeField] private GameObject selectedMark;
+
         [Tooltip("켜면 이름표를 항상 보인다. 정황/실마리 목록의 줄 형태에서 쓴다.")]
         [SerializeField] private bool alwaysShowLabel = false;
 
@@ -83,6 +86,12 @@ namespace ItIsYou.UI
 
             // 다시 바인딩되면 이름표는 접어 둔다.
             SetHoverVisible(false);
+            SetSelected(false);
+        }
+
+        public void SetSelected(bool on)
+        {
+            if (selectedMark != null) selectedMark.SetActive(on);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

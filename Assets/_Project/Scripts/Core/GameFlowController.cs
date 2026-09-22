@@ -40,6 +40,8 @@ namespace ItIsYou.Core
         [SerializeField] private CursorController cursor;
         [Tooltip("게임오버 화면. 실패한 페이즈의 시작으로 되돌아가는 버튼이 있다.")]
         [SerializeField] private GameOverView gameOverView;
+        [SerializeField] private AccusationView accusation;
+        [SerializeField] private EndingView ending;
 
         [Header("캐릭터")]
         [Tooltip("용의자 id 와 화면 위 캐릭터 뷰를 짝지어 둔다.")]
@@ -53,6 +55,9 @@ namespace ItIsYou.Core
         }
 
         private readonly Queue<SuspectDefinition> _pending = new Queue<SuspectDefinition>();
+
+        /// <summary>2차 심문이 도는 동안의 공용 타임 토큰. 그 밖에는 null.</summary>
+        public TimeTokenPool SecondRoundTokens { get; private set; }
 
         public ChapterDefinition Chapter => chapter;
         public GameSession Session { get; private set; }
@@ -91,6 +96,7 @@ namespace ItIsYou.Core
             // 심문이 끝난 뒤에만 갱신하면, 밑줄을 눌러 증언을 주웠는데도
             // 화면에는 아무 일도 일어나지 않은 것처럼 보인다 — 실제로 그랬다.
             Session.Clues.ClueAdded += OnClueAdded;
+            Session.Clues.ClueRemoved += OnClueRemoved;
 
             _chapterRoutine = StartCoroutine(RunChapter());
         }
@@ -204,24 +210,99 @@ namespace ItIsYou.Core
             }
 
             // ---- 2차 심문 ----
-            // 1차와 같은 규칙. 조합에서 만든 추론이 단서 제시 선택지를 연다.
+            // 2026-09-23 기획: 가설을 들고 상대를 고른다. 전체 용의자가 타임 토큰 6을 나눠 쓰며, 자유롭게 오간다.
+            // 자수(EndsInterrogation) 한 상대는 다시 고를 수 없다. 토큰이 다 떨어지거나 고를 상대가 없으면 지목으로.
             var secondRound = chapter.SecondRoundSuspects != null && chapter.SecondRoundSuspects.Count > 0
                 ? new List<SuspectDefinition>(chapter.SecondRoundSuspects)
-                : round;
-            yield return Transition(GamePhase.Interrogation2);
-            yield return RunInterrogationRound(secondRound, 2);
-            if (Session.IsGameOver)
+                : new List<SuspectDefinition>(chapter.FirstRoundSuspects);
+            var sharedTokens = new TimeTokenPool(chapter.SecondRoundSharedTokens);
+            SecondRoundTokens = sharedTokens;
+            var concluded = new HashSet<string>();
+            var visited = new HashSet<string>();
+
+            while (!sharedTokens.IsExhausted)
             {
-                yield return ShowGameOver(allowRetry: false, retryText: null);
-                yield break;
+                var anySelectable = false;
+                for (int i = 0; i < secondRound.Count; i++)
+                {
+                    var s = secondRound[i];
+                    if (s != null && s.Selectable && !concluded.Contains(s.Id)) { anySelectable = true; break; }
+                }
+                if (!anySelectable) break;
+
+                SuspectDefinition target = null;
+                if (suspectSelect != null)
+                {
+                    void OnPicked2(SuspectDefinition s) => target = s;
+                    suspectSelect.Picked += OnPicked2;
+                    yield return Transition(GamePhase.SuspectSelect);
+                    suspectSelect.BeginRound(chapter, secondRound, concluded, chapter.SecondRoundSelectPrompt, skipTalk: true);
+                    while (target == null) yield return null;
+                    suspectSelect.Picked -= OnPicked2;
+                }
+                else
+                {
+                    for (int i = 0; i < secondRound.Count && target == null; i++)
+                        if (secondRound[i] != null && secondRound[i].Selectable && !concluded.Contains(secondRound[i].Id)) target = secondRound[i];
+                    if (target == null) break;
+                }
+
+                yield return Transition(GamePhase.Interrogation2);
+
+                var finished2 = false;
+                var reason2 = InterrogationEndReason.PlayerEnded;
+                void OnFinished2(InterrogationEndReason r) { reason2 = r; finished2 = true; }
+
+                interrogation.Finished += OnFinished2;
+                interrogation.Begin(chapter, target, Session.Clues, ResolveView(target.Id), 2,
+                    sharedTokens, skipOpening: visited.Contains(target.Id));
+                visited.Add(target.Id);
+                while (!finished2) yield return null;
+                interrogation.Finished -= OnFinished2;
+
+                Session.AddTrust(interrogation.Session.TrustDelta);
+                if (interrogation.Session.Concluded) concluded.Add(target.Id);
+                if (clueTray != null) clueTray.Rebuild(Session.Clues);
+
+                if (reason2 == InterrogationEndReason.GameOverByErraticTone)
+                {
+                    Session.TriggerGameOver(GameOverKind.Standard);
+                    yield return ShowGameOver(allowRetry: false, retryText: null);
+                    yield break;
+                }
             }
+            SecondRoundTokens = null;
 
             // ---- 범인 지목 ----
-            SetPhase(GamePhase.Accusation);
-            // 지목 UI 가 Accuse() 를 부를 때까지 기다린다.
-            while (string.IsNullOrEmpty(Session.AccusedSuspectId)) yield return null;
+            // 용의자 선택과 같은 화면. 고르면 주인공이 '왜 이 사람인가'를 말하고 엔딩으로 간다.
+            yield return Transition(GamePhase.Accusation);
+            if (chapter.BeforeAccusation != null && !chapter.BeforeAccusation.IsEmpty)
+                yield return dialogue.Play(chapter.BeforeAccusation);
 
-            SetPhase(GamePhase.Ending);
+            SuspectDefinition accused = null;
+            if (accusation != null)
+            {
+                void OnAccused(SuspectDefinition s) => accused = s;
+                accusation.Picked += OnAccused;
+                accusation.Begin(chapter);
+                while (accused == null) yield return null;
+                accusation.Picked -= OnAccused;
+            }
+            else
+            {
+                // 지목 UI 가 없으면 Accuse() 를 부를 때까지 기다린다.
+                while (string.IsNullOrEmpty(Session.AccusedSuspectId)) yield return null;
+            }
+
+            if (accused != null)
+            {
+                Session.Accuse(accused.Id);
+                if (accused.AccusationSpeech != null && !accused.AccusationSpeech.IsEmpty)
+                    yield return dialogue.Play(accused.AccusationSpeech);
+            }
+
+            yield return Transition(GamePhase.Ending);
+            ending?.Show(accused != null ? accused.DisplayName : Session.AccusedSuspectId, Session.Clues.Count);
             ChapterCompleted?.Invoke(Session.AccusedSuspectId);
         }
 
@@ -349,6 +430,11 @@ namespace ItIsYou.Core
         }
 
         /// <summary>새 단서를 얻었다. 목록을 즉시 갱신하고 바깥에도 알린다.</summary>
+        private void OnClueRemoved(ClueDefinition clue)
+        {
+            if (clueTray != null) clueTray.Rebuild(Session.Clues);
+        }
+
         private void OnClueAdded(ClueDefinition clue)
         {
             if (clueTray != null) clueTray.Rebuild(Session.Clues);
@@ -364,6 +450,10 @@ namespace ItIsYou.Core
             // 상대가 무대에 있는 구간에서는 상대의 말이 위 말풍선으로 간다.
             var split = phase == GamePhase.Interrogation1 || phase == GamePhase.Interrogation2 || phase == GamePhase.Deduction;
             dialogue?.SetSplitBySpeaker(split);
+
+            // 평범한 대화 구간은 화면 전체를 쓰는 시네마틱 대사창을, 나머지는 수첩형 대사창을 쓴다.
+            var cinematic = phase == GamePhase.PreIncidentTalk || phase == GamePhase.Cutscene || phase == GamePhase.Intro;
+            dialogue?.SetCinematic(cinematic);
 
             PhaseChanged?.Invoke(phase);
         }
@@ -401,6 +491,7 @@ namespace ItIsYou.Core
             {
                 Session.GameOverTriggered -= OnGameOver;
                 Session.Clues.ClueAdded -= OnClueAdded;
+                Session.Clues.ClueRemoved -= OnClueRemoved;
             }
         }
     }

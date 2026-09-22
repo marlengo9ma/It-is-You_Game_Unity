@@ -119,12 +119,40 @@ namespace ItIsYou.Data
         [Tooltip("장소. 예: 대륙 횡단 열차")]
         [SerializeField] private string sceneLocation = "대륙 횡단 열차";
 
-        [Header("단서 조합")]
-        [Tooltip("조수 문답 문항. 순서대로 나온다. 전부 맞히면 페이즈가 끝난다.")]
-        [SerializeField] private List<DeductionQuestion> deductionQuestions = new List<DeductionQuestion>();
+        [Header("단서 조합 — 가설")]
+        [Tooltip("가설 조합식. 물품 단서 + 정황 단서 → 추론. 여기 없는 짝은 전부 실패다.")]
+        [SerializeField] private List<HypothesisRecipe> hypotheses = new List<HypothesisRecipe>();
 
-        [Tooltip("시도 자원 — 잉크 방울 수. 오답마다 하나 마른다. 0인 채로 또 틀리면 자기 비하 게임오버. 기획 시안 3")]
-        [SerializeField] private int deductionInk = 3;
+        [Tooltip("시도 자원 — 잉크. 실패마다 하나 마른다. 기획 2026-09-23: 기본 4")]
+        [SerializeField] private int deductionInk = 4;
+
+        [Tooltip("저장할 수 있는 가설의 최대 수. 기획: 3 (튜토리얼 2)")]
+        [SerializeField] private int maxHypotheses = 3;
+
+        [Tooltip("실패 회차별 반응. 1회, 2회, 3회 이상… 부족하면 마지막 것을 되풀이한다.")]
+        [SerializeField] private List<DialogueSequence> deductionFailures = new List<DialogueSequence>();
+
+        [Tooltip("같은 가설을 또 만들려 했을 때.")]
+        [SerializeField] private DialogueSequence deductionDuplicate = new DialogueSequence();
+
+        [Tooltip("가설이 가득 찬 채 새 가설이 생겼을 때 — 지울 것을 고르라는 말.")]
+        [SerializeField] private DialogueSequence deductionReplacePrompt = new DialogueSequence();
+
+        [Tooltip("잉크가 다 마르고 가설이 하나라도 있어 페이즈가 저절로 끝날 때.")]
+        [SerializeField] private DialogueSequence deductionInkOut = new DialogueSequence();
+
+        [Header("2차 심문")]
+        [Tooltip("2차 심문에서 전체 용의자가 나눠 쓰는 타임 토큰. 기획: 6")]
+        [SerializeField] private int secondRoundSharedTokens = 6;
+
+        [Tooltip("2차 심문에서 누구를 심문할지 고르라는 한 줄.")]
+        [SerializeField] private string secondRoundSelectPrompt = "가설을 들고 누구에게 갈까.";
+
+        [Tooltip("2차 심문의 토큰이 다 떨어졌을 때, 지목으로 넘어가기 전의 대사.")]
+        [SerializeField] private DialogueSequence beforeAccusation = new DialogueSequence();
+
+        [Tooltip("범인 지목 화면의 한 줄.")]
+        [SerializeField] private string accusationPrompt = "누가 가져갔다고 보십니까?";
 
         [Tooltip("조합 페이즈에 들어갈 때의 대사.")]
         [SerializeField] private DialogueSequence deductionIntro = new DialogueSequence();
@@ -134,9 +162,6 @@ namespace ItIsYou.Data
 
         [Tooltip("잉크가 다 마른 채 또 틀렸을 때 — 자기 비하 게임오버 직전의 독백.")]
         [SerializeField] private DialogueSequence selfLoathingEnding = new DialogueSequence();
-
-        [Tooltip("오답 때 무대에 뜨는 이벤트 팝업 #2 (째려보는 주인공). 비어 있으면 더미 판.")]
-        [SerializeField] private Sprite deductionGlareImage;
 
         [Header("조합 / 지목")]
         [SerializeField] private List<CombinationRecipe> recipes = new List<CombinationRecipe>();
@@ -156,14 +181,41 @@ namespace ItIsYou.Data
         public string SceneDate => sceneDate;
         public string SceneLocation => sceneLocation;
 
-        public IReadOnlyList<DeductionQuestion> DeductionQuestions => deductionQuestions;
-        public int DeductionInk => Mathf.Max(0, deductionInk);
+        public IReadOnlyList<HypothesisRecipe> Hypotheses => hypotheses;
+        public int DeductionInk => Mathf.Max(1, deductionInk);
+        public int MaxHypotheses => Mathf.Max(1, maxHypotheses);
+        public IReadOnlyList<DialogueSequence> DeductionFailures => deductionFailures;
+        public DialogueSequence DeductionDuplicate => deductionDuplicate;
+        public DialogueSequence DeductionReplacePrompt => deductionReplacePrompt;
+        public DialogueSequence DeductionInkOut => deductionInkOut;
         public DialogueSequence DeductionIntro => deductionIntro;
         public DialogueSequence DeductionOutro => deductionOutro;
         public DialogueSequence SelfLoathingEnding => selfLoathingEnding;
-        public Sprite DeductionGlareImage => deductionGlareImage;
-        /// <summary>튜토리얼에서는 첫 오답이 잉크를 쓰지 않는다 — 심문의 페널티 유예와 같은 규칙.</summary>
-        public bool FirstDeductionMissIsFree => isTutorial;
+
+        public int SecondRoundSharedTokens => Mathf.Max(1, secondRoundSharedTokens);
+        public string SecondRoundSelectPrompt => secondRoundSelectPrompt;
+        public DialogueSequence BeforeAccusation => beforeAccusation;
+        public string AccusationPrompt => accusationPrompt;
+
+        /// <summary>실패 회차(1부터)에 맞는 반응. 목록이 짧으면 마지막 것을 쓴다.</summary>
+        public DialogueSequence GetDeductionFailure(int round)
+        {
+            if (deductionFailures == null || deductionFailures.Count == 0) return null;
+            var i = Mathf.Clamp(round - 1, 0, deductionFailures.Count - 1);
+            return deductionFailures[i];
+        }
+
+        /// <summary>두 단서에 맞는 조합식. 없으면 null.</summary>
+        public HypothesisRecipe FindHypothesis(string a, string b)
+        {
+            if (hypotheses == null) return null;
+            for (int i = 0; i < hypotheses.Count; i++)
+            {
+                var h = hypotheses[i];
+                if (h != null && h.Matches(a, b)) return h;
+            }
+            return null;
+        }
 
         public DialogueSequence PreIncidentTalk => preIncidentTalk;
         public string CutsceneName => cutsceneName;

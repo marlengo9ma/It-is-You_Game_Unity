@@ -95,14 +95,16 @@ namespace ItIsYou.EditorTools
             // ---- 게임 ----
             var gmPage = Page(contentRt, "Page_Game");
             var textSpeed = SliderRow(gmPage, "글자 속도", 0.5f, 2f);
+            var autoSpeed = SliderRow(gmPage, "자동 넘김 속도", 0.5f, 5f);
             var guide = CyclerRow(gmPage, "가이드 모드 (준비 중)");
             var gmNote = K.Text("Note", gmPage,
                 "글자 속도는 평범한 대화에만 적용됩니다. 심문 중의 말하는 속도는 연출이라 고정입니다.\n" +
+                "자동 넘김 속도는 AUTO 를 켰을 때 한 줄이 다 나온 뒤 다음 줄까지 기다리는 시간입니다.\n" +
                 "가이드 모드는 무반응 판정을 시간 차감 대신 선택지로 바꾸는 모드로, 아직 기획 중입니다.",
                 T.Caption, P.InkSoft, TextAlignmentOptions.TopLeft);
             gmNote.textWrappingMode = TextWrappingModes.Normal;
             var gmNoteLe = gmNote.gameObject.AddComponent<LayoutElement>();
-            gmNoteLe.preferredHeight = 72f;
+            gmNoteLe.preferredHeight = 96f;
 
             // 하단 버튼
             var defaults = K.Button("Defaults", panelRt, "기본값으로", T.Choice);
@@ -132,6 +134,7 @@ namespace ItIsYou.EditorTools
                 .Set("voiceSlider", voice.slider).Set("voiceValue", voice.value)
                 .Set("mute", mute)
                 .Set("textSpeedSlider", textSpeed.slider).Set("textSpeedValue", textSpeed.value)
+                .Set("autoAdvanceSlider", autoSpeed.slider).Set("autoAdvanceValue", autoSpeed.value)
                 .Set("guideMode", guide);
 
             sPage.gameObject.SetActive(false);

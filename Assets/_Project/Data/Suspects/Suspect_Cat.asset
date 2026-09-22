@@ -27,6 +27,56 @@ MonoBehaviour:
     lines: []
     trustDelta: 0
     endsInterrogation: 0
+  accusationSpeech:
+    note: "[\uC784\uC2DC] \uC9C0\uBAA9 \u2014 \uACE0\uC591\uC774"
+    lines:
+    - speaker: 2
+      text: "..\uBC94\uC778\uC740 \uC800 \uACE0\uC591\uC774\uB2E4."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 1
+      text: "\uB9CC\uB144\uD544\uC744 \uAE54\uACE0 \uC549\uC544 \uC788\uB358 \uAC74
+        \uC800 \uB140\uC11D\uC774\uB2C8\uAE4C."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      text: "\uC218\uC0AC\uAD00\uB2D8\u2026 \uC9C4\uC2EC\uC774\uC138\uC694?"
+      expression: 3
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      text: "\uACE0\uC591\uC774\uB294 \uB300\uB2F5\uD558\uC9C0 \uC54A\uC558\uB2E4."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0
   interrogationObjects: []
   aggressionWarning:
     note: 

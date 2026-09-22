@@ -51,17 +51,20 @@ namespace ItIsYou.Interrogation
         public event Action<PressureVerdict> TutorialLessonRequested;
 
         public InterrogationSession Session => _session;
+        private bool _skipOpening;
         public bool IsRunning => _session != null && !_session.IsOver;
 
         // ------------------------------------------------------------- 시작
 
         public void Begin(ChapterDefinition chapter, SuspectDefinition suspect,
-            ClueInventory inventory, ICharacterView characterView, int round = 1)
+            ClueInventory inventory, ICharacterView characterView, int round = 1,
+            TimeTokenPool sharedTokens = null, bool skipOpening = false)
         {
             _inventory = inventory;
             _characterView = characterView;
+            _skipOpening = skipOpening;
 
-            _session = new InterrogationSession(chapter, suspect, inventory, round);
+            _session = new InterrogationSession(chapter, suspect, inventory, round, sharedTokens);
             _session.Idle.Elapsed += OnIdleElapsed;
 
             Subscribe();
@@ -88,11 +91,11 @@ namespace ItIsYou.Interrogation
             if (choiceList != null) choiceList.Clear();
             _session.Idle.Hold();
 
-            var title = _session.Chapter.BuildInterrogationTitle(_session.Suspect);
+            var title = _skipOpening ? string.Empty : _session.Chapter.BuildInterrogationTitle(_session.Suspect);
             if (titleCard != null && !string.IsNullOrEmpty(title))
                 yield return titleCard.Play(title);
 
-            var opening = _session.Suspect.OpeningForRound(_session.Round);
+            var opening = _skipOpening ? null : _session.Suspect.OpeningForRound(_session.Round);
             if (opening != null && !opening.IsEmpty)
             {
                 LogSequence(opening, null);

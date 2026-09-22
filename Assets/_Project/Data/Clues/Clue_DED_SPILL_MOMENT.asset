@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e905b03c8b5cee4380ffdc07426baf9, type: 3}
+  m_Name: Clue_DED_SPILL_MOMENT
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.ClueDefinition
+  id: DED_SPILL_MOMENT
+  kind: 3
+  unreadName: "\uAC00\uC124"
+  readName: "\uCEE4\uD53C\uAC00 \uC3DF\uC544\uC9C4 \uADF8\uB54C"
+  tooltip: "\uCEE4\uD53C\uC794\uACFC '\uBCF8 \uC801\uC740 \uC788\uB2E4'\uB294 \uB9D0\uC744
+    \uC774\uC5B4 \uC138\uC6B4 \uAC00\uC124.\n\n\uB9CC\uB144\uD544\uC774 \uD14C\uC774\uBE14\uC5D0\uC11C
+    \uC0AC\uB77C\uC9C4 \uAC83\uC740 \uCEE4\uD53C\uAC00 \uC3DF\uC544\uC9C4 \uBB34\uB835\uC774\uB2E4.
+    \uADF8 \uC18C\uB3D9 \uC18D\uC5D0\uC11C \uBB34\uC5B8\uAC00\uAC00 \uC790\uB9AC\uB97C
+    \uC62E\uACBC\uB2E4."
+  icon: {fileID: 0}
+  closeUpImage: {fileID: 0}
+  isKeyClue: 0
+  countsTowardCompletion: 0

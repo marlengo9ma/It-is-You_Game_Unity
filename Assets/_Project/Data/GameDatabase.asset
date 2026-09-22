@@ -24,6 +24,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 606b1efa492f0df47a750ef081f777fc, type: 2}
   - {fileID: 11400000, guid: a19f5ba9d7edfc148a4dbde23dc8ec02, type: 2}
   - {fileID: 11400000, guid: 1484a006556d6ee4ca3bd0b6c05d37b7, type: 2}
+  - {fileID: 11400000, guid: f911eef452043ef469e0084fb02df5f5, type: 2}
+  - {fileID: 11400000, guid: f06e3f94e30a4d0488f0b5b2e6b71307, type: 2}
   choices:
   - {fileID: 11400000, guid: 0c98b4a968f250243a0c3b72f68fd9f7, type: 2}
   - {fileID: 11400000, guid: b759028a5b302aa41a0eebc5ab6620ab, type: 2}
@@ -31,6 +33,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 001942c2380f469418853cc26bc1bc28, type: 2}
   - {fileID: 11400000, guid: 1b0b3f51c663028469fc714708048f67, type: 2}
   - {fileID: 11400000, guid: f00e17d12cde6ef488fb1606aebd3afa, type: 2}
+  - {fileID: 11400000, guid: c92b67bc232fc7d45afcad3e8ece0cc5, type: 2}
   interactables:
   - {fileID: 11400000, guid: df8215003a264724287f12e25dd5ab81, type: 2}
   - {fileID: 11400000, guid: 29c81ed7c5af9ff4a98f7c1ee49826e1, type: 2}

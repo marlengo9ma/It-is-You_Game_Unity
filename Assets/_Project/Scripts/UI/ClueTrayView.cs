@@ -34,6 +34,12 @@ namespace ItIsYou.UI
         [SerializeField] private RectTransform leadsContainer;
         [SerializeField] private ClueSlot leadPrefab;
 
+        [Tooltip("〈가설〉(추론) 목록. 비워 두면 정황 목록에 섞인다.")]
+        [SerializeField] private RectTransform hypothesesContainer;
+        [SerializeField] private ClueSlot hypothesisPrefab;
+        [Tooltip("가설이 하나도 없을 때 보이는 안내.")]
+        [SerializeField] private GameObject hypothesesEmpty;
+
         [Header("열람창")]
         [Tooltip("화면 전체를 덮는 열람창 루트. 반투명 배경 + 가운데 이미지 + 우측 텍스트.")]
         [SerializeField] private GameObject tooltipRoot;
@@ -57,6 +63,9 @@ namespace ItIsYou.UI
 
         private readonly List<ClueSlot> _pool = new List<ClueSlot>();
         private readonly List<ClueSlot> _leadPool = new List<ClueSlot>();
+        private readonly List<ClueSlot> _hypothesisPool = new List<ClueSlot>();
+        private readonly HashSet<string> _selectedIds = new HashSet<string>();
+        private bool _selectionMode;
         private ClueInventory _inventory;
         private ClueDefinition _reading;
         private TmpLinkClickRelay _linkRelay;
@@ -75,7 +84,31 @@ namespace ItIsYou.UI
         /// <summary>수집 오브젝트가 단서 오브젝트로 승격됐다.</summary>
         public event Action<ClueDefinition> CluePromoted;
 
+        /// <summary>고르기 모드에서 물품·정황 칸을 눌렀다. (단서 조합 페이즈)</summary>
+        public event Action<ClueDefinition> ClueSelected;
+
         public bool IsTooltipOpen => _tooltipOpen;
+        public bool SelectionMode => _selectionMode;
+
+        /// <summary>
+        /// 고르기 모드 — 칸을 누르면 열람창 대신 ClueSelected 가 난다. 가설 칸은 여전히 열람된다.
+        /// 모드를 끄면 선택 표시도 지운다.
+        /// </summary>
+        public void SetSelectionMode(bool on)
+        {
+            _selectionMode = on;
+            if (!on) _selectedIds.Clear();
+            RebuildSlotsOnly();
+        }
+
+        /// <summary>지금 자리에 올라간 단서들을 목록에서 밝게 표시한다.</summary>
+        public void SetSelection(string a, string b)
+        {
+            _selectedIds.Clear();
+            if (!string.IsNullOrEmpty(a)) _selectedIds.Add(a);
+            if (!string.IsNullOrEmpty(b)) _selectedIds.Add(b);
+            RebuildSlotsOnly();
+        }
 
         private void Awake()
         {
@@ -115,6 +148,15 @@ namespace ItIsYou.UI
         private void OnSlotClicked(ClueDefinition clue)
         {
             if (clue == null || _inventory == null) return;
+
+            if (_selectionMode && clue.Kind != ClueKind.Deduced)
+            {
+                // 고르기 모드: 읽은 것으로 치고 자리에 올린다. 열람창은 뜨지 않는다.
+                var read = _inventory.MarkRead(clue.Id);
+                if (read) ClueRead?.Invoke(clue);
+                ClueSelected?.Invoke(clue);
+                return;
+            }
 
             var firstRead = _inventory.MarkRead(clue.Id);
             _reading = clue;
@@ -215,15 +257,24 @@ namespace ItIsYou.UI
 
             var grid = new List<ClueDefinition>();
             var leads = new List<ClueDefinition>();
+            var hyps = new List<ClueDefinition>();
+            var splitHyps = hypothesesContainer != null && hypothesisPrefab != null;
             for (int i = 0; i < ids.Count; i++)
             {
                 var clue = _inventory.Get(ids[i]);
                 if (clue == null) continue;
-                if (SplitLeads && IsLead(clue)) leads.Add(clue); else grid.Add(clue);
+                if (splitHyps && clue.Kind == ClueKind.Deduced) hyps.Add(clue);
+                else if (SplitLeads && IsLead(clue)) leads.Add(clue);
+                else grid.Add(clue);
             }
 
             Fill(_pool, slotPrefab, container, grid);
             if (SplitLeads) Fill(_leadPool, leadPrefab, leadsContainer, leads);
+            if (splitHyps)
+            {
+                Fill(_hypothesisPool, hypothesisPrefab, hypothesesContainer, hyps);
+                if (hypothesesEmpty != null) hypothesesEmpty.SetActive(hyps.Count == 0);
+            }
         }
 
         private void Fill(List<ClueSlot> pool, ClueSlot prefab, RectTransform parent, List<ClueDefinition> clues)
@@ -236,6 +287,7 @@ namespace ItIsYou.UI
                 if (!active) continue;
                 var clue = clues[i];
                 pool[i].Bind(clue, _inventory.HasBeenRead(clue.Id), _inventory.IsPromoted(clue.Id), OnSlotClicked);
+                pool[i].SetSelected(_selectedIds.Contains(clue.Id));
             }
         }
     }

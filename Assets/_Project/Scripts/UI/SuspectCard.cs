@@ -41,6 +41,7 @@ namespace ItIsYou.UI
         private Vector2 _basePosition;
         private SuspectDefinition _suspect;
         private bool _selectable;
+        private string _lockedReason;
         private bool _armed;
         private Coroutine _move;
 
@@ -65,10 +66,13 @@ namespace ItIsYou.UI
             if (button != null) button.onClick.RemoveListener(HandleClick);
         }
 
-        public void Bind(SuspectDefinition suspect)
+        /// <param name="selectableOverride">정의의 Selectable 대신 쓸 값 (2차 심문에서 이미 끝난 상대 등).</param>
+        /// <param name="lockedReasonOverride">고를 수 없을 때 보일 사유.</param>
+        public void Bind(SuspectDefinition suspect, bool? selectableOverride = null, string lockedReasonOverride = null)
         {
             _suspect = suspect;
-            _selectable = suspect != null && suspect.Selectable;
+            _selectable = suspect != null && (selectableOverride ?? suspect.Selectable);
+            _lockedReason = lockedReasonOverride ?? (suspect != null ? suspect.LockedReason : string.Empty);
 
             if (nameLabel != null) nameLabel.text = suspect != null ? suspect.DisplayName : string.Empty;
 
@@ -81,7 +85,7 @@ namespace ItIsYou.UI
 
             if (stateLabel != null)
             {
-                stateLabel.text = _selectable ? string.Empty : (suspect != null ? suspect.LockedReason : string.Empty);
+                stateLabel.text = _selectable ? string.Empty : _lockedReason;
                 stateLabel.gameObject.SetActive(!_selectable);
             }
 
@@ -114,7 +118,7 @@ namespace ItIsYou.UI
 
             if (!_selectable)
             {
-                Refused?.Invoke(_suspect.LockedReason);
+                Refused?.Invoke(_lockedReason);
                 return;
             }
             Picked?.Invoke(_suspect);

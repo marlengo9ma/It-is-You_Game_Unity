@@ -5,213 +5,183 @@ using ItIsYou.Data;
 
 namespace ItIsYou.Deduction
 {
-    /// <summary>한 번의 선택이 낳은 결과.</summary>
-    public enum DeductionOutcome
+    /// <summary>가설 도출 시도 한 번의 결과.</summary>
+    public enum HypothesisOutcome
     {
-        /// <summary>정답 순서를 아직 다 고르지 않았다 (두 개 이상 고르는 문항).</summary>
-        Pending = 0,
-        Correct = 1,
-        /// <summary>틀렸다. 잉크가 남아 있어 같은 문항을 다시 푼다.</summary>
-        Wrong = 2,
-        /// <summary>잉크가 없는 상태에서 틀렸다 — 자기 비하 게임오버.</summary>
-        Fatal = 3
+        /// <summary>두 단서가 이어졌다. 가설이 저장됐다.</summary>
+        Success = 0,
+        /// <summary>이어졌지만 가설 칸이 가득 찼다. 기존 가설 하나를 지워야 저장된다.</summary>
+        SuccessNeedsReplace = 1,
+        /// <summary>이미 만든 가설이다. 잉크를 쓰지 않는다.</summary>
+        Duplicate = 2,
+        /// <summary>관계없는 두 단서. 잉크 −1.</summary>
+        Fail = 3,
+        /// <summary>실패했고 잉크가 다 말랐는데 가설이 하나도 없다 — 게임오버.</summary>
+        Fatal = 4
     }
 
-    /// <summary>선택 한 번의 판정과, 화면이 알아야 할 부수 정보.</summary>
-    public readonly struct DeductionResult
+    public readonly struct HypothesisResult
     {
-        public readonly DeductionOutcome Outcome;
-        /// <summary>이 오답이 잉크를 쓰지 않았다 (튜토리얼 첫 오답).</summary>
-        public readonly bool FreeMiss;
-        /// <summary>이 문항에서 몇 번째 오답인가 (1부터).</summary>
-        public readonly int WrongRound;
-        /// <summary>정답이면 새로 얻은 추론 단서.</summary>
-        public readonly ClueDefinition Deduced;
+        public readonly HypothesisOutcome Outcome;
+        /// <summary>성공이면 맞은 조합식.</summary>
+        public readonly HypothesisRecipe Recipe;
+        /// <summary>몇 번째 실패인가 (1부터). 실패가 아니면 0.</summary>
+        public readonly int FailRound;
+        /// <summary>이 시도로 페이즈가 끝났다 (잉크 소진 + 가설 ≥ 1).</summary>
+        public readonly bool PhaseEnded;
 
-        public DeductionResult(DeductionOutcome outcome, bool freeMiss, int wrongRound, ClueDefinition deduced)
+        public HypothesisResult(HypothesisOutcome outcome, HypothesisRecipe recipe, int failRound, bool phaseEnded)
         {
             Outcome = outcome;
-            FreeMiss = freeMiss;
-            WrongRound = wrongRound;
-            Deduced = deduced;
+            Recipe = recipe;
+            FailRound = failRound;
+            PhaseEnded = phaseEnded;
         }
     }
 
     /// <summary>
-    /// 단서 조합 페이즈의 규칙. MonoBehaviour 가 아니라 순수 C# — 화면 없이 검증할 수 있다.
+    /// 단서 조합(가설) 페이즈의 규칙. MonoBehaviour 가 아니라 순수 C# — 화면 없이 검증할 수 있다.
     ///
-    /// 개선안의 공통 뼈대: 잉크 방울(가시적 시도 자원) · 오답마다 회차 반응 · 잉크 0 + 오답 = 자기 비하 게임오버 ·
-    /// 결과는 목록의 '추론' 카드. 문항 방식은 A 조수 문답.
+    /// 2026-09-23 기획:
+    /// 물품 단서 하나 + 정황 단서 하나 → 이어지면 〈가설〉, 아니면 실패하고 〈잉크〉 −1.
+    /// 가설은 최대 N개(튜토리얼 2, 기본 3) 저장. 가득 찬 채 새 가설이 생기면 하나를 지우고 저장.
+    /// 잉크(기본 4)가 다 마르고 가설이 하나도 없으면 게임오버.
+    /// 정한 것(기획서에 없는 부분): 성공은 잉크를 쓰지 않는다. 잉크가 0이 됐는데 가설이 하나라도 있으면
+    /// 페이즈가 저절로 끝난다. 가설이 하나라도 있으면 "추리를 마친다" 로 먼저 끝낼 수 있다.
     /// </summary>
     public class DeductionSession
     {
         private readonly ChapterDefinition _chapter;
         private readonly ClueInventory _inventory;
-        private readonly List<DeductionQuestion> _questions = new List<DeductionQuestion>();
-        private readonly List<string> _picked = new List<string>();
-        private readonly HashSet<string> _triedWrong = new HashSet<string>();
-        private readonly HashSet<string> _eliminated = new HashSet<string>();
+        private readonly HashSet<string> _triedPairs = new HashSet<string>();
 
-        private int _index;
-        private bool _freeMissUsed;
+        private HypothesisRecipe _pendingReplace;
 
         public int Ink { get; private set; }
         public int InkCapacity { get; }
+        public int MaxHypotheses { get; }
         public bool IsOver { get; private set; }
         public bool Succeeded { get; private set; }
-
-        /// <summary>현재 문항에서 틀린 횟수.</summary>
-        public int WrongOnCurrent { get; private set; }
-
-        /// <summary>전체 오답 수. 사건 보고서 자리에 쓸 수 있다.</summary>
-        public int TotalWrong { get; private set; }
-
-        public DeductionQuestion Current => _index < _questions.Count ? _questions[_index] : null;
-        public int QuestionIndex => _index;
-        public int QuestionCount => _questions.Count;
-
-        /// <summary>이미 틀린 것으로 골라 본 후보 — 흐리게 표시한다. 다시 누를 수는 있다.</summary>
-        public IReadOnlyCollection<string> TriedWrong => _triedWrong;
-
-        /// <summary>가이드 모드에서 조수가 지워 준 후보 — 목록에서 사라진다.</summary>
-        public IReadOnlyCollection<string> Eliminated => _eliminated;
+        public int FailCount { get; private set; }
 
         /// <summary>잉크가 바뀌었다. (남은 수)</summary>
         public event Action<int> InkChanged;
+
+        /// <summary>가설 목록이 바뀌었다.</summary>
+        public event Action HypothesesChanged;
 
         public DeductionSession(ChapterDefinition chapter, ClueInventory inventory)
         {
             _chapter = chapter ?? throw new ArgumentNullException(nameof(chapter));
             _inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
-
-            var source = chapter.DeductionQuestions;
-            if (source != null)
-            {
-                for (int i = 0; i < source.Count; i++)
-                {
-                    if (source[i] != null) _questions.Add(source[i]);
-                }
-            }
-
             InkCapacity = chapter.DeductionInk;
             Ink = InkCapacity;
-
-            // 이미 만든 추론(재도전)은 건너뛴다.
-            SkipDone();
-            if (Current == null) Finish(true);
+            MaxHypotheses = chapter.MaxHypotheses;
         }
 
-        /// <summary>현재 문항의 후보 — 실제로 가진 단서만. 놓친 단서는 후보에도 없다: 앞 페이즈의 대가.</summary>
-        public List<ClueDefinition> BuildCandidates()
-        {
-            var result = new List<ClueDefinition>();
-            var q = Current;
-            if (q == null) return result;
-
-            var ids = q.CandidateClueIds;
-            for (int i = 0; i < ids.Count; i++)
-            {
-                if (_eliminated.Contains(ids[i])) continue;
-                var clue = _inventory.Get(ids[i]);
-                if (clue != null) result.Add(clue);
-            }
-            return result;
-        }
-
-        /// <summary>현재 문항의 정답을 하나라도 갖고 있지 않으면 — 풀 수 없는 문항이다.</summary>
-        public bool CurrentIsUnanswerable
+        /// <summary>지금 저장돼 있는 가설(추론 단서)들. 목록 순서.</summary>
+        public List<ClueDefinition> Hypotheses
         {
             get
             {
-                var q = Current;
-                if (q == null) return false;
-                for (int i = 0; i < q.AnswerClueIds.Count; i++)
-                {
-                    if (!_inventory.Has(q.AnswerClueIds[i])) return true;
-                }
-                return false;
+                var list = new List<ClueDefinition>();
+                foreach (var c in _inventory.OfKind(ClueKind.Deduced)) list.Add(c);
+                return list;
             }
         }
 
-        /// <summary>후보 하나를 고른다.</summary>
-        public DeductionResult Select(string clueId)
+        public int HypothesisCount
         {
-            var q = Current;
-            if (IsOver || q == null || string.IsNullOrEmpty(clueId))
-                return new DeductionResult(DeductionOutcome.Pending, false, WrongOnCurrent, null);
+            get { var n = 0; foreach (var _ in _inventory.OfKind(ClueKind.Deduced)) n++; return n; }
+        }
 
-            _picked.Add(clueId);
-            if (_picked.Count < q.AnswerCount)
+        public bool CanEnd => HypothesisCount >= 1;
+        public bool HasPendingReplace => _pendingReplace != null;
+        public HypothesisRecipe PendingReplace => _pendingReplace;
+
+        /// <summary>이 짝을 이미 시도해 실패했는가 — 화면에서 흐리게 알려 주기 위해.</summary>
+        public bool TriedAndFailed(string a, string b) => _triedPairs.Contains(PairKey(a, b));
+
+        /// <summary>단서 종류가 자리에 맞는가. 왼쪽은 물품, 오른쪽은 정황(증언·리액션).</summary>
+        public static bool IsObjectSide(ClueDefinition c) => c != null && c.Kind == ClueKind.Object;
+        public static bool IsLeadSide(ClueDefinition c) => c != null && (c.Kind == ClueKind.Testimony || c.Kind == ClueKind.Reaction);
+
+        /// <summary>물품 단서 하나와 정황 단서 하나로 가설 도출을 시도한다.</summary>
+        public HypothesisResult TryCombine(ClueDefinition objectClue, ClueDefinition leadClue)
+        {
+            if (IsOver || _pendingReplace != null || objectClue == null || leadClue == null)
+                return new HypothesisResult(HypothesisOutcome.Fail, null, FailCount, false);
+
+            var recipe = _chapter.FindHypothesis(objectClue.Id, leadClue.Id);
+            if (recipe != null && recipe.Result != null)
             {
-                // 아직 순서를 다 고르지 않았다. 다만 이미 어긋났으면 바로 판정한다.
-                if (q.AnswerClueIds[_picked.Count - 1] == clueId)
-                    return new DeductionResult(DeductionOutcome.Pending, false, WrongOnCurrent, null);
+                if (_inventory.Has(recipe.Result.Id))
+                    return new HypothesisResult(HypothesisOutcome.Duplicate, recipe, 0, false);
+
+                if (HypothesisCount >= MaxHypotheses)
+                {
+                    _pendingReplace = recipe;
+                    return new HypothesisResult(HypothesisOutcome.SuccessNeedsReplace, recipe, 0, false);
+                }
+
+                AddHypothesis(recipe.Result);
+                return new HypothesisResult(HypothesisOutcome.Success, recipe, 0, false);
             }
 
-            var correct = q.IsCorrect(_picked);
-            _picked.Clear();
+            // 실패 — 잉크를 쓴다.
+            _triedPairs.Add(PairKey(objectClue.Id, leadClue.Id));
+            FailCount++;
+            Ink = Math.Max(0, Ink - 1);
+            InkChanged?.Invoke(Ink);
 
-            if (correct)
-            {
-                var deduced = q.ResultClue;
-                if (deduced != null) _inventory.Add(deduced);
-                WrongOnCurrent = 0;
-                _triedWrong.Clear();
-                _eliminated.Clear();
-                _index++;
-                SkipDone();
-                if (Current == null) Finish(true);
-                return new DeductionResult(DeductionOutcome.Correct, false, 0, deduced);
-            }
+            if (Ink > 0)
+                return new HypothesisResult(HypothesisOutcome.Fail, null, FailCount, false);
 
-            _triedWrong.Add(clueId);
-            WrongOnCurrent++;
-            TotalWrong++;
-
-            // 튜토리얼의 첫 오답은 무료 — 규칙을 배우는 값이다.
-            var free = _chapter.FirstDeductionMissIsFree && !_freeMissUsed;
-            if (free)
-            {
-                _freeMissUsed = true;
-                return new DeductionResult(DeductionOutcome.Wrong, true, WrongOnCurrent, null);
-            }
-
-            if (Ink <= 0)
+            if (HypothesisCount == 0)
             {
                 Finish(false);
-                return new DeductionResult(DeductionOutcome.Fatal, false, WrongOnCurrent, null);
+                return new HypothesisResult(HypothesisOutcome.Fatal, null, FailCount, true);
             }
 
-            Ink--;
-            InkChanged?.Invoke(Ink);
-            return new DeductionResult(DeductionOutcome.Wrong, false, WrongOnCurrent, null);
+            Finish(true);
+            return new HypothesisResult(HypothesisOutcome.Fail, null, FailCount, true);
         }
 
-        /// <summary>
-        /// 가이드 모드 — 조수가 오답 후보 하나를 지운다. 지운 단서 id 를 돌려주고, 지울 것이 없으면 null.
-        /// 정답과 이미 틀려 본 것은 남긴다(틀려 본 것은 이미 플레이어가 안다).
-        /// </summary>
-        public string EliminateOneWrongCandidate()
+        /// <summary>가득 찬 가설 칸에서 하나를 지우고, 기다리던 새 가설을 저장한다.</summary>
+        public ClueDefinition ConfirmReplace(string removeClueId)
         {
-            var q = Current;
-            if (q == null) return null;
-            var ids = q.CandidateClueIds;
-            for (int i = 0; i < ids.Count; i++)
-            {
-                var id = ids[i];
-                if (q.IsAnswer(id) || _eliminated.Contains(id) || _triedWrong.Contains(id)) continue;
-                if (!_inventory.Has(id)) continue;
-                _eliminated.Add(id);
-                return id;
-            }
-            return null;
+            if (_pendingReplace == null) return null;
+            var removed = _inventory.Get(removeClueId);
+            if (removed == null || removed.Kind != ClueKind.Deduced) return null;
+
+            _inventory.Remove(removeClueId);
+            var recipe = _pendingReplace;
+            _pendingReplace = null;
+            AddHypothesis(recipe.Result);
+            return recipe.Result;
         }
 
-        private void SkipDone()
+        /// <summary>새 가설을 버리고 기존 것을 지킨다. 잉크는 쓰지 않는다.</summary>
+        public void CancelReplace() => _pendingReplace = null;
+
+        /// <summary>가설이 하나라도 있으면 먼저 끝낼 수 있다.</summary>
+        public bool EndManually()
         {
-            while (Current != null && Current.ResultClue != null && _inventory.Has(Current.ResultClue.Id))
-                _index++;
+            if (IsOver || !CanEnd) return false;
+            Finish(true);
+            return true;
         }
+
+        /// <summary>가설은 플레이어가 직접 세운 것이라 처음부터 세부 명칭으로 보인다.</summary>
+        private void AddHypothesis(ClueDefinition result)
+        {
+            _inventory.Add(result);
+            _inventory.MarkRead(result.Id);
+            HypothesesChanged?.Invoke();
+        }
+
+        private static string PairKey(string a, string b)
+            => string.CompareOrdinal(a, b) <= 0 ? a + "|" + b : b + "|" + a;
 
         private void Finish(bool success)
         {

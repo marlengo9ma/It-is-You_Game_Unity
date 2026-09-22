@@ -37,6 +37,7 @@ namespace ItIsYou.Core
         private const string KeyVoice = "settings.volume.voice";
         private const string KeyMuted = "settings.muted";
         private const string KeyTextSpeed = "settings.textSpeed";
+        private const string KeyAutoAdvance = "settings.autoAdvance";
         private const string KeyGuideMode = "settings.guideMode";
 
         /// <summary>16:9 후보. 실제 모니터보다 큰 것은 목록에서 빠진다.</summary>
@@ -71,6 +72,9 @@ namespace ItIsYou.Core
         /// <summary>평범한 대화의 글자 속도 배율. 심문의 '말하는 속도'에는 적용하지 않는다.</summary>
         public static float TextSpeed { get; set; } = 1f;
 
+        /// <summary>AUTO 모드에서 한 줄이 다 나온 뒤 다음 줄까지 기다리는 시간(초). 0.5~5.</summary>
+        public static float AutoAdvanceSeconds { get; set; } = 2f;
+
         /// <summary>가이드 모드 (기획 중). 지금은 값만 저장해 둔다.</summary>
         public static bool GuideMode { get; set; }
 
@@ -104,6 +108,7 @@ namespace ItIsYou.Core
             VoiceVolume = PlayerPrefs.GetFloat(KeyVoice, 1f);
             Muted = PlayerPrefs.GetInt(KeyMuted, 0) == 1;
             TextSpeed = PlayerPrefs.GetFloat(KeyTextSpeed, 1f);
+            AutoAdvanceSeconds = PlayerPrefs.GetFloat(KeyAutoAdvance, 2f);
             GuideMode = PlayerPrefs.GetInt(KeyGuideMode, 0) == 1;
             Loaded = true;
         }
@@ -120,6 +125,7 @@ namespace ItIsYou.Core
             PlayerPrefs.SetFloat(KeyVoice, VoiceVolume);
             PlayerPrefs.SetInt(KeyMuted, Muted ? 1 : 0);
             PlayerPrefs.SetFloat(KeyTextSpeed, TextSpeed);
+            PlayerPrefs.SetFloat(KeyAutoAdvance, AutoAdvanceSeconds);
             PlayerPrefs.SetInt(KeyGuideMode, GuideMode ? 1 : 0);
             PlayerPrefs.SetInt(KeyDisplayVersion, DisplayDefaultsVersion);
             PlayerPrefs.Save();
@@ -138,6 +144,7 @@ namespace ItIsYou.Core
             VoiceVolume = 1f;
             Muted = false;
             TextSpeed = 1f;
+            AutoAdvanceSeconds = 2f;
             GuideMode = false;
         }
 

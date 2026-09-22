@@ -31,6 +31,9 @@ namespace ItIsYou.Clues
         /// <summary>수집 오브젝트가 단서 오브젝트로 승격됐을 때.</summary>
         public event Action<ClueDefinition> CluePromoted;
 
+        /// <summary>단서를 버렸을 때.</summary>
+        public event Action<ClueDefinition> ClueRemoved;
+
         public int Count => _owned.Count;
 
         /// <summary>수집 순서대로의 단서 id.</summary>
@@ -87,6 +90,19 @@ namespace ItIsYou.Clues
             _owned.Add(clue.Id, clue);
             _order.Add(clue.Id);
             ClueAdded?.Invoke(clue);
+            return true;
+        }
+
+        /// <summary>단서를 버린다. 가설 칸이 가득 찼을 때 기존 가설을 지우는 데 쓴다. 실제로 지워졌으면 true.</summary>
+        public bool Remove(string clueId)
+        {
+            if (!Has(clueId)) return false;
+            var clue = _owned[clueId];
+            _owned.Remove(clueId);
+            _order.Remove(clueId);
+            _read.Remove(clueId);
+            _promoted.Remove(clueId);
+            ClueRemoved?.Invoke(clue);
             return true;
         }
 

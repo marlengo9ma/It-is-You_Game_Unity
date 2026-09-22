@@ -86,14 +86,31 @@ namespace ItIsYou.EditorTools
 
             // [임시] 단서 조합의 결과 — '추론' 카드. 노션에 항목이 없다. 개선안: 결과가 목록에 남고 2차 심문의 단서 제시가 여기에 열린다.
             var penUnderCat = Clue("DED_PEN_UNDER_CAT", ClueKind.Deduced,
-                unread: "추론",
+                unread: "가설",
                 read: "만년필은 고양이 아래에",
                 keyClue: false,
                 tooltip:
-                "조수의 질문에 답하며 정리한 것.\n\n" +
+                "'언듯 보이는 무언가'와 '본 적은 있다'는 말을 이어 세운 가설.\n\n" +
                 "만년필은 사라진 것이 아니라, 처음부터 저 고양이가 깔고 앉아 있었다. " +
                 "커피가 쏟아진 것도, 리본에 고양이 털이 박힌 것도 그 무렵의 일이다.\n\n" +
                 "조수는 이 사실을 알고 있었던 듯한 얼굴을 했다. 다시 물어볼 차례다.");
+
+            var sepiHidesCat = Clue("DED_SEPI_HIDES_CAT", ClueKind.Deduced,
+                unread: "가설",
+                read: "세피는 고양이 일을 숨기고 있다",
+                keyClue: false,
+                tooltip:
+                "리본과 굳은 표정을 이어 세운 가설.\n\n" +
+                "리본에 고양이 털이 박힌 것은 숨길 일이 아니다. 그런데 '고양이'라는 말에 조수의 얼굴이 굳었다. " +
+                "더러워진 리본이 아니라, 고양이가 이 객실에 있다는 사실 자체를 숨기고 있는 듯하다.");
+
+            var spillMoment = Clue("DED_SPILL_MOMENT", ClueKind.Deduced,
+                unread: "가설",
+                read: "커피가 쏟아진 그때",
+                keyClue: false,
+                tooltip:
+                "커피잔과 '본 적은 있다'는 말을 이어 세운 가설.\n\n" +
+                "만년필이 테이블에서 사라진 것은 커피가 쏟아진 무렵이다. 그 소동 속에서 무언가가 자리를 옮겼다.");
 
             // ==================================================== 수집 오브젝트
             // 겉모습으로는 둘을 구분할 수 없어야 한다. 마우스 오버 반응도 동일하다.
@@ -150,19 +167,40 @@ namespace ItIsYou.EditorTools
                 passes: new List<DialogueSequence> { TutorialScript.Choice2CPass() },
                 requiredClueIds: Ed.L("DED_PEN_UNDER_CAT"));
             choice2Deduced.Set("showLockedPlaceholder", true).Set("lockedLabel", "???");
+            // 가설 2 로 열리는 단서 제시 — 심문은 이어진다.
+            var choice2Cat = Choice("CH_SEPI2_CAT", ChoiceTone.Evidence,
+                label: TutorialScript.Choice2DLabel,
+                passes: new List<DialogueSequence> { TutorialScript.Choice2DPass() },
+                requiredClueIds: Ed.L("DED_SEPI_HIDES_CAT"));
+            choice2Cat.Set("showLockedPlaceholder", true).Set("lockedLabel", "???");
 
-            // ========================================================== 단서 조합 (조수 문답)
-            // [임시] 문항 1개. 후보 4개 중 '고양이 아래의 무언가'가 정답. 놓쳤으면 후보에도 없다.
-            var deductionQ1 = Ed.CreateOrLoad<DeductionQuestion>(DeductionFolder, "Deduction_TUT_Q1");
-            deductionQ1.Set("id", "DED_Q1")
-                       .Set("prompt", TutorialScript.DeductionQ1Prompt())
-                       .Set("candidateClueIds", Ed.L("CLUE_RIBBON", "CLUE_COFFEE", "CLUE_GLIMPSE", "CLUE_NEWSPAPER"))
-                       .Set("answerClueIds", Ed.L("CLUE_GLIMPSE"))
-                       .Set("resultClue", penUnderCat)
-                       .Set("onCorrect", TutorialScript.DeductionQ1Correct())
-                       .Set("wrongReactions", TutorialScript.DeductionQ1Wrong())
-                       .Set("guideHint", TutorialScript.DeductionQ1GuideHint())
-                       .Set("requiredForAccusation", true);
+            // ========================================================== 단서 조합 (가설)
+            // [임시] 조합식 3개. 물품 + 정황 → 추론. 튜토리얼은 가설 2개까지 저장 — 셋째를 세우면 하나를 지운다.
+            var hypPen = Ed.CreateOrLoad<HypothesisRecipe>(DeductionFolder, "Hyp_PenUnderCat");
+            hypPen.Set("id", "HYP_PEN_UNDER_CAT")
+                  .Set("title", "만년필은 고양이 아래에")
+                  .Set("objectClueId", "CLUE_GLIMPSE")
+                  .Set("leadClueId", "TES_SAW_IT")
+                  .Set("result", penUnderCat)
+                  .Set("onSuccess", TutorialScript.HypPenUnderCat());
+
+            var hypHides = Ed.CreateOrLoad<HypothesisRecipe>(DeductionFolder, "Hyp_SepiHidesCat");
+            hypHides.Set("id", "HYP_SEPI_HIDES_CAT")
+                    .Set("title", "세피는 고양이 일을 숨기고 있다")
+                    .Set("objectClueId", "CLUE_RIBBON")
+                    .Set("leadClueId", "REA_CAT_FLINCH")
+                    .Set("result", sepiHidesCat)
+                    .Set("onSuccess", TutorialScript.HypSepiHidesCat());
+
+            var hypSpill = Ed.CreateOrLoad<HypothesisRecipe>(DeductionFolder, "Hyp_SpillMoment");
+            hypSpill.Set("id", "HYP_SPILL_MOMENT")
+                    .Set("title", "커피가 쏟아진 그때")
+                    .Set("objectClueId", "CLUE_COFFEE")
+                    .Set("leadClueId", "TES_SAW_IT")
+                    .Set("result", spillMoment)
+                    .Set("onSuccess", TutorialScript.HypSpillMoment());
+
+            DeleteIfExists(DeductionFolder + "/Deduction_TUT_Q1.asset");
 
             // ========================================================== 용의자
 
@@ -176,9 +214,10 @@ namespace ItIsYou.EditorTools
                 .Set("timeTokens", 6)
                 .Set("choices", Ed.L(choiceFriendly, choiceAggressive, choiceRibbon))
                 // [임시] 2차 심문 — 선택지 3, 토큰 3 (1차의 절반), 첫 마디 별도
-                .Set("secondRoundChoices", Ed.L(choice2Friendly, choice2Aggressive, choice2Deduced))
+                .Set("secondRoundChoices", Ed.L(choice2Friendly, choice2Aggressive, choice2Deduced, choice2Cat))
                 .Set("secondRoundTokens", 3)
                 .Set("onEnterSecondInterrogation", TutorialScript.SepiSecondOpening())
+                .Set("accusationSpeech", TutorialScript.AccuseSepi())
                 // ---- 아래 반응 대사는 [임시]. 노션에 "용의자의 의문 및 당황에 대한 반응" 같은 지시만 있고 문장은 없다. ----
                 .Set("aggressionWarning", Seq("[임시] 강압 경고",
                     Line(SpeakerId.Assistant, "수사관님… 저, 정말 아니에요…",
@@ -223,7 +262,8 @@ namespace ItIsYou.EditorTools
                .Set("profile", "기차 안을 제집처럼 돌아다니던 녀석. 사건 당시 테이블 위에 있었다.")
                .Set("timeTokens", 4)
                .Set("selectable", false)
-               .Set("lockedReason", "…먼저 사람부터 상대하지.");
+               .Set("lockedReason", "…먼저 사람부터 상대하지.")
+               .Set("accusationSpeech", TutorialScript.AccuseCat());
 
             // ============================================================ 챕터
 
@@ -251,31 +291,41 @@ namespace ItIsYou.EditorTools
                    .Set("interrogationTitleFormat", "용의자 ‘{name}’ 심문 시작")
                    .Set("tutorialPopups", TutorialScript.TutorialPopups())
                    .Set("accusationTargets", Ed.L(sepi, cat))
-                   // [임시] 단서 조합 — 잉크 3, 문항 1, 진입/마무리/자기 비하 대사
-                   .Set("deductionQuestions", Ed.L(deductionQ1))
-                   .Set("deductionInk", 3)
+                   // [임시] 단서 조합 — 잉크 4, 가설 최대 2, 조합식 3, 진입/실패/마무리/자기 비하 대사
+                   .Set("hypotheses", Ed.L(hypPen, hypHides, hypSpill))
+                   .Set("deductionInk", 4)
+                   .Set("maxHypotheses", 2)
+                   .Set("deductionFailures", TutorialScript.DeductionFailures())
+                   .Set("deductionDuplicate", TutorialScript.DeductionDuplicate())
+                   .Set("deductionReplacePrompt", TutorialScript.DeductionReplacePrompt())
+                   .Set("deductionInkOut", TutorialScript.DeductionInkOut())
                    .Set("deductionIntro", TutorialScript.DeductionIntro())
                    .Set("deductionOutro", TutorialScript.DeductionOutro())
-                   .Set("selfLoathingEnding", TutorialScript.SelfLoathingEnding());
+                   .Set("selfLoathingEnding", TutorialScript.SelfLoathingEnding())
+                   // [임시] 2차 심문 — 공용 타임 토큰 6, 지목 전 대사
+                   .Set("secondRoundSharedTokens", 6)
+                   .Set("secondRoundSelectPrompt", "가설을 들고, 누구에게 다시 물어볼까.")
+                   .Set("beforeAccusation", TutorialScript.BeforeAccusation())
+                   .Set("accusationPrompt", "누가 가져갔다고 보십니까?");
 
             // ============================================================ 색인
 
             var db = Ed.CreateOrLoad<GameDatabase>(Root, "GameDatabase");
             db.EditorSetAll(
                 Ed.L(chapter),
-                Ed.L(ribbon, coffee, glimpse, newspaper, typewriter, roomInfo, sawIt, catFlinch, penUnderCat),
-                Ed.L(choiceFriendly, choiceAggressive, choiceRibbon, choice2Friendly, choice2Aggressive, choice2Deduced),
+                Ed.L(ribbon, coffee, glimpse, newspaper, typewriter, roomInfo, sawIt, catFlinch, penUnderCat, sepiHidesCat, spillMoment),
+                Ed.L(choiceFriendly, choiceAggressive, choiceRibbon, choice2Friendly, choice2Aggressive, choice2Deduced, choice2Cat),
                 Ed.L(objRibbon, objCoffee, objGlimpse, objNewspaper, objTypewriter, objRoomInfo),
                 Ed.L(sepi, cat));
 
-            Ed.Save(ribbon, coffee, glimpse, newspaper, typewriter, roomInfo, sawIt, catFlinch, penUnderCat,
+            Ed.Save(ribbon, coffee, glimpse, newspaper, typewriter, roomInfo, sawIt, catFlinch, penUnderCat, sepiHidesCat, spillMoment,
                     objRibbon, objCoffee, objGlimpse, objNewspaper, objTypewriter, objRoomInfo,
-                    choiceFriendly, choiceAggressive, choiceRibbon, choice2Friendly, choice2Aggressive, choice2Deduced,
-                    deductionQ1, sepi, cat, chapter, db);
+                    choiceFriendly, choiceAggressive, choiceRibbon, choice2Friendly, choice2Aggressive, choice2Deduced, choice2Cat,
+                    hypPen, hypHides, hypSpill, sepi, cat, chapter, db);
             AssetDatabase.Refresh();
 
             Debug.Log("[It is You] 튜토리얼 데이터 생성 완료 — " +
-                      "수집품 6(단서 3/일반 3) + 증언·리액션 2 + 추론 1, 선택지 3+3, 조합 문항 1, 용의자 2, 튜토리얼 팝업 6, 챕터 1");
+                      "수집품 6(단서 3/일반 3) + 증언·리액션 2 + 가설 3, 선택지 3+4, 조합식 3, 용의자 2, 튜토리얼 팝업 6, 챕터 1");
             return chapter;
         }
 

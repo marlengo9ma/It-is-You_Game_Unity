@@ -1,18 +1,22 @@
 using System.Collections.Generic;
 using ItIsYou.Core;
 using ItIsYou.Data;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace ItIsYou.UI
 {
     /// <summary>
-    /// 평범한 대화 구간에만 붙는 두 개의 버튼 — 로그, 창 숨기기.
+    /// 평범한 대화 구간에만 붙는 조작들 — LOG, SKIP, AUTO (그리고 선택적으로 창 숨기기).
     ///
     /// 증거 수집·심문·단서 조합 페이즈에서는 나타나지 않는다.
     /// 그 세 구간에는 타임 토큰과 무반응 타이머가 돌고 있어서,
     /// 대사창을 치우거나 지난 대사를 들추는 일이 규칙의 일부여야 하기 때문이다.
     /// (심문에서 지난 대사를 보는 수단은 [기억 짐작] 이고, 값을 치른다.)
+    ///
+    /// SKIP 은 버튼을 쥐고 있는 동안(또는 화면을 길게 누르는 동안) 켜지며, 켜지는 순간 AUTO 를 끈다.
+    /// AUTO 는 토글이며, 텍스트가 다 찍힌 뒤 설정의 "자동 넘김 속도" 만큼 기다렸다가 넘어간다.
     /// </summary>
     [AddComponentMenu("It is You/Dialogue Toolbar")]
     public class DialogueToolbar : MonoBehaviour
@@ -23,11 +27,26 @@ namespace ItIsYou.UI
         [SerializeField] private DialogueLogView log;
 
         [Header("화면")]
-        [Tooltip("두 버튼을 담고 있는 묶음. 해당 페이즈가 아니면 통째로 꺼진다.")]
+        [Tooltip("버튼들을 담고 있는 묶음. 해당 페이즈가 아니면 통째로 꺼진다.")]
         [SerializeField] private GameObject root;
 
         [SerializeField] private Button logButton;
         [SerializeField] private Button hideButton;
+
+        [Tooltip("SKIP. HoldButton 이 붙어 있어야 한다.")]
+        [SerializeField] private HoldButton skipButton;
+        [SerializeField] private Graphic skipGraphic;
+        [SerializeField] private TMP_Text skipLabel;
+
+        [Tooltip("AUTO 토글.")]
+        [SerializeField] private Button autoButton;
+        [SerializeField] private Graphic autoGraphic;
+        [SerializeField] private TMP_Text autoLabel;
+
+        [SerializeField] private Color idleColor = new Color(0.16f, 0.14f, 0.12f, 0.85f);
+        [SerializeField] private Color activeColor = new Color(0.78f, 0.62f, 0.32f, 1f);
+        [SerializeField] private Color idleLabelColor = new Color(0.93f, 0.90f, 0.84f, 1f);
+        [SerializeField] private Color activeLabelColor = new Color(0.12f, 0.10f, 0.08f, 1f);
 
         [Tooltip("우측 패널의 기록 버튼. 항상 보이되, 로그를 볼 수 있는 페이즈에서만 눌린다.")]
         [SerializeField] private Button sideLogButton;
@@ -53,6 +72,16 @@ namespace ItIsYou.UI
             if (sideLogButton != null) sideLogButton.onClick.AddListener(OnLog);
             if (hideButton != null) hideButton.onClick.AddListener(OnHide);
             if (restoreButton != null) restoreButton.onClick.AddListener(OnRestore);
+            if (autoButton != null) autoButton.onClick.AddListener(OnAuto);
+            if (skipButton != null) skipButton.HeldChanged += OnSkipHeld;
+
+            if (dialogue != null)
+            {
+                dialogue.AutoChanged += PaintAuto;
+                dialogue.SkipChanged += PaintSkip;
+            }
+            PaintAuto(dialogue != null && dialogue.AutoEnabled);
+            PaintSkip(dialogue != null && dialogue.IsSkipping);
 
             if (restoreCatcher != null) restoreCatcher.SetActive(false);
 
@@ -74,6 +103,13 @@ namespace ItIsYou.UI
             if (sideLogButton != null) sideLogButton.onClick.RemoveListener(OnLog);
             if (hideButton != null) hideButton.onClick.RemoveListener(OnHide);
             if (restoreButton != null) restoreButton.onClick.RemoveListener(OnRestore);
+            if (autoButton != null) autoButton.onClick.RemoveListener(OnAuto);
+            if (skipButton != null) skipButton.HeldChanged -= OnSkipHeld;
+            if (dialogue != null)
+            {
+                dialogue.AutoChanged -= PaintAuto;
+                dialogue.SkipChanged -= PaintSkip;
+            }
             if (flow != null) flow.PhaseChanged -= Apply;
         }
 
@@ -82,6 +118,16 @@ namespace ItIsYou.UI
             var show = visiblePhases != null && visiblePhases.Contains(phase);
             if (root != null) root.SetActive(show);
             if (sideLogButton != null) sideLogButton.interactable = show;
+
+            // 자동 넘김과 스킵은 대화 구간에서만 허용된다. 심문에 들어가면 둘 다 꺼진다.
+            if (dialogue != null)
+            {
+                if (!show)
+                {
+                    dialogue.SetAuto(false);
+                    dialogue.SetSkipHeld(false);
+                }
+            }
 
             // 페이즈가 바뀌면 숨김과 로그는 원래대로 되돌린다.
             // 심문이 시작됐는데 대사창이 치워져 있으면 플레이어가 길을 잃는다.
@@ -93,6 +139,22 @@ namespace ItIsYou.UI
         }
 
         private void OnLog() => log?.Toggle();
+
+        private void OnAuto() => dialogue?.ToggleAuto();
+
+        private void OnSkipHeld(bool held) => dialogue?.SetSkipHeld(held);
+
+        private void PaintAuto(bool on)
+        {
+            if (autoGraphic != null) autoGraphic.color = on ? activeColor : idleColor;
+            if (autoLabel != null) autoLabel.color = on ? activeLabelColor : idleLabelColor;
+        }
+
+        private void PaintSkip(bool on)
+        {
+            if (skipGraphic != null) skipGraphic.color = on ? activeColor : idleColor;
+            if (skipLabel != null) skipLabel.color = on ? activeLabelColor : idleLabelColor;
+        }
 
         private void OnHide()
         {

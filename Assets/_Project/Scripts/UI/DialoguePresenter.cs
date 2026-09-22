@@ -40,6 +40,22 @@ namespace ItIsYou.UI
         [Range(0f, 1f)]
         [SerializeField] private float inactiveSurfaceAlpha = 0.55f;
 
+        [Header("영화식 대사 — 평범한 대화 구간")]
+        [Tooltip("틀 없이 화면 아래 그라데이션 위에 이름표 + 본문. 비워 두면 수첩을 쓴다.")]
+        [SerializeField] private CanvasGroup cinematicRoot;
+        [SerializeField] private TMP_Text cinematicSpeakerLabel;
+        [SerializeField] private TMP_Text cinematicRoleLabel;
+        [SerializeField] private Image cinematicStroke;
+        [SerializeField] private TMP_Text cinematicBodyLabel;
+        [SerializeField] private TMP_Text cinematicDirectionLabel;
+        [SerializeField] private GameObject cinematicAdvanceIndicator;
+
+        [Header("AUTO · SKIP")]
+        [Tooltip("SKIP 중 이미 본 줄의 출력 배속.")]
+        [SerializeField] private float skipMultiplier = 8f;
+        [Tooltip("화면을 이만큼 누르고 있으면 SKIP 이 걸린다(초). 평범한 대화 구간.")]
+        [SerializeField] private float holdToSkipSeconds = 0.6f;
+
         [Header("타자기")]
         [Tooltip("초당 출력 글자 수. 평범한 대화 구간에서 쓴다.")]
         [SerializeField] private float charactersPerSecond = 45f;
@@ -64,6 +80,13 @@ namespace ItIsYou.UI
         [SerializeField] private string protagonistName = "나";
         [SerializeField] private string assistantName = "세피";
         [SerializeField] private string catName = "검은 고양이";
+        [SerializeField] private string protagonistRole = "수사관";
+        [SerializeField] private string assistantRole = "보조수사관";
+        [SerializeField] private string catRole = "??";
+        [SerializeField] private Color protagonistColor = new Color32(0xC4, 0xA7, 0x5C, 0xFF);
+        [SerializeField] private Color assistantColor = new Color32(0x3F, 0x8A, 0x4E, 0xFF);
+        [SerializeField] private Color catColor = new Color32(0x4B, 0x3A, 0x8E, 0xFF);
+        [SerializeField] private Color narrationColor = new Color32(0x6E, 0x74, 0x7B, 0xFF);
 
         // ---- 외부 연결 ----
 
@@ -99,6 +122,18 @@ namespace ItIsYou.UI
         private bool _bubbleHasText;
         private bool _bottomHasText;
 
+        // 평범한 대화 구간의 아래 창 모양. 영화식(그라데이션 + 이름표) 또는 수첩.
+        private bool _cinematic;
+
+        // AUTO — 한 줄이 다 나오면 설정의 시간 뒤 스스로 넘어간다.
+        // SKIP — 누르고 있는 동안 이미 본 줄을 8배속으로 찍고 바로 넘긴다. 켜지는 순간 AUTO 는 꺼진다.
+        private bool _auto;
+        private bool _skipButtonHeld;
+        private bool _skipping;
+        private float _screenHoldSeconds;
+        private static HashSet<string> _seenLines;
+        private const string SeenKey = "dialogue.seen";
+
         // 심문 중에는 대사를 넘길 수 없다. 대신 좌클릭을 길게 눌러 빨리 감는다.
         private bool _allowSkip = true;
         private bool _slowSpeech;
@@ -118,12 +153,95 @@ namespace ItIsYou.UI
             ApplyVisibility();
         }
 
+        /// <summary>평범한 대화 구간의 아래 창을 영화식으로 쓸지. 심문·조합은 수첩.</summary>
+        public void SetCinematic(bool on)
+        {
+            _cinematic = on && cinematicRoot != null;
+            ApplyVisibility();
+        }
+
+        public bool AutoEnabled => _auto;
+        public bool IsSkipping => _skipping;
+
+        /// <summary>AUTO 가 켜지거나 꺼졌다.</summary>
+        public event Action<bool> AutoChanged;
+
+        /// <summary>SKIP 이 걸리거나 풀렸다.</summary>
+        public event Action<bool> SkipChanged;
+
+        public void SetAuto(bool on)
+        {
+            if (_auto == on) return;
+            _auto = on;
+            AutoChanged?.Invoke(on);
+        }
+
+        public void ToggleAuto() => SetAuto(!_auto);
+
+        /// <summary>SKIP 버튼을 누르고 있는 동안 true. 화면을 길게 눌러도 같은 상태가 된다.</summary>
+        public void SetSkipHeld(bool held)
+        {
+            _skipButtonHeld = held;
+            UpdateSkipping();
+        }
+
+        private void UpdateSkipping()
+        {
+            var on = _allowSkip && (_skipButtonHeld || _screenHoldSeconds >= holdToSkipSeconds);
+            if (on == _skipping) return;
+            _skipping = on;
+            if (on) SetAuto(false);
+            SkipChanged?.Invoke(on);
+        }
+
+        // ---- 본 적 있는 줄 — SKIP 은 이것에만 걸린다. 실행 사이에도 남도록 PlayerPrefs 에 둔다. ----
+
+        private static HashSet<string> Seen
+        {
+            get
+            {
+                if (_seenLines != null) return _seenLines;
+                _seenLines = new HashSet<string>();
+                var raw = PlayerPrefs.GetString(SeenKey, string.Empty);
+                if (!string.IsNullOrEmpty(raw))
+                    foreach (var h in raw.Split(';')) if (h.Length > 0) _seenLines.Add(h);
+                return _seenLines;
+            }
+        }
+
+        private static string LineKey(DialogueLine line)
+        {
+            // 안정적인 해시 — string.GetHashCode 는 실행마다 달라질 수 있다.
+            unchecked
+            {
+                uint h = 2166136261;
+                var text = line.Text ?? string.Empty;
+                for (int i = 0; i < text.Length; i++) { h ^= text[i]; h *= 16777619; }
+                return h.ToString("x8");
+            }
+        }
+
+        public static bool HasSeen(DialogueLine line) => line != null && Seen.Contains(LineKey(line));
+
+        private static void MarkSeen(DialogueLine line)
+        {
+            if (line == null) return;
+            var key = LineKey(line);
+            if (!Seen.Add(key)) return;
+            PlayerPrefs.SetString(SeenKey, string.Join(";", Seen));
+        }
+
         private static bool IsOtherParty(SpeakerId speaker)
             => speaker == SpeakerId.Assistant || speaker == SpeakerId.Cat
             || speaker == SpeakerId.SuspectA || speaker == SpeakerId.SuspectB || speaker == SpeakerId.SuspectC;
 
-        private TMP_Text ActiveBody => _useBubble ? bubbleBodyLabel : bodyLabel;
-        private GameObject ActiveIndicator => _useBubble ? bubbleAdvanceIndicator : advanceIndicator;
+        private CanvasGroup BottomRoot => _cinematic ? cinematicRoot : root;
+        private TMP_Text BottomBody => _cinematic ? cinematicBodyLabel : bodyLabel;
+        private TMP_Text BottomSpeaker => _cinematic ? cinematicSpeakerLabel : speakerLabel;
+        private TMP_Text BottomDirection => _cinematic ? cinematicDirectionLabel : stageDirectionLabel;
+        private GameObject BottomIndicator => _cinematic ? cinematicAdvanceIndicator : advanceIndicator;
+        private TMP_Text ActiveBody => _useBubble ? bubbleBodyLabel : BottomBody;
+        private GameObject ActiveIndicator => _useBubble ? bubbleAdvanceIndicator : BottomIndicator;
         public DialogueLine CurrentLine => _currentLine;
 
         /// <summary>리액션 수집 창이 지금 열려 있는가.</summary>
@@ -174,10 +292,18 @@ namespace ItIsYou.UI
         /// </summary>
         private void Update()
         {
-            if (_allowSkip || PauseMenu.IsPaused) return;
+            if (PauseMenu.IsPaused) return;
 
             var mouse = UnityEngine.InputSystem.Mouse.current;
             var pressed = mouse != null && mouse.leftButton.isPressed;
+
+            if (_allowSkip)
+            {
+                // 평범한 대화: 화면을 길게 누르면 SKIP. 버튼을 누르고 있어도 같다.
+                _screenHoldSeconds = pressed ? _screenHoldSeconds + Time.unscaledDeltaTime : 0f;
+                UpdateSkipping();
+                return;
+            }
 
             if (!pressed)
             {
@@ -195,6 +321,7 @@ namespace ItIsYou.UI
             SetVisible(false);
             if (advanceIndicator != null) advanceIndicator.SetActive(false);
             if (bubbleAdvanceIndicator != null) bubbleAdvanceIndicator.SetActive(false);
+            if (cinematicAdvanceIndicator != null) cinematicAdvanceIndicator.SetActive(false);
         }
 
         /// <summary>이미 수집한 단서 id 집합을 넘겨 두면, 수집된 구간은 밑줄 대신 강조색으로 그린다.</summary>
@@ -264,9 +391,19 @@ namespace ItIsYou.UI
             if (_useBubble) _bubbleHasText = true; else _bottomHasText = true;
             ApplyVisibility();
 
-            var speaker = _useBubble ? bubbleSpeakerLabel : speakerLabel;
-            var direction = _useBubble ? bubbleDirectionLabel : stageDirectionLabel;
+            var speaker = _useBubble ? bubbleSpeakerLabel : BottomSpeaker;
+            var direction = _useBubble ? bubbleDirectionLabel : BottomDirection;
             if (speaker != null) speaker.text = SpeakerName(line.Speaker);
+            if (!_useBubble && _cinematic)
+            {
+                var named = !string.IsNullOrEmpty(SpeakerName(line.Speaker));
+                if (cinematicRoleLabel != null) cinematicRoleLabel.text = named ? "_ " + SpeakerRole(line.Speaker) : string.Empty;
+                if (cinematicStroke != null)
+                {
+                    cinematicStroke.color = SpeakerColor(line.Speaker);
+                    cinematicStroke.gameObject.SetActive(named);
+                }
+            }
             if (direction != null)
             {
                 var hasDirection = !string.IsNullOrEmpty(line.StageDirection);
@@ -275,6 +412,7 @@ namespace ItIsYou.UI
             }
             if (advanceIndicator != null) advanceIndicator.SetActive(false);
             if (bubbleAdvanceIndicator != null) bubbleAdvanceIndicator.SetActive(false);
+            if (cinematicAdvanceIndicator != null) cinematicAdvanceIndicator.SetActive(false);
 
             // 기억 짐작에서 왜곡이 심하면 밑줄 구간을 아예 링크로 만들지 않는다.
             // "일부 흐릿해진 표정 리액션이나 왜곡된 텍스트에서는 수집이 불가능해집니다."
@@ -301,10 +439,26 @@ namespace ItIsYou.UI
             if (ActiveIndicator != null) ActiveIndicator.SetActive(true);
             LineCompleted?.Invoke(line);
 
+            var wasSeen = HasSeen(line);
+            MarkSeen(line);
+
             // 플레이어가 넘길 때까지 기다린다. 그 동안 리액션 창은 계속 살아 있다.
             if (_allowSkip)
             {
-                while (!_advanceRequested) yield return null;
+                var autoClock = 0f;
+                while (!_advanceRequested)
+                {
+                    if (PauseMenu.IsPaused) { yield return null; continue; }
+                    // SKIP: 본 줄은 바로 넘어간다. 안 본 줄은 손을 떼거나 누를 때까지 기다린다.
+                    if (_skipping && wasSeen) break;
+                    // AUTO: 설정의 시간만큼 두고 넘어간다.
+                    if (_auto)
+                    {
+                        autoClock += Time.unscaledDeltaTime;
+                        if (autoClock >= Mathf.Max(0.2f, GameSettings.AutoAdvanceSeconds)) break;
+                    }
+                    yield return null;
+                }
                 while (PauseMenu.IsPaused) yield return null;
             }
             else
@@ -351,6 +505,7 @@ namespace ItIsYou.UI
 
                 // 배속은 매 글자마다 다시 읽는다. 누르고 있는 도중에 걸려도 바로 빨라지도록.
                 var cps = CharsPerSecond;
+                if (_skipping && HasSeen(_currentLine)) cps *= Mathf.Max(1f, skipMultiplier);
                 var wait = cps <= 0f ? 0f : 1f / cps;
                 if (shown - 1 < total)
                 {
@@ -452,16 +607,20 @@ namespace ItIsYou.UI
         {
             var shown = _visible && !_hidden;
 
+            // 쓰지 않는 아래 창은 끈다.
+            if (cinematicRoot != null) Apply(_cinematic ? root : cinematicRoot, false, 1f);
+            var bottom = BottomRoot;
+
             if (bubbleRoot == null || !_splitBySpeaker)
             {
-                Apply(root, shown, 1f);
+                Apply(bottom, shown, 1f);
                 if (bubbleRoot != null) Apply(bubbleRoot, false, 1f);
                 return;
             }
 
             // 지금 말하는 쪽은 또렷하게, 방금 말한 쪽은 흐리게 남긴다. 대화의 양쪽이 화면에 같이 있다.
             Apply(bubbleRoot, shown && _bubbleHasText, _useBubble ? 1f : inactiveSurfaceAlpha);
-            Apply(root, shown && _bottomHasText, _useBubble ? inactiveSurfaceAlpha : 1f);
+            Apply(bottom, shown && _bottomHasText, _useBubble ? inactiveSurfaceAlpha : 1f);
         }
 
         private static void Apply(CanvasGroup group, bool shown, float alpha)
@@ -484,6 +643,24 @@ namespace ItIsYou.UI
             SpeakerId.Narration => string.Empty,
             SpeakerId.System => string.Empty,
             _ => string.Empty
+        };
+
+        private string SpeakerRole(SpeakerId speaker) => speaker switch
+        {
+            SpeakerId.Protagonist => protagonistRole,
+            SpeakerId.Inner => protagonistRole,
+            SpeakerId.Assistant => assistantRole,
+            SpeakerId.Cat => catRole,
+            _ => string.Empty
+        };
+
+        private Color SpeakerColor(SpeakerId speaker) => speaker switch
+        {
+            SpeakerId.Protagonist => protagonistColor,
+            SpeakerId.Inner => protagonistColor,
+            SpeakerId.Assistant => assistantColor,
+            SpeakerId.Cat => catColor,
+            _ => narrationColor
         };
 
         /// <summary>

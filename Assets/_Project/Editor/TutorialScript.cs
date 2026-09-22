@@ -335,52 +335,73 @@ namespace ItIsYou.EditorTools
             A("이야기요…? 설마 이 고양이요?!", ExpressionId.Surprised, "(개그 컷씬?)"));
 
         // ================================================================ [임시] 단서 조합 · 2차 심문
-        // 노션에 단서 조합의 대사와 2차 심문 스크립트는 없다. 아래는 개선안(조수 문답 · 잉크 · 추론 카드)을
-        // 시험하기 위해 지어 넣은 자리 채우기 텍스트. 원문이 생기면 통째로 교체한다.
+        // 노션에 단서 조합의 대사와 2차 심문 스크립트는 없다. 아래는 2026-09-23 기획(가설 조합 · 잉크 · 2차 심문 공용 토큰 ·
+        // 지목 → 엔딩)을 시험하기 위해 지어 넣은 자리 채우기 텍스트. 원문이 생기면 통째로 교체한다.
 
         /// <summary>[임시] 조합 페이즈 진입.</summary>
         public static DialogueSequence DeductionIntro() => Seq("[임시] 조합 진입",
             N("당신은 수첩을 펼쳤다. 적어 둘 수 있는 잉크는 얼마 남지 않았다."),
-            A("수사관님, 제가 정리를 도와드릴게요! 제가 묻는 걸, 지금까지 모은 것 중에서 골라 답해 주세요.", ExpressionId.Smile),
-            I("..조수가 수사관을 심문하는 모양새로군요. 뭐, 나쁘지 않습니다."));
+            A("수사관님, 모은 것들을 한번 이어 보죠. 물건 하나, 그리고 그 물건에 얽힌 말이나 표정 하나요.", ExpressionId.Smile),
+            I("..두 개를 잇는다. 이어지면 가설이고, 안 이어지면 잉크만 마른다."));
 
-        /// <summary>[임시] 문항 1 — 만년필은 지금 어디에.</summary>
-        public static DialogueSequence DeductionQ1Prompt() => Seq("[임시] 문항 1 질문",
-            A("그러니까요… 만년필은 아까까지 분명 테이블 위에 있었어요. 커피가 쏟아지고, 신문이 젖고… 그 사이에 없어졌죠.", ExpressionId.Thinking),
-            A("이 방에서, 만년필이 ‘지금 어디 있는지’를 말해 주는 건 뭘까요?", ExpressionId.Thinking, "(수사관을 올려다본다)"));
-
-        public static DialogueSequence DeductionQ1Correct() => Seq("[임시] 문항 1 정답",
-            A("…아. 고양이 아래에 비죽 나온 거요…?", ExpressionId.Surprised),
-            I("..처음부터 저기 있었습니다. 저 녀석이 깔고 앉아 있었을 뿐."),
-            A("그, 그럼 아까 커피는…", ExpressionId.Nervous, "(말끝을 흐린다)"),
-            I("..그 이야기는 이따가 다시 하죠."));
-
-        public static List<DialogueSequence> DeductionQ1Wrong() => new List<DialogueSequence>
+        /// <summary>[임시] 실패 회차별 반응. 1회, 2회, 3회 이상.</summary>
+        public static List<DialogueSequence> DeductionFailures() => new List<DialogueSequence>
         {
-            Seq("[임시] 오답 1회차",
-                A("음… 그건 아닌 것 같은데요? 그건 만년필이 ‘어디 있는지’까지는 말해 주지 않잖아요.", ExpressionId.Flustered),
-                N("당신은 방금 적은 줄을 지웠다.")),
-            Seq("[임시] 오답 2회차",
+            Seq("[임시] 실패 1회차",
+                A("음… 그 둘은 좀 멀지 않나요?", ExpressionId.Flustered),
+                N("당신은 방금 그은 선을 지웠다. 잉크가 한 방울 말랐다.")),
+            Seq("[임시] 실패 2회차",
                 A("수사관님… 잠깐만요. 조금만 더 천천히 보실래요?", ExpressionId.Nervous, "(수첩을 곁눈질한다)"),
-                N("잉크가 한 방울 말랐다.")),
-            Seq("[임시] 오답 3회차",
+                N("잉크가 또 한 방울 말랐다.")),
+            Seq("[임시] 실패 3회차",
                 A("…괜찮으세요? 오늘 좀 이상하세요, 수사관님.", ExpressionId.Sad),
                 N("손끝이 떨렸다. 남은 잉크가 얼마 없다.")),
         };
 
-        /// <summary>[임시] 가이드 모드 — 오답 뒤 후보 하나를 지워 주며.</summary>
-        public static DialogueSequence DeductionQ1GuideHint() => Seq("[임시] 가이드 힌트",
-            A("힌트예요! 이건 확실히 아니에요. 제가 하나 지워 둘게요.", ExpressionId.Smile, "(후보 하나를 손으로 가린다)"));
+        /// <summary>[임시] 같은 가설을 또 세우려 했을 때.</summary>
+        public static DialogueSequence DeductionDuplicate() => Seq("[임시] 중복 가설",
+            I("..이건 이미 적어 둔 가설이다."));
+
+        /// <summary>[임시] 가설 칸이 가득 찬 채 새 가설이 생겼을 때.</summary>
+        public static DialogueSequence DeductionReplacePrompt() => Seq("[임시] 가설 자리 없음",
+            I("..수첩에 자리가 없다. 하나를 지워야 한다."),
+            A("어떤 걸 지우실 거예요? 지운 건 되돌릴 수 없어요.", ExpressionId.Nervous));
+
+        /// <summary>[임시] 잉크가 다 마르고 가설이 하나라도 있어 저절로 끝날 때.</summary>
+        public static DialogueSequence DeductionInkOut() => Seq("[임시] 잉크 소진",
+            N("잉크가 다 말랐다. 더는 그을 수 없다."),
+            A("그래도 이 정도면… 다시 물어볼 수 있을 것 같아요.", ExpressionId.Nervous));
 
         public static DialogueSequence DeductionOutro() => Seq("[임시] 조합 마무리",
             A("정리됐네요! 그럼… 다시 이야기해 볼까요?", ExpressionId.Smile),
             I("..이제 물어볼 것이 생겼습니다."));
 
-        /// <summary>[임시] 잉크가 다 마른 채 또 틀렸을 때 — 자기 비하 게임오버 직전.</summary>
+        /// <summary>[임시] 잉크가 다 마른 채 가설이 하나도 없을 때 — 자기 비하 게임오버 직전.</summary>
         public static DialogueSequence SelfLoathingEnding() => Seq("[임시] 자기 비하",
             N("잉크가 말랐다. 수첩에는 지운 자국만 남았다."),
             I("..수사관이라는 사람이, 제 방에서 잃어버린 물건 하나 찾아내지 못하다니."),
             N("당신은 창밖으로 시선을 돌렸다. 기차는 여전히 달리고 있었다."));
+
+        // ---- [임시] 가설 조합식 세 개. 튜토리얼은 가설을 2개까지만 저장하므로, 셋째를 만들면 하나를 지워야 한다. ----
+
+        /// <summary>[임시] 가설 1 — 언듯 보이는 무언가 + "본 적은 있다" → 만년필은 고양이 아래에.</summary>
+        public static DialogueSequence HypPenUnderCat() => Seq("[임시] 가설 1 성공",
+            I("..'본 적은 있다'. 그리고 고양이 아래에 비죽 나온 것."),
+            I("..처음부터 저기 있었다. 저 녀석이 깔고 앉아 있었을 뿐."),
+            A("…아.", ExpressionId.Surprised, "(고양이 쪽을 보지 않으려 애쓴다)"));
+
+        /// <summary>[임시] 가설 2 — 리본 + 고양이 이야기에 굳는 표정 → 세피는 고양이 일을 숨기고 있다.</summary>
+        public static DialogueSequence HypSepiHidesCat() => Seq("[임시] 가설 2 성공",
+            I("..리본에 박힌 털, 그리고 '고양이'라는 말에 굳은 얼굴."),
+            I("..리본이 더러워진 건 숨길 일이 아니다. 숨기는 건 고양이 쪽이다."),
+            A("…리본은, 그냥 좀 더러워진 거예요.", ExpressionId.Nervous));
+
+        /// <summary>[임시] 가설 3 — 커피잔 + "본 적은 있다" → 커피가 쏟아진 그때 자리가 바뀌었다.</summary>
+        public static DialogueSequence HypSpillMoment() => Seq("[임시] 가설 3 성공",
+            I("..커피가 쏟아진 뒤로 만년필을 못 봤다. 그 순간에 자리가 바뀌었다."),
+            A("그, 그때는 저도 정신이 없어서…", ExpressionId.Flustered));
+
+        // ---- [임시] 2차 심문 ----
 
         /// <summary>[임시] 2차 심문 첫 마디.</summary>
         public static DialogueSequence SepiSecondOpening() => Seq("[임시] 2차 심문 진입",
@@ -396,7 +417,7 @@ namespace ItIsYou.EditorTools
             A("…없어요. 없다니까요.", ExpressionId.Fearful, "(어깨가 움츠러든다)"));
 
         public const string Choice2CLabel = "만년필이 어디 있는지, 알 것 같습니다.";
-        /// <summary>[임시] 추론 카드로 열리는 단서 제시. 이 묶음이 끝나면 심문이 끝나고 지목으로 간다.</summary>
+        /// <summary>[임시] 가설 1 로 열리는 단서 제시. 이 묶음이 끝나면 세피의 심문은 마무리된다(자수).</summary>
         public static DialogueSequence Choice2CPass()
         {
             var seq = Seq("[임시] 2차 C 단서 제시",
@@ -407,6 +428,31 @@ namespace ItIsYou.EditorTools
             seq.Set("endsInterrogation", true);
             return seq;
         }
+
+        public const string Choice2DLabel = "고양이 이야기를 할 때마다 표정이 굳더군요.";
+        /// <summary>[임시] 가설 2 로 열리는 단서 제시. 심문은 이어진다.</summary>
+        public static DialogueSequence Choice2DPass() => Seq("[임시] 2차 D 단서 제시",
+            A("…그 아이는 제 고양이예요. 몰래 태웠어요.", ExpressionId.Sad),
+            A("만년필이랑은 상관없어요… 아마도요.", ExpressionId.Nervous, "(말끝이 흐려진다)"));
+
+        /// <summary>[임시] 2차 심문의 토큰이 다 떨어졌을 때, 지목으로 넘어가기 전.</summary>
+        public static DialogueSequence BeforeAccusation() => Seq("[임시] 지목 전",
+            N("시간이 다 됐다."),
+            I("..이제 답을 내야 한다."));
+
+        // ---- [임시] 지목 — 주인공이 '왜 이 사람이 범인인가'를 말한다 ----
+
+        public static DialogueSequence AccuseSepi() => Seq("[임시] 지목 — 세피",
+            P("세피 씨. 만년필을 가져간 건 당신입니다."),
+            P("고양이가 깔고 앉은 걸 처음부터 알고 있었죠. 커피를 엎지른 것도, 리본이 더러워진 것도 그 아이를 숨기려던 소동이었고."),
+            A("…네. 죄송해요.", ExpressionId.Sad),
+            N("기차는 여전히 달리고 있었다."));
+
+        public static DialogueSequence AccuseCat() => Seq("[임시] 지목 — 고양이",
+            I("..범인은 저 고양이다."),
+            P("만년필을 깔고 앉아 있던 건 저 녀석이니까."),
+            A("수사관님… 진심이세요?", ExpressionId.Flustered),
+            N("고양이는 대답하지 않았다."));
 
         // ================================================================ 튜토리얼 팝업
 
@@ -464,15 +510,18 @@ namespace ItIsYou.EditorTools
                 "· 단서 툴팁 팝업 시 - 텍스트 출력 중 및 출력 이후 1~20초 간 타이머 일시 정지\n\n" +
                 ">> 최종적으로 수동으로 페이즈를 종료시키거나, 해당 용의자 캐릭터 마다 할당된 타임 토큰을 전부 소진하게 될 시, 해당 용의자 캐릭터의 페이즈가 자동으로 마무리된다. \n" +
                 ">> 타임 토큰의 소진으로 인해 특정 단서나 주요 증언 등을 못 듣게 될 수 있으며, 이 경우에는 최종적으로 게임 오버로 이어지게 된다."),
-            // ---- [임시] 단서 조합 팝업. 노션에 없어 개선안 규칙을 내 문장으로 적었다. ----
+            // ---- [임시] 단서 조합 팝업. 노션에 없어 2026-09-23 기획 규칙을 내 문장으로 적었다. ----
             Popup("POPUP_4", "단서 조합 페이즈 — 튜토리얼 4", TutorialPopupTrigger.BeforeDeduction,
-                "[단서 조합 페이즈]에서는 조수가 질문을 던지고, 플레이어는 지금까지 모은 단서 중 하나를 골라 답합니다.\n\n" +
-                ">>좌측에 나열되는 단서 아이콘을 좌클릭하세요. 놓친 단서는 후보에 나타나지 않습니다.",
-                "틀리면 무대에 [이벤트 팝업]이 뜨고, 상단의 [잉크]가 한 방울 마릅니다. 잉크가 없는 상태에서 또 틀리면, 사건을 추합하지 못한 채 [게임 오버]가 됩니다.\n\n" +
-                ">>맞히면 [추론] 카드가 우측 목록에 추가되고, 2차 심문에서 그 카드로 단서 제시 선택지가 열립니다."),
-            Popup("POPUP_4B", "잉크와 오답", TutorialPopupTrigger.OnDeductionFirstMiss,
-                "튜토리얼에서는 첫 오답이 잉크를 쓰지 않습니다. 다음부터는 틀릴 때마다 한 방울씩 마릅니다.\n\n" +
-                ">>틀려 본 후보는 흐리게 표시됩니다. 다시 고를 수는 있지만, 같은 실수는 같은 값을 치릅니다."),
+                "[단서 조합 페이즈]에서는 우측 목록의 [물품 증거] 하나와 [정황 증거] 하나를 골라 잇습니다. " +
+                "두 단서가 이어지면 〈가설〉이 되어 우측 아래의 [가설] 칸에 저장됩니다.\n\n" +
+                ">>물품 칸과 정황 칸을 한 번씩 누르고, 무대 가운데의 [가설 도출]을 누르세요.",
+                "관계없는 두 단서를 이으면 실패하고, 상단의 [잉크]가 한 방울 마릅니다. 잉크는 4번의 시도입니다. " +
+                "잉크가 다 마른 채 가설이 하나도 없으면 [게임 오버]가 됩니다.\n\n" +
+                ">>가설은 최대 2개(튜토리얼)까지 저장됩니다. 가득 찬 채 새 가설이 생기면 기존 가설 하나를 지우고 저장합니다. " +
+                "가설이 하나라도 있으면 [추리를 마친다]로 넘어갈 수 있습니다."),
+            Popup("POPUP_4B", "잉크와 실패", TutorialPopupTrigger.OnDeductionFirstMiss,
+                "실패할 때마다 잉크가 한 방울 마릅니다. 이미 이어 본 짝은 [가설 도출]이 눌리지 않습니다.\n\n" +
+                ">>2차 심문에서는 저장된 가설로 새 선택지가 열립니다. 어떤 가설을 남길지가 곧 어떤 질문을 할 수 있을지입니다."),
         };
 
         // ============================================================== 헬퍼

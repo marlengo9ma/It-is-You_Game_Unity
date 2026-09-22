@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7568a7647d7b1d049ae942c55d3cfd3f, type: 3}
+  m_Name: Hyp_SepiHidesCat
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.HypothesisRecipe
+  id: HYP_SEPI_HIDES_CAT
+  title: "\uC138\uD53C\uB294 \uACE0\uC591\uC774 \uC77C\uC744 \uC228\uAE30\uACE0 \uC788\uB2E4"
+  objectClueId: CLUE_RIBBON
+  leadClueId: REA_CAT_FLINCH
+  result: {fileID: 11400000, guid: f911eef452043ef469e0084fb02df5f5, type: 2}
+  onSuccess:
+    note: "[\uC784\uC2DC] \uAC00\uC124 2 \uC131\uACF5"
+    lines:
+    - speaker: 2
+      text: "..\uB9AC\uBCF8\uC5D0 \uBC15\uD78C \uD138, \uADF8\uB9AC\uACE0 '\uACE0\uC591\uC774'\uB77C\uB294
+        \uB9D0\uC5D0 \uAD73\uC740 \uC5BC\uAD74."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 2
+      text: "..\uB9AC\uBCF8\uC774 \uB354\uB7EC\uC6CC\uC9C4 \uAC74 \uC228\uAE38 \uC77C\uC774
+        \uC544\uB2C8\uB2E4. \uC228\uAE30\uB294 \uAC74 \uACE0\uC591\uC774 \uCABD\uC774\uB2E4."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      text: "\u2026\uB9AC\uBCF8\uC740, \uADF8\uB0E5 \uC880 \uB354\uB7EC\uC6CC\uC9C4
+        \uAC70\uC608\uC694."
+      expression: 2
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0

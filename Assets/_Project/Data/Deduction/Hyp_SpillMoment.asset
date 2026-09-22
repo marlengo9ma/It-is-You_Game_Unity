@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7568a7647d7b1d049ae942c55d3cfd3f, type: 3}
+  m_Name: Hyp_SpillMoment
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.HypothesisRecipe
+  id: HYP_SPILL_MOMENT
+  title: "\uCEE4\uD53C\uAC00 \uC3DF\uC544\uC9C4 \uADF8\uB54C"
+  objectClueId: CLUE_COFFEE
+  leadClueId: TES_SAW_IT
+  result: {fileID: 11400000, guid: f06e3f94e30a4d0488f0b5b2e6b71307, type: 2}
+  onSuccess:
+    note: "[\uC784\uC2DC] \uAC00\uC124 3 \uC131\uACF5"
+    lines:
+    - speaker: 2
+      text: "..\uCEE4\uD53C\uAC00 \uC3DF\uC544\uC9C4 \uB4A4\uB85C \uB9CC\uB144\uD544\uC744
+        \uBABB \uBD24\uB2E4. \uADF8 \uC21C\uAC04\uC5D0 \uC790\uB9AC\uAC00 \uBC14\uB00C\uC5C8\uB2E4."
+      expression: 0
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      text: "\uADF8, \uADF8\uB54C\uB294 \uC800\uB3C4 \uC815\uC2E0\uC774 \uC5C6\uC5B4\uC11C\u2026"
+      expression: 3
+      stageDirection: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    trustDelta: 0
+    endsInterrogation: 0

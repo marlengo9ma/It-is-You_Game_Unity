@@ -22,7 +22,7 @@ namespace ItIsYou.UI
         [SerializeField] private GameObject root;
         [SerializeField] private Button closeButton;
         [Tooltip("창 밖에서 설정을 여는 버튼(우측 패널의 톱니). 비워 둬도 된다.")]
-        [SerializeField] private Button openButton;
+        [SerializeField] private List<Button> openButtons = new List<Button>();
         [SerializeField] private Button defaultsButton;
 
         [Header("탭")]
@@ -54,6 +54,8 @@ namespace ItIsYou.UI
         [Header("게임")]
         [SerializeField] private Slider textSpeedSlider;
         [SerializeField] private TMP_Text textSpeedValue;
+        [SerializeField] private Slider autoAdvanceSlider;
+        [SerializeField] private TMP_Text autoAdvanceValue;
         [SerializeField] private OptionCycler guideMode;
 
         [Header("탭 강조색")]
@@ -93,7 +95,7 @@ namespace ItIsYou.UI
             _wired = true;
 
             if (closeButton != null) closeButton.onClick.AddListener(Close);
-            if (openButton != null) openButton.onClick.AddListener(Open);
+            for (int i = 0; i < openButtons.Count; i++) if (openButtons[i] != null) openButtons[i].onClick.AddListener(Open);
             if (defaultsButton != null) defaultsButton.onClick.AddListener(OnDefaults);
             if (graphicsTab != null) graphicsTab.onClick.AddListener(() => ShowTab(0));
             if (soundTab != null) soundTab.onClick.AddListener(() => ShowTab(1));
@@ -110,6 +112,7 @@ namespace ItIsYou.UI
             if (mute != null) mute.Changed += i => { if (_suppress) return; GameSettings.Muted = i == 1; GameSettings.ApplyAudio(); };
 
             Hook(textSpeedSlider, v => { GameSettings.TextSpeed = v; if (textSpeedValue != null) textSpeedValue.text = $"{v:0.0}×"; });
+            Hook(autoAdvanceSlider, v => { GameSettings.AutoAdvanceSeconds = v; if (autoAdvanceValue != null) autoAdvanceValue.text = $"{v:0.0}초"; });
             if (guideMode != null) guideMode.Changed += i => { if (_suppress) return; GameSettings.GuideMode = i == 1; };
         }
 
@@ -176,6 +179,8 @@ namespace ItIsYou.UI
             if (mute != null) mute.SetOptions(OnOff, GameSettings.Muted ? 1 : 0);
 
             Set(textSpeedSlider, GameSettings.TextSpeed);
+            Set(autoAdvanceSlider, GameSettings.AutoAdvanceSeconds);
+            if (autoAdvanceValue != null) autoAdvanceValue.text = $"{GameSettings.AutoAdvanceSeconds:0.0}초";
             if (textSpeedValue != null) textSpeedValue.text = $"{GameSettings.TextSpeed:0.0}×";
             if (guideMode != null) guideMode.SetOptions(OnOff, GameSettings.GuideMode ? 1 : 0);
 
