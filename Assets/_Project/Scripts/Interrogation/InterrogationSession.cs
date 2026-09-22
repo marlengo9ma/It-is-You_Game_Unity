@@ -120,15 +120,24 @@ namespace ItIsYou.Interrogation
         /// <summary>토큰을 바깥에서 받았는가 (2차 심문의 공용 타임 토큰).</summary>
         public bool SharesTokens { get; }
 
-        public InterrogationSession(ChapterDefinition chapter, SuspectDefinition suspect, ClueInventory inventory, int round = 1, TimeTokenPool sharedTokens = null)
+        /// <summary>타임 토큰·무반응 판정이 없는 회차 (2차 심문). 토큰 주머니는 형식상만 있다.</summary>
+        public bool Untimed { get; }
+
+        /// <summary>2차 심문에서 들고 들어간 가설(추론 단서 id). 다른 가설로 여는 선택지는 이번 심문에 나타나지 않는다.</summary>
+        public string ActiveHypothesisId { get; }
+
+        public InterrogationSession(ChapterDefinition chapter, SuspectDefinition suspect, ClueInventory inventory, int round = 1,
+            TimeTokenPool sharedTokens = null, bool untimed = false, string activeHypothesisId = null)
         {
+            Untimed = untimed;
+            ActiveHypothesisId = activeHypothesisId;
             _chapter = chapter ?? throw new ArgumentNullException(nameof(chapter));
             _suspect = suspect ?? throw new ArgumentNullException(nameof(suspect));
             _inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
             Round = Math.Max(1, round);
 
             SharesTokens = sharedTokens != null;
-            Tokens = sharedTokens ?? new TimeTokenPool(suspect.TokensForRound(Round));
+            Tokens = sharedTokens ?? new TimeTokenPool(untimed ? 999 : suspect.TokensForRound(Round));
             Pressure = new PressureTracker(chapter);
             Idle = new IdleTimer(chapter.IdleSeconds);
             Recall = new MemoryRecall();
@@ -145,7 +154,7 @@ namespace ItIsYou.Interrogation
 
         public void Tick(float unscaledDeltaTime)
         {
-            if (IsOver) return;
+            if (IsOver || Untimed) return;
             Idle.Tick(unscaledDeltaTime);
         }
 
@@ -163,6 +172,7 @@ namespace ItIsYou.Interrogation
                 var choice = choices[i];
                 if (choice == null) continue;
                 if (_consumedChoiceIds.Contains(choice.Id)) continue;
+                if (OpensWithOtherHypothesis(choice)) continue;
                 if (!IsChoiceAvailable(choice))
                 {
                     // 단서 제시 선택지는 추론 카드가 없으면 ??? 로 잠긴 채 보인다 — 조합의 결과가 여기서 보인다.
@@ -181,6 +191,19 @@ namespace ItIsYou.Interrogation
             }
 
             return result;
+        }
+
+        /// <summary>가설을 하나 들고 들어온 심문에서, 다른 가설로 여는 선택지는 아예 보이지 않는다.</summary>
+        private bool OpensWithOtherHypothesis(ChoiceDefinition choice)
+        {
+            if (string.IsNullOrEmpty(ActiveHypothesisId)) return false;
+            var req = choice.RequiredClueIds;
+            if (req == null) return false;
+            for (int i = 0; i < req.Count; i++)
+            {
+                if (req[i] != ActiveHypothesisId && _chapter.IsHypothesisResult(req[i])) return true;
+            }
+            return false;
         }
 
         private bool IsChoiceAvailable(ChoiceDefinition choice)
@@ -331,7 +354,7 @@ namespace ItIsYou.Interrogation
         /// <summary>무반응 판정이 났을 때 컨트롤러가 호출한다.</summary>
         public InterrogationStep ApplyIdlePenalty()
         {
-            if (IsOver) return InterrogationStep.Nothing;
+            if (IsOver || Untimed) return InterrogationStep.Nothing;
 
             Tokens.Spend(1, TimeTokenPool.SpendReason.Idle);
             Idle.Restart();

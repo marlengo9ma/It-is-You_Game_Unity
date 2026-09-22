@@ -58,13 +58,13 @@ namespace ItIsYou.Interrogation
 
         public void Begin(ChapterDefinition chapter, SuspectDefinition suspect,
             ClueInventory inventory, ICharacterView characterView, int round = 1,
-            TimeTokenPool sharedTokens = null, bool skipOpening = false)
+            TimeTokenPool sharedTokens = null, bool skipOpening = false, bool untimed = false, string activeHypothesisId = null)
         {
             _inventory = inventory;
             _characterView = characterView;
             _skipOpening = skipOpening;
 
-            _session = new InterrogationSession(chapter, suspect, inventory, round, sharedTokens);
+            _session = new InterrogationSession(chapter, suspect, inventory, round, sharedTokens, untimed, activeHypothesisId);
             _session.Idle.Elapsed += OnIdleElapsed;
 
             Subscribe();

@@ -142,9 +142,6 @@ namespace ItIsYou.Data
         [SerializeField] private DialogueSequence deductionInkOut = new DialogueSequence();
 
         [Header("2차 심문")]
-        [Tooltip("2차 심문에서 전체 용의자가 나눠 쓰는 타임 토큰. 기획: 6")]
-        [SerializeField] private int secondRoundSharedTokens = 6;
-
         [Tooltip("2차 심문에서 누구를 심문할지 고르라는 한 줄.")]
         [SerializeField] private string secondRoundSelectPrompt = "가설을 들고 누구에게 갈까.";
 
@@ -153,6 +150,24 @@ namespace ItIsYou.Data
 
         [Tooltip("범인 지목 화면의 한 줄.")]
         [SerializeField] private string accusationPrompt = "누가 가져갔다고 보십니까?";
+
+        [Tooltip("2차 심문에서 상대를 고른 뒤, 어떤 가설로 물을지 고르라는 한 줄.")]
+        [SerializeField] private string hypothesisPickPrompt = "어떤 가설로 물어볼까.";
+
+        [Tooltip("지목 — 가설을 먼저 고르라는 한 줄.")]
+        [SerializeField] private string accusationHypothesisPrompt = "어떤 가설로 답을 낼까.";
+
+        [Tooltip("지목 — 추론 두 갈래 중 고르라는 한 줄.")]
+        [SerializeField] private string accusationReasoningPrompt = "그렇다면, 어떻게 된 일인가.";
+
+        [Tooltip("지목 — 반박할 단서를 고르라는 한 줄.")]
+        [SerializeField] private string refutePrompt = "우측에서 반박할 단서를 고른다.";
+
+        [Tooltip("〈가설〉 + 〈용의자〉 쌍마다의 추론 갈래.")]
+        [SerializeField] private List<AccusationBranch> accusationBranches = new List<AccusationBranch>();
+
+        [Tooltip("맞는 쌍이 없을 때 쓰는 기본 갈래.")]
+        [SerializeField] private AccusationBranch defaultAccusationBranch;
 
         [Tooltip("조합 페이즈에 들어갈 때의 대사.")]
         [SerializeField] private DialogueSequence deductionIntro = new DialogueSequence();
@@ -192,10 +207,28 @@ namespace ItIsYou.Data
         public DialogueSequence DeductionOutro => deductionOutro;
         public DialogueSequence SelfLoathingEnding => selfLoathingEnding;
 
-        public int SecondRoundSharedTokens => Mathf.Max(1, secondRoundSharedTokens);
         public string SecondRoundSelectPrompt => secondRoundSelectPrompt;
         public DialogueSequence BeforeAccusation => beforeAccusation;
         public string AccusationPrompt => accusationPrompt;
+        public string HypothesisPickPrompt => hypothesisPickPrompt;
+        public string AccusationHypothesisPrompt => accusationHypothesisPrompt;
+        public string AccusationReasoningPrompt => accusationReasoningPrompt;
+        public string RefutePrompt => refutePrompt;
+        public IReadOnlyList<AccusationBranch> AccusationBranches => accusationBranches;
+
+        /// <summary>가설 + 용의자 쌍의 추론 갈래. 없으면 기본 갈래(그것도 없으면 null).</summary>
+        public AccusationBranch FindAccusationBranch(string hypothesisId, string suspectId)
+        {
+            if (accusationBranches != null)
+            {
+                for (int i = 0; i < accusationBranches.Count; i++)
+                {
+                    var b = accusationBranches[i];
+                    if (b != null && b.Matches(hypothesisId, suspectId)) return b;
+                }
+            }
+            return defaultAccusationBranch;
+        }
 
         /// <summary>실패 회차(1부터)에 맞는 반응. 목록이 짧으면 마지막 것을 쓴다.</summary>
         public DialogueSequence GetDeductionFailure(int round)
@@ -203,6 +236,18 @@ namespace ItIsYou.Data
             if (deductionFailures == null || deductionFailures.Count == 0) return null;
             var i = Mathf.Clamp(round - 1, 0, deductionFailures.Count - 1);
             return deductionFailures[i];
+        }
+
+        /// <summary>이 id 가 어떤 조합식의 결과(가설)인가.</summary>
+        public bool IsHypothesisResult(string clueId)
+        {
+            if (string.IsNullOrEmpty(clueId) || hypotheses == null) return false;
+            for (int i = 0; i < hypotheses.Count; i++)
+            {
+                var h = hypotheses[i];
+                if (h != null && h.Result != null && h.Result.Id == clueId) return true;
+            }
+            return false;
         }
 
         /// <summary>두 단서에 맞는 조합식. 없으면 null.</summary>

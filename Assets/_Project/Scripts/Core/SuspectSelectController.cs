@@ -30,6 +30,50 @@ namespace ItIsYou.Core
         [Header("표시")]
         [SerializeField] private TMP_Text promptLabel;
 
+        [Header("가설 고르기 (2차 심문)")]
+        [Tooltip("상대를 고른 뒤 뜨는 가설 목록 덧창.")]
+        [SerializeField] private GameObject hypothesisRoot;
+        [SerializeField] private TMP_Text hypothesisPrompt;
+        [SerializeField] private RectTransform hypothesisContainer;
+        [SerializeField] private UnityEngine.UI.Button hypothesisButtonPrefab;
+
+        private readonly List<UnityEngine.UI.Button> _hypButtons = new List<UnityEngine.UI.Button>();
+
+        /// <summary>플레이어가 들고 갈 가설을 골랐다.</summary>
+        public event Action<ClueDefinition> HypothesisPicked;
+
+        /// <summary>2차 심문 — 상대를 고른 뒤, 저장된 가설 중 하나를 고른다.</summary>
+        public void BeginHypothesisPick(IReadOnlyList<ClueDefinition> hypotheses, Func<string, string> nameOf, string prompt)
+        {
+            if (hypothesisRoot == null || hypothesisContainer == null || hypothesisButtonPrefab == null)
+            {
+                // 덧창이 없는 씬이면 첫 가설로 간다.
+                HypothesisPicked?.Invoke(hypotheses != null && hypotheses.Count > 0 ? hypotheses[0] : null);
+                return;
+            }
+            for (int i = 0; i < _hypButtons.Count; i++) if (_hypButtons[i] != null) Destroy(_hypButtons[i].gameObject);
+            _hypButtons.Clear();
+
+            if (hypothesisPrompt != null) hypothesisPrompt.text = prompt ?? string.Empty;
+            for (int i = 0; i < hypotheses.Count; i++)
+            {
+                var clue = hypotheses[i];
+                if (clue == null) continue;
+                var b = Instantiate(hypothesisButtonPrefab, hypothesisContainer);
+                var label = b.GetComponentInChildren<TMP_Text>();
+                if (label != null) label.text = "〈가설〉 " + (nameOf != null ? nameOf(clue.Id) : clue.ReadName);
+                b.onClick.AddListener(() => OnHypothesisPicked(clue));
+                _hypButtons.Add(b);
+            }
+            hypothesisRoot.SetActive(true);
+        }
+
+        private void OnHypothesisPicked(ClueDefinition clue)
+        {
+            if (hypothesisRoot != null) hypothesisRoot.SetActive(false);
+            HypothesisPicked?.Invoke(clue);
+        }
+
         private ChapterDefinition _chapter;
         private IReadOnlyList<SuspectDefinition> _suspects;
         private ISet<string> _finished;
@@ -55,6 +99,7 @@ namespace ItIsYou.Core
                 cards[i].SetArmed(false);
             }
             if (promptLabel != null) promptLabel.text = string.Empty;
+            if (hypothesisRoot != null) hypothesisRoot.SetActive(false);
         }
 
         private void OnDestroy()

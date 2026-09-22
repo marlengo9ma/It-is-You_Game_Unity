@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c595ae848591b14c961ba21aff663a4, type: 3}
+  m_Name: Acc_Default
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.AccusationBranch
+  id: ACC_DEFAULT
+  hypothesisClueId: 
+  suspectId: 
+  options:
+  - label: "\uADF8\uB798\uB3C4 \uC774 \uC0AC\uB78C\uC774\uB2E4."
+    speech:
+      note: "[\uC784\uC2DC] \uCD94\uB860 \uAE30\uBCF8 A"
+      lines:
+      - speaker: 2
+        text: "..\uADFC\uAC70\uB294 \uC5C6\uB2E4. \uD558\uC9C0\uB9CC \uC774 \uC0AC\uB78C\uC774\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    plea:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    refuteClueIds: []
+    refuteWrong:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    refuteSuccess:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    resultTitle: "\uBBF8\uD574\uACB0 \u2014 \uADFC\uAC70 \uC5C6\uB294 \uC9C0\uBAA9"
+    result:
+      note: "[\uC784\uC2DC] \uACB0\uACFC \uAE30\uBCF8 A"
+      lines:
+      - speaker: 0
+        text: "\uC544\uBB34\uB3C4 \uC218\uAE0D\uD558\uC9C0 \uC54A\uC558\uB2E4. \uAE30\uCC28\uB294
+          \uB2E4\uC74C \uC5ED\uC5D0 \uB2FF\uC558\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    returnsToSelection: 0
+  - label: "\u2026\uC544\uC9C1 \uD655\uC2E0\uC774 \uC5C6\uB2E4."
+    speech:
+      note: "[\uC784\uC2DC] \uB418\uB3CC\uC544\uAC00\uAE30"
+      lines:
+      - speaker: 2
+        text: "..\uC774 \uAC00\uC124\uB85C\uB294 \uC774 \uC0AC\uB78C\uC744 \uAC00\uB9AC\uD0AC
+          \uC218 \uC5C6\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    plea:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    refuteClueIds: []
+    refuteWrong:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    refuteSuccess:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    resultTitle: 
+    result:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    returnsToSelection: 1

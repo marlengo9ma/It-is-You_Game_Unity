@@ -56,8 +56,6 @@ namespace ItIsYou.Core
 
         private readonly Queue<SuspectDefinition> _pending = new Queue<SuspectDefinition>();
 
-        /// <summary>2차 심문이 도는 동안의 공용 타임 토큰. 그 밖에는 null.</summary>
-        public TimeTokenPool SecondRoundTokens { get; private set; }
 
         public ChapterDefinition Chapter => chapter;
         public GameSession Session { get; private set; }
@@ -210,41 +208,47 @@ namespace ItIsYou.Core
             }
 
             // ---- 2차 심문 ----
-            // 2026-09-23 기획: 가설을 들고 상대를 고른다. 전체 용의자가 타임 토큰 6을 나눠 쓰며, 자유롭게 오간다.
-            // 자수(EndsInterrogation) 한 상대는 다시 고를 수 없다. 토큰이 다 떨어지거나 고를 상대가 없으면 지목으로.
+            // 2026-09-23 기획: 상대를 고르고, 저장된 가설 중 하나를 들고 심문한다. 인물당 한 번.
+            // 타임 토큰·무반응 판정은 없다(제작자 확정). 다른 가설로 여는 선택지는 이번 심문에 나타나지 않는다.
             var secondRound = chapter.SecondRoundSuspects != null && chapter.SecondRoundSuspects.Count > 0
                 ? new List<SuspectDefinition>(chapter.SecondRoundSuspects)
                 : new List<SuspectDefinition>(chapter.FirstRoundSuspects);
-            var sharedTokens = new TimeTokenPool(chapter.SecondRoundSharedTokens);
-            SecondRoundTokens = sharedTokens;
-            var concluded = new HashSet<string>();
             var visited = new HashSet<string>();
 
-            while (!sharedTokens.IsExhausted)
+            while (true)
             {
                 var anySelectable = false;
                 for (int i = 0; i < secondRound.Count; i++)
                 {
                     var s = secondRound[i];
-                    if (s != null && s.Selectable && !concluded.Contains(s.Id)) { anySelectable = true; break; }
+                    if (s != null && s.Selectable && !visited.Contains(s.Id)) { anySelectable = true; break; }
                 }
                 if (!anySelectable) break;
 
                 SuspectDefinition target = null;
+                ClueDefinition hypothesis = null;
                 if (suspectSelect != null)
                 {
                     void OnPicked2(SuspectDefinition s) => target = s;
+                    void OnHyp(ClueDefinition c) => hypothesis = c;
                     suspectSelect.Picked += OnPicked2;
+                    suspectSelect.HypothesisPicked += OnHyp;
                     yield return Transition(GamePhase.SuspectSelect);
-                    suspectSelect.BeginRound(chapter, secondRound, concluded, chapter.SecondRoundSelectPrompt, skipTalk: true);
+                    suspectSelect.BeginRound(chapter, secondRound, visited, chapter.SecondRoundSelectPrompt, skipTalk: true);
                     while (target == null) yield return null;
+
+                    var hyps = new List<ClueDefinition>(Session.Clues.OfKind(ClueKind.Deduced));
+                    suspectSelect.BeginHypothesisPick(hyps, id => Session.Clues.DisplayName(id), chapter.HypothesisPickPrompt);
+                    while (hypothesis == null && hyps.Count > 0) yield return null;
                     suspectSelect.Picked -= OnPicked2;
+                    suspectSelect.HypothesisPicked -= OnHyp;
                 }
                 else
                 {
                     for (int i = 0; i < secondRound.Count && target == null; i++)
-                        if (secondRound[i] != null && secondRound[i].Selectable && !concluded.Contains(secondRound[i].Id)) target = secondRound[i];
+                        if (secondRound[i] != null && secondRound[i].Selectable && !visited.Contains(secondRound[i].Id)) target = secondRound[i];
                     if (target == null) break;
+                    foreach (var c in Session.Clues.OfKind(ClueKind.Deduced)) { hypothesis = c; break; }
                 }
 
                 yield return Transition(GamePhase.Interrogation2);
@@ -255,13 +259,12 @@ namespace ItIsYou.Core
 
                 interrogation.Finished += OnFinished2;
                 interrogation.Begin(chapter, target, Session.Clues, ResolveView(target.Id), 2,
-                    sharedTokens, skipOpening: visited.Contains(target.Id));
+                    untimed: true, activeHypothesisId: hypothesis != null ? hypothesis.Id : null);
                 visited.Add(target.Id);
                 while (!finished2) yield return null;
                 interrogation.Finished -= OnFinished2;
 
                 Session.AddTrust(interrogation.Session.TrustDelta);
-                if (interrogation.Session.Concluded) concluded.Add(target.Id);
                 if (clueTray != null) clueTray.Rebuild(Session.Clues);
 
                 if (reason2 == InterrogationEndReason.GameOverByErraticTone)
@@ -271,22 +274,23 @@ namespace ItIsYou.Core
                     yield break;
                 }
             }
-            SecondRoundTokens = null;
 
             // ---- 범인 지목 ----
-            // 용의자 선택과 같은 화면. 고르면 주인공이 '왜 이 사람인가'를 말하고 엔딩으로 간다.
+            // 가설 → 용의자 → 추론 두 갈래 → 주인공의 추론 · 반응 → (억울함 호소 → 단서로 반박) → 결과.
             yield return Transition(GamePhase.Accusation);
             if (chapter.BeforeAccusation != null && !chapter.BeforeAccusation.IsEmpty)
                 yield return dialogue.Play(chapter.BeforeAccusation);
 
             SuspectDefinition accused = null;
+            var resultTitle = string.Empty;
             if (accusation != null)
             {
-                void OnAccused(SuspectDefinition s) => accused = s;
-                accusation.Picked += OnAccused;
-                accusation.Begin(chapter);
-                while (accused == null) yield return null;
-                accusation.Picked -= OnAccused;
+                var done = false;
+                void OnAccused(SuspectDefinition s, string title) { accused = s; resultTitle = title; done = true; }
+                accusation.Finished += OnAccused;
+                accusation.Begin(chapter, Session.Clues);
+                while (!done) yield return null;
+                accusation.Finished -= OnAccused;
             }
             else
             {
@@ -294,15 +298,10 @@ namespace ItIsYou.Core
                 while (string.IsNullOrEmpty(Session.AccusedSuspectId)) yield return null;
             }
 
-            if (accused != null)
-            {
-                Session.Accuse(accused.Id);
-                if (accused.AccusationSpeech != null && !accused.AccusationSpeech.IsEmpty)
-                    yield return dialogue.Play(accused.AccusationSpeech);
-            }
+            if (accused != null) Session.Accuse(accused.Id);
 
             yield return Transition(GamePhase.Ending);
-            ending?.Show(accused != null ? accused.DisplayName : Session.AccusedSuspectId, Session.Clues.Count);
+            ending?.Show(resultTitle, accused != null ? accused.DisplayName : Session.AccusedSuspectId, Session.Clues.Count);
             ChapterCompleted?.Invoke(Session.AccusedSuspectId);
         }
 

@@ -114,7 +114,7 @@ namespace ItIsYou.Core
             if (session != null)
             {
                 if (tokenLabel != null)
-                    tokenLabel.text = $"{session.Tokens.Remaining} / {session.Tokens.Capacity}";
+                    tokenLabel.text = session.Untimed ? "—" : $"{session.Tokens.Remaining} / {session.Tokens.Capacity}";
 
                 // 무반응 게이지. 완성된 게임에서는 초침 소리가 이 역할을 하고,
                 // 이 막대는 지금 규칙이 도는지 눈으로 확인하기 위한 것이다.

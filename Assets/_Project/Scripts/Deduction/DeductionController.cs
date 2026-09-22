@@ -133,6 +133,7 @@ namespace ItIsYou.Deduction
                 }
 
                 var result = _session.TryCombine(_objectPick, _leadPick);
+                if (ink != null) ink.SetRemaining(_session.Ink);   // 모든 시도가 잉크를 쓴다
                 switch (result.Outcome)
                 {
                     case HypothesisOutcome.Success:
@@ -151,6 +152,10 @@ namespace ItIsYou.Deduction
                         yield return OnFatal(result);
                         break;
                 }
+
+                // 잉크가 다 말랐는데 가설이 있으면 여기서 저절로 끝난다.
+                if (_session.IsOver && _session.Succeeded && _chapter.DeductionInkOut != null && !_chapter.DeductionInkOut.IsEmpty)
+                    yield return dialogue.Play(_chapter.DeductionInkOut);
 
                 board?.SetInteractable(true);
             }
@@ -230,7 +235,6 @@ namespace ItIsYou.Deduction
         private IEnumerator OnFail(HypothesisResult result)
         {
             if (board != null) yield return board.PlayFail();
-            if (ink != null) ink.SetRemaining(_session.Ink);
             board?.SetResult("이어지지 않는다");
             ClearPicks();
             RefreshBoard();
@@ -241,15 +245,11 @@ namespace ItIsYou.Deduction
 
             if (result.FailRound == 1)
                 yield return ShowTutorial(TutorialPopupTrigger.OnDeductionFirstMiss);
-
-            if (result.PhaseEnded && _chapter.DeductionInkOut != null && !_chapter.DeductionInkOut.IsEmpty)
-                yield return dialogue.Play(_chapter.DeductionInkOut);
         }
 
         private IEnumerator OnFatal(HypothesisResult result)
         {
             if (board != null) yield return board.PlayFail();
-            if (ink != null) ink.SetRemaining(_session.Ink);
             board?.SetResult("잉크가 다 말랐다");
             ClearPicks();
             RefreshBoard();

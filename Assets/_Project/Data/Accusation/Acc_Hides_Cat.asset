@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c595ae848591b14c961ba21aff663a4, type: 3}
+  m_Name: Acc_Hides_Cat
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.AccusationBranch
+  id: ACC_HIDES_CAT
+  hypothesisClueId: DED_SEPI_HIDES_CAT
+  suspectId: CAT
+  options:
+  - label: "\uACE0\uC591\uC774\uAC00 \uBAB0\uB798 \uD0C4 \uAC83\uC774 \uBAA8\uB4E0
+      \uC18C\uB3D9\uC758 \uC2DC\uC791\uC774\uB2E4."
+    speech:
+      note: "[\uC784\uC2DC] \uCD94\uB860 H2\xD7\uACE0\uC591\uC774 A"
+      lines:
+      - speaker: 2
+        text: "..\uACE0\uC591\uC774\uAC00 \uBAB0\uB798 \uD0D4\uB2E4. \uC18C\uB3D9\uC740
+          \uAC70\uAE30\uC11C \uC2DC\uC791\uB410\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 1
+        text: "\uADF8\uB7EC\uB2C8 \uB9CC\uB144\uD544\uB3C4 \uC800 \uB140\uC11D \uD0D3\uC785\uB2C8\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uADF8, \uADF8\uB807\uAC8C \uB418\uB098\uC694\u2026?"
+        expression: 3
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    plea:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    refuteClueIds: []
+    refuteWrong:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    refuteSuccess:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    resultTitle: "\uACE0\uC591\uC774 \uC9C0\uBAA9 \u2014 \uC808\uBC18\uC758 \uC9C4\uC2E4"
+    result:
+      note: "[\uC784\uC2DC] \uACB0\uACFC H2\xD7\uACE0\uC591\uC774 A"
+      lines:
+      - speaker: 0
+        text: "\uACE0\uC591\uC774\uB294 \uD558\uD488\uC744 \uD588\uB2E4. \uB9CC\uB144\uD544\uC740
+          \uACE0\uC591\uC774 \uC544\uB798\uC5D0\uC11C \uB098\uC654\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 2
+        text: "..\uACB0\uB860\uC740 \uB9DE\uC558\uB294\uB370, \uC774\uC720\uAC00
+          \uD2C0\uB9B0 \uAE30\uBD84\uC774\uB2E4."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    returnsToSelection: 0
+  - label: "\u2026\uC544\uC9C1 \uD655\uC2E0\uC774 \uC5C6\uB2E4."
+    speech:
+      note: "[\uC784\uC2DC] \uB418\uB3CC\uC544\uAC00\uAE30"
+      lines:
+      - speaker: 2
+        text: "..\uACE0\uC591\uC774\uB97C \uC228\uAE34 \uAC74 \uC138\uD53C\uB2E4.
+          \uACE0\uC591\uC774\uAC00 \uC544\uB2C8\uB77C."
+        expression: 0
+        stageDirection: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    plea:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    refuteClueIds: []
+    refuteWrong:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    refuteSuccess:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    resultTitle: 
+    result:
+      note: 
+      lines: []
+      trustDelta: 0
+      endsInterrogation: 0
+    returnsToSelection: 1

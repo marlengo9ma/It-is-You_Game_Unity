@@ -437,22 +437,176 @@ namespace ItIsYou.EditorTools
 
         /// <summary>[임시] 2차 심문의 토큰이 다 떨어졌을 때, 지목으로 넘어가기 전.</summary>
         public static DialogueSequence BeforeAccusation() => Seq("[임시] 지목 전",
-            N("시간이 다 됐다."),
+            N("물어볼 만큼 물었다."),
             I("..이제 답을 내야 한다."));
 
-        // ---- [임시] 지목 — 주인공이 '왜 이 사람이 범인인가'를 말한다 ----
+        // ---- [임시] 지목 — 가설 × 용의자 쌍마다 추론 두 갈래 ----
+        // 갈래 A 는 그 가설로 그 인물을 지목하는 방향, B 는 물러서는 방향(또는 되돌아가기).
+        // 세피를 지목하는 A 에는 억울함 호소가 붙고, 단서로 반박해야 한다. 고양이는 말이 없으니 호소가 없다.
 
-        public static DialogueSequence AccuseSepi() => Seq("[임시] 지목 — 세피",
-            P("세피 씨. 만년필을 가져간 건 당신입니다."),
-            P("고양이가 깔고 앉은 걸 처음부터 알고 있었죠. 커피를 엎지른 것도, 리본이 더러워진 것도 그 아이를 숨기려던 소동이었고."),
-            A("…네. 죄송해요.", ExpressionId.Sad),
-            N("기차는 여전히 달리고 있었다."));
+        public sealed class Acc
+        {
+            public string Label; public DialogueSequence Speech, Plea, RefuteWrong, RefuteSuccess, Result;
+            public List<string> RefuteIds = new List<string>(); public string ResultTitle; public bool Returns;
+        }
 
-        public static DialogueSequence AccuseCat() => Seq("[임시] 지목 — 고양이",
-            I("..범인은 저 고양이다."),
-            P("만년필을 깔고 앉아 있던 건 저 녀석이니까."),
-            A("수사관님… 진심이세요?", ExpressionId.Flustered),
-            N("고양이는 대답하지 않았다."));
+        private static Acc Opt(string label, DialogueSequence speech, string resultTitle = null, DialogueSequence result = null,
+            DialogueSequence plea = null, List<string> refuteIds = null, DialogueSequence refuteWrong = null,
+            DialogueSequence refuteSuccess = null, bool returns = false)
+            => new Acc { Label = label, Speech = speech, ResultTitle = resultTitle ?? string.Empty, Result = result,
+                         Plea = plea, RefuteIds = refuteIds ?? new List<string>(), RefuteWrong = refuteWrong,
+                         RefuteSuccess = refuteSuccess, Returns = returns };
+
+        private static Acc Undecided(string inner) => Opt("…아직 확신이 없다.", Seq("[임시] 되돌아가기", I(inner)), returns: true);
+
+        /// <summary>가설 1 (만년필은 고양이 아래에) × 세피</summary>
+        public static List<Acc> AccPenSepi() => new List<Acc>
+        {
+            Opt("세피가 고양이 아래에 숨긴 것이다.",
+                Seq("[임시] 추론 H1×세피 A",
+                    P("세피 씨. 만년필은 처음부터 고양이 아래에 있었습니다. 당신이 그리로 밀어 넣었죠."),
+                    A("제, 제가요…?", ExpressionId.Flustered),
+                    C("냐옹.")),
+                "세피의 자백",
+                Seq("[임시] 결과 H1×세피 A",
+                    N("조수는 만년필을 꺼내 당신에게 건넸다."),
+                    I("..사건은 끝났다. 고양이 문제는 다른 이야기지만.")),
+                plea: Seq("[임시] 호소 H1×세피 A",
+                    A("아니에요! 그건… 고양이가 제멋대로 앉은 거예요. 저는 만년필 근처에도 안 갔어요.", ExpressionId.Nervous)),
+                refuteIds: new List<string> { "TES_SAW_IT", "REA_CAT_FLINCH" },
+                refuteWrong: Seq("[임시] 반박 실패 H1×세피 A",
+                    A("…그게 무슨 상관이죠?", ExpressionId.Nervous),
+                    I("..아니다. 이걸로는 안 된다.")),
+                refuteSuccess: Seq("[임시] 반박 성공 H1×세피 A",
+                    P("'본 적은 있다'고 했죠. 어디서 봤는지는 끝내 말하지 않았고."),
+                    A("…네. 제가 밀어 넣었어요. 고양이를 들킬까 봐.", ExpressionId.Sad))),
+            Opt("고양이가 앉았을 뿐, 세피는 몰랐다.",
+                Seq("[임시] 추론 H1×세피 B",
+                    P("만년필은 고양이 아래에 있었습니다. 세피 씨는 그저 눈치채지 못했던 거고요."),
+                    A("…네, 네. 그렇죠.", ExpressionId.Nervous)),
+                "만년필 회수 — 남은 의문",
+                Seq("[임시] 결과 H1×세피 B",
+                    N("당신은 만년필을 꺼내 들었다. 조수는 시선을 피했다."),
+                    I("..뭔가 더 있었던 것 같지만, 만년필은 돌아왔다."))),
+        };
+
+        /// <summary>가설 1 × 고양이</summary>
+        public static List<Acc> AccPenCat() => new List<Acc>
+        {
+            Opt("고양이가 범인이다. 깔고 앉은 채 시치미를 뗐다.",
+                Seq("[임시] 추론 H1×고양이 A",
+                    I("..범인은 저 고양이다."),
+                    P("만년필을 깔고 앉아 있던 건 저 녀석이니까."),
+                    A("수사관님… 진심이세요?", ExpressionId.Flustered),
+                    C("냐앙.")),
+                "고양이 지목 — 미심쩍은 결말",
+                Seq("[임시] 결과 H1×고양이 A",
+                    N("고양이는 대답하지 않았다. 조수는 한숨을 쉬었다."),
+                    I("..만년필은 돌아왔다. 어쩐지 개운하지 않다."))),
+            Undecided("..고양이가 스스로 만년필을 옮겼을 리 없다. 다시 생각하자."),
+        };
+
+        /// <summary>가설 2 (세피는 고양이 일을 숨기고 있다) × 세피</summary>
+        public static List<Acc> AccHidesSepi() => new List<Acc>
+        {
+            Opt("고양이를 숨기려던 소동 속에서 만년필을 치웠다.",
+                Seq("[임시] 추론 H2×세피 A",
+                    P("세피 씨, 당신은 고양이를 숨기고 있었습니다. 커피를 엎지른 것도, 리본이 더러워진 것도 그 소동이었고."),
+                    P("그 와중에 만년필이 고양이 아래로 들어갔죠. 당신은 알면서 모른 척했고요."),
+                    A("…", ExpressionId.Fearful)),
+                "세피의 자백 — 고양이와 만년필",
+                Seq("[임시] 결과 H2×세피 A",
+                    N("조수는 고양이를 안아 올렸다. 그 아래에서 만년필이 굴러 나왔다."),
+                    I("..사건은 끝났다.")),
+                plea: Seq("[임시] 호소 H2×세피 A",
+                    A("고양이는… 맞아요. 하지만 만년필은 정말 몰라요. 리본이 더러워진 것도 그냥 고양이가 문 거예요.", ExpressionId.Nervous)),
+                refuteIds: new List<string> { "CLUE_GLIMPSE", "TES_SAW_IT" },
+                refuteWrong: Seq("[임시] 반박 실패 H2×세피 A",
+                    A("…그건 고양이랑 상관없는 물건이잖아요.", ExpressionId.Nervous),
+                    I("..맞는 말이다. 다른 걸 대야 한다.")),
+                refuteSuccess: Seq("[임시] 반박 성공 H2×세피 A",
+                    P("고양이 아래에 비죽 나온 것. 당신은 그걸 '본 적은 있다'고 했습니다."),
+                    A("…들켰네요.", ExpressionId.Sad))),
+            Opt("고양이를 숨긴 것과 만년필은 별개다.",
+                Seq("[임시] 추론 H2×세피 B",
+                    P("고양이를 숨긴 건 알겠습니다. 하지만 만년필은 다른 이야기죠."),
+                    A("…네. 정말 다른 이야기예요.", ExpressionId.Nervous)),
+                "미해결 — 고양이만 밝혀지다",
+                Seq("[임시] 결과 H2×세피 B",
+                    N("만년필은 끝내 나오지 않았다. 기차는 다음 역에 닿았다."),
+                    I("..고양이 이야기만 듣고 끝난 셈이다."))),
+        };
+
+        /// <summary>가설 2 × 고양이</summary>
+        public static List<Acc> AccHidesCat() => new List<Acc>
+        {
+            Opt("고양이가 몰래 탄 것이 모든 소동의 시작이다.",
+                Seq("[임시] 추론 H2×고양이 A",
+                    I("..고양이가 몰래 탔다. 소동은 거기서 시작됐다."),
+                    P("그러니 만년필도 저 녀석 탓입니다."),
+                    A("그, 그렇게 되나요…?", ExpressionId.Flustered)),
+                "고양이 지목 — 절반의 진실",
+                Seq("[임시] 결과 H2×고양이 A",
+                    N("고양이는 하품을 했다. 만년필은 고양이 아래에서 나왔다."),
+                    I("..결론은 맞았는데, 이유가 틀린 기분이다."))),
+            Undecided("..고양이를 숨긴 건 세피다. 고양이가 아니라."),
+        };
+
+        /// <summary>가설 3 (커피가 쏟아진 그때) × 세피</summary>
+        public static List<Acc> AccSpillSepi() => new List<Acc>
+        {
+            Opt("커피를 엎지른 순간, 세피가 만년필을 치웠다.",
+                Seq("[임시] 추론 H3×세피 A",
+                    P("커피가 쏟아진 그때, 만년필이 자리를 옮겼습니다. 그 자리에 있던 건 당신뿐이었죠."),
+                    A("저, 저는 그때 닦느라…", ExpressionId.Flustered)),
+                "세피의 자백 — 커피와 고양이",
+                Seq("[임시] 결과 H3×세피 A",
+                    N("조수는 고양이 아래에서 만년필을 꺼냈다."),
+                    I("..사건은 끝났다.")),
+                plea: Seq("[임시] 호소 H3×세피 A",
+                    A("커피는 정말 실수였어요. 만년필은… 닦다가 어디 굴러갔나 봐요. 제가 치운 게 아니에요.", ExpressionId.Nervous)),
+                refuteIds: new List<string> { "CLUE_GLIMPSE", "REA_CAT_FLINCH" },
+                refuteWrong: Seq("[임시] 반박 실패 H3×세피 A",
+                    A("…그건 그때 일이랑 상관없어요.", ExpressionId.Nervous),
+                    I("..그렇다. 다른 걸 대야 한다.")),
+                refuteSuccess: Seq("[임시] 반박 성공 H3×세피 A",
+                    P("굴러간 곳이 하필 고양이 아래군요. 고양이 이야기만 나오면 얼굴이 굳는, 그 고양이 말입니다."),
+                    A("…네. 제가 그랬어요.", ExpressionId.Sad))),
+            Opt("커피는 실수였고, 만년필은 그때 굴러떨어졌다.",
+                Seq("[임시] 추론 H3×세피 B",
+                    P("커피는 실수였고, 만년필은 그때 굴러떨어진 겁니다. 아무도 가져가지 않았죠."),
+                    A("…네, 그럴 거예요.", ExpressionId.Nervous)),
+                "만년필 회수 — 이유는 묻지 않았다",
+                Seq("[임시] 결과 H3×세피 B",
+                    N("당신은 바닥을 살폈다. 만년필은 고양이 아래에서 나왔다. 조수는 아무 말도 하지 않았다."),
+                    I("..잃어버린 물건은 찾았다. 잃어버린 이유는 못 찾았다."))),
+        };
+
+        /// <summary>가설 3 × 고양이</summary>
+        public static List<Acc> AccSpillCat() => new List<Acc>
+        {
+            Opt("커피 소동에 놀란 고양이가 만년필을 깔고 앉았다.",
+                Seq("[임시] 추론 H3×고양이 A",
+                    I("..커피가 쏟아지고, 놀란 고양이가 만년필 위에 앉았다."),
+                    P("범인은 고양이입니다. 실수였지만."),
+                    A("…아.", ExpressionId.Surprised)),
+                "고양이 지목 — 사고였다",
+                Seq("[임시] 결과 H3×고양이 A",
+                    N("고양이는 그 자리에서 꿈쩍도 하지 않았다."),
+                    I("..틀리진 않았다. 다만 고양이가 왜 여기 있는지는 묻지 않았다."))),
+            Undecided("..고양이가 놀란 건 맞다. 그런데 누가 고양이를 여기 데려왔지."),
+        };
+
+        /// <summary>맞는 쌍이 없을 때의 기본 갈래.</summary>
+        public static List<Acc> AccDefault() => new List<Acc>
+        {
+            Opt("그래도 이 사람이다.",
+                Seq("[임시] 추론 기본 A", I("..근거는 없다. 하지만 이 사람이다.")),
+                "미해결 — 근거 없는 지목",
+                Seq("[임시] 결과 기본 A",
+                    N("아무도 수긍하지 않았다. 기차는 다음 역에 닿았다."))),
+            Undecided("..이 가설로는 이 사람을 가리킬 수 없다."),
+        };
 
         // ================================================================ 튜토리얼 팝업
 
@@ -515,13 +669,13 @@ namespace ItIsYou.EditorTools
                 "[단서 조합 페이즈]에서는 우측 목록의 [물품 증거] 하나와 [정황 증거] 하나를 골라 잇습니다. " +
                 "두 단서가 이어지면 〈가설〉이 되어 우측 아래의 [가설] 칸에 저장됩니다.\n\n" +
                 ">>물품 칸과 정황 칸을 한 번씩 누르고, 무대 가운데의 [가설 도출]을 누르세요.",
-                "관계없는 두 단서를 이으면 실패하고, 상단의 [잉크]가 한 방울 마릅니다. 잉크는 4번의 시도입니다. " +
-                "잉크가 다 마른 채 가설이 하나도 없으면 [게임 오버]가 됩니다.\n\n" +
+                "[가설 도출]을 누를 때마다 상단의 [잉크]가 한 방울 마릅니다 — 성공해도, 실패해도. 잉크는 4번의 시도입니다. " +
+                "관계없는 두 단서를 이으면 실패하고 가설을 얻지 못합니다. 잉크가 다 마른 채 가설이 하나도 없으면 [게임 오버]가 됩니다.\n\n" +
                 ">>가설은 최대 2개(튜토리얼)까지 저장됩니다. 가득 찬 채 새 가설이 생기면 기존 가설 하나를 지우고 저장합니다. " +
                 "가설이 하나라도 있으면 [추리를 마친다]로 넘어갈 수 있습니다."),
             Popup("POPUP_4B", "잉크와 실패", TutorialPopupTrigger.OnDeductionFirstMiss,
-                "실패할 때마다 잉크가 한 방울 마릅니다. 이미 이어 본 짝은 [가설 도출]이 눌리지 않습니다.\n\n" +
-                ">>2차 심문에서는 저장된 가설로 새 선택지가 열립니다. 어떤 가설을 남길지가 곧 어떤 질문을 할 수 있을지입니다."),
+                "이미 이어 본 짝은 [가설 도출]이 눌리지 않습니다. 남은 잉크만큼만 더 이어 볼 수 있습니다.\n\n" +
+                ">>2차 심문에서는 인물마다 가설 하나를 들고 들어가고, 지목에서는 가설과 용의자를 골라 추론을 세웁니다. 어떤 가설을 남길지가 곧 어떤 답을 낼 수 있을지입니다."),
         };
 
         // ============================================================== 헬퍼

@@ -508,9 +508,36 @@ namespace ItIsYou.EditorTools
             Anchor(accuseTag.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 6), V(0, -L.Unit * 2));
 
             var accusePrompt = Text("Prompt", accuseRt, "", T.Body, P.Alarm, TextAlignmentOptions.Center);
-            Anchor(accusePrompt.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 14), V(0, -L.Unit * 7));
+            Anchor(accusePrompt.rectTransform, V(0.3f, 1), V(1, 1), V(0, -L.Unit * 14), V(0, -L.Unit * 7));
 
-            var accuseCards = BuildSuspectCards(accuseRt);
+            var accuseSummary = Text("Summary", accuseRt, "", T.Caption, P.Brass, TextAlignmentOptions.Center);
+            Spaced(accuseSummary);
+            Anchor(accuseSummary.rectTransform, V(0.3f, 0), V(1, 0), V(0, L.Unit * 36), V(0, L.Unit * 40));
+
+            // 인물은 좌측 목록 오른쪽의 무대에 앉는다.
+            var accuseStage = UI("Stage", accuseRt);
+            var accuseStageRt = accuseStage.GetComponent<RectTransform>();
+            Anchor(accuseStageRt, V(0.3f, 0), V(1, 1), Vector2.zero, Vector2.zero);
+            var accuseCards = BuildSuspectCards(accuseStageRt);
+
+            // 좌측 목록 — 가설, 그다음 추론 갈래. 심문의 Choice 열과 같은 자리.
+            var accuseListRoot = UI("ListPanel", accuseRt);
+            var accuseListRootRt = accuseListRoot.GetComponent<RectTransform>();
+            Anchor(accuseListRootRt, V(0, 0), V(0, 1), V(0, L.Unit * 36), V(L.ChoiceWidth, -L.Unit * 26));
+            var accuseListTitle = Text("Title", accuseListRootRt, "Hypothesis", T.Label, P.Brass, TextAlignmentOptions.Left);
+            Spaced(accuseListTitle);
+            Anchor(accuseListTitle.rectTransform, V(0, 1), V(1, 1), V(0, -24f), V(0, 0));
+            var accuseList = UI("List", accuseListRootRt);
+            var accuseListRt = accuseList.GetComponent<RectTransform>();
+            Anchor(accuseListRt, V(0, 0), V(1, 1), V(0, 0), V(0, -L.Unit * 5));
+            var alvg = accuseList.AddComponent<VerticalLayoutGroup>();
+            alvg.spacing = L.Unit;
+            alvg.childControlHeight = false;
+            alvg.childControlWidth = true;
+            alvg.childForceExpandWidth = true;
+            alvg.childForceExpandHeight = false;
+            alvg.childAlignment = TextAnchor.UpperLeft;
+            accuseListRoot.SetActive(false);
 
             // ======================================================= 조합 화면
             // 2026-09-23 기획: 우측 목록에서 물품 하나 + 정황 하나를 골라 무대의 판에 올리고 〈가설〉을 세운다.
@@ -785,6 +812,27 @@ namespace ItIsYou.EditorTools
 
             var suspectCards = BuildSuspectCards(selectRt);
 
+            // 2차 심문 — 상대를 고른 뒤 들고 갈 가설을 고르는 덧창.
+            var hypPickRoot = UI("HypothesisPick", selectRt);
+            Stretch(hypPickRoot.GetComponent<RectTransform>());
+            var hypPickScrim = Img("Scrim", hypPickRoot.transform, new Color(0f, 0f, 0f, 0.6f));
+            Stretch(hypPickScrim.rectTransform);
+            var hypPickPanel = Img("Panel", hypPickRoot.transform, new Color32(0x16, 0x19, 0x1D, 0xFF));
+            Anchor(hypPickPanel.rectTransform, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-360f, -200f), V(360f, 200f));
+            var hypPickPrompt = Text("Prompt", hypPickPanel.rectTransform, "", T.Body, P.Ink, TextAlignmentOptions.Center);
+            Anchor(hypPickPrompt.rectTransform, V(0, 1), V(1, 1), V(L.Pad, -L.Unit * 11), V(-L.Pad, -L.Unit * 4));
+            var hypPickList = UI("List", hypPickPanel.rectTransform);
+            var hypPickListRt = hypPickList.GetComponent<RectTransform>();
+            Anchor(hypPickListRt, V(0, 0), V(1, 1), V(L.Pad * 2, L.Pad), V(-L.Pad * 2, -L.Unit * 12));
+            var hvlg = hypPickList.AddComponent<VerticalLayoutGroup>();
+            hvlg.spacing = L.Unit;
+            hvlg.childControlHeight = false;
+            hvlg.childControlWidth = true;
+            hvlg.childForceExpandWidth = true;
+            hvlg.childForceExpandHeight = false;
+            hvlg.childAlignment = TextAnchor.UpperCenter;
+            hypPickRoot.SetActive(false);
+
             // ================================================== 클로즈업 팝업
             // 수집 페이즈에서 오브젝트를 누르면 화면 중앙에 뜨는 이미지. 대사창보다 아래에 둔다 —
             // 설명 대사가 팝업 위로 읽혀야 하기 때문이다.
@@ -1047,7 +1095,11 @@ namespace ItIsYou.EditorTools
             var selectController = systems.AddComponent<SuspectSelectController>();
             selectController.Set("dialogue", presenter)
                             .Set("cards", suspectCards)
-                            .Set("promptLabel", selectPrompt);
+                            .Set("promptLabel", selectPrompt)
+                            .Set("hypothesisRoot", hypPickRoot)
+                            .Set("hypothesisPrompt", hypPickPrompt)
+                            .Set("hypothesisContainer", hypPickListRt)
+                            .Set("hypothesisButtonPrefab", plainButtonPrefab);
 
             // ---- 무반응 연출 사운드 (클립은 아직 없음 — ClockTick 의 AudioSource 에 초침 루프를 끼우면 된다) ----
             var audioRoot = new GameObject("Audio");
@@ -1107,8 +1159,15 @@ namespace ItIsYou.EditorTools
                 .Set("characterBindings", BuildCharacterBindings("SEPI", characterView));
 
             var accusation = accuseScreen.AddComponent<AccusationView>();
-            accusation.Set("cards", accuseCards)
-                      .Set("prompt", accusePrompt);
+            accusation.Set("dialogue", presenter)
+                      .Set("clueTray", clueTrayView)
+                      .Set("cards", accuseCards)
+                      .Set("prompt", accusePrompt)
+                      .Set("listRoot", accuseListRoot)
+                      .Set("listTitle", accuseListTitle)
+                      .Set("listContainer", accuseListRt)
+                      .Set("buttonPrefab", plainButtonPrefab)
+                      .Set("summary", accuseSummary);
 
             var endingView = systems.AddComponent<EndingView>();
             endingView.Set("root", endingScreen)

@@ -22,6 +22,7 @@ namespace ItIsYou.EditorTools
         private const string SuspectFolder = Root + "/Suspects";
         private const string ObjectFolder = Root + "/Objects";
         private const string DeductionFolder = Root + "/Deduction";
+        private const string AccusationFolder = Root + "/Accusation";
 
         [MenuItem("It is You/1. 튜토리얼 데이터 생성", priority = 1)]
         public static ChapterDefinition Build()
@@ -31,6 +32,7 @@ namespace ItIsYou.EditorTools
             Ed.EnsureFolder(SuspectFolder);
             Ed.EnsureFolder(ObjectFolder);
             Ed.EnsureFolder(DeductionFolder);
+            Ed.EnsureFolder(AccusationFolder);
 
             // 이전 구성의 오브젝트는 지운다. 남겨 두면 빈 수집품 경고가 계속 뜬다.
             DeleteIfExists(ObjectFolder + "/Obj_OBJ_PAPERS.asset");
@@ -202,6 +204,39 @@ namespace ItIsYou.EditorTools
 
             DeleteIfExists(DeductionFolder + "/Deduction_TUT_Q1.asset");
 
+            // ========================================================== 지목 갈래
+            // [임시] 가설 3 × 용의자 2 = 6쌍 + 기본 갈래. 갈래마다 추론 2개.
+            AccusationBranch Branch(string fileName, string hypId, string suspectId, List<TutorialScript.Acc> opts)
+            {
+                var b = Ed.CreateOrLoad<AccusationBranch>(AccusationFolder, fileName);
+                var options = new List<AccusationOption>();
+                foreach (var o in opts)
+                {
+                    var opt = new AccusationOption();
+                    opt.Set("label", o.Label)
+                       .Set("speech", o.Speech ?? new DialogueSequence())
+                       .Set("plea", o.Plea ?? new DialogueSequence())
+                       .Set("refuteClueIds", o.RefuteIds ?? new List<string>())
+                       .Set("refuteWrong", o.RefuteWrong ?? new DialogueSequence())
+                       .Set("refuteSuccess", o.RefuteSuccess ?? new DialogueSequence())
+                       .Set("resultTitle", o.ResultTitle ?? string.Empty)
+                       .Set("result", o.Result ?? new DialogueSequence())
+                       .Set("returnsToSelection", o.Returns);
+                    options.Add(opt);
+                }
+                b.Set("id", fileName.ToUpperInvariant()).Set("hypothesisClueId", hypId ?? string.Empty)
+                 .Set("suspectId", suspectId ?? string.Empty).Set("options", options);
+                return b;
+            }
+
+            var accPenSepi = Branch("Acc_Pen_Sepi", "DED_PEN_UNDER_CAT", "SEPI", TutorialScript.AccPenSepi());
+            var accPenCat = Branch("Acc_Pen_Cat", "DED_PEN_UNDER_CAT", "CAT", TutorialScript.AccPenCat());
+            var accHidesSepi = Branch("Acc_Hides_Sepi", "DED_SEPI_HIDES_CAT", "SEPI", TutorialScript.AccHidesSepi());
+            var accHidesCat = Branch("Acc_Hides_Cat", "DED_SEPI_HIDES_CAT", "CAT", TutorialScript.AccHidesCat());
+            var accSpillSepi = Branch("Acc_Spill_Sepi", "DED_SPILL_MOMENT", "SEPI", TutorialScript.AccSpillSepi());
+            var accSpillCat = Branch("Acc_Spill_Cat", "DED_SPILL_MOMENT", "CAT", TutorialScript.AccSpillCat());
+            var accDefault = Branch("Acc_Default", null, null, TutorialScript.AccDefault());
+
             // ========================================================== 용의자
 
             var sepi = Ed.CreateOrLoad<SuspectDefinition>(SuspectFolder, "Suspect_Sepi");
@@ -217,7 +252,6 @@ namespace ItIsYou.EditorTools
                 .Set("secondRoundChoices", Ed.L(choice2Friendly, choice2Aggressive, choice2Deduced, choice2Cat))
                 .Set("secondRoundTokens", 3)
                 .Set("onEnterSecondInterrogation", TutorialScript.SepiSecondOpening())
-                .Set("accusationSpeech", TutorialScript.AccuseSepi())
                 // ---- 아래 반응 대사는 [임시]. 노션에 "용의자의 의문 및 당황에 대한 반응" 같은 지시만 있고 문장은 없다. ----
                 .Set("aggressionWarning", Seq("[임시] 강압 경고",
                     Line(SpeakerId.Assistant, "수사관님… 저, 정말 아니에요…",
@@ -262,8 +296,7 @@ namespace ItIsYou.EditorTools
                .Set("profile", "기차 안을 제집처럼 돌아다니던 녀석. 사건 당시 테이블 위에 있었다.")
                .Set("timeTokens", 4)
                .Set("selectable", false)
-               .Set("lockedReason", "…먼저 사람부터 상대하지.")
-               .Set("accusationSpeech", TutorialScript.AccuseCat());
+               .Set("lockedReason", "…먼저 사람부터 상대하지.");
 
             // ============================================================ 챕터
 
@@ -303,10 +336,16 @@ namespace ItIsYou.EditorTools
                    .Set("deductionOutro", TutorialScript.DeductionOutro())
                    .Set("selfLoathingEnding", TutorialScript.SelfLoathingEnding())
                    // [임시] 2차 심문 — 공용 타임 토큰 6, 지목 전 대사
-                   .Set("secondRoundSharedTokens", 6)
                    .Set("secondRoundSelectPrompt", "가설을 들고, 누구에게 다시 물어볼까.")
+                   .Set("hypothesisPickPrompt", "어떤 가설로 물어볼까.")
                    .Set("beforeAccusation", TutorialScript.BeforeAccusation())
-                   .Set("accusationPrompt", "누가 가져갔다고 보십니까?");
+                   // [임시] 지목 — 가설 → 용의자 → 추론 두 갈래 → 호소 → 단서로 반박(맞을 때까지) → 결과
+                   .Set("accusationHypothesisPrompt", "어떤 가설로 답을 낼까.")
+                   .Set("accusationPrompt", "누가 가져갔다고 보십니까?")
+                   .Set("accusationReasoningPrompt", "그렇다면, 어떻게 된 일인가.")
+                   .Set("refutePrompt", "우측에서 반박할 단서를 고른다.")
+                   .Set("accusationBranches", Ed.L(accPenSepi, accPenCat, accHidesSepi, accHidesCat, accSpillSepi, accSpillCat))
+                   .Set("defaultAccusationBranch", accDefault);
 
             // ============================================================ 색인
 
@@ -321,11 +360,12 @@ namespace ItIsYou.EditorTools
             Ed.Save(ribbon, coffee, glimpse, newspaper, typewriter, roomInfo, sawIt, catFlinch, penUnderCat, sepiHidesCat, spillMoment,
                     objRibbon, objCoffee, objGlimpse, objNewspaper, objTypewriter, objRoomInfo,
                     choiceFriendly, choiceAggressive, choiceRibbon, choice2Friendly, choice2Aggressive, choice2Deduced, choice2Cat,
-                    hypPen, hypHides, hypSpill, sepi, cat, chapter, db);
+                    hypPen, hypHides, hypSpill, accPenSepi, accPenCat, accHidesSepi, accHidesCat, accSpillSepi, accSpillCat, accDefault,
+                    sepi, cat, chapter, db);
             AssetDatabase.Refresh();
 
             Debug.Log("[It is You] 튜토리얼 데이터 생성 완료 — " +
-                      "수집품 6(단서 3/일반 3) + 증언·리액션 2 + 가설 3, 선택지 3+4, 조합식 3, 용의자 2, 튜토리얼 팝업 6, 챕터 1");
+                      "수집품 6(단서 3/일반 3) + 증언·리액션 2 + 가설 3, 선택지 3+4, 조합식 3, 지목 갈래 7, 용의자 2, 튜토리얼 팝업 6, 챕터 1");
             return chapter;
         }
 

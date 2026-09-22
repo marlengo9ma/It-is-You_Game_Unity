@@ -8,7 +8,7 @@ namespace ItIsYou.Deduction
     /// <summary>가설 도출 시도 한 번의 결과.</summary>
     public enum HypothesisOutcome
     {
-        /// <summary>두 단서가 이어졌다. 가설이 저장됐다.</summary>
+        /// <summary>두 단서가 이어졌다. 가설이 저장됐다. (PhaseEnded 면 이 시도로 잉크가 다 말라 페이즈가 끝났다)</summary>
         Success = 0,
         /// <summary>이어졌지만 가설 칸이 가득 찼다. 기존 가설 하나를 지워야 저장된다.</summary>
         SuccessNeedsReplace = 1,
@@ -113,11 +113,17 @@ namespace ItIsYou.Deduction
                 return new HypothesisResult(HypothesisOutcome.Fail, null, FailCount, false);
 
             var recipe = _chapter.FindHypothesis(objectClue.Id, leadClue.Id);
+
+            // 이미 세운 가설을 또 이으면 아무 일도 없다 — 시도로 치지 않는다.
+            if (recipe != null && recipe.Result != null && _inventory.Has(recipe.Result.Id))
+                return new HypothesisResult(HypothesisOutcome.Duplicate, recipe, 0, false);
+
+            // 모든 시도는 잉크를 쓴다 (2026-09-23 기획: "이 과정에서 모든 시도는 <잉크>를 소비").
+            Ink = Math.Max(0, Ink - 1);
+            InkChanged?.Invoke(Ink);
+
             if (recipe != null && recipe.Result != null)
             {
-                if (_inventory.Has(recipe.Result.Id))
-                    return new HypothesisResult(HypothesisOutcome.Duplicate, recipe, 0, false);
-
                 if (HypothesisCount >= MaxHypotheses)
                 {
                     _pendingReplace = recipe;
@@ -125,14 +131,13 @@ namespace ItIsYou.Deduction
                 }
 
                 AddHypothesis(recipe.Result);
-                return new HypothesisResult(HypothesisOutcome.Success, recipe, 0, false);
+                if (Ink <= 0) Finish(true);
+                return new HypothesisResult(HypothesisOutcome.Success, recipe, 0, Ink <= 0);
             }
 
-            // 실패 — 잉크를 쓴다.
+            // 실패
             _triedPairs.Add(PairKey(objectClue.Id, leadClue.Id));
             FailCount++;
-            Ink = Math.Max(0, Ink - 1);
-            InkChanged?.Invoke(Ink);
 
             if (Ink > 0)
                 return new HypothesisResult(HypothesisOutcome.Fail, null, FailCount, false);
@@ -158,11 +163,16 @@ namespace ItIsYou.Deduction
             var recipe = _pendingReplace;
             _pendingReplace = null;
             AddHypothesis(recipe.Result);
+            if (Ink <= 0) Finish(true);
             return recipe.Result;
         }
 
-        /// <summary>새 가설을 버리고 기존 것을 지킨다. 잉크는 쓰지 않는다.</summary>
-        public void CancelReplace() => _pendingReplace = null;
+        /// <summary>새 가설을 버리고 기존 것을 지킨다. 잉크는 이미 쓴 뒤다.</summary>
+        public void CancelReplace()
+        {
+            _pendingReplace = null;
+            if (Ink <= 0 && HypothesisCount > 0) Finish(true);
+        }
 
         /// <summary>가설이 하나라도 있으면 먼저 끝낼 수 있다.</summary>
         public bool EndManually()

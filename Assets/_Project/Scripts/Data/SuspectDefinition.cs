@@ -39,9 +39,6 @@ namespace ItIsYou.Data
         [Tooltip("2차 심문에 들어갈 때의 첫 마디. 비어 있으면 1차의 것을 쓴다.")]
         [SerializeField] private DialogueSequence onEnterSecondInterrogation = new DialogueSequence();
 
-        [Tooltip("범인으로 지목했을 때 주인공이 '왜 이 사람인가'를 말하는 대사. 엔딩 컷씬 앞에 나온다.")]
-        [SerializeField] private DialogueSequence accusationSpeech = new DialogueSequence();
-
         [Tooltip("심문 화면 안에서 클릭할 수 있는 심문 오브젝트.")]
         [SerializeField] private List<InteractableDefinition> interrogationObjects = new List<InteractableDefinition>();
 
@@ -116,7 +113,6 @@ namespace ItIsYou.Data
         public DialogueSequence OnEndInterrogation => onEndInterrogation;
         public DialogueSequence OnIdle => onIdle;
         public bool Selectable => selectable;
-        public DialogueSequence AccusationSpeech => accusationSpeech;
         public string LockedReason => lockedReason;
 
         /// <summary>회차별 무반응 대사가 몇 벌 있는가. 다 쓰고 나면 페널티 설명 팝업의 트리거가 된다.</summary>

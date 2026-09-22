@@ -23,11 +23,11 @@ namespace ItIsYou.UI
             if (root != null) root.SetActive(false);
         }
 
-        public void Show(string accusedName, int clueCount)
+        public void Show(string resultTitle, string accusedName, int clueCount)
         {
             if (root != null) root.SetActive(true);
-            if (title != null) title.text = "엔딩 컷씬 (아트 대기)";
-            if (body != null) body.text = $"지목: {accusedName}\n수집한 단서 {clueCount}개\n\n이벤트 컷씬 · 엔딩 컷씬 자리 — 챕터 종료";
+            if (title != null) title.text = string.IsNullOrEmpty(resultTitle) ? "엔딩 컷씬 (아트 대기)" : resultTitle;
+            if (body != null) body.text = $"지목: {accusedName}\n수집한 단서 {clueCount}개\n\n엔딩 컷씬 · 이벤트 컷씬 자리 (아트 대기) — 챕터 종료";
         }
     }
 }
