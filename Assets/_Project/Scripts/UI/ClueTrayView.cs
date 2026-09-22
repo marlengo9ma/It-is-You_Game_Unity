@@ -26,8 +26,13 @@ namespace ItIsYou.UI
     public class ClueTrayView : MonoBehaviour
     {
         [Header("목록")]
+        [Tooltip("물품 증거(수집 오브젝트) 격자.")]
         [SerializeField] private RectTransform container;
         [SerializeField] private ClueSlot slotPrefab;
+
+        [Tooltip("정황·실마리(증언 · 리액션 · 추론) 목록. 비워 두면 전부 위 격자에 들어간다.")]
+        [SerializeField] private RectTransform leadsContainer;
+        [SerializeField] private ClueSlot leadPrefab;
 
         [Header("열람창")]
         [Tooltip("화면 전체를 덮는 열람창 루트. 반투명 배경 + 가운데 이미지 + 우측 텍스트.")]
@@ -51,6 +56,7 @@ namespace ItIsYou.UI
         [SerializeField] private Color placeholderColor = new Color32(0x2E, 0x34, 0x3B, 0xFF);
 
         private readonly List<ClueSlot> _pool = new List<ClueSlot>();
+        private readonly List<ClueSlot> _leadPool = new List<ClueSlot>();
         private ClueInventory _inventory;
         private ClueDefinition _reading;
         private TmpLinkClickRelay _linkRelay;
@@ -98,21 +104,13 @@ namespace ItIsYou.UI
         {
             _inventory = inventory;
             if (inventory == null || container == null || slotPrefab == null) return;
-
-            var ids = inventory.OrderedIds;
-            EnsurePool(ids.Count);
-
-            for (int i = 0; i < _pool.Count; i++)
-            {
-                var active = i < ids.Count;
-                _pool[i].gameObject.SetActive(active);
-                if (!active) continue;
-
-                var clue = inventory.Get(ids[i]);
-                if (clue == null) continue;
-                _pool[i].Bind(clue, inventory.HasBeenRead(clue.Id), inventory.IsPromoted(clue.Id), OnSlotClicked);
-            }
+            RebuildSlotsOnly();
         }
+
+        private bool SplitLeads => leadsContainer != null && leadPrefab != null;
+
+        /// <summary>물품 증거는 격자에, 정황·실마리는 아래 목록에. 둘 다 수집 순서대로.</summary>
+        private static bool IsLead(ClueDefinition clue) => clue.Kind != ClueKind.Object;
 
         private void OnSlotClicked(ClueDefinition clue)
         {
@@ -212,20 +210,33 @@ namespace ItIsYou.UI
         /// <summary>목록만 다시 그린다. 열람창 상태는 건드리지 않는다.</summary>
         private void RebuildSlotsOnly()
         {
-            if (_inventory == null) return;
+            if (_inventory == null || container == null || slotPrefab == null) return;
             var ids = _inventory.OrderedIds;
-            for (int i = 0; i < _pool.Count && i < ids.Count; i++)
+
+            var grid = new List<ClueDefinition>();
+            var leads = new List<ClueDefinition>();
+            for (int i = 0; i < ids.Count; i++)
             {
                 var clue = _inventory.Get(ids[i]);
                 if (clue == null) continue;
-                _pool[i].Bind(clue, _inventory.HasBeenRead(clue.Id), _inventory.IsPromoted(clue.Id), OnSlotClicked);
+                if (SplitLeads && IsLead(clue)) leads.Add(clue); else grid.Add(clue);
             }
+
+            Fill(_pool, slotPrefab, container, grid);
+            if (SplitLeads) Fill(_leadPool, leadPrefab, leadsContainer, leads);
         }
 
-        private void EnsurePool(int needed)
+        private void Fill(List<ClueSlot> pool, ClueSlot prefab, RectTransform parent, List<ClueDefinition> clues)
         {
-            while (_pool.Count < needed)
-                _pool.Add(Instantiate(slotPrefab, container));
+            while (pool.Count < clues.Count) pool.Add(Instantiate(prefab, parent));
+            for (int i = 0; i < pool.Count; i++)
+            {
+                var active = i < clues.Count;
+                pool[i].gameObject.SetActive(active);
+                if (!active) continue;
+                var clue = clues[i];
+                pool[i].Bind(clue, _inventory.HasBeenRead(clue.Id), _inventory.IsPromoted(clue.Id), OnSlotClicked);
+            }
         }
     }
 }

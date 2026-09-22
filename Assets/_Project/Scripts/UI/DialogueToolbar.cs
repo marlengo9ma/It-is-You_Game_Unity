@@ -29,6 +29,9 @@ namespace ItIsYou.UI
         [SerializeField] private Button logButton;
         [SerializeField] private Button hideButton;
 
+        [Tooltip("우측 패널의 기록 버튼. 항상 보이되, 로그를 볼 수 있는 페이즈에서만 눌린다.")]
+        [SerializeField] private Button sideLogButton;
+
         [Tooltip("창을 숨긴 동안 화면 전체를 덮는 투명 버튼. 아무 데나 누르면 되돌아온다.")]
         [SerializeField] private GameObject restoreCatcher;
 
@@ -47,6 +50,7 @@ namespace ItIsYou.UI
         private void Awake()
         {
             if (logButton != null) logButton.onClick.AddListener(OnLog);
+            if (sideLogButton != null) sideLogButton.onClick.AddListener(OnLog);
             if (hideButton != null) hideButton.onClick.AddListener(OnHide);
             if (restoreButton != null) restoreButton.onClick.AddListener(OnRestore);
 
@@ -67,6 +71,7 @@ namespace ItIsYou.UI
         private void OnDestroy()
         {
             if (logButton != null) logButton.onClick.RemoveListener(OnLog);
+            if (sideLogButton != null) sideLogButton.onClick.RemoveListener(OnLog);
             if (hideButton != null) hideButton.onClick.RemoveListener(OnHide);
             if (restoreButton != null) restoreButton.onClick.RemoveListener(OnRestore);
             if (flow != null) flow.PhaseChanged -= Apply;
@@ -76,6 +81,7 @@ namespace ItIsYou.UI
         {
             var show = visiblePhases != null && visiblePhases.Contains(phase);
             if (root != null) root.SetActive(show);
+            if (sideLogButton != null) sideLogButton.interactable = show;
 
             // 페이즈가 바뀌면 숨김과 로그는 원래대로 되돌린다.
             // 심문이 시작됐는데 대사창이 치워져 있으면 플레이어가 길을 잃는다.

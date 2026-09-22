@@ -54,6 +54,7 @@ namespace ItIsYou.EditorTools
 
             var choicePrefab = BuildChoiceButtonPrefab();
             var cluePrefab = BuildClueSlotPrefab();
+            var leadPrefab = BuildLeadSlotPrefab();
             var plainButtonPrefab = BuildPlainButtonPrefab();
             var candidatePrefab = BuildDeductionCandidatePrefab();
 
@@ -88,85 +89,171 @@ namespace ItIsYou.EditorTools
             bg.raycastTarget = false;
 
             // =========================================================== 공통 UI
+            // 2026-09-22 스케치: 우측 1/3 은 단서·정황 목록과 기능 아이콘, 좌측 2/3 이 무대.
+            // 상대의 말은 위 말풍선, 주인공의 말·속마음·지문은 아래 수첩 — 시선이 아래로 떨어지지 않게.
 
-            // ---- 상단 바 ----
+            // ---- 좌상단: 시계 · 장소 · 페이즈 ----
             var topBar = UI("TopBar", root);
             var topRt = topBar.GetComponent<RectTransform>();
-            Anchor(topRt, V(0, 1), V(1, 1), V(L.Gutter, L.TopBarBottom), V(-L.Gutter, -L.Gutter));
+            Anchor(topRt, V(0, 1), V(0, 1), V(L.Gutter, -L.Gutter - 176f), V(L.Gutter + 480f, -L.Gutter));
 
-            var titleLabel = Text("ChapterTitle", topRt, "튜토리얼 — 누가 그랬지?", T.Display, P.Ink, TextAlignmentOptions.Left);
-            Anchor(titleLabel.rectTransform, V(0, 0.42f), V(0.5f, 1), Vector2.zero, Vector2.zero);
+            var clockLabel = Text("Clock", topRt, "10:24", 48f, P.Ink, TextAlignmentOptions.TopLeft);
+            clockLabel.characterSpacing = 4f;
+            Anchor(clockLabel.rectTransform, V(0, 1), V(0, 1), V(0, -56f), V(160f, 0f));
+
+            var dateLabel = Text("Date", topRt, "", T.Caption, P.InkSoft, TextAlignmentOptions.BottomLeft);
+            Anchor(dateLabel.rectTransform, V(0, 1), V(1, 1), V(168f, -48f), V(0, -L.Unit));
+
+            var locationLabel = Text("Location", topRt, "", T.Choice, P.Ink, TextAlignmentOptions.Left);
+            Anchor(locationLabel.rectTransform, V(0, 1), V(1, 1), V(0, -88f), V(0, -60f));
 
             var phaseLabel = Text("PhaseLabel", topRt, "", T.Caption, P.Brass, TextAlignmentOptions.Left);
             Spaced(phaseLabel);
-            Anchor(phaseLabel.rectTransform, V(0, 0), V(0.5f, 0.42f), Vector2.zero, Vector2.zero);
+            Anchor(phaseLabel.rectTransform, V(0, 1), V(1, 1), V(0, -116f), V(0, -92f));
 
-            var tokenCaption = Text("TokenCaption", topRt, "남은 시간", T.Caption, P.InkSoft, TextAlignmentOptions.Right);
+            // 타임 토큰과 무반응 게이지. 시계 아래에 작게 — 시간이 줄어드는 것이 시계 옆에 있어야 읽힌다.
+            var tokenCaption = Text("TokenCaption", topRt, "남은 시간", T.Caption, P.InkSoft, TextAlignmentOptions.Left);
             Spaced(tokenCaption);
-            Anchor(tokenCaption.rectTransform, V(0.6f, 0.52f), V(1, 1), Vector2.zero, Vector2.zero);
+            Anchor(tokenCaption.rectTransform, V(0, 1), V(0, 1), V(0, -144f), V(96f, -120f));
 
-            var tokenLabel = Text("TokenValue", topRt, "—", T.Metric, P.Brass, TextAlignmentOptions.Right);
+            var tokenLabel = Text("TokenValue", topRt, "—", T.Choice, P.Brass, TextAlignmentOptions.Left);
             tokenLabel.fontStyle = FontStyles.Normal;
-            Anchor(tokenLabel.rectTransform, V(0.6f, 0), V(1, 0.52f), Vector2.zero, Vector2.zero);
+            Anchor(tokenLabel.rectTransform, V(0, 1), V(0, 1), V(104f, -148f), V(240f, -118f));
 
             var idleBarBg = Img("IdleBar", topRt, P.Rule);
-            Anchor(idleBarBg.rectTransform, V(0, 0), V(1, 0), V(0, -L.Unit * 2), V(0, -L.Unit));
-            idleBarBg.sprite = _uiSprite;
+            Anchor(idleBarBg.rectTransform, V(0, 1), V(0, 1), V(0, -160f), V(240f, -154f));
+            idleBarBg.sprite = _uiSprite; idleBarBg.type = Image.Type.Sliced;
             idleBarBg.raycastTarget = false;
             var idleFill = Img("Fill", idleBarBg.rectTransform, P.Alarm);
             Stretch(idleFill.rectTransform);
-            idleFill.sprite = _uiSprite;
+            idleFill.sprite = _uiSprite; idleFill.type = Image.Type.Sliced;
             idleFill.type = Image.Type.Filled;
             idleFill.fillMethod = Image.FillMethod.Horizontal;
             idleFill.fillAmount = 0f;
             idleFill.raycastTarget = false;
 
-            // ---- 단서 패널 (항상 보임) ----
-            var cluePanel = Img("CluePanel", root, P.Panel);
+            // 챕터 제목은 주 영역의 우상단에 작게. 시계가 주인공이다.
+            var titleLabel = Text("ChapterTitle", root, "튜토리얼 — 누가 그랬지?", T.Caption, P.InkSoft, TextAlignmentOptions.TopRight);
+            Anchor(titleLabel.rectTransform, V(0, 1), V(1, 1), V(L.Gutter + 480f, -L.Gutter - 24f), V(L.MainRight, -L.Gutter));
+
+            // ---- 우측 1/3: 물품 증거 · 정황/실마리 · 기능 아이콘 ----
+            var cluePanel = Img("SidePanel", root, P.Panel);
             var clueRt = cluePanel.rectTransform;
-            Anchor(clueRt, V(1, 0), V(1, 1), V(L.ClueLeft, L.BandBottom), V(-L.Gutter, L.BandTop));
+            Anchor(clueRt, V(1, 0), V(1, 1), V(L.ClueLeft, 0), V(0, 0));
 
-            var clueTitle = Text("Title", clueRt, "단서", T.Label, P.Brass, TextAlignmentOptions.Left);
-            Spaced(clueTitle);
-            Anchor(clueTitle.rectTransform, V(0, 1), V(1, 1), V(L.Pad, -L.Pad - 24f), V(-L.Pad, -L.Pad));
+            var sideRule = Img("EdgeRule", clueRt, P.Rule);
+            Anchor(sideRule.rectTransform, V(0, 0), V(0, 1), V(0, 0), V(2f, 0));
+            sideRule.raycastTarget = false;
 
-            var clueGrid = UI("Grid", clueRt);
-            var gridRt = clueGrid.GetComponent<RectTransform>();
-            Anchor(gridRt, V(0, 0), V(1, 1), V(L.Pad, L.Pad), V(-L.Pad, -L.Unit * 9));
-            var glg = clueGrid.AddComponent<GridLayoutGroup>();
-            glg.cellSize = new Vector2(96f, 96f);
-            glg.spacing = new Vector2(L.Unit, L.Unit);
+            var evidenceTitle = Text("EvidenceTitle", clueRt, "Evidence", 28f, P.Ink, TextAlignmentOptions.Left);
+            evidenceTitle.fontStyle = FontStyles.Bold;
+            Anchor(evidenceTitle.rectTransform, V(0, 1), V(1, 1), V(L.Pad * 2, -L.Gutter - 40f), V(-L.Pad * 2, -L.Gutter));
+            var evidenceSub = Text("EvidenceSub", clueRt, "물품 증거", T.Caption, P.InkSoft, TextAlignmentOptions.Left);
+            Anchor(evidenceSub.rectTransform, V(0, 1), V(1, 1), V(L.Pad * 2 + 136f, -L.Gutter - 36f), V(-L.Pad * 2, -L.Gutter - 8f));
+
+            // 3열 격자. 128 칸 + 24 간격 = 432, 좌우 여백 48 로 640 안에 든다.
+            var evidenceScroll = BuildScroll("EvidenceScroll", clueRt, V(L.Pad * 2, -L.Unit * 71), V(-L.Pad * 2, -L.Unit * 13));
+            evidenceScroll.scroll.GetComponent<RectTransform>().anchorMin = V(0, 1);
+            evidenceScroll.scroll.GetComponent<RectTransform>().offsetMin = V(L.Pad * 2, -L.Unit * 71);
+            Object.DestroyImmediate(evidenceScroll.content.GetComponent<VerticalLayoutGroup>());
+            var glg = evidenceScroll.content.gameObject.AddComponent<GridLayoutGroup>();
+            glg.cellSize = new Vector2(128f, 128f);
+            glg.spacing = new Vector2(L.Gap, L.Gap);
             glg.childAlignment = TextAnchor.UpperLeft;
+            var gridRt = evidenceScroll.content;
 
-            var clueHint = Text("Hint", clueRt, "칸을 누르면 열람", T.Caption, P.InkSoft, TextAlignmentOptions.BottomLeft);
-            Anchor(clueHint.rectTransform, V(0, 0), V(1, 0), V(L.Pad, L.Unit), V(-L.Pad, L.Unit * 4));
+            var sideDivider = Img("Divider", clueRt, P.Rule);
+            Anchor(sideDivider.rectTransform, V(0, 1), V(1, 1), V(L.Pad * 2, -L.Unit * 75), V(-L.Pad * 2, -L.Unit * 75 + 2f));
+            sideDivider.raycastTarget = false;
+
+            var leadsTitle = Text("LeadsTitle", clueRt, "Leads", 28f, P.Ink, TextAlignmentOptions.Left);
+            leadsTitle.fontStyle = FontStyles.Bold;
+            Anchor(leadsTitle.rectTransform, V(0, 1), V(1, 1), V(L.Pad * 2, -L.Unit * 83), V(-L.Pad * 2, -L.Unit * 78));
+            var leadsSub = Text("LeadsSub", clueRt, "정황 / 실마리", T.Caption, P.InkSoft, TextAlignmentOptions.Left);
+            Anchor(leadsSub.rectTransform, V(0, 1), V(1, 1), V(L.Pad * 2 + 96f, -L.Unit * 82.5f), V(-L.Pad * 2, -L.Unit * 79));
+
+            var leadsScroll = BuildScroll("LeadsScroll", clueRt, V(L.Pad * 2, L.Unit * 20), V(-L.Pad * 2, -L.Unit * 86));
+            leadsScroll.content.GetComponent<VerticalLayoutGroup>().spacing = L.Unit;
+            var leadsRt = leadsScroll.content;
+
+            var clueHint = Text("Hint", clueRt, "칸을 누르면 열람", T.Caption, P.InkSoft, TextAlignmentOptions.Left);
+            Anchor(clueHint.rectTransform, V(0, 0), V(1, 0), V(L.Pad * 2, L.Unit * 15), V(-L.Pad * 2, L.Unit * 18));
+
+            // 기능 아이콘 — 기록(돋보기 자리) · 설정(톱니 자리). 아이콘 소스가 오면 글자를 그림으로 바꾼다.
+            var sideLogBtn = PlainButton("LogButton", clueRt, "기록", T.Caption);
+            Anchor(sideLogBtn.Item1, V(0, 0), V(0, 0), V(L.Pad * 2, L.Gutter), V(L.Pad * 2 + 72f, L.Gutter + 72f));
+            var sideSettingsBtn = PlainButton("SettingsButton", clueRt, "설정", T.Caption);
+            Anchor(sideSettingsBtn.Item1, V(1, 0), V(1, 0), V(-L.Pad * 2 - 72f, L.Gutter), V(-L.Pad * 2, L.Gutter + 72f));
 
             var clueTrayView = cluePanel.gameObject.AddComponent<ClueTrayView>();
             clueTrayView.Set("container", gridRt)
-                        .Set("slotPrefab", cluePrefab);
+                        .Set("slotPrefab", cluePrefab)
+                        .Set("leadsContainer", leadsRt)
+                        .Set("leadPrefab", leadPrefab);
 
-            // ---- 대사창 (항상 보임) ----
+            // ---- 아래: 주인공의 수첩 (항상 보임) ----
+            // 주인공의 말 · 속마음 · 지문. 스케치의 수첩 자리 — 좌측 손과 스프링은 아트 대기.
             var dialoguePanel = Img("DialoguePanel", root, P.PanelSunk);
             var dlgRt = dialoguePanel.rectTransform;
-            Anchor(dlgRt, V(0, 0), V(1, 0), V(L.Gutter, L.Gutter), V(-L.Gutter, L.DialogueTop));
+            Anchor(dlgRt, V(0, 0), V(0, 0), V(L.Gutter + 40f, L.Unit * 2), V(L.Gutter + 1064f, L.Unit * 30));
             var dlgGroup = dialoguePanel.gameObject.AddComponent<CanvasGroup>();
 
+            var notebookEdge = Img("NotebookEdge", dlgRt, P.Rule);
+            Anchor(notebookEdge.rectTransform, V(0, 0), V(0, 1), V(0, 0), V(L.Unit * 3, 0));
+            notebookEdge.raycastTarget = false;
+            var notebookTag = Text("Tag", dlgRt, "수첩 (아트 대기)", T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.TopRight);
+            Anchor(notebookTag.rectTransform, V(1, 1), V(1, 1), V(-200f, -28f), V(-L.Unit * 2, -L.Unit));
+
             var speaker = Text("Speaker", dlgRt, "", T.Choice, P.Brass, TextAlignmentOptions.Left);
-            Anchor(speaker.rectTransform, V(0, 1), V(0.5f, 1), V(L.Unit * 4, -L.Unit * 7), V(0, -L.Unit * 3));
+            Anchor(speaker.rectTransform, V(0, 1), V(0.5f, 1), V(L.Unit * 6, -L.Unit * 7), V(0, -L.Unit * 3));
 
             var direction = Text("StageDirection", dlgRt, "", T.Caption, P.InkSoft, TextAlignmentOptions.Left);
             direction.fontStyle = FontStyles.Italic;
-            Anchor(direction.rectTransform, V(0, 1), V(1, 1), V(L.Unit * 4, -L.Unit * 11), V(-L.Unit * 4, -L.Unit * 7));
+            Anchor(direction.rectTransform, V(0, 1), V(1, 1), V(L.Unit * 6, -L.Unit * 11), V(-L.Unit * 4, -L.Unit * 7));
 
             // 본문만 raycastTarget 을 켠다 — 밑줄 구간을 클릭해야 하기 때문이다.
             var body = Text("Body", dlgRt, "", T.Body, P.Ink, TextAlignmentOptions.TopLeft);
             body.textWrappingMode = TextWrappingModes.Normal;
             body.lineSpacing = 16f;
             body.raycastTarget = true;
-            Anchor(body.rectTransform, V(0, 0), V(1, 1), V(L.Unit * 4, L.Unit * 6), V(-L.Unit * 4, -L.Unit * 12));
+            Anchor(body.rectTransform, V(0, 0), V(1, 1), V(L.Unit * 6, L.Unit * 5), V(-L.Unit * 4, -L.Unit * 12));
 
             var advance = Text("AdvanceIndicator", dlgRt, "▼", T.Caption, P.Brass, TextAlignmentOptions.Right);
             Anchor(advance.rectTransform, V(1, 0), V(1, 0), V(-L.Unit * 8, L.Unit * 2), V(-L.Unit * 3, L.Unit * 5));
+
+            // ---- 위: 상대의 말풍선 (심문·조합에서만 쓰인다) ----
+            // 무대 위 인물의 머리 옆. 밝은 판에 어두운 글자 — 아래 수첩과 반대 명암이라 누가 말하는지 색으로 갈린다.
+            var bubbleRoot = UI("SpeechBubble", root);
+            var bubbleRt = bubbleRoot.GetComponent<RectTransform>();
+            Anchor(bubbleRt, V(0, 1), V(0, 1), V(L.Gutter + 560f, -L.Gutter - 208f), V(L.Gutter + 1208f, -L.Gutter - 8f));
+            var bubbleGroup = bubbleRoot.AddComponent<CanvasGroup>();
+
+            var bubbleBg = Img("Panel", bubbleRt, new Color32(0xE8, 0xE1, 0xD2, 0xFF));
+            Stretch(bubbleBg.rectTransform);
+            bubbleBg.sprite = _uiSprite; bubbleBg.type = Image.Type.Sliced;
+            var bubbleTail = Img("Tail", bubbleRt, new Color32(0xE8, 0xE1, 0xD2, 0xFF));
+            Anchor(bubbleTail.rectTransform, V(0, 0), V(0, 0), V(72f, -20f), V(112f, 20f));
+            bubbleTail.rectTransform.localRotation = Quaternion.Euler(0f, 0f, 45f);
+            bubbleTail.raycastTarget = false;
+            bubbleRoot.AddComponent<DialogueClickRelay>();
+
+            var bubbleInk = new Color32(0x1E, 0x1B, 0x16, 0xFF);
+            var bubbleSpeaker = Text("Speaker", bubbleRt, "", T.Caption, new Color32(0x6B, 0x5A, 0x2A, 0xFF), TextAlignmentOptions.Left);
+            Spaced(bubbleSpeaker);
+            Anchor(bubbleSpeaker.rectTransform, V(0, 1), V(0.5f, 1), V(L.Pad, -L.Unit * 6), V(0, -L.Unit * 2));
+
+            var bubbleBody = Text("Body", bubbleRt, "", T.Body, bubbleInk, TextAlignmentOptions.TopLeft);
+            bubbleBody.textWrappingMode = TextWrappingModes.Normal;
+            bubbleBody.lineSpacing = 14f;
+            bubbleBody.raycastTarget = true;
+            Anchor(bubbleBody.rectTransform, V(0, 0), V(1, 1), V(L.Pad, L.Unit * 6), V(-L.Pad, -L.Unit * 7));
+
+            var bubbleDirection = Text("StageDirection", bubbleRt, "", T.Caption, new Color32(0x6B, 0x66, 0x5C, 0xFF), TextAlignmentOptions.Left);
+            bubbleDirection.fontStyle = FontStyles.Italic;
+            Anchor(bubbleDirection.rectTransform, V(0, 0), V(1, 0), V(L.Pad, L.Unit * 2), V(-L.Unit * 10, L.Unit * 6));
+
+            var bubbleAdvance = Text("AdvanceIndicator", bubbleRt, "▼", T.Caption, new Color32(0x6B, 0x5A, 0x2A, 0xFF), TextAlignmentOptions.Right);
+            Anchor(bubbleAdvance.rectTransform, V(1, 0), V(1, 0), V(-L.Unit * 8, L.Unit * 2), V(-L.Unit * 3, L.Unit * 5));
 
             var presenter = dialoguePanel.gameObject.AddComponent<DialoguePresenter>();
             presenter.Set("root", dlgGroup)
@@ -174,11 +261,17 @@ namespace ItIsYou.EditorTools
                      .Set("bodyLabel", body)
                      .Set("stageDirectionLabel", direction)
                      .Set("advanceIndicator", advance.gameObject)
-                     .Set("uiCamera", (Camera)null);
+                     .Set("uiCamera", (Camera)null)
+                     .Set("bubbleRoot", bubbleGroup)
+                     .Set("bubbleSpeakerLabel", bubbleSpeaker)
+                     .Set("bubbleBodyLabel", bubbleBody)
+                     .Set("bubbleDirectionLabel", bubbleDirection)
+                     .Set("bubbleAdvanceIndicator", bubbleAdvance.gameObject);
+            bubbleRoot.GetComponent<DialogueClickRelay>().Set("target", presenter);
 
             // ---- 하단 상태 줄 ----
             var status = Text("StatusLabel", root, "", T.Caption, P.InkSoft, TextAlignmentOptions.BottomLeft);
-            Anchor(status.rectTransform, V(0, 0), V(0.6f, 0), V(L.Gutter, L.Unit * 2), V(0, L.Unit * 5));
+            Anchor(status.rectTransform, V(0, 0), V(0, 0), V(L.Gutter + 40f, L.Unit * 31), V(L.Gutter + 1064f, L.Unit * 34));
 
             // ======================================================= 수집 화면
 
@@ -224,7 +317,7 @@ namespace ItIsYou.EditorTools
 
                 var spot = Img("Hotspot_" + h.id, stage.rectTransform, new Color32(0x2E, 0x34, 0x3B, 0xFF));
                 Anchor(spot.rectTransform, V(h.x0, h.y0), V(h.x1, h.y1), Vector2.zero, Vector2.zero);
-                spot.sprite = _uiSprite;
+                spot.sprite = _uiSprite; spot.type = Image.Type.Sliced;
 
                 var spotLabel = Text("Label", spot.rectTransform, def.HoverLabel, T.Caption,
                     new Color32(0x6E, 0x74, 0x7B, 0xFF), TextAlignmentOptions.Center);
@@ -250,45 +343,26 @@ namespace ItIsYou.EditorTools
             Anchor(goInterrogate.Item1, V(1, 0), V(1, 0), V(-L.Unit * 26, L.Unit), V(-L.Unit, L.Unit * 7));
 
             // ======================================================= 심문 화면
+            // 주 영역(좌측 2/3) 전체. 선택지는 좌측, 인물은 가운데, 말풍선은 위, 수첩은 아래.
 
             var interrogateScreen = UI("Screen_Interrogation", root);
             var interRt = interrogateScreen.GetComponent<RectTransform>();
-            Anchor(interRt, V(0, 0), V(1, 1), V(L.Gutter, L.BandBottom), V(-L.Gutter, L.BandTop));
+            Anchor(interRt, V(0, 0), V(1, 1), V(L.Gutter, L.Gutter), V(L.MainRight, -L.Gutter));
 
-            // 선택지 패널
-            var choicePanel = Img("ChoicePanel", interRt, P.Panel);
-            var choiceRt = choicePanel.rectTransform;
-            Anchor(choiceRt, V(0, 0), V(0, 1), V(0, 0), V(L.ChoiceWidth, 0));
-            var choiceGroup = choicePanel.gameObject.AddComponent<CanvasGroup>();
+            var interBg = Img("Backdrop", interRt, new Color32(0x1E, 0x22, 0x27, 0xFF));
+            Stretch(interBg.rectTransform);
+            interBg.raycastTarget = false;
+            var interTag = Text("Tag", interBg.rectTransform, "객실  —  게임플레이 배경 (아트 대기)",
+                T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Bottom);
+            Anchor(interTag.rectTransform, V(0.4f, 0), V(0.9f, 0), V(0, L.Unit * 31), V(0, L.Unit * 34));
 
-            var choiceTitle = Text("Title", choiceRt, "심문", T.Label, P.Brass, TextAlignmentOptions.Left);
-            Spaced(choiceTitle);
-            Anchor(choiceTitle.rectTransform, V(0, 1), V(1, 1), V(L.Pad, -L.Pad - 24f), V(-L.Pad, -L.Pad));
-
-            var choiceList = UI("List", choiceRt);
-            var listRt = choiceList.GetComponent<RectTransform>();
-            Anchor(listRt, V(0, 0), V(1, 1), V(L.Unit * 2, L.Unit * 2), V(-L.Unit * 2, -L.Unit * 9));
-            var vlg = choiceList.AddComponent<VerticalLayoutGroup>();
-            vlg.spacing = L.Unit;
-            vlg.childControlHeight = false;
-            vlg.childControlWidth = true;
-            vlg.childForceExpandHeight = false;
-            vlg.childForceExpandWidth = true;
-            vlg.childAlignment = TextAnchor.UpperLeft;
-
-            var choiceListView = choicePanel.gameObject.AddComponent<ChoiceListView>();
-            choiceListView.Set("container", listRt)
-                          .Set("buttonPrefab", choicePrefab)
-                          .Set("root", choiceGroup);
-
-            // 캐릭터
+            // 캐릭터 — 가운데, 수첩이 아래를 살짝 덮는다.
             var characterGo = UI("Character_Sepi", interRt);
             var charRt = characterGo.GetComponent<RectTransform>();
-            Anchor(charRt, V(0, 0), V(0, 0), V(L.ChoiceWidth + L.Gap, 0), V(L.ChoiceWidth + L.Gap + 416f, 616f));
+            Anchor(charRt, V(0.5f, 0), V(0.5f, 0), V(-256f, L.Unit * 12), V(256f, 784f));
 
             var charImg = characterGo.AddComponent<Image>();
             charImg.color = new Color32(0x3A, 0x40, 0x48, 0xFF);
-            charImg.sprite = _uiSprite;
             var charGroup = characterGo.AddComponent<CanvasGroup>();
             var charOutline = characterGo.AddComponent<Outline>();
             charOutline.effectColor = P.Brass;
@@ -306,15 +380,41 @@ namespace ItIsYou.EditorTools
 
             var clickTarget = characterGo.AddComponent<CharacterClickTarget>();
 
-            var endBtn = PlainButton("EndInterrogation", interRt, "심문 종료", T.Choice);
-            Anchor(endBtn.Item1, V(1, 0), V(1, 0), V(-L.Unit * 26 - L.ClueWidth - L.Gap, L.Unit),
-                                                   V(-L.ClueWidth - L.Gap - L.Unit, L.Unit * 7));
+            // 선택지 — 좌측. 스케치의 "Choice".
+            var choicePanel = UI("ChoicePanel", interRt);
+            var choiceRt = choicePanel.GetComponent<RectTransform>();
+            Anchor(choiceRt, V(0, 0), V(0, 1), V(0, L.Unit * 36), V(L.ChoiceWidth, -L.Unit * 26));
+            var choiceGroup = choicePanel.gameObject.AddComponent<CanvasGroup>();
+
+            var choiceTitle = Text("Title", choiceRt, "Choice", T.Label, P.Brass, TextAlignmentOptions.Left);
+            Spaced(choiceTitle);
+            Anchor(choiceTitle.rectTransform, V(0, 1), V(1, 1), V(0, -24f), V(0, 0));
+
+            var choiceList = UI("List", choiceRt);
+            var listRt = choiceList.GetComponent<RectTransform>();
+            Anchor(listRt, V(0, 0), V(1, 1), V(0, L.Unit * 9), V(0, -L.Unit * 5));
+            var vlg = choiceList.AddComponent<VerticalLayoutGroup>();
+            vlg.spacing = L.Unit;
+            vlg.childControlHeight = false;
+            vlg.childControlWidth = true;
+            vlg.childForceExpandHeight = false;
+            vlg.childForceExpandWidth = true;
+            vlg.childAlignment = TextAnchor.UpperLeft;
+
+            var choiceListView = choicePanel.gameObject.AddComponent<ChoiceListView>();
+            choiceListView.Set("container", listRt)
+                          .Set("buttonPrefab", choicePrefab)
+                          .Set("root", choiceGroup);
+
+            // '심문을 마친다' — 선택지 목록의 맨 아래, 같은 어휘로.
+            var endBtn = PlainButton("EndInterrogation", choiceRt, "심문을 마친다", T.Caption);
+            Anchor(endBtn.Item1, V(0, 0), V(1, 0), V(0, 0), V(0, L.Unit * 6));
 
             // ======================================================= 지목 화면
 
             var accuseScreen = UI("Screen_Accusation", root);
             var accuseRt = accuseScreen.GetComponent<RectTransform>();
-            Anchor(accuseRt, V(0, 0), V(1, 1), V(L.Gutter, L.BandBottom), V(-L.Gutter, L.BandTop));
+            Anchor(accuseRt, V(0, 0), V(1, 1), V(L.Gutter, L.Gutter), V(L.MainRight, -L.Gutter));
 
             var accusePanel = Img("Panel", accuseRt, P.Panel);
             Anchor(accusePanel.rectTransform, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-320f, -200f), V(320f, 200f));
@@ -340,20 +440,26 @@ namespace ItIsYou.EditorTools
 
             var deductScreen = UI("Screen_Deduction", root);
             var deductRt = deductScreen.GetComponent<RectTransform>();
-            Anchor(deductRt, V(0, 0), V(1, 1), V(L.Gutter, L.BandBottom), V(-L.Gutter, L.BandTop));
+            Anchor(deductRt, V(0, 0), V(1, 1), V(L.Gutter, L.Gutter), V(L.MainRight, -L.Gutter));
 
-            var candPanel = Img("CandidatePanel", deductRt, P.Panel);
-            var candRt = candPanel.rectTransform;
-            Anchor(candRt, V(0, 0), V(0, 1), V(0, 0), V(L.ChoiceWidth, 0));
+            // 무대 — 조수 자리 + 잉크 + 팝업 #2 (배경은 화면 전체)
+            var deductStage = Img("Stage", deductRt, new Color32(0x1E, 0x22, 0x27, 0xFF));
+            var dStageRt = deductStage.rectTransform;
+            Stretch(dStageRt);
+            deductStage.raycastTarget = false;
+
+            var candPanel = UI("CandidatePanel", deductRt);
+            var candRt = candPanel.GetComponent<RectTransform>();
+            Anchor(candRt, V(0, 0), V(0, 1), V(0, L.Unit * 36), V(L.ChoiceWidth, -L.Unit * 26));
             var candGroup = candPanel.gameObject.AddComponent<CanvasGroup>();
 
-            var candTitle = Text("Title", candRt, "조합 — 단서로 답한다", T.Label, P.Brass, TextAlignmentOptions.Left);
+            var candTitle = Text("Title", candRt, "Answer — 단서로 답한다", T.Label, P.Brass, TextAlignmentOptions.Left);
             Spaced(candTitle);
-            Anchor(candTitle.rectTransform, V(0, 1), V(1, 1), V(L.Pad, -L.Pad - 24f), V(-L.Pad, -L.Pad));
+            Anchor(candTitle.rectTransform, V(0, 1), V(1, 1), V(0, -24f), V(0, 0));
 
             var candList = UI("List", candRt);
             var candListRt = candList.GetComponent<RectTransform>();
-            Anchor(candListRt, V(0, 0), V(1, 1), V(L.Unit * 2, L.Unit * 6), V(-L.Unit * 2, -L.Unit * 9));
+            Anchor(candListRt, V(0, 0), V(1, 1), V(0, L.Unit * 6), V(0, -L.Unit * 5));
             var cvlg = candList.AddComponent<VerticalLayoutGroup>();
             cvlg.spacing = L.Unit;
             cvlg.childControlHeight = false;
@@ -363,7 +469,7 @@ namespace ItIsYou.EditorTools
             cvlg.childAlignment = TextAnchor.UpperLeft;
 
             var candHint = Text("Hint", candRt, "", T.Caption, P.InkSoft, TextAlignmentOptions.BottomLeft);
-            Anchor(candHint.rectTransform, V(0, 0), V(1, 0), V(L.Pad, L.Unit), V(-L.Pad, L.Unit * 5));
+            Anchor(candHint.rectTransform, V(0, 0), V(1, 0), V(0, 0), V(0, L.Unit * 4));
 
             var candidateView = candPanel.gameObject.AddComponent<DeductionCandidateView>();
             candidateView.Set("container", candListRt)
@@ -371,17 +477,11 @@ namespace ItIsYou.EditorTools
                          .Set("root", candGroup)
                          .Set("hint", candHint);
 
-            // 무대 — 조수 자리 + 잉크 + 팝업 #2
-            var deductStage = Img("Stage", deductRt, new Color32(0x1E, 0x22, 0x27, 0xFF));
-            var dStageRt = deductStage.rectTransform;
-            Anchor(dStageRt, V(0, 0), V(1, 1), V(L.ChoiceWidth + L.Gap, 0), V(-(L.ClueWidth + L.Gap), 0));
-            deductStage.raycastTarget = false;
-
-            var dStageTag = Text("Tag", dStageRt, "객실  —  게임플레이 배경 (아트 대기)", T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Top);
-            Anchor(dStageTag.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 5), V(0, -L.Unit * 2));
+            var dStageTag = Text("Tag", dStageRt, "객실  —  게임플레이 배경 (아트 대기)", T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Bottom);
+            Anchor(dStageTag.rectTransform, V(0.4f, 0), V(0.9f, 0), V(0, L.Unit * 31), V(0, L.Unit * 34));
 
             var dSepi = Img("Sepi_Placeholder", dStageRt, new Color32(0x3A, 0x40, 0x48, 0xFF));
-            Anchor(dSepi.rectTransform, V(0.5f, 0), V(0.5f, 0), V(-208f, 0f), V(208f, 480f));
+            Anchor(dSepi.rectTransform, V(0.5f, 0), V(0.5f, 0), V(-256f, L.Unit * 12), V(256f, 784f));
             dSepi.raycastTarget = false;
             var dSepiTag = Text("Label", dSepi.rectTransform, "세피\n(아트 대기 — 묻는 쪽)", T.Caption, P.InkSoft, TextAlignmentOptions.Center);
             Stretch(dSepiTag.rectTransform);
@@ -389,18 +489,18 @@ namespace ItIsYou.EditorTools
             // 조수의 질문 — 대사창이 닫힌 뒤에도 무대 위에 남는다.
             var questionText = Text("Question", dStageRt, "", T.Choice, P.Ink, TextAlignmentOptions.Center);
             questionText.textWrappingMode = TextWrappingModes.Normal;
-            Anchor(questionText.rectTransform, V(0, 1), V(1, 1), V(L.Pad, -L.Unit * 16), V(-L.Pad, -L.Unit * 7));
+            Anchor(questionText.rectTransform, V(0.3f, 1), V(1, 1), V(0, -L.Unit * 40), V(0, -L.Unit * 28));
 
             // 잉크 방울 — 상단 우측. 숫자가 아니라 방울이다.
             var inkCaption = Text("InkCaption", dStageRt, "잉크", T.Caption, P.InkSoft, TextAlignmentOptions.Right);
             Spaced(inkCaption);
-            Anchor(inkCaption.rectTransform, V(1, 1), V(1, 1), V(-L.Unit * 30, -L.Unit * 5), V(-L.Unit * 16, -L.Unit * 2));
+            Anchor(inkCaption.rectTransform, V(0, 1), V(0, 1), V(L.ChoiceWidth + L.Gap, -L.Unit * 5), V(L.ChoiceWidth + L.Gap + 56f, -L.Unit * 2));
             var inkRow = UI("InkDrops", dStageRt);
             var inkRowRt = inkRow.GetComponent<RectTransform>();
-            Anchor(inkRowRt, V(1, 1), V(1, 1), V(-L.Unit * 15, -L.Unit * 6), V(-L.Unit * 2, -L.Unit));
+            Anchor(inkRowRt, V(0, 1), V(0, 1), V(L.ChoiceWidth + L.Gap + 56f, -L.Unit * 6), V(L.ChoiceWidth + L.Gap + 200f, -L.Unit));
             var inkLayout = inkRow.AddComponent<HorizontalLayoutGroup>();
             inkLayout.spacing = L.Unit;
-            inkLayout.childAlignment = TextAnchor.MiddleRight;
+            inkLayout.childAlignment = TextAnchor.MiddleLeft;
             inkLayout.childControlWidth = false;
             inkLayout.childControlHeight = false;
             inkLayout.childForceExpandWidth = false;
@@ -420,7 +520,7 @@ namespace ItIsYou.EditorTools
             var glareGroup = glareRoot.AddComponent<CanvasGroup>();
             var glareFrame = Img("Frame", glareRt, new Color32(0x16, 0x19, 0x1D, 0xFF));
             Stretch(glareFrame.rectTransform);
-            glareFrame.sprite = _uiSprite;
+            glareFrame.sprite = _uiSprite; glareFrame.type = Image.Type.Sliced;
             var glareImg = Img("Image", glareRt, new Color32(0x2E, 0x34, 0x3B, 0xFF));
             Anchor(glareImg.rectTransform, V(0, 0), V(1, 1), V(L.Unit, L.Unit * 7), V(-L.Unit, -L.Unit));
             glareImg.preserveAspect = true;
@@ -440,7 +540,7 @@ namespace ItIsYou.EditorTools
             // 추론 카드가 생길 때 단서 패널이 잠깐 놋쇠 빛으로 물든다.
             var flashImg = Img("ConfirmFlash", clueRt, new Color(0.77f, 0.65f, 0.36f, 0.35f));
             Stretch(flashImg.rectTransform);
-            flashImg.sprite = _uiSprite;
+            flashImg.sprite = _uiSprite; flashImg.type = Image.Type.Sliced;
             flashImg.raycastTarget = false;
             var flashGroup = flashImg.gameObject.AddComponent<CanvasGroup>();
             flashGroup.alpha = 0f;
@@ -627,13 +727,16 @@ namespace ItIsYou.EditorTools
 
             // 대사창은 새로 만든 전면 배경들보다 위에 있어야 한다.
             dialoguePanel.transform.SetAsLastSibling();
+            bubbleRoot.transform.SetAsLastSibling();
+            topBar.transform.SetAsLastSibling();
+            titleLabel.transform.SetAsLastSibling();
 
             // ================================================== 대화 도구
             // 로그와 창 숨기기. 평범한 대화 구간에서만 나타난다.
             var toolbar = UI("DialogueToolbar", root);
             var toolbarRt = toolbar.GetComponent<RectTransform>();
-            Anchor(toolbarRt, V(1, 0), V(1, 0),
-                V(-L.Gutter - 368f, L.DialogueTop + L.Unit), V(-L.Gutter, L.DialogueTop + L.Unit * 7));
+            Anchor(toolbarRt, V(0, 0), V(0, 0),
+                V(L.Gutter + 1064f - 368f, L.Unit * 31), V(L.Gutter + 1064f, L.Unit * 36));
 
             var toolbarLayout = toolbar.AddComponent<HorizontalLayoutGroup>();
             toolbarLayout.spacing = L.Unit;
@@ -811,6 +914,7 @@ namespace ItIsYou.EditorTools
             ItIsYou.EditorTools.UiKit.Prepare();
             var settingsMenu = ItIsYou.EditorTools.SettingsUiBuilder.BuildSettings(root, systems);
             var pauseMenu = ItIsYou.EditorTools.SettingsUiBuilder.BuildPause(root, systems, settingsMenu);
+            settingsMenu.Set("openButton", sideSettingsBtn.Item2);
 
             // ---- 화면 전환 막 ----
             var faderImg = Img("ScreenFader", root, Color.black);
@@ -929,6 +1033,7 @@ namespace ItIsYou.EditorTools
                        .Set("log", logView)
                        .Set("root", toolbar)
                        .Set("logButton", logBtn.Item2)
+                       .Set("sideLogButton", sideLogBtn.Item2)
                        .Set("hideButton", hideBtn.Item2)
                        .Set("restoreCatcher", catcher.Item1.gameObject)
                        .Set("restoreButton", catcher.Item2)
@@ -951,6 +1056,9 @@ namespace ItIsYou.EditorTools
                .Set("phaseLabel", phaseLabel)
                .Set("statusLabel", status)
                .Set("chapterTitle", titleLabel)
+               .Set("clockLabel", clockLabel)
+               .Set("dateLabel", dateLabel)
+               .Set("locationLabel", locationLabel)
                .Set("endInterrogationButton", endBtn.Item2);
 
             talkScreen.SetActive(false);
@@ -1051,11 +1159,11 @@ namespace ItIsYou.EditorTools
         {
             var go = UI("ChoiceButton", null);
             var rt = go.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(0f, 88f);   // 11u
+            rt.sizeDelta = new Vector2(0f, 96f);   // 12u
 
             var bg = go.AddComponent<Image>();
             bg.color = P.Surface;
-            bg.sprite = _uiSprite;
+            bg.sprite = _uiSprite; bg.type = Image.Type.Sliced;
             var button = go.AddComponent<Button>();
             button.targetGraphic = bg;
 
@@ -1095,22 +1203,22 @@ namespace ItIsYou.EditorTools
         {
             var go = UI("ClueSlot", null);
             var rt = go.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(96f, 96f);
+            rt.sizeDelta = new Vector2(128f, 128f);
 
             var bg = go.AddComponent<Image>();
             bg.color = P.Surface;
-            bg.sprite = _uiSprite;
+            bg.sprite = _uiSprite; bg.type = Image.Type.Sliced;
             var button = go.AddComponent<Button>();
             button.targetGraphic = bg;
 
             // 승격된 칸의 금색 테두리. 바깥으로 3px 나온 놋쇠 판 위에 바탕색 판을 겹쳐 테두리만 남긴다.
             var frame = Img("PromotedFrame", rt, P.Brass);
             Anchor(frame.rectTransform, V(0, 0), V(1, 1), V(-3f, -3f), V(3f, 3f));
-            frame.sprite = _uiSprite;
+            frame.sprite = _uiSprite; frame.type = Image.Type.Sliced;
             frame.raycastTarget = false;
             var frameInner = Img("Inner", frame.rectTransform, P.Surface);
             Anchor(frameInner.rectTransform, V(0, 0), V(1, 1), V(3f, 3f), V(-3f, -3f));
-            frameInner.sprite = _uiSprite;
+            frameInner.sprite = _uiSprite; frameInner.type = Image.Type.Sliced;
             frameInner.raycastTarget = false;
 
             var icon = Img("Icon", rt, new Color(1f, 1f, 1f, 0f));
@@ -1122,7 +1230,7 @@ namespace ItIsYou.EditorTools
             var hoverBg = Img("HoverLabel", rt, new Color(0f, 0f, 0f, 0.88f));
             Anchor(hoverBg.rectTransform, V(0, 0), V(1, 0), V(-L.Unit * 3, -L.Unit * 4), V(L.Unit * 3, 0));
             hoverBg.raycastTarget = false;
-            hoverBg.sprite = _uiSprite;
+            hoverBg.sprite = _uiSprite; hoverBg.type = Image.Type.Sliced;
 
             var hoverText = Text("Text", hoverBg.rectTransform, "???", T.Caption, P.Ink, TextAlignmentOptions.Center);
             Stretch(hoverText.rectTransform);
@@ -1157,14 +1265,14 @@ namespace ItIsYou.EditorTools
 
             var bg = go.AddComponent<Image>();
             bg.color = P.Surface;
-            bg.sprite = _uiSprite;
+            bg.sprite = _uiSprite; bg.type = Image.Type.Sliced;
             var button = go.AddComponent<Button>();
             button.targetGraphic = bg;
             var group = go.AddComponent<CanvasGroup>();
 
             var iconBg = Img("IconBg", rt, P.PanelSunk);
             Anchor(iconBg.rectTransform, V(0, 0.5f), V(0, 0.5f), V(L.Unit * 1.5f, -32f), V(L.Unit * 1.5f + 64f, 32f));
-            iconBg.sprite = _uiSprite;
+            iconBg.sprite = _uiSprite; iconBg.type = Image.Type.Sliced;
             iconBg.raycastTarget = false;
             var icon = Img("Icon", iconBg.rectTransform, Color.white);
             Anchor(icon.rectTransform, V(0, 0), V(1, 1), V(4f, 4f), V(-4f, -4f));
@@ -1192,6 +1300,69 @@ namespace ItIsYou.EditorTools
             return prefab.GetComponent<DeductionCandidateButton>();
         }
 
+        /// <summary>정황/실마리 목록의 한 줄 — 아이콘 + 이름이 항상 보인다.</summary>
+        private static ClueSlot BuildLeadSlotPrefab()
+        {
+            var go = UI("LeadSlot", null);
+            var rt = go.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(0f, 64f);
+            var le = go.AddComponent<LayoutElement>();
+            le.preferredHeight = 64f;
+            le.minHeight = 64f;
+
+            var bg = go.AddComponent<Image>();
+            bg.color = P.Surface;
+            bg.sprite = _uiSprite; bg.type = Image.Type.Sliced;
+            var button = go.AddComponent<Button>();
+            button.targetGraphic = bg;
+
+            var frame = Img("PromotedFrame", rt, P.Brass);
+            Anchor(frame.rectTransform, V(0, 0), V(1, 1), V(-3f, -3f), V(3f, 3f));
+            frame.sprite = _uiSprite; frame.type = Image.Type.Sliced;
+            frame.raycastTarget = false;
+            var frameInner = Img("Inner", frame.rectTransform, P.Surface);
+            Anchor(frameInner.rectTransform, V(0, 0), V(1, 1), V(3f, 3f), V(-3f, -3f));
+            frameInner.sprite = _uiSprite; frameInner.type = Image.Type.Sliced;
+            frameInner.raycastTarget = false;
+
+            var iconBg = Img("IconBg", rt, P.PanelSunk);
+            Anchor(iconBg.rectTransform, V(0, 0.5f), V(0, 0.5f), V(L.Unit, -24f), V(L.Unit + 48f, 24f));
+            iconBg.sprite = _uiSprite; iconBg.type = Image.Type.Sliced;
+            iconBg.raycastTarget = false;
+            var icon = Img("Icon", iconBg.rectTransform, new Color(1f, 1f, 1f, 0f));
+            Anchor(icon.rectTransform, V(0, 0), V(1, 1), V(4f, 4f), V(-4f, -4f));
+            icon.preserveAspect = true;
+            icon.raycastTarget = false;
+
+            var labelRoot = UI("LabelRoot", rt);
+            var labelRt = labelRoot.GetComponent<RectTransform>();
+            Anchor(labelRt, V(0, 0), V(1, 1), V(L.Unit * 2 + 48f, 0), V(-L.Unit * 5, 0));
+            var label = Text("Text", labelRt, "???", T.Choice, P.Ink, TextAlignmentOptions.Left);
+            Stretch(label.rectTransform);
+
+            var unread = Img("UnreadBadge", rt, P.Brass);
+            Anchor(unread.rectTransform, V(1, 0.5f), V(1, 0.5f), V(-L.Unit * 3, -6f), V(-L.Unit * 3 + 12f, 6f));
+            unread.raycastTarget = false;
+
+            var usable = Text("UsableBadge", rt, "!", T.Choice, P.Good, TextAlignmentOptions.Center);
+            Anchor(usable.rectTransform, V(1, 0.5f), V(1, 0.5f), V(-L.Unit * 5, -14f), V(-L.Unit * 2, 14f));
+
+            var slot = go.AddComponent<ClueSlot>();
+            slot.Set("button", button)
+                .Set("icon", icon)
+                .Set("hoverLabel", label)
+                .Set("hoverRoot", labelRoot)
+                .Set("unreadBadge", unread.gameObject)
+                .Set("usableBadge", usable.gameObject)
+                .Set("promotedFrame", frame.gameObject)
+                .Set("alwaysShowLabel", true);
+            frame.gameObject.SetActive(false);
+
+            var prefab = PrefabUtility.SaveAsPrefabAsset(go, PrefabFolder + "/LeadSlot.prefab");
+            Object.DestroyImmediate(go);
+            return prefab.GetComponent<ClueSlot>();
+        }
+
         private static Button BuildPlainButtonPrefab()
         {
             var go = UI("PlainButton", null);
@@ -1200,7 +1371,7 @@ namespace ItIsYou.EditorTools
 
             var img = go.AddComponent<Image>();
             img.color = P.Surface;
-            img.sprite = _uiSprite;
+            img.sprite = _uiSprite; img.type = Image.Type.Sliced;
             var button = go.AddComponent<Button>();
             button.targetGraphic = img;
 
@@ -1259,7 +1430,7 @@ namespace ItIsYou.EditorTools
             var rt = go.GetComponent<RectTransform>();
             var img = go.AddComponent<Image>();
             img.color = P.Surface;
-            img.sprite = _uiSprite;
+            img.sprite = _uiSprite; img.type = Image.Type.Sliced;
             var button = go.AddComponent<Button>();
             button.targetGraphic = img;
 

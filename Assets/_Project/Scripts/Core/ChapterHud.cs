@@ -24,6 +24,9 @@ namespace ItIsYou.Core
         [SerializeField] private ClueTrayView clueTray;
 
         [Header("표시")]
+        [SerializeField] private TMP_Text clockLabel;
+        [SerializeField] private TMP_Text dateLabel;
+        [SerializeField] private TMP_Text locationLabel;
         [SerializeField] private TMP_Text chapterTitle;
         [SerializeField] private TMP_Text phaseLabel;
         [SerializeField] private TMP_Text tokenLabel;
@@ -70,8 +73,12 @@ namespace ItIsYou.Core
 
         private void Start()
         {
-            if (chapterTitle != null && flow != null && flow.Chapter != null)
-                chapterTitle.text = flow.Chapter.DisplayName;
+            if (flow == null || flow.Chapter == null) return;
+            var ch = flow.Chapter;
+            if (chapterTitle != null) chapterTitle.text = ch.DisplayName;
+            if (clockLabel != null) clockLabel.text = ch.SceneClock;
+            if (dateLabel != null) dateLabel.text = ch.SceneDate;
+            if (locationLabel != null) locationLabel.text = ch.SceneLocation;
         }
 
         private void OnDestroy()

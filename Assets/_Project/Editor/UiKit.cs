@@ -102,7 +102,7 @@ namespace ItIsYou.EditorTools
             var rt = go.GetComponent<RectTransform>();
             var img = go.AddComponent<Image>();
             img.color = P.Surface;
-            img.sprite = _uiSprite;
+            img.sprite = _uiSprite; img.type = Image.Type.Sliced;
             var button = go.AddComponent<Button>();
             button.targetGraphic = img;
 

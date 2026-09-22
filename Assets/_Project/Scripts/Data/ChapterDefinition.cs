@@ -111,6 +111,14 @@ namespace ItIsYou.Data
         [Tooltip("선택지 대사가 전부 끝난 뒤, 무반응 타이머가 다시 돌기까지의 유예 시간(초).")]
         [SerializeField] private float idleGraceAfterDialogueSeconds = 5f;
 
+        [Header("화면 표기")]
+        [Tooltip("화면 좌상단의 시계. 예: 10:24")]
+        [SerializeField] private string sceneClock = "10:24";
+        [Tooltip("시계 옆의 날짜 표기. 예: AM · 19--. 3. 19. Tue")]
+        [SerializeField] private string sceneDate = "AM · 19--. 3. 19. Tue";
+        [Tooltip("장소. 예: 대륙 횡단 열차")]
+        [SerializeField] private string sceneLocation = "대륙 횡단 열차";
+
         [Header("단서 조합")]
         [Tooltip("조수 문답 문항. 순서대로 나온다. 전부 맞히면 페이즈가 끝난다.")]
         [SerializeField] private List<DeductionQuestion> deductionQuestions = new List<DeductionQuestion>();
@@ -143,6 +151,10 @@ namespace ItIsYou.Data
         public string Id => id;
         public string DisplayName => string.IsNullOrEmpty(displayName) ? id : displayName;
         public bool IsTutorial => isTutorial;
+
+        public string SceneClock => sceneClock;
+        public string SceneDate => sceneDate;
+        public string SceneLocation => sceneLocation;
 
         public IReadOnlyList<DeductionQuestion> DeductionQuestions => deductionQuestions;
         public int DeductionInk => Mathf.Max(0, deductionInk);

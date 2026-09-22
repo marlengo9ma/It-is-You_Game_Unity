@@ -38,6 +38,9 @@ namespace ItIsYou.UI
         [Tooltip("단서 오브젝트로 승격된 칸의 금색 테두리.")]
         [SerializeField] private GameObject promotedFrame;
 
+        [Tooltip("켜면 이름표를 항상 보인다. 정황/실마리 목록의 줄 형태에서 쓴다.")]
+        [SerializeField] private bool alwaysShowLabel = false;
+
         private ClueDefinition _clue;
         private bool _read;
         private Action<ClueDefinition> _onClick;
@@ -94,7 +97,7 @@ namespace ItIsYou.UI
         private void SetHoverVisible(bool visible)
         {
             var target = HoverTarget;
-            if (target != null) target.SetActive(visible);
+            if (target != null) target.SetActive(visible || alwaysShowLabel);
         }
 
         private void HandleClick()

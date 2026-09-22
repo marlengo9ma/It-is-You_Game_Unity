@@ -28,6 +28,18 @@ namespace ItIsYou.UI
         [SerializeField] private GameObject advanceIndicator;
         [SerializeField] private Camera uiCamera;
 
+        [Header("말풍선 — 상대의 말")]
+        [Tooltip("심문 중 용의자의 대사가 나오는 위쪽 말풍선. 비워 두면 모든 대사가 아래 창으로 간다.")]
+        [SerializeField] private CanvasGroup bubbleRoot;
+        [SerializeField] private TMP_Text bubbleSpeakerLabel;
+        [SerializeField] private TMP_Text bubbleBodyLabel;
+        [SerializeField] private TMP_Text bubbleDirectionLabel;
+        [SerializeField] private GameObject bubbleAdvanceIndicator;
+
+        [Tooltip("상대가 말하는 동안 아래 창(주인공)이 남아 있을 때의 투명도. 반대도 같다.")]
+        [Range(0f, 1f)]
+        [SerializeField] private float inactiveSurfaceAlpha = 0.55f;
+
         [Header("타자기")]
         [Tooltip("초당 출력 글자 수. 평범한 대화 구간에서 쓴다.")]
         [SerializeField] private float charactersPerSecond = 45f;
@@ -81,6 +93,12 @@ namespace ItIsYou.UI
         private bool _visible;
         private bool _hidden;
 
+        // 화자에 따라 위(말풍선)/아래(수첩)로 갈라 쓰는가. 심문·조합에서 켠다.
+        private bool _splitBySpeaker;
+        private bool _useBubble;
+        private bool _bubbleHasText;
+        private bool _bottomHasText;
+
         // 심문 중에는 대사를 넘길 수 없다. 대신 좌클릭을 길게 눌러 빨리 감는다.
         private bool _allowSkip = true;
         private bool _slowSpeech;
@@ -88,6 +106,24 @@ namespace ItIsYou.UI
         private bool _fastForward;
 
         public bool IsPlaying => _playing != null;
+
+        /// <summary>
+        /// 상대의 말은 위 말풍선에, 주인공의 말·속마음·지문은 아래 창에.
+        /// 시선이 아래로 떨어지지 않게 하려는 배치다. 말풍선이 없는 씬에서는 무시된다.
+        /// </summary>
+        public void SetSplitBySpeaker(bool on)
+        {
+            _splitBySpeaker = on && bubbleRoot != null;
+            if (!_splitBySpeaker) { _useBubble = false; _bubbleHasText = false; }
+            ApplyVisibility();
+        }
+
+        private static bool IsOtherParty(SpeakerId speaker)
+            => speaker == SpeakerId.Assistant || speaker == SpeakerId.Cat
+            || speaker == SpeakerId.SuspectA || speaker == SpeakerId.SuspectB || speaker == SpeakerId.SuspectC;
+
+        private TMP_Text ActiveBody => _useBubble ? bubbleBodyLabel : bodyLabel;
+        private GameObject ActiveIndicator => _useBubble ? bubbleAdvanceIndicator : advanceIndicator;
         public DialogueLine CurrentLine => _currentLine;
 
         /// <summary>리액션 수집 창이 지금 열려 있는가.</summary>
@@ -158,6 +194,7 @@ namespace ItIsYou.UI
         {
             SetVisible(false);
             if (advanceIndicator != null) advanceIndicator.SetActive(false);
+            if (bubbleAdvanceIndicator != null) bubbleAdvanceIndicator.SetActive(false);
         }
 
         /// <summary>이미 수집한 단서 id 집합을 넘겨 두면, 수집된 구간은 밑줄 대신 강조색으로 그린다.</summary>
@@ -174,8 +211,8 @@ namespace ItIsYou.UI
             _collectedIds.Add(clueId);
 
             // 이미 출력된 본문을 다시 그려 밑줄을 없앤다.
-            if (_currentLine != null && _lineFullyShown)
-                bodyLabel.text = DialogueMarkup.ToRichText(_currentLine.Text, _collectedIds);
+            if (_currentLine != null && _lineFullyShown && ActiveBody != null)
+                ActiveBody.text = DialogueMarkup.ToRichText(_currentLine.Text, _collectedIds);
         }
 
         // -------------------------------------------------------------- 재생
@@ -211,6 +248,8 @@ namespace ItIsYou.UI
                 yield return ShowLine(lines[i], corruption, recallDepth);
             }
 
+            _bubbleHasText = false;
+            _bottomHasText = false;
             SetVisible(false);
             _playing = null;
         }
@@ -221,14 +260,21 @@ namespace ItIsYou.UI
             _lineFullyShown = false;
             _advanceRequested = false;
 
-            if (speakerLabel != null) speakerLabel.text = SpeakerName(line.Speaker);
-            if (stageDirectionLabel != null)
+            _useBubble = _splitBySpeaker && IsOtherParty(line.Speaker);
+            if (_useBubble) _bubbleHasText = true; else _bottomHasText = true;
+            ApplyVisibility();
+
+            var speaker = _useBubble ? bubbleSpeakerLabel : speakerLabel;
+            var direction = _useBubble ? bubbleDirectionLabel : stageDirectionLabel;
+            if (speaker != null) speaker.text = SpeakerName(line.Speaker);
+            if (direction != null)
             {
                 var hasDirection = !string.IsNullOrEmpty(line.StageDirection);
-                stageDirectionLabel.gameObject.SetActive(hasDirection);
-                if (hasDirection) stageDirectionLabel.text = line.StageDirection;
+                direction.gameObject.SetActive(hasDirection);
+                if (hasDirection) direction.text = line.StageDirection;
             }
             if (advanceIndicator != null) advanceIndicator.SetActive(false);
+            if (bubbleAdvanceIndicator != null) bubbleAdvanceIndicator.SetActive(false);
 
             // 기억 짐작에서 왜곡이 심하면 밑줄 구간을 아예 링크로 만들지 않는다.
             // "일부 흐릿해진 표정 리액션이나 왜곡된 텍스트에서는 수집이 불가능해집니다."
@@ -238,10 +284,11 @@ namespace ItIsYou.UI
                 _collectedIds,
                 collectable);
 
-            if (bodyLabel != null)
+            var body = ActiveBody;
+            if (body != null)
             {
-                bodyLabel.text = displayText;
-                bodyLabel.maxVisibleCharacters = 0;
+                body.text = displayText;
+                body.maxVisibleCharacters = 0;
             }
 
             var reactionRoutine = line.HasReaction && line.Reaction.IsCollectableAtRecallDepth(recallDepth)
@@ -251,7 +298,7 @@ namespace ItIsYou.UI
             yield return Typewriter();
 
             _lineFullyShown = true;
-            if (advanceIndicator != null) advanceIndicator.SetActive(true);
+            if (ActiveIndicator != null) ActiveIndicator.SetActive(true);
             LineCompleted?.Invoke(line);
 
             // 플레이어가 넘길 때까지 기다린다. 그 동안 리액션 창은 계속 살아 있다.
@@ -277,11 +324,12 @@ namespace ItIsYou.UI
             if (reactionRoutine != null) StopCoroutine(reactionRoutine);
             CloseReactionWindow();
 
-            if (advanceIndicator != null) advanceIndicator.SetActive(false);
+            if (ActiveIndicator != null) ActiveIndicator.SetActive(false);
         }
 
         private IEnumerator Typewriter()
         {
+            var bodyLabel = ActiveBody;
             if (bodyLabel == null) yield break;
 
             bodyLabel.ForceMeshUpdate();
@@ -345,24 +393,22 @@ namespace ItIsYou.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             // 밑줄 구간을 눌렀는지 먼저 본다. 눌렀다면 대사를 넘기지 않는다.
-            if (bodyLabel != null)
-            {
-                var linkIndex = TMP_TextUtilities.FindIntersectingLink(bodyLabel, eventData.position, ResolveCamera());
-                if (linkIndex >= 0)
-                {
-                    var link = bodyLabel.textInfo.linkInfo[linkIndex];
-                    var id = link.GetLinkID();
-                    if (!string.IsNullOrEmpty(id) && !_collectedIds.Contains(id))
-                    {
-                        TestimonyClicked?.Invoke(id);
-                        return;
-                    }
-                }
-            }
+            if (TryClickLink(ActiveBody, eventData)) return;
 
             // 심문에서는 눌러도 넘어가지 않는다. 밑줄 구간을 집는 것만 의미가 있다.
             if (!_allowSkip) return;
             RequestAdvance();
+        }
+
+        private bool TryClickLink(TMP_Text label, PointerEventData eventData)
+        {
+            if (label == null || !label.isActiveAndEnabled) return false;
+            var linkIndex = TMP_TextUtilities.FindIntersectingLink(label, eventData.position, ResolveCamera());
+            if (linkIndex < 0) return false;
+            var id = label.textInfo.linkInfo[linkIndex].GetLinkID();
+            if (string.IsNullOrEmpty(id) || _collectedIds.Contains(id)) return false;
+            TestimonyClicked?.Invoke(id);
+            return true;
         }
 
         /// <summary>
@@ -404,11 +450,26 @@ namespace ItIsYou.UI
 
         private void ApplyVisibility()
         {
-            if (root == null) return;
             var shown = _visible && !_hidden;
-            root.alpha = shown ? 1f : 0f;
-            root.interactable = shown;
-            root.blocksRaycasts = shown;
+
+            if (bubbleRoot == null || !_splitBySpeaker)
+            {
+                Apply(root, shown, 1f);
+                if (bubbleRoot != null) Apply(bubbleRoot, false, 1f);
+                return;
+            }
+
+            // 지금 말하는 쪽은 또렷하게, 방금 말한 쪽은 흐리게 남긴다. 대화의 양쪽이 화면에 같이 있다.
+            Apply(bubbleRoot, shown && _bubbleHasText, _useBubble ? 1f : inactiveSurfaceAlpha);
+            Apply(root, shown && _bottomHasText, _useBubble ? inactiveSurfaceAlpha : 1f);
+        }
+
+        private static void Apply(CanvasGroup group, bool shown, float alpha)
+        {
+            if (group == null) return;
+            group.alpha = shown ? alpha : 0f;
+            group.interactable = shown;
+            group.blocksRaycasts = shown;
         }
 
         /// <summary>대사 로그가 같은 표기를 쓰도록 화자 이름을 열어 둔다.</summary>

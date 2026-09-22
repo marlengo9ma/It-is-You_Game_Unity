@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace ItIsYou.EditorTools
 {
@@ -27,7 +27,7 @@ namespace ItIsYou.EditorTools
 
         // ---- 세로 구획 ----
         public const float TopBarHeight = 80f;    // 10u
-        public const float DialogueHeight = 240f; // 30u
+        public const float DialogueHeight = 200f; // 25u — 수첩 (y 16~240)
 
         /// <summary>상단 바 아래쪽 y (음수, 화면 위에서부터).</summary>
         public const float TopBarBottom = -(Gutter + TopBarHeight);   // -128
@@ -40,11 +40,15 @@ namespace ItIsYou.EditorTools
         public const float BandTop = TopBarBottom - Gap;               // -152
 
         // ---- 가로 구획 ----
-        public const float ChoiceWidth = 576f;    // 72u — 잡아 두신 580 을 격자에 맞춰 4px 조정
-        public const float ClueWidth = 384f;      // 48u — 잡아 두신 380 을 격자에 맞춰 4px 조정
+        /// <summary>우측 1/3 — 단서·정황 목록과 기능 아이콘의 자리. 화면 끝까지 붙는다. (2026-09-22 스케치)</summary>
+        public const float SideWidth = 640f;      // 80u = 1920 / 3
+        public const float ChoiceWidth = 352f;    // 44u — 스케치의 선택지 폭
+        public const float ClueWidth = SideWidth;
 
-        public const float ChoiceRight = Gutter + ChoiceWidth;         // 628
-        public const float ClueLeft = -(Gutter + ClueWidth);           // -428
+        public const float ChoiceRight = Gutter + ChoiceWidth;         // 400
+        public const float ClueLeft = -SideWidth;                      // -640
+        /// <summary>주 영역(좌측 2/3)의 오른쪽 경계. 우측 패널 앞에서 한 칸 띈다.</summary>
+        public const float MainRight = ClueLeft - Gap;                 // -664
 
         /// <summary>심문 화면의 무대 영역 (선택지와 단서 사이).</summary>
         public const float StageLeft = ChoiceRight + Gap;              // 652

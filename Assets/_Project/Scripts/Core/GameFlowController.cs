@@ -156,6 +156,12 @@ namespace ItIsYou.Core
                 ? new List<SuspectDefinition> { picked }
                 : new List<SuspectDefinition>(chapter.FirstRoundSuspects);
 
+            yield return RunFromInterrogation(round);
+        }
+
+        /// <summary>1차 심문 → 조합 → 2차 심문 → 지목 → 결말.</summary>
+        private IEnumerator RunFromInterrogation(List<SuspectDefinition> round)
+        {
             yield return Transition(GamePhase.Interrogation1);
             yield return RunInterrogationRound(round, 1);
             if (Session.IsGameOver)
@@ -226,6 +232,13 @@ namespace ItIsYou.Core
         /// 지정한 추가 단서를 가진 상태로 만든다. 에디터·테스트용.
         /// </summary>
         public void DebugJumpToDeduction(IEnumerable<ClueDefinition> extraClues = null, bool giveAllSceneClues = true)
+            => DebugJump(false, extraClues, giveAllSceneClues);
+
+        /// <summary>디버그 — 1차 심문부터 시작한다.</summary>
+        public void DebugJumpToInterrogation(IEnumerable<ClueDefinition> extraClues = null, bool giveAllSceneClues = true)
+            => DebugJump(true, extraClues, giveAllSceneClues);
+
+        private void DebugJump(bool fromInterrogation, IEnumerable<ClueDefinition> extraClues, bool giveAllSceneClues)
         {
             if (_chapterRoutine != null) StopCoroutine(_chapterRoutine);
             StopAllCoroutines();
@@ -247,7 +260,7 @@ namespace ItIsYou.Core
             var round = new List<SuspectDefinition>();
             if (chapter.FirstRoundSuspects != null && chapter.FirstRoundSuspects.Count > 0)
                 round.Add(chapter.FirstRoundSuspects[0]);
-            _chapterRoutine = StartCoroutine(RunFromDeduction(round));
+            _chapterRoutine = StartCoroutine(fromInterrogation ? RunFromInterrogation(round) : RunFromDeduction(round));
         }
 
         /// <summary>
@@ -347,6 +360,11 @@ namespace ItIsYou.Core
             if (Phase == phase) return;
             Phase = phase;
             cursor?.ResetState();
+
+            // 상대가 무대에 있는 구간에서는 상대의 말이 위 말풍선으로 간다.
+            var split = phase == GamePhase.Interrogation1 || phase == GamePhase.Interrogation2 || phase == GamePhase.Deduction;
+            dialogue?.SetSplitBySpeaker(split);
+
             PhaseChanged?.Invoke(phase);
         }
 

@@ -1123,6 +1123,9 @@ MonoBehaviour:
   idleSeconds: 15
   assistRecallTokenCost: 1
   idleGraceAfterDialogueSeconds: 5
+  sceneClock: 10:24
+  sceneDate: "AM \xB7 19--. 3. 19. Tue"
+  sceneLocation: "\uB300\uB959 \uD6A1\uB2E8 \uC5F4\uCC28"
   deductionQuestions:
   - {fileID: 11400000, guid: 81cfb738f2d1ace4b93e1c59a0fd9983, type: 2}
   deductionInk: 3

@@ -21,6 +21,8 @@ namespace ItIsYou.UI
         [Header("창")]
         [SerializeField] private GameObject root;
         [SerializeField] private Button closeButton;
+        [Tooltip("창 밖에서 설정을 여는 버튼(우측 패널의 톱니). 비워 둬도 된다.")]
+        [SerializeField] private Button openButton;
         [SerializeField] private Button defaultsButton;
 
         [Header("탭")]
@@ -91,6 +93,7 @@ namespace ItIsYou.UI
             _wired = true;
 
             if (closeButton != null) closeButton.onClick.AddListener(Close);
+            if (openButton != null) openButton.onClick.AddListener(Open);
             if (defaultsButton != null) defaultsButton.onClick.AddListener(OnDefaults);
             if (graphicsTab != null) graphicsTab.onClick.AddListener(() => ShowTab(0));
             if (soundTab != null) soundTab.onClick.AddListener(() => ShowTab(1));
