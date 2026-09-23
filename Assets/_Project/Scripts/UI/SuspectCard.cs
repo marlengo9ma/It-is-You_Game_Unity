@@ -82,6 +82,9 @@ namespace ItIsYou.UI
                 portrait.color = Color.white;
                 portrait.preserveAspect = true;
             }
+            // 초상이 들어오면 "(아트 대기)" 글자는 끈다.
+            var placeholder = transform.Find("ArtPlaceholder");
+            if (placeholder != null) placeholder.gameObject.SetActive(suspect == null || suspect.Portrait == null);
 
             if (stateLabel != null)
             {

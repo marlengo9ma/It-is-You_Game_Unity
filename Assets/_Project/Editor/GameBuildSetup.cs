@@ -28,6 +28,17 @@ namespace ItIsYou.EditorTools
             Debug.Log("[It is You] 전체 재생성 완료 — Title → Prologue → Tutorial_Chapter");
         }
 
+        /// <summary>아트 소스를 끼우는 창구. 인스펙터에 스프라이트를 끌어다 놓고 5번을 다시 돌리면 씬에 반영된다.</summary>
+        [MenuItem("It is You/7. 아트 세트 열기 (소스 교체)", priority = 40)]
+        public static void OpenArtSet()
+        {
+            Ed.EnsureFolder("Assets/_Project/Art");
+            var art = Ed.CreateOrLoad<ItIsYou.Data.ArtSet>("Assets/_Project/Art", "ArtSet");
+            Ed.Save(art);
+            Selection.activeObject = art;
+            EditorGUIUtility.PingObject(art);
+        }
+
         [MenuItem("It is You/6. 빌드 세팅에 씬 등록", priority = 21)]
         public static void RegisterScenes()
         {

@@ -31,6 +31,10 @@ namespace ItIsYou.Characters
 
         [SerializeField] private List<ExpressionSprite> expressions = new List<ExpressionSprite>();
 
+        [Tooltip("켜면 진짜 그림이 들어온 것으로 보고, 등록되지 않은 표정을 색으로 물들이지 않는다 (기본 그림 그대로).")]
+        [SerializeField] private bool hasArt;
+        [SerializeField] private Sprite defaultSprite;
+
         [Header("연출")]
         [SerializeField] private float reactionPunchScale = 1.06f;
         [SerializeField] private float reactionPunchSeconds = 0.18f;
@@ -101,6 +105,14 @@ namespace ItIsYou.Characters
                 if (expressions[i].expression != expression) continue;
                 if (expressions[i].sprite != null) body.sprite = expressions[i].sprite;
                 if (expressions[i].tint.a > 0f) body.color = expressions[i].tint;
+                return;
+            }
+
+            if (hasArt)
+            {
+                // 진짜 그림이 있으면 없는 표정은 기본 그림으로. 색을 입히면 그림이 망가진다.
+                if (defaultSprite != null) body.sprite = defaultSprite;
+                body.color = Color.white;
                 return;
             }
 

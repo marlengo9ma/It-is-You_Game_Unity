@@ -45,6 +45,7 @@ namespace ItIsYou.EditorTools
         {
             _font = FontSetup.Ensure();
             _uiSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
+            _art = LoadArtSet();
 
             var chapter = TutorialDataBuilder.Build();
             var db = AssetDatabase.LoadAssetAtPath<GameDatabase>(DataRoot + "/GameDatabase.asset");
@@ -201,6 +202,8 @@ namespace ItIsYou.EditorTools
             Anchor(sideLogBtn.Item1, V(0, 0), V(0, 0), V(L.Pad * 2, L.Gutter), V(L.Pad * 2 + 72f, L.Gutter + 72f));
             var sideSettingsBtn = PlainButton("SettingsButton", clueRt, "설정", T.Caption);
             Anchor(sideSettingsBtn.Item1, V(1, 0), V(1, 0), V(-L.Pad * 2 - 72f, L.Gutter), V(-L.Pad * 2, L.Gutter + 72f));
+            ArtIcon(sideLogBtn, _art.iconRecord);
+            ArtIcon(sideSettingsBtn, _art.iconSettings);
 
             var clueTrayView = cluePanel.gameObject.AddComponent<ClueTrayView>();
             clueTrayView.Set("container", gridRt)
@@ -223,6 +226,7 @@ namespace ItIsYou.EditorTools
             notebookEdge.raycastTarget = false;
             var notebookTag = Text("Tag", dlgRt, "수첩 (아트 대기)", T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.TopRight);
             Anchor(notebookTag.rectTransform, V(1, 1), V(1, 1), V(-200f, -28f), V(-L.Unit * 2, -L.Unit));
+            Art(dialoguePanel, _art.notebook, false, false, notebookTag, notebookEdge);
 
             var speaker = Text("Speaker", dlgRt, "", T.Choice, P.Brass, TextAlignmentOptions.Left);
             Anchor(speaker.rectTransform, V(0, 1), V(0.5f, 1), V(L.Unit * 6, -L.Unit * 7), V(0, -L.Unit * 3));
@@ -255,6 +259,8 @@ namespace ItIsYou.EditorTools
             Anchor(bubbleTail.rectTransform, V(0, 0), V(0, 0), V(72f, -20f), V(112f, 20f));
             bubbleTail.rectTransform.localRotation = Quaternion.Euler(0f, 0f, 45f);
             bubbleTail.raycastTarget = false;
+            Art(bubbleBg, _art.speechBubble);
+            if (Art(bubbleTail, _art.bubbleTail)) bubbleTail.rectTransform.localRotation = Quaternion.identity;
             bubbleRoot.AddComponent<DialogueClickRelay>();
 
             var bubbleInk = new Color32(0x1E, 0x1B, 0x16, 0xFF);
@@ -290,7 +296,7 @@ namespace ItIsYou.EditorTools
 
             var cineGradient = Img("Gradient", cineRt, Color.white);
             Anchor(cineGradient.rectTransform, V(0, 0), V(1, 0), V(0, 0), V(0, 440f));
-            cineGradient.sprite = EnsureGradientSprite();
+            cineGradient.sprite = _art.bottomGradient != null ? _art.bottomGradient : EnsureGradientSprite();
             cineGradient.type = Image.Type.Simple;
             cineGradient.raycastTarget = false;
 
@@ -302,6 +308,7 @@ namespace ItIsYou.EditorTools
             cineTagRt.sizeDelta = V(320f, 60f);
             cineTag.sprite = _uiSprite; cineTag.type = Image.Type.Sliced;
             cineTag.raycastTarget = false;
+            Art(cineTag, _art.nameTagBrush, false, keepColor: true);   // 흰 붓자국이 화자 색으로 물든다
             var cineTagLayout = cineTag.gameObject.AddComponent<HorizontalLayoutGroup>();
             cineTagLayout.padding = new RectOffset(28, 36, 0, 0);
             cineTagLayout.spacing = 14f;
@@ -365,11 +372,13 @@ namespace ItIsYou.EditorTools
             var stage = Img("Stage", collectRt, new Color32(0x1E, 0x22, 0x27, 0xFF));
             Stretch(stage.rectTransform);
             stage.raycastTarget = false;
+            var stageHasArt = Art(stage, _art.collectionStage);
 
             var stageHint = Text("Hint", stage.rectTransform,
                 "객실 테이블  —  살펴볼 곳을 눌러 보세요", T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF),
                 TextAlignmentOptions.Center);
             Anchor(stageHint.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 6), V(0, -L.Unit * 2));
+            if (stageHasArt) stageHint.gameObject.SetActive(false);
 
             // 고양이는 클릭 대상이 아니라 무대 위 인물이다. 그 아래로 비죽 나온 것만 핫스팟.
             var stageCat = Img("Cat_Placeholder", stage.rectTransform, new Color32(0x24, 0x29, 0x2F, 0xFF));
@@ -378,6 +387,7 @@ namespace ItIsYou.EditorTools
             var stageCatTag = Text("Label", stageCat.rectTransform, "검은 고양이\n(아트 대기)", T.Caption,
                 new Color32(0x5A, 0x61, 0x69, 0xFF), TextAlignmentOptions.Center);
             Stretch(stageCatTag.rectTransform);
+            if (!Art(stageCat, _art.catStage, true, false, stageCatTag) && stageHasArt) stageCat.gameObject.SetActive(false);
 
             // 핫스팟 여섯 개. 일반/특수의 겉모습은 완전히 같아야 한다.
             // 〈시스템 기획〉: 리본 · 커피잔 · 언듯 보이는 무언가(특수) / 신문 · 타자기 · 객실 정보(일반)
@@ -406,6 +416,9 @@ namespace ItIsYou.EditorTools
                     new Color32(0x6E, 0x74, 0x7B, 0xFF), TextAlignmentOptions.Center);
                 spotLabel.textWrappingMode = TextWrappingModes.Normal;
                 Stretch(spotLabel.rectTransform);
+
+                // 진짜 무대 그림이 있으면 색 판은 투명해지고, 마우스 오버 테두리만 남는다.
+                if (stageHasArt) { spot.color = new Color(0f, 0f, 0f, 0f); spotLabel.gameObject.SetActive(false); }
 
                 var outline = spot.gameObject.AddComponent<Outline>();
                 outline.effectColor = new Color(1f, 0.97f, 0.88f, 0.55f);
@@ -438,6 +451,7 @@ namespace ItIsYou.EditorTools
             var interTag = Text("Tag", interBg.rectTransform, "객실  —  게임플레이 배경 (아트 대기)",
                 T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Bottom);
             Anchor(interTag.rectTransform, V(0.4f, 0), V(0.9f, 0), V(0, L.Unit * 31), V(0, L.Unit * 34));
+            Art(interBg, _art.StageOrRoom, _art.stageBackground == null, false, interTag);
 
             // 캐릭터 — 가운데, 수첩이 아래를 살짝 덮는다.
             var characterGo = UI("Character_Sepi", interRt);
@@ -455,11 +469,15 @@ namespace ItIsYou.EditorTools
             var charLabel = Text("Label", charRt, "세피\n(플레이스홀더)", T.Caption, P.InkSoft, TextAlignmentOptions.Center);
             Stretch(charLabel.rectTransform);
 
+            var sepiHasArt = Art(charImg, _art.SepiOnStage, true, false, charLabel);
             var characterView = characterGo.AddComponent<PlaceholderCharacterView>();
             characterView.Set("characterId", "SEPI")
                          .Set("body", charImg)
                          .Set("reactionOutline", charOutline)
-                         .Set("canvasGroup", charGroup);
+                         .Set("canvasGroup", charGroup)
+                         .Set("hasArt", sepiHasArt)
+                         .Set("defaultSprite", _art.SepiOnStage);
+            if (sepiHasArt) characterView.Set("expressions", BuildExpressionList(_art.sepiExpressions));
 
             var clickTarget = characterGo.AddComponent<CharacterClickTarget>();
 
@@ -506,6 +524,7 @@ namespace ItIsYou.EditorTools
             var accuseTag = Text("Tag", accuseBg.rectTransform, "객실  —  게임플레이 배경 (아트 대기)",
                 T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Center);
             Anchor(accuseTag.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 6), V(0, -L.Unit * 2));
+            Art(accuseBg, _art.StageOrRoom, _art.stageBackground == null, false, accuseTag);
 
             var accusePrompt = Text("Prompt", accuseRt, "", T.Body, P.Alarm, TextAlignmentOptions.Center);
             Anchor(accusePrompt.rectTransform, V(0.3f, 1), V(1, 1), V(0, -L.Unit * 14), V(0, -L.Unit * 7));
@@ -554,12 +573,14 @@ namespace ItIsYou.EditorTools
 
             var dStageTag = Text("Tag", dStageRt, "객실  —  게임플레이 배경 (아트 대기)", T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Bottom);
             Anchor(dStageTag.rectTransform, V(0.4f, 0), V(0.9f, 0), V(0, L.Unit * 31), V(0, L.Unit * 34));
+            Art(deductStage, _art.StageOrRoom, _art.stageBackground == null, false, dStageTag);
 
             var dSepi = Img("Sepi_Placeholder", dStageRt, new Color32(0x3A, 0x40, 0x48, 0xFF));
             Anchor(dSepi.rectTransform, V(0.17f, 0), V(0.17f, 0), V(-200f, L.Unit * 12), V(200f, 784f));
             dSepi.raycastTarget = false;
             var dSepiTag = Text("Label", dSepi.rectTransform, "세피\n(아트 대기 — 곁에서 거드는 쪽)", T.Caption, P.InkSoft, TextAlignmentOptions.Center);
             Stretch(dSepiTag.rectTransform);
+            Art(dSepi, _art.SepiOnStage, true, false, dSepiTag);
 
             // ---- 가설 판 ----
             var boardImg = Img("HypothesisBoard", dStageRt, P.PanelSunk);
@@ -588,7 +609,8 @@ namespace ItIsYou.EditorTools
             inkLayout.childForceExpandHeight = false;
             var dropTemplate = Img("Drop", inkRowRt, P.Brass);
             dropTemplate.rectTransform.sizeDelta = new Vector2(28f, 28f);
-            dropTemplate.sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
+            dropTemplate.sprite = _art.inkDrop != null ? _art.inkDrop : AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
+            if (_art.inkDrop != null) dropTemplate.rectTransform.sizeDelta = new Vector2(32f, 32f);
             dropTemplate.raycastTarget = false;
             dropTemplate.gameObject.SetActive(false);
             var inkView = inkRow.AddComponent<InkDropsView>();
@@ -729,6 +751,7 @@ namespace ItIsYou.EditorTools
             Stretch(endingScreen.GetComponent<RectTransform>());
             var endBg = Img("Backdrop", endingScreen.transform, new Color32(0x0F, 0x11, 0x14, 0xFF));
             Stretch(endBg.rectTransform);
+            Art(endBg, _art.endingBackground);
             var endTitle = Text("Title", endingScreen.transform, "엔딩 컷씬 (아트 대기)", T.Display, P.Brass, TextAlignmentOptions.Center);
             Anchor(endTitle.rectTransform, V(0, 0.5f), V(1, 0.5f), V(0, L.Unit * 8), V(0, L.Unit * 20));
             var endBody = Text("Body", endingScreen.transform, "", T.Body, P.Ink, TextAlignmentOptions.Center);
@@ -752,6 +775,7 @@ namespace ItIsYou.EditorTools
             var talkTag = Text("Tag", talkBg.rectTransform, "객실  —  게임플레이 배경 (아트 대기)",
                 T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Center);
             Anchor(talkTag.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 6), V(0, -L.Unit * 2));
+            Art(talkBg, _art.roomBackground, false, false, talkTag);
 
             var talkSepi = Img("Sepi_Placeholder", talkRt, new Color32(0x33, 0x39, 0x41, 0xFF));
             Anchor(talkSepi.rectTransform, V(0.52f, 0f), V(0.82f, 0.92f), Vector2.zero, Vector2.zero);
@@ -759,6 +783,7 @@ namespace ItIsYou.EditorTools
             var talkSepiTag = Text("Label", talkSepi.rectTransform, "세피\n(아트 대기)", T.Caption,
                 P.InkSoft, TextAlignmentOptions.Center);
             Stretch(talkSepiTag.rectTransform);
+            Art(talkSepi, _art.sepiTalk != null ? _art.sepiTalk : _art.sepiInterrogation, true, false, talkSepiTag);
 
             var talkCat = Img("Cat_Placeholder", talkRt, new Color32(0x2A, 0x2F, 0x36, 0xFF));
             Anchor(talkCat.rectTransform, V(0.18f, 0.08f), V(0.34f, 0.34f), Vector2.zero, Vector2.zero);
@@ -766,6 +791,7 @@ namespace ItIsYou.EditorTools
             var talkCatTag = Text("Label", talkCat.rectTransform, "검은 고양이\n(아트 대기)", T.Caption,
                 new Color32(0x6E, 0x74, 0x7B, 0xFF), TextAlignmentOptions.Center);
             Stretch(talkCatTag.rectTransform);
+            Art(talkCat, _art.catTalk != null ? _art.catTalk : _art.catStage, true, false, talkCatTag);
 
             // ---- [일러스트 컷씬#1] ----
             var cutsceneScreen = UI("Screen_Cutscene", root);
@@ -806,6 +832,7 @@ namespace ItIsYou.EditorTools
             var selectTag = Text("Tag", selectBg.rectTransform, "객실  —  게임플레이 배경 (아트 대기)",
                 T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Center);
             Anchor(selectTag.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 6), V(0, -L.Unit * 2));
+            Art(selectBg, _art.StageOrRoom, _art.stageBackground == null, false, selectTag);
 
             var selectPrompt = Text("Prompt", selectRt, "", T.Body, P.Brass, TextAlignmentOptions.Center);
             Anchor(selectPrompt.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 14), V(0, -L.Unit * 7));
@@ -898,6 +925,8 @@ namespace ItIsYou.EditorTools
             var gearBtn = PlainButton("GearButton", toolbarRt, "설정", T.Caption);   // 톱니 아이콘은 아트 대기
             Anchor(gearBtn.Item1, V(1, 1), V(1, 1), V(-L.Gutter - 64f, -L.Gutter - 64f), V(-L.Gutter, -L.Gutter));
             StyleCinematicButton(gearBtn);
+            ArtIcon(logBtn, _art.iconLog);
+            ArtIcon(gearBtn, _art.iconSettings);
 
             // ---- 로그 창 ----
             // 로그를 여는 순간만큼은 뒤의 장면을 눌러도 아무 일이 없어야 한다.
@@ -1081,6 +1110,9 @@ namespace ItIsYou.EditorTools
             // ========================================================== 시스템
 
             var cursor = systems.AddComponent<CursorController>();
+            cursor.Set("penCursor", _art.penCursor).Set("eyeCursor", _art.eyeCursor)
+                  .Set("eyeCursorBlink", _art.eyeCursorBlink).Set("reactionCursor", _art.reactionCursor)
+                  .Set("penHotspot", _art.penHotspot).Set("eyeHotspot", _art.eyeHotspot).Set("reactionHotspot", _art.reactionHotspot);
             clickTarget.Set("hitArea", charImg).Set("cursor", cursor);
 
             var investigation = systems.AddComponent<InvestigationController>();
@@ -1575,6 +1607,7 @@ namespace ItIsYou.EditorTools
                 var art = Text("Art", cardRt, "(아트 대기)", T.Caption,
                     new Color32(0x6E, 0x74, 0x7B, 0xFF), TextAlignmentOptions.Top);
                 Anchor(art.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 6), V(0, -L.Unit * 2));
+                art.gameObject.name = "ArtPlaceholder";   // SuspectCard 가 초상이 있으면 끈다
 
                 var cardView = card.AddComponent<SuspectCard>();
                 cardView.Set("button", cardButton)
@@ -1586,6 +1619,63 @@ namespace ItIsYou.EditorTools
                 cards.Add(cardView);
             }
             return cards;
+        }
+
+        // ============================================================ 아트 세트
+        // Assets/_Project/Art/ArtSet.asset 에 끼워 둔 스프라이트를 씬을 만들 때 읽어 간다. 비어 있으면 색 판이 남는다.
+
+        private static ArtSet _art;
+
+        private static ArtSet LoadArtSet()
+        {
+            Ed.EnsureFolder("Assets/_Project/Art");
+            var art = Ed.CreateOrLoad<ArtSet>("Assets/_Project/Art", "ArtSet");
+            Ed.Save(art);
+            return art;
+        }
+
+        /// <summary>스프라이트가 있으면 판을 그림으로 바꾸고 안내 글자를 지운다. 없으면 그대로 둔다. 바꿨으면 true.</summary>
+        private static bool Art(Image img, Sprite sprite, bool preserveAspect = false, bool keepColor = false, params Component[] hide)
+        {
+            if (img == null || sprite == null) return false;
+            img.sprite = sprite;
+            if (!keepColor) img.color = Color.white;
+            // Sprite Editor 에서 border 를 잡아 두면 9-slice, 아니면 그냥 그림.
+            img.type = sprite.border.sqrMagnitude > 0f ? Image.Type.Sliced : Image.Type.Simple;
+            img.preserveAspect = preserveAspect;
+            foreach (var h in hide) if (h != null) h.gameObject.SetActive(false);
+            return true;
+        }
+
+        /// <summary>글자 버튼을 아이콘 버튼으로. 아이콘이 없으면 글자 그대로.</summary>
+        private static void ArtIcon((RectTransform, Button) btn, Sprite icon)
+        {
+            if (icon == null) return;
+            var img = btn.Item1.GetComponent<Image>();
+            img.sprite = icon; img.type = Image.Type.Simple; img.preserveAspect = true; img.color = Color.white;
+            var label = btn.Item1.Find("Label");
+            if (label != null) label.gameObject.SetActive(false);
+        }
+
+        /// <summary>PlaceholderCharacterView 의 표정 목록(private 중첩 구조체)을 아트 세트로 채운다.</summary>
+        private static object BuildExpressionList(List<ArtSet.ExpressionSprite> source)
+        {
+            var t = typeof(PlaceholderCharacterView).GetNestedType("ExpressionSprite",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
+            if (t == null) return null;
+            var listType = typeof(List<>).MakeGenericType(t);
+            var list = (IList)System.Activator.CreateInstance(listType);
+            if (source == null) return list;
+            foreach (var e in source)
+            {
+                if (e.sprite == null) continue;
+                var item = System.Activator.CreateInstance(t);
+                t.GetField("expression").SetValue(item, e.expression);
+                t.GetField("sprite").SetValue(item, e.sprite);
+                t.GetField("tint").SetValue(item, Color.white);
+                list.Add(item);
+            }
+            return list;
         }
 
         // ============================================================== 헬퍼

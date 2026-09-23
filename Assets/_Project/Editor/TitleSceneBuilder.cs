@@ -53,6 +53,10 @@ namespace ItIsYou.EditorTools
             K.Stretch(bg.rectTransform);
             bg.raycastTarget = false;
 
+            // 아트 세트 (Assets/_Project/Art/ArtSet.asset) — 배경과 타자기 그림이 있으면 끼운다.
+            var art = AssetDatabase.LoadAssetAtPath<ItIsYou.Data.ArtSet>("Assets/_Project/Art/ArtSet.asset");
+            if (art != null && art.titleBackground != null) { bg.sprite = art.titleBackground; bg.color = Color.white; }
+
             // ---------------------------------------------------- 움직이는 배경
             var backdrop = K.UI("Backdrop", root);
             var backdropRt = backdrop.GetComponent<RectTransform>();
@@ -83,6 +87,11 @@ namespace ItIsYou.EditorTools
                 "레트로 타자기\n(아트 대기)", T.Caption, new Color32(0x55, 0x5B, 0x63, 0xFF),
                 TextAlignmentOptions.Center);
             K.Stretch(typewriterTag.rectTransform);
+            if (art != null && art.titleTypewriter != null)
+            {
+                typewriter.sprite = art.titleTypewriter; typewriter.color = Color.white; typewriter.preserveAspect = true;
+                typewriterTag.gameObject.SetActive(false);
+            }
 
             // -------------------------------------------------------- 제목
             var titleBlock = K.UI("Title", root);

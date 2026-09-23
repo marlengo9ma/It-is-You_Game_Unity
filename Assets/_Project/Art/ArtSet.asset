@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29d174ad3daf17a4596fbe364b580cc2, type: 3}
+  m_Name: ArtSet
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.ArtSet
+  roomBackground: {fileID: 0}
+  stageBackground: {fileID: 0}
+  collectionStage: {fileID: 0}
+  endingBackground: {fileID: 0}
+  sepiTalk: {fileID: 0}
+  sepiInterrogation: {fileID: 0}
+  sepiExpressions: []
+  catTalk: {fileID: 0}
+  catStage: {fileID: 0}
+  notebook: {fileID: 0}
+  speechBubble: {fileID: 0}
+  bubbleTail: {fileID: 0}
+  nameTagBrush: {fileID: 0}
+  bottomGradient: {fileID: 0}
+  iconRecord: {fileID: 0}
+  iconSettings: {fileID: 0}
+  iconLog: {fileID: 0}
+  inkDrop: {fileID: 0}
+  titleBackground: {fileID: 0}
+  titleTypewriter: {fileID: 0}
+  penCursor: {fileID: 0}
+  eyeCursor: {fileID: 0}
+  eyeCursorBlink: {fileID: 0}
+  reactionCursor: {fileID: 0}
+  penHotspot: {x: 0, y: 0}
+  eyeHotspot: {x: 16, y: 16}
+  reactionHotspot: {x: 16, y: 16}
