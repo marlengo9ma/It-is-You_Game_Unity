@@ -25,58 +25,69 @@ MonoBehaviour:
   onEnterSecondInterrogation:
     note: 
     lines: []
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0
   interrogationObjects: []
   aggressionWarning:
     note: 
     lines: []
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0
   refusalByFear:
     note: 
     lines: []
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0
   objectSpamWarning:
     note: 
     lines: []
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0
   refusalByAnger:
     note: 
     lines: []
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0
   toneAlternationWarning:
     note: 
     lines: []
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0
   toneAlternationGameOver:
     note: 
     lines: []
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0
   onTokensExhausted:
     note: 
     lines: []
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0
   onEnterInterrogation:
     note: 
     lines: []
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0
   onEndInterrogation:
     note: 
     lines: []
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0
   idleRounds: []
   onIdle:
     note: 
     lines: []
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0
   selectable: 0

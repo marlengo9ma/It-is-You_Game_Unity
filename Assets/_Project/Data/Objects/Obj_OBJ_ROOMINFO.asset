@@ -20,6 +20,7 @@ MonoBehaviour:
     text: "\uD558\uB9C8\uD130\uBA74 \uBABB \uD0C8\uBED4 \uD588\uC9C0\uB9CC \uB9D0\uC774\uC8E0."
     expression: 0
     stageDirection: 
+    animationId: 
     reaction:
       clueId: 
       openDelay: 0
@@ -33,6 +34,7 @@ MonoBehaviour:
       \uBC14\uB77C\uBD24\uB2E4\uAC00 \uC2DC\uC120\uC744 \uAC70\uB454\uB2E4."
     expression: 0
     stageDirection: 
+    animationId: 
     reaction:
       clueId: 
       openDelay: 0

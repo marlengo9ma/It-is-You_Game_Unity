@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using ItIsYou.Core;
@@ -63,8 +63,17 @@ namespace ItIsYou.UI
         [Tooltip("심문 중의 초당 출력 글자 수. 실제로 말하는 속도에 맞춰 느리게.")]
         [SerializeField] private float speakingCharactersPerSecond = 16f;
 
-        [Tooltip("말줄임표(… 또는 온점 3개 이상)에서만 쉬는 시간(초). 쉼표·마침표에서는 쉬지 않는다 — 한 문장이 토막나 보이기 때문.")]
+        [Tooltip("평범한 대화에서 말줄임표(… 또는 온점 3개 이상)에 두는 쉼(초). 이 구간은 쉼표·마침표에서 쉬지 않는다 — 한 문장이 토막나 보이기 때문.")]
         [SerializeField] private float ellipsisPause = 0.22f;
+
+        [Tooltip("심문에서 말줄임표에 두는 쉼(초). 말을 흐리는 자리라 평범한 대화보다 길게 둔다.")]
+        [SerializeField] private float interrogationEllipsisPause = 0.5f;
+
+        [Tooltip("심문에서 쉼표에 두는 쉼(초). 실제로 말하는 구간이라 숨을 고르는 자리가 있어야 한다.")]
+        [SerializeField] private float interrogationCommaPause = 0.09f;
+
+        [Tooltip("심문에서 마침표·물음표·느낌표에 두는 쉼(초).")]
+        [SerializeField] private float interrogationPeriodPause = 0.17f;
 
         [Header("빨리 감기")]
         [Tooltip("좌클릭을 이만큼 유지하면 빨리 감기가 걸린다(초).")]
@@ -95,6 +104,12 @@ namespace ItIsYou.UI
 
         /// <summary>리액션 수집 창이 열렸다/닫혔다. (열림 여부, 단서 id)</summary>
         public event Action<bool, string> ReactionWindowChanged;
+
+        /// <summary>한 줄의 출력이 시작됐다. 표정·연출은 이 시점에 건다.</summary>
+        public event Action<DialogueLine> LineStarted;
+
+        /// <summary>대사 묶음의 재생이 시작됐다.</summary>
+        public event Action<DialogueSequence> SequenceStarted;
 
         /// <summary>한 줄의 출력이 모두 끝났다.</summary>
         public event Action<DialogueLine> LineCompleted;
@@ -368,6 +383,7 @@ namespace ItIsYou.UI
             }
 
             SetVisible(true);
+            SequenceStarted?.Invoke(sequence);
 
             var lines = sequence.Lines;
             for (int i = 0; i < lines.Count; i++)
@@ -429,6 +445,8 @@ namespace ItIsYou.UI
                 body.maxVisibleCharacters = 0;
             }
 
+            LineStarted?.Invoke(line);
+
             var reactionRoutine = line.HasReaction && line.Reaction.IsCollectableAtRecallDepth(recallDepth)
                 ? StartCoroutine(ReactionRoutine(line.Reaction))
                 : null;
@@ -481,23 +499,62 @@ namespace ItIsYou.UI
             if (ActiveIndicator != null) ActiveIndicator.SetActive(false);
         }
 
+        /// <summary>글자 뒤에 두는 숨. 구간에 따라 길이가 다르다.</summary>
+        private enum Breath { None, Comma, Period, Ellipsis }
+
         /// <summary>
-        /// 이 글자가 말줄임표의 마지막 글자인가. '…' 한 글자이거나, 온점이 3개 이상 이어진 것의 끝.
+        /// 이 글자 뒤에 숨을 둘 자리인가, 둔다면 어떤 종류인가.
+        ///
+        /// 말줄임표는 '…' 한 글자이거나 온점 3개 이상이 이어진 것의 끝이다.
         /// 속마음 앞에 붙는 '..' (두 개) 는 쉬지 않는다 — 줄 첫머리에서 멈칫하면 어색하다.
+        /// 물음표·느낌표가 연달아 올 때(?!)는 마지막 글자에서만 쉰다.
         /// </summary>
-        private static bool IsEllipsisEnd(TMPro.TMP_CharacterInfo[] info, int index, int total)
+        private static Breath BreathAt(TMPro.TMP_CharacterInfo[] info, int index, int total)
         {
             var c = info[index].character;
-            if (c == '…') return true;
-            if (c != '.') return false;
 
-            // 뒤에 온점이 더 있으면 아직 끝이 아니다.
-            if (index + 1 < total && info[index + 1].character == '.') return false;
+            if (c == '…') return Breath.Ellipsis;
+            if (c == ',' || c == '，' || c == '、') return Breath.Comma;
 
-            var run = 0;
-            for (var i = index; i >= 0 && info[i].character == '.'; i--) run++;
-            return run >= 3;
+            if (c == '.')
+            {
+                // 뒤에 온점이 더 있으면 아직 끝이 아니다.
+                if (index + 1 < total && info[index + 1].character == '.') return Breath.None;
+
+                var run = 0;
+                for (var i = index; i >= 0 && info[i].character == '.'; i--) run++;
+                if (run >= 3) return Breath.Ellipsis;
+                if (run == 2) return Breath.None;
+                return Breath.Period;
+            }
+
+            if (c == '?' || c == '!' || c == '？' || c == '！')
+            {
+                if (index + 1 < total)
+                {
+                    var next = info[index + 1].character;
+                    if (next == '?' || next == '!' || next == '？' || next == '！') return Breath.None;
+                }
+                return Breath.Period;
+            }
+
+            return Breath.None;
         }
+
+        /// <summary>
+        /// 구간에 따른 숨의 길이.
+        ///
+        /// 심문은 상대가 실제로 말하는 구간이라 쉼표·마침표에서도 숨을 고른다.
+        /// 평범한 대화는 플레이어가 읽는 속도로 흐르므로 문장부호마다 끊으면 토막나 보인다 —
+        /// 거기서는 말줄임표에서만 쉰다.
+        /// </summary>
+        private float PauseFor(Breath breath) => breath switch
+        {
+            Breath.Ellipsis => _slowSpeech ? interrogationEllipsisPause : ellipsisPause,
+            Breath.Comma => _slowSpeech ? interrogationCommaPause : 0f,
+            Breath.Period => _slowSpeech ? interrogationPeriodPause : 0f,
+            _ => 0f
+        };
 
         private IEnumerator Typewriter()
         {
@@ -525,10 +582,13 @@ namespace ItIsYou.UI
                 var cps = CharsPerSecond;
                 if (_skipping && HasSeen(_currentLine)) cps *= Mathf.Max(1f, skipMultiplier);
                 var wait = cps <= 0f ? 0f : 1f / cps;
-                // 말줄임표에서만 잠깐 숨을 고른다.
-                // 쉼표와 마침표마다 쉬면 한 문장이 토막토막 끊겨 보인다.
-                if (shown - 1 < total && IsEllipsisEnd(bodyLabel.textInfo.characterInfo, shown - 1, total))
-                    wait += _fastForward ? ellipsisPause / Mathf.Max(1f, fastForwardMultiplier) : ellipsisPause;
+                // 문장부호에서 숨을 고른다. 어디서 얼마나 쉬는지는 구간이 정한다.
+                if (shown - 1 < total)
+                {
+                    var pause = PauseFor(BreathAt(bodyLabel.textInfo.characterInfo, shown - 1, total));
+                    if (pause > 0f)
+                        wait += _fastForward ? pause / Mathf.Max(1f, fastForwardMultiplier) : pause;
+                }
 
                 if (wait > 0f) yield return new WaitForSecondsRealtime(wait);
             }

@@ -25,6 +25,7 @@ MonoBehaviour:
         \uBABB \uBD24\uB2E4. \uADF8 \uC21C\uAC04\uC5D0 \uC790\uB9AC\uAC00 \uBC14\uB00C\uC5C8\uB2E4."
       expression: 0
       stageDirection: 
+      animationId: 
       reaction:
         clueId: 
         openDelay: 0
@@ -36,6 +37,7 @@ MonoBehaviour:
       text: "\uADF8, \uADF8\uB54C\uB294 \uC800\uB3C4 \uC815\uC2E0\uC774 \uC5C6\uC5B4\uC11C\u2026"
       expression: 3
       stageDirection: 
+      animationId: 
       reaction:
         clueId: 
         openDelay: 0
@@ -43,5 +45,6 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       autoGrantClueId: 
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0

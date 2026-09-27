@@ -28,36 +28,53 @@ MonoBehaviour:
   lockedLabel: ???
   passes:
   - note: "[\uC784\uC2DC] 2\uCC28 D \uB2E8\uC11C \uC81C\uC2DC"
-    lines:
-    - speaker: 3
-      text: "\u2026\uADF8 \uC544\uC774\uB294 \uC81C \uACE0\uC591\uC774\uC608\uC694.
-        \uBAB0\uB798 \uD0DC\uC6E0\uC5B4\uC694."
-      expression: 5
-      stageDirection: 
-      reaction:
-        clueId: 
-        openDelay: 0
-        window: 2.5
-        expression: 3
-        blurredFromRecallDepth: 2
-      autoGrantClueId: 
-    - speaker: 3
-      text: "\uB9CC\uB144\uD544\uC774\uB791\uC740 \uC0C1\uAD00\uC5C6\uC5B4\uC694\u2026
-        \uC544\uB9C8\uB3C4\uC694."
-      expression: 2
-      stageDirection: "(\uB9D0\uB05D\uC774 \uD750\uB824\uC9C4\uB2E4)"
-      reaction:
-        clueId: 
-        openDelay: 0
-        window: 2.5
-        expression: 3
-        blurredFromRecallDepth: 2
-      autoGrantClueId: 
-    trustDelta: 0
-    endsInterrogation: 0
+    labelOverride: 
+    sequence:
+      note: "[\uC784\uC2DC] 2\uCC28 D \uB2E8\uC11C \uC81C\uC2DC"
+      lines:
+      - speaker: 3
+        text: "\u2026\uADF8 \uC544\uC774\uB294 \uC81C \uACE0\uC591\uC774\uC608\uC694.
+          \uBAB0\uB798 \uD0DC\uC6E0\uC5B4\uC694."
+        expression: 5
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uB9CC\uB144\uD544\uC774\uB791\uC740 \uC0C1\uAD00\uC5C6\uC5B4\uC694\u2026
+          \uC544\uB9C8\uB3C4\uC694."
+        expression: 2
+        stageDirection: "(\uB9D0\uB05D\uC774 \uD750\uB824\uC9C4\uB2E4)"
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUp:
+      note: 
+      lines: []
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    animationId: 
+    variantOfRound: -1
+    requiresPriorChoiceIds: []
+    blockedByChoiceIds: []
   idleFollowUp:
     note: 
     lines: []
+    animationId: 
     trustDelta: 0
     endsInterrogation: 0
   tokenCost: 1

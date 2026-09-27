@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using ItIsYou.Characters;
 using ItIsYou.Clues;
@@ -120,6 +120,8 @@ namespace ItIsYou.Interrogation
             {
                 dialogue.TestimonyClicked += OnTestimonyClicked;
                 dialogue.ReactionWindowChanged += OnReactionWindowChanged;
+                dialogue.LineStarted += OnLineStarted;
+                dialogue.SequenceStarted += OnSequenceStarted;
             }
         }
 
@@ -131,6 +133,8 @@ namespace ItIsYou.Interrogation
             {
                 dialogue.TestimonyClicked -= OnTestimonyClicked;
                 dialogue.ReactionWindowChanged -= OnReactionWindowChanged;
+                dialogue.LineStarted -= OnLineStarted;
+                dialogue.SequenceStarted -= OnSequenceStarted;
             }
             if (_session != null) _session.Idle.Elapsed -= OnIdleElapsed;
         }
@@ -193,6 +197,41 @@ namespace ItIsYou.Interrogation
 
             if (_session.CollectTestimony(clue))
                 dialogue.NotifyCollected(clueId);
+        }
+
+        /// <summary>
+        /// 줄이 시작될 때 상대의 표정과 연출을 건다.
+        ///
+        /// 표정은 데이터에 줄마다 적혀 있었지만 그동안 화면에 옮겨지지 않고 있었다.
+        /// 리액션(수집 창)만 얼굴을 바꾸고 있었던 셈인데, 그러면 ‘표정 변화를 읽는 게임’에서
+        /// 정작 평소 표정이 없다. 여기서 매 줄 적용한다.
+        ///
+        /// 말하는 쪽이 상대일 때만 건다 — 주인공의 속마음에 상대 얼굴이 따라 움직이면 거짓 신호가 된다.
+        /// </summary>
+        private void OnLineStarted(DialogueLine line)
+        {
+            if (_characterView == null || line == null || _session == null) return;
+
+            var speaking = line.Speaker == _session.Suspect.Speaker;
+            _characterView.SetSpeaking(speaking);
+            if (!speaking) return;
+
+            _characterView.SetExpression(line.Expression);
+            if (!string.IsNullOrEmpty(line.AnimationId))
+                _characterView.PlayAnimation(line.AnimationId);
+        }
+
+        /// <summary>묶음 전체에 걸리는 연출. 회차마다 다른 연출을 줄 때 쓰는 자리.</summary>
+        private void OnSequenceStarted(DialogueSequence sequence)
+        {
+            if (_characterView == null || sequence == null) return;
+
+            // 앞 묶음에서 멈춰 선 자세(눈을 피한 채 등)를 되돌린다.
+            // 되돌리지 않으면 다음 대사 내내 그 자세로 남는다.
+            _characterView.ResetPose();
+
+            if (!string.IsNullOrEmpty(sequence.AnimationId))
+                _characterView.PlayAnimation(sequence.AnimationId);
         }
 
         private void OnReactionWindowChanged(bool open, string clueId)

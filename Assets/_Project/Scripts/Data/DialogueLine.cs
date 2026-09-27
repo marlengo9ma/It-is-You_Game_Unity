@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,6 +24,9 @@ namespace ItIsYou.Data
         [Tooltip("괄호 안 지시문. 예: (눈을 피하며 땀이 삐질). 연출 참고용이며 화면에는 별도 스타일로 출력된다.")]
         [SerializeField] private string stageDirection;
 
+        [Tooltip("이 줄이 나올 때 캐릭터에 거는 연출 이름. 표정만 바뀌는 것은 위 '표정' 칸이 맡는다. (StageAnimation 참고)")]
+        [SerializeField] private string animationId;
+
         [Tooltip("이 줄이 출력되는 동안 캐릭터를 클릭해 수집할 수 있는 리액션. 비어 있으면 리액션 없음.")]
         [SerializeField] private ReactionCue reaction = new ReactionCue();
 
@@ -34,6 +37,7 @@ namespace ItIsYou.Data
         public string Text => text;
         public ExpressionId Expression => expression;
         public string StageDirection => stageDirection;
+        public string AnimationId => animationId;
         public ReactionCue Reaction => reaction;
         public string AutoGrantClueId => autoGrantClueId;
 

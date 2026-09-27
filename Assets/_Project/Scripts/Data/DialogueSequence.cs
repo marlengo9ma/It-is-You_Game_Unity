@@ -16,6 +16,9 @@ namespace ItIsYou.Data
 
         [SerializeField] private List<DialogueLine> lines = new List<DialogueLine>();
 
+        [Tooltip("이 묶음이 시작될 때 화면의 캐릭터에 거는 연출 이름. 비우면 아무 일도 없다. (StageAnimation 참고)")]
+        [SerializeField] private string animationId;
+
         [Tooltip("이 묶음을 끝까지 본 뒤 신뢰도 변화량. 음수면 하락.")]
         [SerializeField] private int trustDelta = 0;
 
@@ -24,6 +27,7 @@ namespace ItIsYou.Data
 
         public string Note => note;
         public IReadOnlyList<DialogueLine> Lines => lines;
+        public string AnimationId => animationId;
         public int TrustDelta => trustDelta;
         public bool EndsInterrogation => endsInterrogation;
 

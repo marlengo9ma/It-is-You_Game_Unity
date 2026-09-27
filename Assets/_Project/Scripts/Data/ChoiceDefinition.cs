@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,10 @@ namespace ItIsYou.Data
     /// <item>같은 선택지를 중복 선택할 수 있고, 경우에 따라 다른 내용이 이어진다.</item>
     /// <item>남은 내용이 있는 선택지에는 별도 아이콘이 표시된다.</item>
     /// </list>
+    ///
+    /// 두 번째 성질은 <see cref="ChoicePass"/> 목록이 맡는다. 회차마다 문구·대사·
+    /// &lt;시간 경과&gt;·연출이 함께 바뀌고, 앞서 무엇을 골랐느냐에 따라 같은 회차가
+    /// 다른 내용으로 갈리기도 한다.
     /// </summary>
     [CreateAssetMenu(menuName = "It is You/Choice", fileName = "Choice_")]
     public class ChoiceDefinition : ScriptableObject
@@ -21,7 +26,7 @@ namespace ItIsYou.Data
         [SerializeField] private ChoiceTone tone = ChoiceTone.Friendly;
 
         [Header("표기")]
-        [Tooltip("선택지 목록에 뜨는 기본 문구.")]
+        [Tooltip("선택지 목록에 뜨는 기본 문구. 회차마다 다른 문구를 쓰려면 아래 '진행'의 회차 칸에 적는다.")]
         [TextArea(1, 3)]
         [SerializeField] private string label;
 
@@ -56,10 +61,11 @@ namespace ItIsYou.Data
         [SerializeField] private string lockedLabel = "???";
 
         [Header("진행")]
-        [Tooltip("첫 선택부터 순서대로 재생되는 대사 묶음. 끝에 도달한 뒤에는 마지막 묶음이 반복된다.")]
-        [SerializeField] private List<DialogueSequence> passes = new List<DialogueSequence>();
+        [Tooltip("첫 선택부터 순서대로 재생되는 회차들. 끝에 도달한 뒤에는 마지막 회차가 반복된다. " +
+                 "'조건부 변형'으로 표시된 칸은 순서에 끼지 않고, 조건이 맞을 때 해당 회차를 대신한다.")]
+        [SerializeField] private List<ChoicePass> passes = new List<ChoicePass>();
 
-        [Tooltip("이 선택지를 고른 뒤 처음 오는 무반응 판정에서, 회차 대사 대신 나오는 대사. 시나리오의 <시간 경과> 구간.")]
+        [Tooltip("회차 칸에 <시간 경과> 대사가 없을 때 쓰는 기본값. 이것도 비어 있으면 용의자의 일반 무반응 회차 대사가 나온다.")]
         [SerializeField] private DialogueSequence idleFollowUp = new DialogueSequence();
 
         [Tooltip("이 선택지가 소비하는 타임 토큰. 보통 1.")]
@@ -83,16 +89,69 @@ namespace ItIsYou.Data
         public IReadOnlyList<string> UnlocksChoiceIds => unlocksChoiceIds;
         public bool ShowLockedPlaceholder => showLockedPlaceholder;
         public string LockedLabel => string.IsNullOrEmpty(lockedLabel) ? "???" : lockedLabel;
-        public IReadOnlyList<DialogueSequence> Passes => passes;
+        public IReadOnlyList<ChoicePass> Passes => passes;
         public DialogueSequence IdleFollowUp => idleFollowUp;
         public bool HasIdleFollowUp => idleFollowUp != null && !idleFollowUp.IsEmpty;
 
         /// <summary>교차 선택 게임오버 판정에 포함되는 성향인가. 친근/강압만 해당한다.</summary>
         public bool CountsForToneAlternation => tone == ChoiceTone.Friendly || tone == ChoiceTone.Aggressive;
 
-        /// <summary>보유 단서에 따라 달라지는 표시 문구.</summary>
-        public string ResolveLabel(ICollection<string> ownedClueIds)
+        // ------------------------------------------------------------ 회차 고르기
+
+        /// <summary>순서대로 쌓이는 보통 회차가 몇 칸인가. 변형은 세지 않는다.</summary>
+        public int RoundCount
         {
+            get
+            {
+                if (passes == null) return 0;
+                var n = 0;
+                for (int i = 0; i < passes.Count; i++)
+                    if (passes[i] != null && !passes[i].IsVariant) n++;
+                return n;
+            }
+        }
+
+        private ChoicePass RoundAt(int round)
+        {
+            if (passes == null) return null;
+            var n = 0;
+            for (int i = 0; i < passes.Count; i++)
+            {
+                var p = passes[i];
+                if (p == null || p.IsVariant) continue;
+                if (n == round) return p;
+                n++;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// <paramref name="timesUsed"/> 번 고른 뒤 재생할 회차.
+        /// 같은 회차의 변형 중 조건이 맞는 것이 있으면 그쪽이 이긴다.
+        /// </summary>
+        public ChoicePass GetPass(int timesUsed, Func<string, int> useCount = null)
+        {
+            var rounds = RoundCount;
+            if (rounds == 0) return null;
+
+            var round = Mathf.Clamp(timesUsed, 0, rounds - 1);
+
+            for (int i = 0; i < passes.Count; i++)
+            {
+                var p = passes[i];
+                if (p == null || !p.IsVariant || p.VariantOfRound != round) continue;
+                if (p.Matches(useCount)) return p;
+            }
+
+            return RoundAt(round);
+        }
+
+        /// <summary>보유 단서와 회차에 따라 달라지는 표시 문구.</summary>
+        public string ResolveLabel(ICollection<string> ownedClueIds, int timesUsed = 0, Func<string, int> useCount = null)
+        {
+            var pass = GetPass(timesUsed, useCount);
+            if (pass != null && pass.HasLabelOverride) return pass.LabelOverride;
+
             if (string.IsNullOrEmpty(labelWhenInformed) || labelSwapClueIds == null || labelSwapClueIds.Count == 0)
                 return label;
 
@@ -105,19 +164,11 @@ namespace ItIsYou.Data
             return labelWhenInformed;
         }
 
-        /// <summary><paramref name="timesUsed"/> 번 선택된 뒤 재생할 대사 묶음.</summary>
-        public DialogueSequence GetPass(int timesUsed)
-        {
-            if (passes == null || passes.Count == 0) return null;
-            var index = Mathf.Clamp(timesUsed, 0, passes.Count - 1);
-            return passes[index];
-        }
-
         /// <summary>
         /// 아직 못 본 내용이 남아 있는가. 기획서의 "이미 선택했었던 메인 선택지 위로
         /// 별도 아이콘이 표시된다" 조건.
         /// </summary>
-        public bool HasUnseenPass(int timesUsed) => passes != null && timesUsed < passes.Count;
+        public bool HasUnseenPass(int timesUsed) => timesUsed < RoundCount;
 
 #if UNITY_EDITOR
         private void OnValidate()

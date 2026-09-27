@@ -21,6 +21,7 @@ MonoBehaviour:
       \uBC8C\uC368 \uC790\uAE30 \uBB3C\uAC74\uCC98\uB7FC \uC4F0\uACE0 \uC788\uAD70."
     expression: 0
     stageDirection: 
+    animationId: 
     reaction:
       clueId: 
       openDelay: 0
@@ -33,6 +34,7 @@ MonoBehaviour:
       \uC190\uBAA9\uC774 \uD558\uB098\uB3C4 \uC548 \uC544\uD30C\uC694."
     expression: 1
     stageDirection: 
+    animationId: 
     reaction:
       clueId: 
       openDelay: 0

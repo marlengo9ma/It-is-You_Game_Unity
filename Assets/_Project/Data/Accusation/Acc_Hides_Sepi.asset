@@ -27,6 +27,7 @@ MonoBehaviour:
           \uB9AC\uBCF8\uC774 \uB354\uB7EC\uC6CC\uC9C4 \uAC83\uB3C4 \uADF8 \uC18C\uB3D9\uC774\uC5C8\uACE0."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -40,6 +41,7 @@ MonoBehaviour:
           \uBAA8\uB978 \uCC99\uD588\uACE0\uC694."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -51,6 +53,7 @@ MonoBehaviour:
         text: "\u2026"
         expression: 7
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -58,6 +61,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         autoGrantClueId: 
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     plea:
@@ -70,6 +74,7 @@ MonoBehaviour:
           \uBB38 \uAC70\uC608\uC694."
         expression: 2
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -77,6 +82,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         autoGrantClueId: 
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     refuteClueIds:
@@ -90,6 +96,7 @@ MonoBehaviour:
           \uBB3C\uAC74\uC774\uC796\uC544\uC694."
         expression: 2
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -102,6 +109,7 @@ MonoBehaviour:
           \uD55C\uB2E4."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -109,6 +117,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         autoGrantClueId: 
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     refuteSuccess:
@@ -120,6 +129,7 @@ MonoBehaviour:
           \uD588\uC2B5\uB2C8\uB2E4."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -131,6 +141,7 @@ MonoBehaviour:
         text: "\u2026\uB4E4\uCF30\uB124\uC694."
         expression: 5
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -138,6 +149,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         autoGrantClueId: 
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     resultTitle: "\uC138\uD53C\uC758 \uC790\uBC31 \u2014 \uACE0\uC591\uC774\uC640
@@ -150,6 +162,7 @@ MonoBehaviour:
           \uADF8 \uC544\uB798\uC5D0\uC11C \uB9CC\uB144\uD544\uC774 \uAD74\uB7EC \uB098\uC654\uB2E4."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -161,6 +174,7 @@ MonoBehaviour:
         text: "..\uC0AC\uAC74\uC740 \uB05D\uB0AC\uB2E4."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -168,6 +182,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         autoGrantClueId: 
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 0
@@ -181,6 +196,7 @@ MonoBehaviour:
           \uD558\uC9C0\uB9CC \uB9CC\uB144\uD544\uC740 \uB2E4\uB978 \uC774\uC57C\uAE30\uC8E0."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -192,6 +208,7 @@ MonoBehaviour:
         text: "\u2026\uB124. \uC815\uB9D0 \uB2E4\uB978 \uC774\uC57C\uAE30\uC608\uC694."
         expression: 2
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -199,22 +216,26 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         autoGrantClueId: 
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     plea:
       note: 
       lines: []
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     refuteClueIds: []
     refuteWrong:
       note: 
       lines: []
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     refuteSuccess:
       note: 
       lines: []
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     resultTitle: "\uBBF8\uD574\uACB0 \u2014 \uACE0\uC591\uC774\uB9CC \uBC1D\uD600\uC9C0\uB2E4"
@@ -226,6 +247,7 @@ MonoBehaviour:
           \uAE30\uCC28\uB294 \uB2E4\uC74C \uC5ED\uC5D0 \uB2FF\uC558\uB2E4."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -238,6 +260,7 @@ MonoBehaviour:
           \uC148\uC774\uB2E4."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -245,6 +268,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         autoGrantClueId: 
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 0

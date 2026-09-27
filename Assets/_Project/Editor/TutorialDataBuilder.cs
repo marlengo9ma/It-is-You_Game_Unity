@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ItIsYou.Data;
 using UnityEditor;
 using UnityEngine;
@@ -134,45 +134,44 @@ namespace ItIsYou.EditorTools
 
             // ========================================================== 선택지
 
-            // A — 친근. 경계를 낮추며 행방을 묻는다.
+            // A — 친근. 경계를 낮추며 행방을 묻는다. 회차마다 문구와 대사가 다르고,
+            // B를 먼저 골랐다면 초회가 통째로 바뀐다 (ChoiceARounds 안의 변형 칸).
             var choiceFriendly = Choice("CH_SEPI_FRIENDLY", ChoiceTone.Friendly,
                 label: TutorialScript.ChoiceALabel,
-                passes: new List<DialogueSequence> { TutorialScript.ChoiceAPass() },
-                idleFollowUp: TutorialScript.ChoiceAIdle());
+                passes: TutorialScript.ChoiceARounds());
 
-            // B — 강압. 절도를 의심하며 압박한다. 시간 경과 뒤에 페널티 설명 팝업.
+            // B — 강압. 절도를 의심하며 압박한다. 초회의 시간 경과 뒤에 페널티 설명 팝업.
             var choiceAggressive = Choice("CH_SEPI_AGGRESSIVE", ChoiceTone.Aggressive,
                 label: TutorialScript.ChoiceBLabel,
-                passes: new List<DialogueSequence> { TutorialScript.ChoiceBPass() },
-                idleFollowUp: TutorialScript.ChoiceBIdle());
+                passes: TutorialScript.ChoiceBRounds());
 
             // C — 단서 제시. 리본을 열람창에서 '단서 오브젝트'로 정리해 두어야 나타난다.
-            var cPass = TutorialScript.ChoiceCPass();
-            Reacting(cPass.Lines[6], clueId: "REA_CAT_FLINCH", openDelay: 0.35f, window: 2.6f);
+            var cRounds = TutorialScript.ChoiceCRounds();
+            Reacting(cRounds[0].Sequence.Lines[6], clueId: "REA_CAT_FLINCH", openDelay: 0.35f, window: 2.6f);
 
             var choiceRibbon = Choice("CH_SEPI_RIBBON", ChoiceTone.Evidence,
                 label: TutorialScript.ChoiceCLabel,
-                passes: new List<DialogueSequence> { cPass },
+                passes: cRounds,
                 requiredClueIds: Ed.L("CLUE_RIBBON"),
                 requiredPromotedClueIds: Ed.L("CLUE_RIBBON"));
 
             // ---- [임시] 2차 심문 선택지. 노션에 2차 스크립트가 없어 짧게 지어 넣었다. 토큰은 1차의 절반. ----
             var choice2Friendly = Choice("CH_SEPI2_FRIENDLY", ChoiceTone.Friendly,
                 label: TutorialScript.Choice2ALabel,
-                passes: new List<DialogueSequence> { TutorialScript.Choice2APass() });
+                passes: TutorialScript.Single(TutorialScript.Choice2APass()));
             var choice2Aggressive = Choice("CH_SEPI2_AGGRESSIVE", ChoiceTone.Aggressive,
                 label: TutorialScript.Choice2BLabel,
-                passes: new List<DialogueSequence> { TutorialScript.Choice2BPass() });
+                passes: TutorialScript.Single(TutorialScript.Choice2BPass()));
             // 추론 카드가 있어야 열린다. 없으면 ??? 로 잠긴 채 보인다 — 조합의 결과가 여기서 보인다.
             var choice2Deduced = Choice("CH_SEPI2_DEDUCED", ChoiceTone.Evidence,
                 label: TutorialScript.Choice2CLabel,
-                passes: new List<DialogueSequence> { TutorialScript.Choice2CPass() },
+                passes: TutorialScript.Single(TutorialScript.Choice2CPass()),
                 requiredClueIds: Ed.L("DED_PEN_UNDER_CAT"));
             choice2Deduced.Set("showLockedPlaceholder", true).Set("lockedLabel", "???");
             // 가설 2 로 열리는 단서 제시 — 심문은 이어진다.
             var choice2Cat = Choice("CH_SEPI2_CAT", ChoiceTone.Evidence,
                 label: TutorialScript.Choice2DLabel,
-                passes: new List<DialogueSequence> { TutorialScript.Choice2DPass() },
+                passes: TutorialScript.Single(TutorialScript.Choice2DPass()),
                 requiredClueIds: Ed.L("DED_SEPI_HIDES_CAT"));
             choice2Cat.Set("showLockedPlaceholder", true).Set("lockedLabel", "???");
 
@@ -406,7 +405,7 @@ namespace ItIsYou.EditorTools
         }
 
         private static ChoiceDefinition Choice(string id, ChoiceTone tone, string label,
-            List<DialogueSequence> passes,
+            List<ChoicePass> passes,
             DialogueSequence idleFollowUp = null,
             string labelWhenInformed = null,
             List<string> labelSwapClueIds = null,

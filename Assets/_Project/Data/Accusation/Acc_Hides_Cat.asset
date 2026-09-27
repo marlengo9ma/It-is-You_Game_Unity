@@ -26,6 +26,7 @@ MonoBehaviour:
           \uAC70\uAE30\uC11C \uC2DC\uC791\uB410\uB2E4."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -37,6 +38,7 @@ MonoBehaviour:
         text: "\uADF8\uB7EC\uB2C8 \uB9CC\uB144\uD544\uB3C4 \uC800 \uB140\uC11D \uD0D3\uC785\uB2C8\uB2E4."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -48,6 +50,7 @@ MonoBehaviour:
         text: "\uADF8, \uADF8\uB807\uAC8C \uB418\uB098\uC694\u2026?"
         expression: 3
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -55,22 +58,26 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         autoGrantClueId: 
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     plea:
       note: 
       lines: []
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     refuteClueIds: []
     refuteWrong:
       note: 
       lines: []
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     refuteSuccess:
       note: 
       lines: []
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     resultTitle: "\uACE0\uC591\uC774 \uC9C0\uBAA9 \u2014 \uC808\uBC18\uC758 \uC9C4\uC2E4"
@@ -82,6 +89,7 @@ MonoBehaviour:
           \uACE0\uC591\uC774 \uC544\uB798\uC5D0\uC11C \uB098\uC654\uB2E4."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -94,6 +102,7 @@ MonoBehaviour:
           \uD2C0\uB9B0 \uAE30\uBD84\uC774\uB2E4."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -101,6 +110,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         autoGrantClueId: 
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 0
@@ -113,6 +123,7 @@ MonoBehaviour:
           \uACE0\uC591\uC774\uAC00 \uC544\uB2C8\uB77C."
         expression: 0
         stageDirection: 
+        animationId: 
         reaction:
           clueId: 
           openDelay: 0
@@ -120,28 +131,33 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         autoGrantClueId: 
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     plea:
       note: 
       lines: []
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     refuteClueIds: []
     refuteWrong:
       note: 
       lines: []
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     refuteSuccess:
       note: 
       lines: []
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     resultTitle: 
     result:
       note: 
       lines: []
+      animationId: 
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 1

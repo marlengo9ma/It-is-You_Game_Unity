@@ -21,6 +21,7 @@ MonoBehaviour:
       \uB0B4\uC6A9\uBB3C\uC774 \uC804\uBD80 \uBC16\uC5D0 \uC788\uAD70."
     expression: 0
     stageDirection: 
+    animationId: 
     reaction:
       clueId: 
       openDelay: 0
@@ -32,6 +33,7 @@ MonoBehaviour:
     text: "\uADF8, \uADF8\uAC74\u2026 \uC81C\uAC00 \uCE58\uC6B0\uB824\uB358 \uCC38\uC774\uC5C8\uC5B4\uC694."
     expression: 2
     stageDirection: "(\uC2DC\uC120\uC744 \uD53C\uD558\uBA70)"
+    animationId: 
     reaction:
       clueId: 
       openDelay: 0

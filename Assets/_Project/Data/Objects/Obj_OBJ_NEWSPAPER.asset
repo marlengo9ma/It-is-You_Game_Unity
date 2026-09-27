@@ -23,6 +23,7 @@ MonoBehaviour:
       \uB9D0\uC774\uC8E0."
     expression: 0
     stageDirection: 
+    animationId: 
     reaction:
       clueId: 
       openDelay: 0
@@ -35,6 +36,7 @@ MonoBehaviour:
       \uC774\uB7F0 \uC7A5\uAE30 \uCD9C\uC7A5\uB3C4 \uC5C6\uC5B4\uC9C8\uD150\uB370\u2026"
     expression: 0
     stageDirection: 
+    animationId: 
     reaction:
       clueId: 
       openDelay: 0
@@ -47,6 +49,7 @@ MonoBehaviour:
       \uB36E\uC5B4 \uD574\uB2F9 \uAE30\uC0AC\uB97C \uC678\uBA74\uD588\uB2E4."
     expression: 0
     stageDirection: 
+    animationId: 
     reaction:
       clueId: 
       openDelay: 0

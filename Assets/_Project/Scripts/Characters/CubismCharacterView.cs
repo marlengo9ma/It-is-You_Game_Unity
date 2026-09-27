@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using ItIsYou.Data;
 using UnityEngine;
@@ -77,12 +77,27 @@ namespace ItIsYou.Characters
             var clip = Resources.Load<Live2D.Cubism.Framework.Motion.CubismMotionController>(binding.reactionMotion);
             if (clip != null) return; // 프로젝트의 모션 로딩 방식이 정해지면 여기에 연결한다.
         }
+
+        /// <summary>이름 붙은 연출. 같은 이름의 Cubism 모션을 물리면 된다.</summary>
+        public void PlayAnimation(string animationId)
+        {
+            if (string.IsNullOrEmpty(animationId) || _motionController == null) return;
+            // 모션 에셋의 배치 규칙이 정해지면 여기서 animationId 로 찾아 재생한다.
+            // 그때까지는 이름만 받아 두고 아무 일도 하지 않는다 — 데이터는 미리 갖춰 둘 수 있게.
+        }
+
+        /// <summary>Cubism 은 idle 모션이 알아서 자세를 되돌리므로 할 일이 없다.</summary>
+        public void ResetPose() { }
 #else
         private bool _warned;
 
         public void SetExpression(ExpressionId expression) => WarnOnce();
 
         public void PlayReaction(ExpressionId expression) => WarnOnce();
+
+        public void PlayAnimation(string animationId) { }
+
+        public void ResetPose() { }
 
         private void WarnOnce()
         {

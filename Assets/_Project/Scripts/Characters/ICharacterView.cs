@@ -1,4 +1,4 @@
-using ItIsYou.Data;
+﻿using ItIsYou.Data;
 
 namespace ItIsYou.Characters
 {
@@ -22,6 +22,16 @@ namespace ItIsYou.Characters
         /// 놀람, 동공 떨림처럼 플레이어가 포착해야 하는 순간.
         /// </summary>
         void PlayReaction(ExpressionId expression);
+
+        /// <summary>
+        /// 이름 붙은 연출을 재생한다. 표정 전환으로는 담기지 않는 몸의 움직임 —
+        /// 동공 떨림, 어깨가 움츠러듦, 째려봄 같은 것. 모르는 이름이면 조용히 넘긴다.
+        /// 이름 목록은 <see cref="StageAnimation"/>.
+        /// </summary>
+        void PlayAnimation(string animationId);
+
+        /// <summary>연출로 어긋난 자세를 기본으로 되돌린다. 묶음이 바뀔 때 불러 준다.</summary>
+        void ResetPose();
 
         /// <summary>
         /// 지금 클릭해서 수집할 수 있는 상태인지 표시한다.

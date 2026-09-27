@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using ItIsYou.Clues;
 using ItIsYou.Data;
@@ -184,7 +184,7 @@ namespace ItIsYou.Interrogation
                 var used = GetUseCount(choice.Id);
                 result.Add(new ChoiceView(
                     choice,
-                    choice.ResolveLabel(_inventory.OwnedIds),
+                    choice.ResolveLabel(_inventory.OwnedIds, used, GetUseCount),
                     choice.HasUnseenPass(used),
                     used,
                     Tokens.CanAfford(choice.TokenCost)));
@@ -239,7 +239,9 @@ namespace ItIsYou.Interrogation
             if (IsOver || choice == null) return InterrogationStep.Nothing;
 
             var used = GetUseCount(choice.Id);
-            var pass = choice.GetPass(used);
+            // 앞서 무엇을 골랐는지에 따라 같은 회차가 다른 내용으로 갈릴 수 있다 ("B선택지 이후, 선택 시").
+            var pass = choice.GetPass(used, GetUseCount);
+            var main = pass?.Sequence;
 
             _choiceUseCount[choice.Id] = used + 1;
             ChoicesMade++;
@@ -251,17 +253,20 @@ namespace ItIsYou.Interrogation
                 for (int i = 0; i < unlocks.Count; i++) _unlockedChoiceIds.Add(unlocks[i]);
             }
 
-            // 이 선택지 뒤에 <시간 경과> 대사가 있으면 다음 침묵에서 그 줄이 나온다.
-            _pendingIdleFollowUp = choice.HasIdleFollowUp ? choice.IdleFollowUp : null;
+            // 이 회차 뒤에 <시간 경과> 대사가 있으면 다음 침묵에서 그 줄이 나온다.
+            // 회차 칸에 없으면 선택지의 기본값, 그것도 없으면 용의자의 일반 무반응 회차 대사로 넘어간다.
+            _pendingIdleFollowUp = pass != null && pass.HasIdleFollowUp ? pass.IdleFollowUp
+                                 : choice.HasIdleFollowUp ? choice.IdleFollowUp
+                                 : null;
             _pendingIdleFollowUpTone = choice.Tone;
 
             Tokens.Spend(choice.TokenCost, TimeTokenPool.SpendReason.Choice);
             Idle.Restart();
 
-            if (pass != null) TrustDelta += pass.TrustDelta;
+            if (main != null) TrustDelta += main.TrustDelta;
 
             var verdict = Pressure.RegisterChoice(choice.Tone);
-            return Resolve(pass, verdict, forcedEnd: pass != null && pass.EndsInterrogation);
+            return Resolve(main, verdict, forcedEnd: main != null && main.EndsInterrogation);
         }
 
         // ---------------------------------------------------------- 심문 오브젝트
