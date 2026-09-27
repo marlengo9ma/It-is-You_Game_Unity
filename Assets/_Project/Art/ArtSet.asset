@@ -13,14 +13,54 @@ MonoBehaviour:
   m_Name: ArtSet
   m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.ArtSet
   roomBackground: {fileID: 0}
+  roomBackgroundPlace:
+    offset: {x: 0, y: 0}
+    scale: 1
+    flipX: 0
+    preserveAspect: 0
   stageBackground: {fileID: 0}
+  stageBackgroundPlace:
+    offset: {x: 0, y: 0}
+    scale: 1
+    flipX: 0
+    preserveAspect: 0
   collectionStage: {fileID: 0}
-  endingBackground: {fileID: 0}
-  sepiTalk: {fileID: 0}
+  collectionStagePlace:
+    offset: {x: 0, y: 0}
+    scale: 1
+    flipX: 0
+    preserveAspect: 0
+  endingBackground: {fileID: 21300000, guid: cfeb0c957d3b4e04c83814273f8e4559, type: 3}
+  endingBackgroundPlace:
+    offset: {x: 0, y: 0}
+    scale: 1
+    flipX: 0
+    preserveAspect: 1
+  sepiTalk: {fileID: 21300000, guid: 08b21a8f29ff1e048a776bba4d3014f8, type: 3}
+  sepiTalkPlace:
+    offset: {x: 0, y: 0}
+    scale: 1
+    flipX: 0
+    preserveAspect: 1
   sepiInterrogation: {fileID: 0}
+  sepiStagePlace:
+    offset: {x: 0, y: 0}
+    scale: 1
+    flipX: 0
+    preserveAspect: 1
   sepiExpressions: []
   catTalk: {fileID: 0}
+  catTalkPlace:
+    offset: {x: 0, y: 0}
+    scale: 1
+    flipX: 0
+    preserveAspect: 1
   catStage: {fileID: 0}
+  catStagePlace:
+    offset: {x: 0, y: 0}
+    scale: 1
+    flipX: 0
+    preserveAspect: 1
   notebook: {fileID: 0}
   speechBubble: {fileID: 0}
   bubbleTail: {fileID: 0}
@@ -30,8 +70,18 @@ MonoBehaviour:
   iconSettings: {fileID: 0}
   iconLog: {fileID: 0}
   inkDrop: {fileID: 0}
-  titleBackground: {fileID: 0}
+  titleBackground: {fileID: 21300000, guid: 1848e02b852a3b249bed9265e4c1e4f7, type: 3}
+  titleBackgroundPlace:
+    offset: {x: 0, y: 0}
+    scale: 1
+    flipX: 0
+    preserveAspect: 1
   titleTypewriter: {fileID: 0}
+  titleTypewriterPlace:
+    offset: {x: 0, y: 0}
+    scale: 1
+    flipX: 0
+    preserveAspect: 1
   penCursor: {fileID: 0}
   eyeCursor: {fileID: 0}
   eyeCursorBlink: {fileID: 0}

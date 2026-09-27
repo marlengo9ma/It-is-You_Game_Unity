@@ -148,7 +148,7 @@ MonoBehaviour:
     endsInterrogation: 0
   cutsceneName: "\uC77C\uB7EC\uC2A4\uD2B8 \uCEF7\uC52C#1 \u2014 \uC8FC\uC778\uACF5
     \uB3C5\uBC31"
-  cutsceneImage: {fileID: 0}
+  cutsceneImage: {fileID: 21300000, guid: c84105da763069d4290e77ebfe3baff3, type: 3}
   cutscene:
     note: "\uC77C\uB7EC\uC2A4\uD2B8 \uCEF7\uC52C#1 \u2014 \uC8FC\uC778\uACF5 \uB3C5\uBC31"
     lines:

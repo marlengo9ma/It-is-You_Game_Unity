@@ -55,7 +55,13 @@ namespace ItIsYou.EditorTools
 
             // 아트 세트 (Assets/_Project/Art/ArtSet.asset) — 배경과 타자기 그림이 있으면 끼운다.
             var art = AssetDatabase.LoadAssetAtPath<ItIsYou.Data.ArtSet>("Assets/_Project/Art/ArtSet.asset");
-            if (art != null && art.titleBackground != null) { bg.sprite = art.titleBackground; bg.color = Color.white; }
+            if (art != null && art.titleBackground != null)
+            {
+                bg.sprite = art.titleBackground;
+                bg.color = Color.white;
+                bg.preserveAspect = art.titleBackgroundPlace.preserveAspect;
+                Place(bg.rectTransform, art.titleBackgroundPlace);
+            }
 
             // ---------------------------------------------------- 움직이는 배경
             var backdrop = K.UI("Backdrop", root);
@@ -89,7 +95,10 @@ namespace ItIsYou.EditorTools
             K.Stretch(typewriterTag.rectTransform);
             if (art != null && art.titleTypewriter != null)
             {
-                typewriter.sprite = art.titleTypewriter; typewriter.color = Color.white; typewriter.preserveAspect = true;
+                typewriter.sprite = art.titleTypewriter;
+                typewriter.color = Color.white;
+                typewriter.preserveAspect = art.titleTypewriterPlace.preserveAspect;
+                Place(typewriter.rectTransform, art.titleTypewriterPlace);
                 typewriterTag.gameObject.SetActive(false);
             }
 
@@ -187,6 +196,15 @@ namespace ItIsYou.EditorTools
         /// 컨트롤러가 폭만큼 왼쪽으로 밀면 두 번째 벌이 정확히 첫 번째 자리에 와서,
         /// 이음매 없이 계속 흐른다.
         /// </summary>
+        /// <summary>아트 세트의 자리 값(offset · scale · 좌우 반전)을 적용한다.</summary>
+        private static void Place(RectTransform rt, ItIsYou.Data.ArtSet.Placement place)
+        {
+            if (rt == null) return;
+            rt.anchoredPosition += place.offset;
+            var scale = place.Scale;
+            rt.localScale = new Vector3(place.flipX ? -scale : scale, scale, 1f);
+        }
+
         private static RectTransform DriftLayer(string name, Transform parent, Sprite puff,
             float centerY, float height, Color color)
         {
