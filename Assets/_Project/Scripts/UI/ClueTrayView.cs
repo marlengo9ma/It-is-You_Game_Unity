@@ -72,6 +72,13 @@ namespace ItIsYou.UI
         private Coroutine _grace;
         private bool _tooltipOpen;
 
+        /// <summary>
+        /// 타이머를 멈춰 달라고 이미 알렸는가. 열람창을 닫자마자 다른 단서를 열면
+        /// 유예 코루틴이 취소되면서 '다시 돌려라'가 영영 오지 않는다 — 그때 또 '멈춰라'를 보내면
+        /// 짝이 어긋나 타이머가 영구히 멈춘다. 그래서 이 한 개로 짝을 맞춘다.
+        /// </summary>
+        private bool _timerHeld;
+
         /// <summary>열람창이 열렸다. 무반응 타이머를 멈출 시점.</summary>
         public event Action TooltipOpened;
 
@@ -165,11 +172,13 @@ namespace ItIsYou.UI
             if (tooltipRoot != null) tooltipRoot.SetActive(true);
             if (tooltipScroll != null) tooltipScroll.verticalNormalizedPosition = 1f;
 
+            // 닫은 직후의 유예 중에 다시 열었다면, 그 유예는 없던 일이 된다.
             if (_grace != null) { StopCoroutine(_grace); _grace = null; }
 
-            if (!_tooltipOpen)
+            _tooltipOpen = true;
+            if (!_timerHeld)
             {
-                _tooltipOpen = true;
+                _timerHeld = true;
                 TooltipOpened?.Invoke();
             }
 
@@ -237,7 +246,7 @@ namespace ItIsYou.UI
             _grace = isActiveAndEnabled ? StartCoroutine(GraceRoutine()) : null;
 
             // 비활성 상태라 코루틴을 못 돌리면 유예 없이 바로 알린다.
-            if (_grace == null) TooltipClosed?.Invoke();
+            if (_grace == null) ReleaseTimer();
         }
 
         private IEnumerator GraceRoutine()
@@ -246,6 +255,14 @@ namespace ItIsYou.UI
                 yield return new WaitForSecondsRealtime(tooltipGraceSeconds);
 
             _grace = null;
+            ReleaseTimer();
+        }
+
+        /// <summary>멈춰 달라고 했던 것을 한 번만 되돌린다.</summary>
+        private void ReleaseTimer()
+        {
+            if (!_timerHeld) return;
+            _timerHeld = false;
             TooltipClosed?.Invoke();
         }
 

@@ -63,8 +63,8 @@ namespace ItIsYou.UI
         [Tooltip("심문 중의 초당 출력 글자 수. 실제로 말하는 속도에 맞춰 느리게.")]
         [SerializeField] private float speakingCharactersPerSecond = 16f;
 
-        [Tooltip("문장부호에서 추가로 쉬는 시간(초).")]
-        [SerializeField] private float punctuationPause = 0.12f;
+        [Tooltip("말줄임표(… 또는 온점 3개 이상)에서만 쉬는 시간(초). 쉼표·마침표에서는 쉬지 않는다 — 한 문장이 토막나 보이기 때문.")]
+        [SerializeField] private float ellipsisPause = 0.22f;
 
         [Header("빨리 감기")]
         [Tooltip("좌클릭을 이만큼 유지하면 빨리 감기가 걸린다(초).")]
@@ -73,8 +73,8 @@ namespace ItIsYou.UI
         [Tooltip("빨리 감기 배속.")]
         [SerializeField] private float fastForwardMultiplier = 2f;
 
-        [Tooltip("넘기기가 막힌 구간에서 한 줄이 끝난 뒤 다음 줄까지 두는 시간(초).")]
-        [SerializeField] private float autoAdvanceSeconds = 1.1f;
+        [Tooltip("심문처럼 넘길 수 없는 구간에서, 대사가 전부 출력된 뒤 다음 줄로 넘어가기까지 두는 시간(초).")]
+        [SerializeField] private float interrogationHoldSeconds = 2f;
 
         [Header("화자 표기")]
         [SerializeField] private string protagonistName = "나";
@@ -465,7 +465,7 @@ namespace ItIsYou.UI
             {
                 // 심문에서는 넘길 수 없다. 읽을 만큼만 두고 알아서 다음 줄로 간다.
                 // 리액션을 포착할 창이 이 사이에도 살아 있어야 하므로 코루틴은 건드리지 않는다.
-                var hold = autoAdvanceSeconds;
+                var hold = interrogationHoldSeconds;
                 var t = 0f;
                 while (t < hold)
                 {
@@ -479,6 +479,24 @@ namespace ItIsYou.UI
             CloseReactionWindow();
 
             if (ActiveIndicator != null) ActiveIndicator.SetActive(false);
+        }
+
+        /// <summary>
+        /// 이 글자가 말줄임표의 마지막 글자인가. '…' 한 글자이거나, 온점이 3개 이상 이어진 것의 끝.
+        /// 속마음 앞에 붙는 '..' (두 개) 는 쉬지 않는다 — 줄 첫머리에서 멈칫하면 어색하다.
+        /// </summary>
+        private static bool IsEllipsisEnd(TMPro.TMP_CharacterInfo[] info, int index, int total)
+        {
+            var c = info[index].character;
+            if (c == '…') return true;
+            if (c != '.') return false;
+
+            // 뒤에 온점이 더 있으면 아직 끝이 아니다.
+            if (index + 1 < total && info[index + 1].character == '.') return false;
+
+            var run = 0;
+            for (var i = index; i >= 0 && info[i].character == '.'; i--) run++;
+            return run >= 3;
         }
 
         private IEnumerator Typewriter()
@@ -507,12 +525,10 @@ namespace ItIsYou.UI
                 var cps = CharsPerSecond;
                 if (_skipping && HasSeen(_currentLine)) cps *= Mathf.Max(1f, skipMultiplier);
                 var wait = cps <= 0f ? 0f : 1f / cps;
-                if (shown - 1 < total)
-                {
-                    var c = bodyLabel.textInfo.characterInfo[shown - 1].character;
-                    if (c == '.' || c == ',' || c == '?' || c == '!' || c == '…')
-                        wait += _fastForward ? punctuationPause / Mathf.Max(1f, fastForwardMultiplier) : punctuationPause;
-                }
+                // 말줄임표에서만 잠깐 숨을 고른다.
+                // 쉼표와 마침표마다 쉬면 한 문장이 토막토막 끊겨 보인다.
+                if (shown - 1 < total && IsEllipsisEnd(bodyLabel.textInfo.characterInfo, shown - 1, total))
+                    wait += _fastForward ? ellipsisPause / Mathf.Max(1f, fastForwardMultiplier) : ellipsisPause;
 
                 if (wait > 0f) yield return new WaitForSecondsRealtime(wait);
             }

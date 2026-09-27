@@ -40,8 +40,12 @@ namespace ItIsYou.EditorTools
         public const float BandTop = TopBarBottom - Gap;               // -152
 
         // ---- 가로 구획 ----
-        /// <summary>우측 1/3 — 단서·정황 목록과 기능 아이콘의 자리. 화면 끝까지 붙는다. (2026-09-22 스케치)</summary>
-        public const float SideWidth = 640f;      // 80u = 1920 / 3
+        /// <summary>
+        /// 우측 목록(단서·정황·가설)과 기능 아이콘의 자리. 화면 끝까지 붙는다. (2026-09-22 스케치)
+        /// 2026-09-27: 1/3(640) → 3/10(576). 2/7(548.6)은 8의 배수가 아니라 격자가 깨진다.
+        /// 안쪽 여백 48×2 를 빼면 480 이 남아, 128 칸 3열 + 간격 24×2 = 432 가 그대로 들어간다.
+        /// </summary>
+        public const float SideWidth = 576f;      // 72u = 1920 × 3/10
         public const float ChoiceWidth = 352f;    // 44u — 스케치의 선택지 폭
         public const float ClueWidth = SideWidth;
 
