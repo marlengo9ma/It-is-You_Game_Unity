@@ -30,6 +30,10 @@ namespace ItIsYou.Core
         [Header("표시")]
         [SerializeField] private TMP_Text promptLabel;
 
+        [Header("추론으로 돌아가기")]
+        [Tooltip("「추론 진행하기」 — 추론에서 「돌아가기」로 넘어왔을 때만 보인다. 대사창 오른쪽 위.")]
+        [SerializeField] private UnityEngine.UI.Button deductionButton;
+
         [Header("가설 고르기 (2차 심문)")]
         [Tooltip("상대를 고른 뒤 뜨는 가설 목록 덧창.")]
         [SerializeField] private GameObject hypothesisRoot;
@@ -84,6 +88,9 @@ namespace ItIsYou.Core
         /// <summary>플레이어가 심문할 상대를 골랐다.</summary>
         public event Action<SuspectDefinition> Picked;
 
+        /// <summary>「추론 진행하기」 — 심문 없이 추론으로 다시 들어간다.</summary>
+        public event Action DeductionRequested;
+
         /// <summary>고를 수 없는 상대를 눌렀다. (사유)</summary>
         public event Action<string> Refused;
 
@@ -100,6 +107,23 @@ namespace ItIsYou.Core
             }
             if (promptLabel != null) promptLabel.text = string.Empty;
             if (hypothesisRoot != null) hypothesisRoot.SetActive(false);
+            if (deductionButton != null)
+            {
+                deductionButton.onClick.AddListener(OnDeductionClicked);
+                deductionButton.gameObject.SetActive(false);
+            }
+        }
+
+        private bool _allowDeduction;
+
+        private void OnDeductionClicked()
+        {
+            if (!_running || !_allowDeduction) return;
+            _running = false;
+            SetArmed(false);
+            if (promptLabel != null) promptLabel.text = string.Empty;
+            deductionButton.gameObject.SetActive(false);
+            DeductionRequested?.Invoke();
         }
 
         private void OnDestroy()
@@ -120,8 +144,10 @@ namespace ItIsYou.Core
         /// finishedIds 에 든 상대는 '이미 이야기를 마쳤다' 로 잠긴다.
         /// </summary>
         public void BeginRound(ChapterDefinition chapter, IReadOnlyList<SuspectDefinition> suspects,
-            ISet<string> finishedIds, string prompt, bool skipTalk)
+            ISet<string> finishedIds, string prompt, bool skipTalk, bool allowDeduction = false)
         {
+            _allowDeduction = allowDeduction;
+            if (deductionButton != null) deductionButton.gameObject.SetActive(false);
             _chapter = chapter;
             _suspects = suspects;
             _finished = finishedIds;
@@ -150,6 +176,7 @@ namespace ItIsYou.Core
 
             if (promptLabel != null) promptLabel.text = _prompt ?? string.Empty;
             SetArmed(true);
+            if (deductionButton != null) deductionButton.gameObject.SetActive(_allowDeduction);
         }
 
         private void BindCards()
@@ -183,6 +210,7 @@ namespace ItIsYou.Core
             _running = false;
             SetArmed(false);
             if (promptLabel != null) promptLabel.text = string.Empty;
+            if (deductionButton != null) deductionButton.gameObject.SetActive(false);
             Picked?.Invoke(suspect);
         }
 

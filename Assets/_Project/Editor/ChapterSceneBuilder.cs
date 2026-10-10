@@ -306,7 +306,7 @@ namespace ItIsYou.EditorTools
             cineTagRt.anchorMin = V(0, 0); cineTagRt.anchorMax = V(0, 0); cineTagRt.pivot = V(0, 0);
             cineTagRt.anchoredPosition = V(L.Gutter + 56f, 268f);
             cineTagRt.sizeDelta = V(320f, 60f);
-            cineTag.sprite = _uiSprite; cineTag.type = Image.Type.Sliced;
+            cineTag.sprite = EnsureBrushSprite(); cineTag.type = Image.Type.Sliced;   // 아트 세트에 붓자국이 없으면 만들어 둔 흰 붓자국
             cineTag.raycastTarget = false;
             Art(cineTag, _art.nameTagBrush, false, keepColor: true);   // 흰 붓자국이 화자 색으로 물든다
             var cineTagLayout = cineTag.gameObject.AddComponent<HorizontalLayoutGroup>();
@@ -814,11 +814,18 @@ namespace ItIsYou.EditorTools
             Anchor(dLocation.rectTransform, V(0, 0), V(0, 0), V(1440, 944), V(1880, 980));
 
             // ---- 오른쪽 끝: 가설 탭 ----
+            // 2026-10-11 2차: 칸은 늘 세 개 — 이 챕터에서 못 쓰는 칸은 빗금. 탭마다 쓰레기통, 맨 아래 「추리를 마친다」.
+            // 묶음 하나로 둬야 가설 교체 때 어두운 막 위로 통째로 올릴 수 있다.
+            var hypList = UI("HypothesisList", dFrameRt);
+            var hypListRt = hypList.GetComponent<RectTransform>();
+            Stretch(hypListRt);
+            var hatchSprite = EnsureHatchSprite();
+            var trashSprite = EnsureTrashSprite();
             var hypTabs = new List<DeductionDossierView.HypothesisTab>();
             for (int i = 0; i < 3; i++)
             {
                 var top = 792f - i * 128f;
-                var tabGo = UI("HypothesisTab_" + (i + 1), dFrameRt);
+                var tabGo = UI("HypothesisTab_" + (i + 1), hypListRt);
                 var tabRt = tabGo.GetComponent<RectTransform>();
                 Anchor(tabRt, V(0, 0), V(0, 0), V(1608, top - 100), V(1916, top));
 
@@ -847,18 +854,47 @@ namespace ItIsYou.EditorTools
                 tabTitle.overflowMode = TextOverflowModes.Ellipsis;
                 tabTitle.textWrappingMode = TextWrappingModes.Normal;
                 tabTitle.lineSpacing = -8f;
-                Anchor(tabTitle.rectTransform, V(0, 0), V(1, 1), V(54, 0), V(-12, 0));
+                Anchor(tabTitle.rectTransform, V(0, 0), V(1, 1), V(54, 0), V(-50, 0));
+
+                // 쓰레기통 — 막대 오른쪽 끝. 막대의 버튼보다 위에 있어 먼저 눌린다.
+                var trashImg = Img("Trash", bar.rectTransform, paperInk);
+                Anchor(trashImg.rectTransform, V(1, 0.5f), V(1, 0.5f), V(-44, -17), V(-10, 17));
+                trashImg.sprite = trashSprite;
+                trashImg.type = Image.Type.Simple;
+                trashImg.preserveAspect = true;
+                var trashBtn = trashImg.gameObject.AddComponent<Button>();
+                trashBtn.targetGraphic = trashImg;
+                var trashColors = trashBtn.colors;
+                trashColors.highlightedColor = new Color(2.2f, 0.9f, 0.8f, 1f);   // 올리면 붉게
+                trashColors.pressedColor = new Color(1.6f, 0.5f, 0.4f, 1f);
+                trashColors.colorMultiplier = 2f;
+                trashBtn.colors = trashColors;
+
+                // 빗금 — 이 챕터에서 쓸 수 없는 칸.
+                var hatch = Img("Hatch", bar.rectTransform, new Color32(0x2B, 0x22, 0x1C, 0xFF));
+                Stretch(hatch.rectTransform);
+                hatch.sprite = hatchSprite;
+                hatch.type = Image.Type.Simple;
+                hatch.raycastTarget = false;
+                hatch.gameObject.SetActive(false);
 
                 hypTabs.Add(new DeductionDossierView.HypothesisTab
                 {
-                    root = tabRt, bar = bar, barFrame = barFrame, title = tabTitle, lens = lens, button = barBtn
+                    root = tabRt, bar = bar, barFrame = barFrame, title = tabTitle, lens = lens, button = barBtn,
+                    trash = trashBtn, hatch = hatch.gameObject, pill = pillLabel
                 });
             }
+
+            // 「추리를 마친다」 — 가설 목록 맨 아래, 한 칸 띄워서.
+            var endDeductBtn = PlainButton("EndDeduction", hypListRt, "추리를 마친다", 24f);
+            Anchor(endDeductBtn.Item1, V(0, 0), V(0, 0), V(1628, 340), V(1916, 400));
+            endDeductBtn.Item1.GetComponent<Image>().color = new Color32(0x5A, 0x2E, 0x34, 0xFF);
+            endDeductBtn.Item1.Find("Label").GetComponent<TMP_Text>().color = deskInk;
 
             // ---- 어둡게 · 가운데 한 줄 · 지우기 막대 ----
             var scrimImg = Img("Scrim", dFrameRt, new Color(0f, 0f, 0f, 0.6f));
             Anchor(scrimImg.rectTransform, V(0, 0), V(1, 1), V(-2000, -2000), V(2000, 2000));   // 판 밖까지 — 화면 전체
-            scrimImg.raycastTarget = false;
+            scrimImg.raycastTarget = true;   // 덧창 · 교체 때 그 아래를 막는다 (평소엔 CanvasGroup 이 꺼 둔다)
             var scrimGroup = scrimImg.gameObject.AddComponent<CanvasGroup>();
             scrimGroup.alpha = 0f; scrimGroup.blocksRaycasts = false; scrimGroup.interactable = false;
 
@@ -874,15 +910,70 @@ namespace ItIsYou.EditorTools
             var bannerGroup = bannerGo.AddComponent<CanvasGroup>();
             bannerGroup.alpha = 0f; bannerGroup.blocksRaycasts = false; bannerGroup.interactable = false;
 
-            var replaceBar = Img("ReplaceBar", dFrameRt, new Color32(0x16, 0x10, 0x0D, 0xF2));
-            Anchor(replaceBar.rectTransform, V(0, 0), V(0, 0), V(440, 28), V(1480, 108));
-            replaceBar.sprite = _uiSprite; replaceBar.type = Image.Type.Sliced;
-            var replacePrompt = Text("Prompt", replaceBar.rectTransform, "", 22f, deskInk, TextAlignmentOptions.Left);
-            replacePrompt.textWrappingMode = TextWrappingModes.Normal;
-            Anchor(replacePrompt.rectTransform, V(0, 0), V(1, 1), V(24, 0), V(-232, 0));
-            var replaceCancel = PlainButton("Cancel", replaceBar.rectTransform, "새 가설을 버린다", 20f);
-            Anchor(replaceCancel.Item1, V(1, 0.5f), V(1, 0.5f), V(-216, -26), V(-16, 26));
-            replaceBar.gameObject.SetActive(false);
+            // ---- 가설 교체 — 가운데 새 가설 카드 + 교체 취소 (막 위. 우측 가설 목록도 그때만 막 위로 올라온다) ----
+            var replaceRoot = UI("ReplaceOverlay", dFrameRt);
+            Stretch(replaceRoot.GetComponent<RectTransform>());
+            var replaceRootRt = replaceRoot.GetComponent<RectTransform>();
+            var replacePrompt = Text("Prompt", replaceRootRt, "", 34f, deskInk, TextAlignmentOptions.Center);
+            replacePrompt.fontStyle = FontStyles.Bold;
+            Anchor(replacePrompt.rectTransform, V(0, 0), V(0, 0), V(360, 712), V(1560, 776));
+
+            var newCard = UI("NewHypothesis", replaceRootRt);
+            var newCardRt = newCard.GetComponent<RectTransform>();
+            Anchor(newCardRt, V(0, 0), V(0, 0), V(680, 520), V(1240, 676));
+            var newPill = Img("Pill", newCardRt, new Color32(0x3A, 0x2F, 0x28, 0xFF));
+            Anchor(newPill.rectTransform, V(0, 0), V(0, 0), V(0, 96), V(184, 156));
+            newPill.sprite = _uiSprite; newPill.type = Image.Type.Sliced;
+            newPill.raycastTarget = false;
+            var newPillLabel = Text("Label", newPill.rectTransform, "새 가설", 28f, deskInk, TextAlignmentOptions.Center);
+            Stretch(newPillLabel.rectTransform);
+            var newFrame = Img("BarFrame", newCardRt, linkRed);
+            Anchor(newFrame.rectTransform, V(0, 0), V(0, 0), V(20, -6), V(560, 98));
+            newFrame.sprite = _uiSprite; newFrame.type = Image.Type.Sliced;
+            newFrame.raycastTarget = false;
+            var newBar = Img("Bar", newCardRt, paper);
+            Anchor(newBar.rectTransform, V(0, 0), V(0, 0), V(26, 0), V(554, 92));
+            newBar.sprite = _uiSprite; newBar.type = Image.Type.Sliced;
+            newBar.raycastTarget = false;
+            var newLens = Img("Lens", newBar.rectTransform, paperInk);
+            Anchor(newLens.rectTransform, V(0, 0.5f), V(0, 0.5f), V(16, -27), V(70, 27));
+            newLens.sprite = _art.iconRecord != null ? _art.iconRecord : AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
+            newLens.preserveAspect = true;
+            newLens.raycastTarget = false;
+            var newTitle = Text("Title", newBar.rectTransform, "", 26f, paperInk, TextAlignmentOptions.Left);
+            newTitle.textWrappingMode = TextWrappingModes.Normal;
+            newTitle.overflowMode = TextOverflowModes.Ellipsis;
+            newTitle.lineSpacing = -6f;
+            Anchor(newTitle.rectTransform, V(0, 0), V(1, 1), V(86, 0), V(-20, 0));
+
+            var replaceCancel = PlainButton("Cancel", replaceRootRt, "교체 취소", 26f);
+            Anchor(replaceCancel.Item1, V(0, 0), V(0, 0), V(840, 404), V(1080, 468));
+            replaceCancel.Item1.GetComponent<Image>().color = new Color32(0x5A, 0x2E, 0x34, 0xFF);
+            replaceCancel.Item1.Find("Label").GetComponent<TMP_Text>().color = deskInk;
+            replaceRoot.SetActive(false);
+
+            // ---- 가설 지우기 경고 (쓰레기통) ----
+            var confirmRoot = UI("DeleteConfirm", dFrameRt);
+            Stretch(confirmRoot.GetComponent<RectTransform>());
+            var confirmPanel = Img("Panel", confirmRoot.transform, new Color32(0x16, 0x10, 0x0D, 0xF6));
+            Anchor(confirmPanel.rectTransform, V(0, 0), V(0, 0), V(640, 400), V(1280, 680));
+            confirmPanel.sprite = _uiSprite; confirmPanel.type = Image.Type.Sliced;
+            var confirmOutline = confirmPanel.gameObject.AddComponent<Outline>();
+            confirmOutline.effectColor = new Color32(0x8E, 0x1B, 0x16, 0xFF);
+            confirmOutline.effectDistance = new Vector2(3f, -3f);
+            var confirmText = Text("Message", confirmPanel.rectTransform, "", 28f, deskInk, TextAlignmentOptions.Center);
+            confirmText.textWrappingMode = TextWrappingModes.Normal;
+            confirmText.lineSpacing = 10f;
+            Anchor(confirmText.rectTransform, V(0, 0), V(1, 1), V(40, 112), V(-40, -32));
+            var confirmYes = PlainButton("Delete", confirmPanel.rectTransform, "지우기", 24f);
+            Anchor(confirmYes.Item1, V(0.5f, 0), V(0.5f, 0), V(-196, 32), V(-20, 92));
+            confirmYes.Item1.GetComponent<Image>().color = new Color32(0x8E, 0x1B, 0x16, 0xFF);
+            confirmYes.Item1.Find("Label").GetComponent<TMP_Text>().color = deskInk;
+            var confirmNo = PlainButton("Cancel", confirmPanel.rectTransform, "취소", 24f);
+            Anchor(confirmNo.Item1, V(0.5f, 0), V(0.5f, 0), V(20, 32), V(196, 92));
+            confirmNo.Item1.GetComponent<Image>().color = new Color32(0x3A, 0x2F, 0x28, 0xFF);
+            confirmNo.Item1.Find("Label").GetComponent<TMP_Text>().color = deskInk;
+            confirmRoot.SetActive(false);
 
             var dossierView = deductScreen.AddComponent<DeductionDossierView>();
             dossierView.Set("group", deductGroup)
@@ -915,6 +1006,8 @@ namespace ItIsYou.EditorTools
                        .Set("stampLabel", stampLabel)
                        .Set("hintLabel", dHint)
                        .Set("backButton", backBtn.Item2)
+                       .Set("endButton", endDeductBtn.Item2)
+                       .Set("hypothesisList", hypListRt)
                        .Set("ink", inkView)
                        .Set("clockLabel", dClock)
                        .Set("locationLabel", dLocation)
@@ -922,9 +1015,14 @@ namespace ItIsYou.EditorTools
                        .Set("scrim", scrimGroup)
                        .Set("banner", bannerGroup)
                        .Set("bannerLabel", bannerLabel)
-                       .Set("replaceBar", replaceBar.gameObject)
+                       .Set("replaceRoot", replaceRoot)
                        .Set("replacePrompt", replacePrompt)
-                       .Set("replaceCancel", replaceCancel.Item2);
+                       .Set("replaceTitle", newTitle)
+                       .Set("replaceCancel", replaceCancel.Item2)
+                       .Set("confirmRoot", confirmRoot)
+                       .Set("confirmText", confirmText)
+                       .Set("confirmYes", confirmYes.Item2)
+                       .Set("confirmNo", confirmNo.Item2);
 
             // ======================================================= 게임오버 화면
             // 컷씬 #GameOver 자리. 복귀 지점은 실패한 페이즈의 시작(조합 실패 → 조합 시작).
@@ -1039,6 +1137,14 @@ namespace ItIsYou.EditorTools
             Anchor(selectPrompt.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 14), V(0, -L.Unit * 7));
 
             var suspectCards = BuildSuspectCards(selectRt);
+
+            // 「추론 진행하기」 — 추론에서 「돌아가기」로 넘어왔을 때만. 대사창(수첩) 오른쪽 끝 바로 위.
+            var toDeductionBtn = PlainButton("ToDeduction", selectRt, "추론 진행하기", T.Choice);
+            var toDeductionBottom = L.Unit * 30f - L.BandBottom + 16f;
+            Anchor(toDeductionBtn.Item1, V(0, 0), V(0, 0), V(1064f - 300f, toDeductionBottom), V(1064f, toDeductionBottom + 64f));
+            toDeductionBtn.Item1.GetComponent<Image>().color = new Color32(0x52, 0x3C, 0x74, 0xFF);
+            toDeductionBtn.Item1.Find("Label").GetComponent<TMP_Text>().color = new Color32(0xF2, 0xEA, 0xDC, 0xFF);
+            toDeductionBtn.Item1.gameObject.SetActive(false);
 
             // 2차 심문 — 상대를 고른 뒤 들고 갈 가설을 고르는 덧창.
             var hypPickRoot = UI("HypothesisPick", selectRt);
@@ -1329,6 +1435,7 @@ namespace ItIsYou.EditorTools
             selectController.Set("dialogue", presenter)
                             .Set("cards", suspectCards)
                             .Set("promptLabel", selectPrompt)
+                            .Set("deductionButton", toDeductionBtn.Item2)
                             .Set("hypothesisRoot", hypPickRoot)
                             .Set("hypothesisPrompt", hypPickPrompt)
                             .Set("hypothesisContainer", hypPickListRt)
@@ -1964,6 +2071,112 @@ namespace ItIsYou.EditorTools
             return AssetDatabase.LoadAssetAtPath<Sprite>(path);
         }
 
+
+        // ---------------------------------------------------------------- 만들어 두는 그림 (아트가 오면 아트 세트가 덮는다)
+
+        /// <summary>흰 그림을 코드로 그려 PNG 스프라이트로 저장한다. 이미 있으면 그것을 쓴다(지우면 다시 그린다).</summary>
+        private static Sprite EnsureGeneratedSprite(string file, int w, int h, System.Func<int, int, float> alpha, Vector4 border)
+        {
+            const string folder = "Assets/_Project/Art/Generated";
+            var path = folder + "/" + file;
+            var existing = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+            if (existing != null) return existing;
+
+            Ed.EnsureFolder(folder);
+            var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            var px = new Color32[w * h];
+            for (var y = 0; y < h; y++)
+                for (var x = 0; x < w; x++)
+                    px[y * w + x] = new Color32(255, 255, 255, (byte)Mathf.RoundToInt(Mathf.Clamp01(alpha(x, y)) * 255f));
+            tex.SetPixels32(px);
+            tex.Apply();
+            System.IO.File.WriteAllBytes(path, tex.EncodeToPNG());
+            Object.DestroyImmediate(tex);
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+
+            var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (importer != null)
+            {
+                importer.textureType = TextureImporterType.Sprite;
+                importer.spriteImportMode = SpriteImportMode.Single;
+                importer.mipmapEnabled = false;
+                importer.wrapMode = TextureWrapMode.Clamp;
+                importer.alphaIsTransparency = true;
+                importer.spriteBorder = border;
+                importer.SaveAndReimport();
+            }
+            return AssetDatabase.LoadAssetAtPath<Sprite>(path);
+        }
+
+        /// <summary>부드러운 1차원 잡음 — 값은 0..1. 같은 seed 면 같은 붓자국이 나온다.</summary>
+        private static float[] SmoothNoise(int length, int seed, int step)
+        {
+            var rnd = new System.Random(seed);
+            var keys = new float[length / step + 3];
+            for (var i = 0; i < keys.Length; i++) keys[i] = (float)rnd.NextDouble();
+            var outv = new float[length];
+            for (var i = 0; i < length; i++)
+            {
+                var f = i / (float)step;
+                var k = Mathf.FloorToInt(f);
+                outv[i] = Mathf.Lerp(keys[k], keys[k + 1], Mathf.SmoothStep(0f, 1f, f - k));
+            }
+            return outv;
+        }
+
+        /// <summary>
+        /// 이름표 붓자국 — 흰색이라 화자 색으로 물든다(주인공 「당신」 = 보라). 가로로만 늘어나도록 양 끝을 9-slice 로 고정.
+        /// </summary>
+        private static Sprite EnsureBrushSprite()
+        {
+            if (_art != null && _art.nameTagBrush != null) return _art.nameTagBrush;
+            const int w = 512, h = 128;
+            var top = SmoothNoise(w, 11, 9);
+            var bottom = SmoothNoise(w, 23, 7);
+            var start = SmoothNoise(h, 37, 6);
+            var fray = SmoothNoise(h, 41, 3);
+            var streak = SmoothNoise(h, 53, 2);
+            return EnsureGeneratedSprite("NameTagBrush.png", w, h, (x, y) =>
+            {
+                var yTop = h * (0.90f - 0.08f * top[x]);
+                var yBot = h * (0.10f + 0.08f * bottom[x]);
+                var xL = 6f + 26f * start[y];
+                var xR = w - 6f - 90f * fray[y] * fray[y];
+                var a = Mathf.Clamp01(Mathf.Min(yTop - y, y - yBot) / 1.5f) * Mathf.Clamp01(Mathf.Min(x - xL, xR - x) / 1.5f);
+                a *= 0.86f + 0.14f * streak[y];                           // 결
+                if (streak[y] < 0.35f && x > xR - 70f) a *= Mathf.Clamp01((xR - x) / 70f);   // 마른 붓 끝
+                return a;
+            }, new Vector4(56f, 0f, 96f, 0f));
+        }
+
+        /// <summary>쓸 수 없는 가설 칸의 빗금.</summary>
+        private static Sprite EnsureHatchSprite()
+            => EnsureGeneratedSprite("HatchLocked.png", 288, 60, (x, y) =>
+            {
+                var d = (x + y) % 16;
+                var line = d < 5 ? 0.85f : 0f;
+                return Mathf.Max(line, 0.22f);
+            }, Vector4.zero);
+
+        /// <summary>쓰레기통 아이콘(흰색 — 버튼 색으로 물든다).</summary>
+        private static Sprite EnsureTrashSprite()
+            => EnsureGeneratedSprite("IconTrash.png", 64, 64, (x, y) =>
+            {
+                // 뚜껑 + 손잡이
+                if (y >= 45 && y <= 50 && x >= 12 && x <= 52) return 1f;
+                if (y > 50 && y <= 56 && x >= 25 && x <= 39 && !(y <= 53 && x >= 29 && x <= 35)) return 1f;
+                // 몸통 — 아래가 좁은 사다리꼴, 세로 홈 셋
+                if (y >= 6 && y <= 42)
+                {
+                    var k = (y - 6) / 36f;
+                    var l = Mathf.Lerp(21f, 17f, k);
+                    var r = Mathf.Lerp(43f, 47f, k);
+                    if (x < l || x > r) return 0f;
+                    if (y >= 12 && y <= 36 && (Mathf.Abs(x - 26) <= 1 || Mathf.Abs(x - 32) <= 1 || Mathf.Abs(x - 38) <= 1)) return 0f;
+                    return 1f;
+                }
+                return 0f;
+            }, Vector4.zero);
 
         private static Vector2 V(float x, float y) => new Vector2(x, y);
 

@@ -139,74 +139,124 @@ namespace ItIsYou.Core
             while (!collectionDone) yield return null;
             investigation.ReadyToAdvance -= OnReady;
 
-            // ---- 누구부터 심문할지 고른다 ----
-            // 두 사람을 자리에 앉히는 대화도 이 화면에서 이어진다.
-            SuspectDefinition picked = null;
-            if (suspectSelect != null)
-            {
-                void OnPicked(SuspectDefinition s) => picked = s;
-                suspectSelect.Picked += OnPicked;
-
-                yield return Transition(GamePhase.SuspectSelect);
-                suspectSelect.Begin(chapter);
-
-                while (picked == null) yield return null;
-                suspectSelect.Picked -= OnPicked;
-            }
-
-            // ---- 1차 심문 ----
-            // 고른 상대만 상대한다. 나머지 인물의 심문 스크립트는 아직 없다.
-            var round = picked != null
-                ? new List<SuspectDefinition> { picked }
-                : new List<SuspectDefinition>(chapter.FirstRoundSuspects);
-
-            yield return RunFromInterrogation(round);
+            // ---- 1차 인물 선택 → 1차 심문 → 추론 ----
+            // 추론의 「돌아가기」로 인물 선택에 돌아와 아직 심문하지 않은 사람을 고를 수 있고,
+            // 인물 선택의 「추론 진행하기」로 같은 추론 상태에 다시 들어간다 (2026-10-11 제작자 지시).
+            yield return RunFirstRoundAndDeduction(null, startAtDeduction: false, preInterrogated: null);
         }
 
-        /// <summary>1차 심문 → 조합 → 2차 심문 → 지목 → 결말.</summary>
-        private IEnumerator RunFromInterrogation(List<SuspectDefinition> round)
+        /// <summary>
+        /// 1차 인물 선택 · 1차 심문 · 추론을 오간다. 추리를 마치면 2차 심문 → 지목 → 결말.
+        /// firstPick 이 있으면 인물 선택을 건너뛰고 그 사람부터, startAtDeduction 이면 추론부터(디버그).
+        /// </summary>
+        private IEnumerator RunFirstRoundAndDeduction(SuspectDefinition firstPick, bool startAtDeduction, IEnumerable<string> preInterrogated)
         {
-            yield return Transition(GamePhase.Interrogation1);
-            yield return RunInterrogationRound(round, 1);
-            if (Session.IsGameOver)
-            {
-                yield return ShowGameOver(allowRetry: false, retryText: null);
-                yield break;
-            }
+            var interrogated = new HashSet<string>();
+            if (preInterrogated != null)
+                foreach (var id in preInterrogated) if (!string.IsNullOrEmpty(id)) interrogated.Add(id);
 
-            yield return RunFromDeduction(round);
-        }
+            var talkDone = firstPick != null || startAtDeduction;   // 두 사람을 앉히는 대화는 처음 한 번만 (디버그 점프는 이미 지난 것으로)
+            var deductionEntered = false;  // 한 번이라도 추론에 들어갔으면 인물 선택에 「추론 진행하기」가 보인다
+            var resumeDeduction = false;   // 「돌아가기」로 떠난 추론을 이어 간다
+            var next = firstPick;
+            var toDeduction = startAtDeduction;
 
-        /// <summary>단서 조합 → 2차 심문 → 지목 → 결말. 디버그 점프의 진입점이기도 하다.</summary>
-        private IEnumerator RunFromDeduction(List<SuspectDefinition> round)
-        {
-            // ---- 단서 조합 ----
-            // 잉크가 다 마른 채 또 틀리면 자기 비하 게임오버. 게임오버는 남되, 복귀 지점은 조합의 시작이다.
             while (true)
             {
-                yield return Transition(GamePhase.Deduction);
-                var deductionDone = false;
-                var deductionOk = false;
-                void OnDeduced(bool ok) { deductionOk = ok; deductionDone = true; }
-
-                if (deduction != null)
+                if (!toDeduction)
                 {
-                    deduction.Finished += OnDeduced;
-                    deduction.Begin(chapter, Session.Clues);
-                    while (!deductionDone) yield return null;
-                    deduction.Finished -= OnDeduced;
+                    if (next == null)
+                    {
+                        if (suspectSelect == null)
+                        {
+                            next = FirstLeftToInterrogate(interrogated);
+                            if (next == null) { toDeduction = true; continue; }
+                        }
+                        else
+                        {
+                            SuspectDefinition picked = null;
+                            var wantDeduction = false;
+                            void OnPicked(SuspectDefinition s) => picked = s;
+                            void OnWantDeduction() => wantDeduction = true;
+                            suspectSelect.Picked += OnPicked;
+                            suspectSelect.DeductionRequested += OnWantDeduction;
+
+                            yield return Transition(GamePhase.SuspectSelect);
+                            suspectSelect.BeginRound(chapter, chapter.FirstRoundSuspects, interrogated, chapter.SuspectSelectPrompt,
+                                skipTalk: talkDone, allowDeduction: deductionEntered);
+                            talkDone = true;
+
+                            while (picked == null && !wantDeduction) yield return null;
+                            suspectSelect.Picked -= OnPicked;
+                            suspectSelect.DeductionRequested -= OnWantDeduction;
+
+                            if (wantDeduction) { toDeduction = true; continue; }
+                            next = picked;
+                        }
+                    }
+
+                    // ---- 1차 심문 — 고른 한 사람 ----
+                    yield return Transition(GamePhase.Interrogation1);
+                    yield return RunInterrogationRound(new List<SuspectDefinition> { next }, 1);
+                    interrogated.Add(next.Id);
+                    next = null;
+                    if (Session.IsGameOver)
+                    {
+                        yield return ShowGameOver(allowRetry: false, retryText: null);
+                        yield break;
+                    }
                 }
-                else deductionOk = true;
+                toDeduction = false;
 
-                if (deductionOk) break;
+                // ---- 추론 ----
+                yield return Transition(GamePhase.Deduction);
+                if (deduction == null) break;
 
+                DeductionExit? exit = null;
+                void OnExit(DeductionExit e) => exit = e;
+                deduction.Exited += OnExit;
+                deduction.Begin(chapter, Session.Clues, canReturn: FirstLeftToInterrogate(interrogated) != null, resume: resumeDeduction);
+                deductionEntered = true;
+                while (exit == null) yield return null;
+                deduction.Exited -= OnExit;
+
+                if (exit == DeductionExit.Completed) break;
+
+                if (exit == DeductionExit.Returned)
+                {
+                    resumeDeduction = true;   // 다음에 추론에 들어오면 잉크·가설·실패한 짝을 그대로 이어 간다
+                    continue;
+                }
+
+                // 잉크가 다 마른 채 가설이 없다 — 자기 비하 게임오버. 복귀 지점은 추론의 시작(새 잉크).
                 Session.TriggerGameOver(GameOverKind.SelfLoathing);
                 var retry = false;
                 yield return ShowGameOver(allowRetry: true, retryText: "단서 조합부터 다시", onRetry: () => retry = true);
                 if (!retry) yield break;
                 Session.ClearGameOver();
+                resumeDeduction = false;
+                toDeduction = true;
             }
 
+            yield return RunSecondRoundAndAccusation();
+        }
+
+        /// <summary>아직 1차 심문을 하지 않았고, 고를 수 있는 사람. 없으면 null.</summary>
+        private SuspectDefinition FirstLeftToInterrogate(ISet<string> interrogated)
+        {
+            var list = chapter.FirstRoundSuspects;
+            if (list == null) return null;
+            for (int i = 0; i < list.Count; i++)
+            {
+                var s = list[i];
+                if (s != null && s.Selectable && !interrogated.Contains(s.Id)) return s;
+            }
+            return null;
+        }
+
+        /// <summary>2차 심문 → 지목 → 결말.</summary>
+        private IEnumerator RunSecondRoundAndAccusation()
+        {
             // ---- 2차 심문 ----
             // 2026-09-23 기획: 상대를 고르고, 저장된 가설 중 하나를 들고 심문한다. 인물당 한 번.
             // 타임 토큰·무반응 판정은 없다(제작자 확정). 다른 가설로 여는 선택지는 이번 심문에 나타나지 않는다.
@@ -308,7 +358,7 @@ namespace ItIsYou.Core
         private Coroutine _chapterRoutine;
 
         /// <summary>
-        /// 디버그 — 앞 페이즈를 건너뛰고 단서 조합부터 시작한다. 씬의 모든 수집 오브젝트 단서와
+        /// 디버그 — 앞 페이즈를 건너뛰고 단서 조합부터 시작한다. 첫 인물은 심문한 것으로 친다. 씬의 모든 수집 오브젝트 단서와
         /// 지정한 추가 단서를 가진 상태로 만든다. 에디터·테스트용.
         /// </summary>
         public void DebugJumpToDeduction(IEnumerable<ClueDefinition> extraClues = null, bool giveAllSceneClues = true)
@@ -337,10 +387,13 @@ namespace ItIsYou.Core
                 foreach (var c in extraClues) if (c != null) Session.Clues.Add(c);
             }
 
-            var round = new List<SuspectDefinition>();
+            SuspectDefinition first = null;
             if (chapter.FirstRoundSuspects != null && chapter.FirstRoundSuspects.Count > 0)
-                round.Add(chapter.FirstRoundSuspects[0]);
-            _chapterRoutine = StartCoroutine(fromInterrogation ? RunFromInterrogation(round) : RunFromDeduction(round));
+                first = chapter.FirstRoundSuspects[0];
+            // 추론부터면 첫 사람은 이미 심문한 것으로 친다(예전 디버그 점프와 같은 상태).
+            _chapterRoutine = StartCoroutine(fromInterrogation
+                ? RunFirstRoundAndDeduction(first, startAtDeduction: false, preInterrogated: null)
+                : RunFirstRoundAndDeduction(null, startAtDeduction: true, preInterrogated: first != null ? new[] { first.Id } : null));
         }
 
         /// <summary>

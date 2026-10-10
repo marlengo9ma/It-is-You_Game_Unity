@@ -86,13 +86,15 @@ namespace ItIsYou.UI
         [SerializeField] private float interrogationHoldSeconds = 2f;
 
         [Header("화자 표기")]
-        [SerializeField] private string protagonistName = "나";
+        [Tooltip("주인공 이름표. 2026-10-11 제작자 지시로 「나」 → 「당신」.")]
+        [SerializeField] private string protagonistName = "당신";
         [SerializeField] private string assistantName = "세피";
         [SerializeField] private string catName = "검은 고양이";
         [SerializeField] private string protagonistRole = "수사관";
         [SerializeField] private string assistantRole = "보조수사관";
         [SerializeField] private string catRole = "??";
-        [SerializeField] private Color protagonistColor = new Color32(0xC4, 0xA7, 0x5C, 0xFF);
+        [Tooltip("주인공 이름표 색 — 보라 붓자국 (2026-10-11).")]
+        [SerializeField] private Color protagonistColor = new Color32(0x52, 0x3C, 0x74, 0xFF);
         [SerializeField] private Color assistantColor = new Color32(0x3F, 0x8A, 0x4E, 0xFF);
         [SerializeField] private Color catColor = new Color32(0x4B, 0x3A, 0x8E, 0xFF);
         [SerializeField] private Color narrationColor = new Color32(0x6E, 0x74, 0x7B, 0xFF);

@@ -43,6 +43,11 @@ namespace ItIsYou.UI
             public TMP_Text title;
             public Image lens;
             public Button button;
+            [Tooltip("가설을 지우는 쓰레기통 (경고 한 번 뒤 지운다).")]
+            public Button trash;
+            [Tooltip("이 챕터에서 쓸 수 없는 칸을 덮는 빗금.")]
+            public GameObject hatch;
+            public TMP_Text pill;
         }
 
         [Header("틀")]
@@ -91,15 +96,29 @@ namespace ItIsYou.UI
         [SerializeField] private TMP_Text locationLabel;
 
         [Header("가설 탭")]
+        [Tooltip("가설 탭 묶음. 교체할 때 어두운 막 위로 올린다.")]
+        [SerializeField] private RectTransform hypothesisList;
         [SerializeField] private List<HypothesisTab> tabs = new List<HypothesisTab>();
+        [Tooltip("「추리를 마친다」 — 가설 목록 맨 아래.")]
+        [SerializeField] private Button endButton;
 
         [Header("연출")]
         [SerializeField] private CanvasGroup scrim;
+        [Tooltip("가설 교체 · 지우기 경고 때의 막 짙기(0~1).")]
+        [SerializeField, Range(0f, 1f)] private float blockedScrimAlpha = 0.86f;
         [SerializeField] private CanvasGroup banner;
         [SerializeField] private TMP_Text bannerLabel;
-        [SerializeField] private GameObject replaceBar;
+        [Header("가설 교체")]
+        [SerializeField] private GameObject replaceRoot;
         [SerializeField] private TMP_Text replacePrompt;
+        [SerializeField] private TMP_Text replaceTitle;
         [SerializeField] private Button replaceCancel;
+
+        [Header("지우기 경고")]
+        [SerializeField] private GameObject confirmRoot;
+        [SerializeField] private TMP_Text confirmText;
+        [SerializeField] private Button confirmYes;
+        [SerializeField] private Button confirmNo;
 
         [Header("글자")]
         [SerializeField] private float nameSize = 26f;
@@ -122,7 +141,12 @@ namespace ItIsYou.UI
         public event Action<ClueDefinition> EvidencePicked;
         public event Action<ClueDefinition> LeadPicked;
         public event Action CombineRequested;
+        /// <summary>「추리를 마친다」.</summary>
         public event Action EndRequested;
+        /// <summary>「돌아가기」 — 1차 인물 선택으로.</summary>
+        public event Action BackRequested;
+        /// <summary>가설 탭의 쓰레기통을 눌렀다. (가설 id)</summary>
+        public event Action<string> DeleteRequested;
         /// <summary>단서나 가설을 크게 열어 읽으려 한다 — 행을 우클릭하거나 가설 탭을 눌렀다.</summary>
         public event Action<ClueDefinition> ReadRequested;
         public event Action<string> ReplacePicked;
@@ -154,6 +178,9 @@ namespace ItIsYou.UI
         private string[] _slots = new string[0];
         private int _maxHypotheses = 3;
         private Coroutine _bannerFade, _scrimFade;
+        private Action<bool> _confirmDone;
+        private float _scrimBaseAlpha = -1f;
+        private int _listSiblingIndex = -1;
 
         public bool IsReplacing => _replacing;
 
@@ -164,20 +191,25 @@ namespace ItIsYou.UI
             if (leadsPrev != null) leadsPrev.onClick.AddListener(() => TurnLeads(-1));
             if (leadsNext != null) leadsNext.onClick.AddListener(() => TurnLeads(+1));
             if (stamp != null) stamp.onClick.AddListener(() => { if (_combinable && !_replacing) CombineRequested?.Invoke(); });
-            if (backButton != null) backButton.onClick.AddListener(() => { if (!_replacing) EndRequested?.Invoke(); });
-            if (replaceCancel != null) replaceCancel.onClick.AddListener(() => ReplaceCancelled?.Invoke());
+            if (backButton != null) backButton.onClick.AddListener(() => { if (!_replacing && !ConfirmOpen) BackRequested?.Invoke(); });
+            if (endButton != null) endButton.onClick.AddListener(() => { if (!_replacing && !ConfirmOpen) EndRequested?.Invoke(); });
+            if (replaceCancel != null) replaceCancel.onClick.AddListener(() => { if (_replacing) ReplaceCancelled?.Invoke(); });
+            if (confirmYes != null) confirmYes.onClick.AddListener(() => CloseConfirm(true));
+            if (confirmNo != null) confirmNo.onClick.AddListener(() => CloseConfirm(false));
 
             for (int i = 0; i < tabs.Count; i++)
             {
                 var index = i;
                 if (tabs[i]?.button != null) tabs[i].button.onClick.AddListener(() => OnTabClicked(index));
+                if (tabs[i]?.trash != null) tabs[i].trash.onClick.AddListener(() => OnTrashClicked(index));
             }
 
             SetLineVisible(false);
             if (stamp != null) stamp.gameObject.SetActive(false);
             SetAlpha(scrim, 0f, false);
             SetAlpha(banner, 0f, false);
-            if (replaceBar != null) replaceBar.SetActive(false);
+            if (replaceRoot != null) replaceRoot.SetActive(false);
+            if (confirmRoot != null) confirmRoot.SetActive(false);
         }
 
         // ================================================================ 채우기
@@ -191,7 +223,8 @@ namespace ItIsYou.UI
             _inventory = inventory;
             _suspects = suspects;
             _maxHypotheses = Mathf.Clamp(maxHypotheses, 1, Mathf.Max(1, tabs.Count));
-            _slots = new string[_maxHypotheses];
+            // 「돌아가기」로 떠났다 다시 들어와도 탭 순서가 그대로이도록, 칸 수가 같으면 자리를 지킨다.
+            if (_slots == null || _slots.Length != _maxHypotheses) _slots = new string[_maxHypotheses];
             _evidencePageIndex = 0;
             _leadsPageIndex = 0;
             _pickedEvidence = null;
@@ -201,8 +234,9 @@ namespace ItIsYou.UI
             if (clockLabel != null) clockLabel.text = clock ?? string.Empty;
             if (locationLabel != null) locationLabel.text = location ?? string.Empty;
 
+            // 칸은 언제나 전부 보인다 — 이 챕터에서 못 쓰는 칸은 빗금(튜토리얼은 2칸 + 빗금 1칸).
             for (int i = 0; i < tabs.Count; i++)
-                if (tabs[i]?.root != null) tabs[i].root.gameObject.SetActive(i < _maxHypotheses);
+                if (tabs[i]?.root != null) tabs[i].root.gameObject.SetActive(true);
 
             Collect();
             RenderPages();
@@ -210,7 +244,11 @@ namespace ItIsYou.UI
             if (stamp != null) stamp.gameObject.SetActive(false);
             SetAlpha(scrim, 0f, false);
             SetAlpha(banner, 0f, false);
-            if (replaceBar != null) replaceBar.SetActive(false);
+            if (_replacing) EndReplace();
+            if (replaceRoot != null) replaceRoot.SetActive(false);
+            if (confirmRoot != null) confirmRoot.SetActive(false);
+            _confirmDone = null;
+            RenderTabs();
         }
 
         /// <summary>단서 목록이 바뀌었을 수 있다(가설이 생기거나 지워졌다). 장을 다시 그린다.</summary>
@@ -501,7 +539,7 @@ namespace ItIsYou.UI
             var relay = go.AddComponent<ClickRelay>();
             relay.Clicked += e =>
             {
-                if (_replacing || (group != null && !group.interactable)) return;
+                if (_replacing || ConfirmOpen || (group != null && !group.interactable)) return;
                 if (e.button == PointerEventData.InputButton.Right) { ReadRequested?.Invoke(row.clue); return; }
                 if (e.button != PointerEventData.InputButton.Left) return;
                 if (row.isLead) LeadPicked?.Invoke(row.clue); else EvidencePicked?.Invoke(row.clue);
@@ -671,11 +709,19 @@ namespace ItIsYou.UI
             {
                 var t = tabs[i];
                 if (t?.root == null) continue;
-                var filled = i < _slots.Length && _slots[i] != null;
+                var locked = i >= _slots.Length;
+                var filled = !locked && _slots[i] != null;
                 if (t.title != null) t.title.text = filled ? "〈" + NameOfId(_slots[i]) + "〉" : string.Empty;
                 if (t.lens != null) t.lens.enabled = filled;
                 if (t.button != null) t.button.interactable = filled;
                 if (t.barFrame != null) t.barFrame.color = _replacing && filled ? selected : new Color(0f, 0f, 0f, 0f);
+                if (t.hatch != null) t.hatch.SetActive(locked);
+                if (t.pill != null) t.pill.alpha = locked ? 0.4f : 1f;
+                if (t.trash != null)
+                {
+                    t.trash.gameObject.SetActive(filled && !_replacing);
+                    t.trash.interactable = filled && !_replacing;
+                }
             }
         }
 
@@ -691,9 +737,16 @@ namespace ItIsYou.UI
             if (index < 0 || index >= _slots.Length || _slots[index] == null) return;
             var id = _slots[index];
             if (_replacing) { ReplacePicked?.Invoke(id); return; }
-            if (group != null && !group.interactable) return;
+            if (ConfirmOpen || (group != null && !group.interactable)) return;
             var clue = _inventory != null ? _inventory.Get(id) : null;
             if (clue != null) ReadRequested?.Invoke(clue);
+        }
+
+        private void OnTrashClicked(int index)
+        {
+            if (_replacing || ConfirmOpen || (group != null && !group.interactable)) return;
+            if (index < 0 || index >= _slots.Length || _slots[index] == null) return;
+            DeleteRequested?.Invoke(_slots[index]);
         }
 
         /// <summary>새 가설이 꽂힌 탭을 잠깐 밝힌다.</summary>
@@ -718,21 +771,88 @@ namespace ItIsYou.UI
             rt.localScale = baseScale;
         }
 
-        /// <summary>가설 칸이 가득 찼다 — 탭 중 하나를 골라 지운다.</summary>
-        public void BeginReplace(string prompt)
+        /// <summary>
+        /// 가설 칸이 가득 찼다 — 가운데 새 가설 카드와 「교체 취소」를 띄우고, 나머지는 어두운 막으로 덮어 막는다.
+        /// 우측 가설 목록만 막 위로 올려, 누른 탭 자리에 새 가설이 들어간다.
+        /// </summary>
+        public void BeginReplace(string prompt, string newTitle)
         {
             _replacing = true;
             if (replacePrompt != null) replacePrompt.text = prompt ?? string.Empty;
-            if (replaceBar != null) replaceBar.SetActive(true);
-            SetAlpha(scrim, 0f, false);
+            if (replaceTitle != null) replaceTitle.text = string.IsNullOrEmpty(newTitle) ? string.Empty : "〈" + newTitle + "〉";
+            BlockBehind(true);
+            RaiseList(true);
+            if (replaceRoot != null) replaceRoot.SetActive(true);
+            if (endButton != null) endButton.interactable = false;
             RenderTabs();
         }
 
         public void EndReplace()
         {
             _replacing = false;
-            if (replaceBar != null) replaceBar.SetActive(false);
+            if (replaceRoot != null) replaceRoot.SetActive(false);
+            RaiseList(false);
+            BlockBehind(false);
             RenderTabs();
+        }
+
+        // ---------------------------------------------------------------- 지우기 경고
+
+        public bool ConfirmOpen => confirmRoot != null && confirmRoot.activeSelf;
+
+        /// <summary>경고 한 번 — 답을 받으면 done(예/아니오).</summary>
+        public void ShowConfirm(string message, Action<bool> done)
+        {
+            if (confirmRoot == null) { done?.Invoke(true); return; }
+            _confirmDone = done;
+            if (confirmText != null) confirmText.text = message ?? string.Empty;
+            BlockBehind(true);
+            confirmRoot.SetActive(true);
+        }
+
+        private void CloseConfirm(bool yes)
+        {
+            if (!ConfirmOpen) return;
+            confirmRoot.SetActive(false);
+            BlockBehind(false);
+            var done = _confirmDone;
+            _confirmDone = null;
+            done?.Invoke(yes);
+        }
+
+        /// <summary>어두운 막을 깔고 그 아래 입력을 막는다(덧창 · 교체용). 대사 중 어둡게 하는 SetDim 과 같은 막을 쓴다.</summary>
+        private void BlockBehind(bool on)
+        {
+            if (scrim == null) return;
+            if (_scrimFade != null) { StopCoroutine(_scrimFade); _scrimFade = null; }
+            // 덧창 · 교체 때는 대사용 어둠보다 한 단계 더 짙게 — 밝게 남은 것만 눈에 들어오도록.
+            var img = scrim.GetComponent<Image>();
+            if (img != null)
+            {
+                if (_scrimBaseAlpha < 0f) _scrimBaseAlpha = img.color.a;
+                var c = img.color; c.a = on ? blockedScrimAlpha : _scrimBaseAlpha; img.color = c;
+            }
+            scrim.alpha = on ? 1f : 0f;
+            scrim.blocksRaycasts = on;
+            scrim.interactable = false;
+        }
+
+        /// <summary>가설 목록을 막 위로(혹은 제자리로).</summary>
+        private void RaiseList(bool on)
+        {
+            if (hypothesisList == null || scrim == null) return;
+            if (on)
+            {
+                if (_listSiblingIndex < 0) _listSiblingIndex = hypothesisList.GetSiblingIndex();
+                var s = scrim.transform.GetSiblingIndex();
+                // 앞에서 뒤로 옮기면 그 자리에 들어가고 막은 한 칸 당겨진다 — 목록이 막 바로 위가 된다.
+                hypothesisList.SetSiblingIndex(_listSiblingIndex < s ? s : s + 1);
+            }
+            else if (_listSiblingIndex >= 0)
+            {
+                hypothesisList.SetSiblingIndex(_listSiblingIndex);
+                _listSiblingIndex = -1;
+            }
         }
 
         // ================================================================ 상단 · 연출
@@ -751,9 +871,16 @@ namespace ItIsYou.UI
             group.blocksRaycasts = true;   // 덮개는 남긴다 — 뒤의 화면이 눌리면 안 된다
         }
 
+        /// <summary>「추리를 마친다」 — 가설이 하나라도 있을 때.</summary>
         public void SetEndEnabled(bool on)
         {
-            if (backButton != null) backButton.interactable = on;
+            if (endButton != null) endButton.interactable = on && !_replacing;
+        }
+
+        /// <summary>「돌아가기」 — 아직 심문하지 않은 인물이 남아 있을 때.</summary>
+        public void SetBackEnabled(bool on)
+        {
+            if (backButton != null) backButton.interactable = on && !_replacing;
         }
 
         /// <summary>추론 대사가 흐르는 동안 서류철을 어둡게 덮는다.</summary>

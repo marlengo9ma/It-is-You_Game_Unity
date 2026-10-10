@@ -174,6 +174,20 @@ namespace ItIsYou.Deduction
             if (Ink <= 0 && HypothesisCount > 0) Finish(true);
         }
 
+        /// <summary>
+        /// 저장된 가설 하나를 지운다 (2026-10-11 — 가설 탭의 쓰레기통). 잉크는 돌아오지 않는다.
+        /// 지운 가설은 같은 짝을 다시 이어 다시 세울 수 있다(그때 잉크를 쓴다).
+        /// </summary>
+        public bool RemoveHypothesis(string clueId)
+        {
+            if (IsOver || _pendingReplace != null || string.IsNullOrEmpty(clueId)) return false;
+            var c = _inventory.Get(clueId);
+            if (c == null || c.Kind != ClueKind.Deduced) return false;
+            _inventory.Remove(clueId);
+            HypothesesChanged?.Invoke();
+            return true;
+        }
+
         /// <summary>가설이 하나라도 있으면 먼저 끝낼 수 있다.</summary>
         public bool EndManually()
         {
