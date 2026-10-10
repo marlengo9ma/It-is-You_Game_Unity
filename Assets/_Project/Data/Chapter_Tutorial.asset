@@ -977,7 +977,7 @@ MonoBehaviour:
     - speaker: 4
       text: 
       expression: 9
-      stageDirection: "(\uACE0\uAC1C \uD53C\uD568 / \uB300\uCDA9 \uAF2C\uB9AC \uC0B4\uB791)"
+      stageDirection: "(\uACE0\uAC1C \uD53C\uD568/\uB300\uCDA9 \uAF2C\uB9AC \uC0B4\uB791)"
       animationId: 
       reaction:
         clueId: 

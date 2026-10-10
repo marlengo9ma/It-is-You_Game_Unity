@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace ItIsYou.Data
@@ -70,6 +70,9 @@ namespace ItIsYou.Data
         [Tooltip("플레이어가 '심문 종료'를 눌러 수동으로 끝낼 때의 대사. 다음 인물로 넘어가는 다리.")]
         [SerializeField] private DialogueSequence onEndInterrogation = new DialogueSequence();
 
+        [Tooltip("신뢰를 잃어 심문이 강제로 끝날 때의 마무리 대사. 비어 있으면 위의 수동 종료 대사를 쓴다.")]
+        [SerializeField] private DialogueSequence onTrustBroken = new DialogueSequence();
+
         [Tooltip("무반응 판정 1회차 대사. 목록이 비어 있으면 아래 onIdle 을 쓴다.")]
         [SerializeField] private List<DialogueSequence> idleRounds = new List<DialogueSequence>();
 
@@ -111,6 +114,7 @@ namespace ItIsYou.Data
         public DialogueSequence OnTokensExhausted => onTokensExhausted;
         public DialogueSequence OnEnterInterrogation => onEnterInterrogation;
         public DialogueSequence OnEndInterrogation => onEndInterrogation;
+        public DialogueSequence OnTrustBroken => onTrustBroken != null && !onTrustBroken.IsEmpty ? onTrustBroken : onEndInterrogation;
         public DialogueSequence OnIdle => onIdle;
         public bool Selectable => selectable;
         public string LockedReason => lockedReason;

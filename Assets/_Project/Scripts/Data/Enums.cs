@@ -1,4 +1,4 @@
-namespace ItIsYou.Data
+﻿namespace ItIsYou.Data
 {
     /// <summary>게임 전체 페이즈. 기획서의 Phase.Intro ~ Phase.End 에 대응.</summary>
     public enum GamePhase
@@ -60,7 +60,9 @@ namespace ItIsYou.Data
         /// <summary>상호작용만 가능한 일반 오브젝트.</summary>
         Ordinary = 0,
         /// <summary>단서로 수집 가능한 특수 오브젝트.</summary>
-        Special = 1
+        Special = 1,
+        /// <summary>심문 화면의 인물·배경 요소. 대화만 이어지고 아무것도 수집하지 않는다. 한 번 고르면 다시 고를 수 없다.</summary>
+        InterrogationObject = 2
     }
 
     /// <summary>대사 화자.</summary>
@@ -108,7 +110,9 @@ namespace ItIsYou.Data
         /// <summary>심문 오브젝트만 반복 선택해 용의자가 분노로 심문을 거부했다.</summary>
         RefusedByAnger = 3,
         /// <summary>친근/강압 교차 선택으로 게임오버됐다.</summary>
-        GameOverByErraticTone = 4
+        GameOverByErraticTone = 4,
+        /// <summary>신뢰를 잃어 심문이 강제로 끝났다. 게임오버는 아니고 다음 인물로 넘어간다. (튜토리얼 2026-10-11)</summary>
+        TrustBroken = 5
     }
 
     /// <summary>수집률 게이트 판정 결과.</summary>

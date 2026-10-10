@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using ItIsYou.Characters;
 using ItIsYou.Clues;
 using ItIsYou.Data;
+using ItIsYou.Investigation;
 using ItIsYou.UI;
 using UnityEngine;
 
@@ -39,6 +41,10 @@ namespace ItIsYou.Interrogation
         [Tooltip("무반응 타이머가 7초를 넘기면 초침이 커지고 나머지 사운드가 줄어드는 연출.")]
         [SerializeField] private IdleTensionAudio tension;
 
+        [Header("심문 오브젝트")]
+        [Tooltip("심문 화면 위의 인물·배경 핫스팟. 지금 상대의 심문 오브젝트 목록에 든 것만 켜지고, 한 번 고르면 꺼진다. 1차 심문에서만.")]
+        [SerializeField] private List<InteractableObject> objectHotspots = new List<InteractableObject>();
+
         private InterrogationSession _session;
         private ICharacterView _characterView;
         private ClueInventory _inventory;
@@ -68,6 +74,8 @@ namespace ItIsYou.Interrogation
             _session.Idle.Elapsed += OnIdleElapsed;
 
             Subscribe();
+            HookHotspots();
+            RefreshHotspots();
 
             dialogue.SyncCollected(inventory.OwnedIds);
 
@@ -110,6 +118,7 @@ namespace ItIsYou.Interrogation
 
             RebuildChoices();
             if (choiceList != null) choiceList.SetInteractable(true);
+            RefreshHotspots();
         }
 
         private void Subscribe()
@@ -137,9 +146,81 @@ namespace ItIsYou.Interrogation
                 dialogue.SequenceStarted -= OnSequenceStarted;
             }
             if (_session != null) _session.Idle.Elapsed -= OnIdleElapsed;
+            UnhookHotspots();
         }
 
         private void OnDisable() => Unsubscribe();
+
+        // ------------------------------------------------------------- 심문 오브젝트
+
+        private void HookHotspots()
+        {
+            UnhookHotspots();
+            for (int i = 0; i < objectHotspots.Count; i++)
+            {
+                var h = objectHotspots[i];
+                if (h == null) continue;
+                h.Clicked += OnHotspotClicked;
+                h.HoverChanged += OnHotspotHover;
+            }
+        }
+
+        private void UnhookHotspots()
+        {
+            for (int i = 0; i < objectHotspots.Count; i++)
+            {
+                var h = objectHotspots[i];
+                if (h == null) continue;
+                h.Clicked -= OnHotspotClicked;
+                h.HoverChanged -= OnHotspotHover;
+            }
+        }
+
+        /// <summary>이 핫스팟을 지금 누를 수 있는가. 상대의 목록에 있고, 1차 심문이고, 아직 고르지 않았고, 대사 중이 아니어야 한다.</summary>
+        private bool IsHotspotLive(InteractableObject h)
+        {
+            if (h == null || h.Definition == null || _session == null) return false;
+            if (_busy || !IsRunning || _session.Round != 1) return false;
+            if (_session.HasInspectedObject(h.Definition.Id)) return false;
+            var list = _session.Suspect.InterrogationObjects;
+            if (list == null) return false;
+            for (int i = 0; i < list.Count; i++) if (list[i] == h.Definition) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// 핫스팟의 켜짐을 지금 상태에 맞춘다. 한 번 고른 것은 다시 켜지지 않는다 — 다른 선택지처럼
+        /// 여러 번 고를 수 없다(2026-10-11). 대사가 흐르는 동안에는 잠시 꺼 둔다.
+        /// </summary>
+        private void RefreshHotspots()
+        {
+            for (int i = 0; i < objectHotspots.Count; i++)
+            {
+                var h = objectHotspots[i];
+                if (h == null) continue;
+                var live = IsHotspotLive(h);
+                h.SetEnabled(live);
+                // 이미 고른 것은 흐리게 남긴다. 그림이 들어오면 핫스팟 판은 투명하므로 티가 나지 않는다.
+                var used = _session != null && h.Definition != null && _session.HasInspectedObject(h.Definition.Id);
+                var g = h.GetComponent<CanvasGroup>();
+                if (g != null) g.alpha = used ? 0.45f : 1f;
+            }
+            if (cursor != null) cursor.SetHoveringInteractable(false);
+        }
+
+        private void OnHotspotHover(InteractableObject h, bool hovering)
+        {
+            if (!IsHotspotLive(h)) { cursor?.SetHoveringInteractable(false); return; }
+            cursor?.SetHoveringInteractable(hovering);
+        }
+
+        private void OnHotspotClicked(InteractableObject h)
+        {
+            if (!IsHotspotLive(h)) return;
+            h.SetEnabled(false);   // 누르는 순간 꺼서 두 번 눌리지 않게
+            cursor?.SetHoveringInteractable(false);
+            SelectInterrogationObject(h.Definition);
+        }
 
         /// <summary>기획: "게임 일시 정지 - 타이머 일시 정지".</summary>
         private void OnPauseChanged(bool paused)
@@ -281,6 +362,7 @@ namespace ItIsYou.Interrogation
 
             // 대사가 나오는 동안에는 무반응 타이머를 멈춘다. 읽는 시간은 플레이어의 침묵이 아니다.
             _session.Idle.Hold();
+            RefreshHotspots();
 
             var distortion = _session.Recall.CurrentDistortion();
 
@@ -315,6 +397,7 @@ namespace ItIsYou.Interrogation
 
             if (step.Ends)
             {
+                RefreshHotspots();   // 끝났으므로 전부 꺼진다
                 if (choiceList != null) choiceList.Clear();
                 cursor?.ResetState();
                 tension?.Clear();
@@ -325,6 +408,7 @@ namespace ItIsYou.Interrogation
 
             RebuildChoices();
             if (choiceList != null) choiceList.SetInteractable(true);
+            RefreshHotspots();
 
             // 스크립트가 전부 끝나고 유예 시간이 지난 뒤에야 타이머가 다시 돈다.
             var grace = _session.Chapter.IdleGraceAfterDialogueSeconds;

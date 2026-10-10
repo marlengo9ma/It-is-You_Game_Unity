@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using ItIsYou.Characters;
 using ItIsYou.Core;
@@ -480,6 +480,49 @@ namespace ItIsYou.EditorTools
             if (sepiHasArt) characterView.Set("expressions", BuildExpressionList(_art.sepiExpressions));
 
             var clickTarget = characterGo.AddComponent<CharacterClickTarget>();
+
+            // ---- 심문 오브젝트 — 인물·배경 위의 핫스팟. 한 번 고르면 꺼진다 (2026-10-11) ----
+            // 고양이는 세피 오른쪽 테이블 위, 프로필 서류는 세피 앞 책상 위. 무대 그림이 오면 판은 투명해지고 테두리만 남는다.
+            var interCat = Img("Cat_Placeholder", interRt, new Color32(0x24, 0x29, 0x2F, 0xFF));
+            Anchor(interCat.rectTransform, V(0.70f, 0.28f), V(0.96f, 0.62f), Vector2.zero, Vector2.zero);
+            interCat.raycastTarget = false;
+            var interCatTag = Text("Label", interCat.rectTransform, "검은 고양이\n(아트 대기)", T.Caption,
+                new Color32(0x5A, 0x61, 0x69, 0xFF), TextAlignmentOptions.Center);
+            Stretch(interCatTag.rectTransform);
+            var interStageHasArt = _art.StageOrRoom != null;
+            if (!Art(interCat, _art.catStage, _art.catStagePlace, false, interCatTag) && interStageHasArt) interCat.gameObject.SetActive(false);
+
+            var interHotspotRects = new (string id, float x0, float y0, float x1, float y1)[]
+            {
+                ("OBJ_INT_CAT",     0.72f, 0.30f, 0.94f, 0.50f),   // 고양이 엉덩이
+                ("OBJ_INT_PROFILE", 0.29f, 0.06f, 0.43f, 0.24f),   // 책상 위 보조 수사관 프로필 서류
+            };
+            var interHotspots = new List<InteractableObject>();
+            foreach (var h in interHotspotRects)
+            {
+                var def = AssetDatabase.LoadAssetAtPath<InteractableDefinition>($"{DataRoot}/Objects/Obj_{h.id}.asset");
+                if (def == null) continue;
+
+                var spot = Img("Hotspot_" + h.id, interRt, new Color32(0x2E, 0x34, 0x3B, 0xC8));
+                Anchor(spot.rectTransform, V(h.x0, h.y0), V(h.x1, h.y1), Vector2.zero, Vector2.zero);
+                spot.sprite = _uiSprite; spot.type = Image.Type.Sliced;
+                spot.gameObject.AddComponent<CanvasGroup>();
+
+                var spotLabel = Text("Label", spot.rectTransform, def.HoverLabel, T.Caption,
+                    new Color32(0x8A, 0x90, 0x97, 0xFF), TextAlignmentOptions.Center);
+                spotLabel.textWrappingMode = TextWrappingModes.Normal;
+                Stretch(spotLabel.rectTransform);
+                if (interStageHasArt) { spot.color = new Color(0f, 0f, 0f, 0f); spotLabel.gameObject.SetActive(false); }
+
+                var outline = spot.gameObject.AddComponent<Outline>();
+                outline.effectColor = new Color(1f, 0.97f, 0.88f, 0.55f);
+                outline.effectDistance = new Vector2(3f, -3f);
+                outline.enabled = false;
+
+                var io = spot.gameObject.AddComponent<InteractableObject>();
+                io.Set("definition", def).Set("outline", outline).Set("hitArea", spot);
+                interHotspots.Add(io);
+            }
 
             // 선택지 — 좌측. 스케치의 "Choice".
             var choicePanel = UI("ChoicePanel", interRt);
@@ -1157,7 +1200,8 @@ namespace ItIsYou.EditorTools
                          .Set("titleCard", titleCard)
                          .Set("tutorialPopup", popupView)
                          .Set("pauseMenu", pauseMenu)
-                         .Set("tension", tension);
+                         .Set("tension", tension)
+                         .Set("objectHotspots", interHotspots);
 
             var deductionCtl = systems.AddComponent<DeductionController>();
             deductionCtl.Set("dialogue", presenter)

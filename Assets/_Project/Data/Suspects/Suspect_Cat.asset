@@ -83,6 +83,12 @@ MonoBehaviour:
     animationId: 
     trustDelta: 0
     endsInterrogation: 0
+  onTrustBroken:
+    note: 
+    lines: []
+    animationId: 
+    trustDelta: 0
+    endsInterrogation: 0
   idleRounds: []
   onIdle:
     note: 

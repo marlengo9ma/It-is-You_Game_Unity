@@ -90,10 +90,15 @@ MonoBehaviour:
       animationId: 
       trustDelta: 0
       endsInterrogation: 0
+    idleFollowUpKey: 
     animationId: 
+    breaksTrust: 0
+    onAlternation: 0
     variantOfRound: -1
     requiresPriorChoiceIds: []
     blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
   idleFollowUp:
     note: 
     lines: []

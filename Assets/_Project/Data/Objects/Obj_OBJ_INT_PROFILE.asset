@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8863fa260cf69b46b089cb7342564d5, type: 3}
+  m_Name: Obj_OBJ_INT_PROFILE
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.InteractableDefinition
+  id: OBJ_INT_PROFILE
+  kind: 2
+  hoverLabel: "\uBCF4\uC870 \uC218\uC0AC\uAD00 \uD504\uB85C\uD544 \uC11C\uB958"
+  onInspect:
+  - speaker: 1
+    text: "\uD639\uC2DC \uC5EC\uAE30\uC788\uB294 \uBCF8\uC778 \uC11C\uB958\uB97C
+      \uC77D\uC5B4\uBD24\uC2B5\uB2C8\uAE4C?"
+    expression: 0
+    stageDirection: 
+    animationId: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  - speaker: 3
+    text: "\uB124,\uC870\uAE08 \uAD81\uAE08\uD574\uC11C\uC694. \uBA4B\uB300\uB85C
+      \uC77D\uC5B4\uBD10\uC11C \uC8C4\uC1A1\uD574\uC694."
+    expression: 1
+    stageDirection: "(\uBCA0\uC2DC\uC2DC \uBBF8\uC18C\uB97C \uC9D3\uACE0 \uBA4B\uC2A5\uD558\uAC8C
+      \uB044\uB355\uC774\uBA70)"
+    animationId: bow
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  - speaker: 1
+    text: "\u2026\uAC10\uC0C1\uC740 \uC5B4\uB5A4\uC9C0 \uAD81\uAE08\uD558\uAD70\uC694?"
+    expression: 0
+    stageDirection: 
+    animationId: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  - speaker: 3
+    text: "\uB300\uBD80\uBD84 \uC54C\uACE0 \uC788\uB294 \uB0B4\uC6A9\uC774\uC600\uB294\uB370\uC694\u2026
+      \uC9C0\uAC01\uC740 \uB2E4\uC2DC \uD55C \uBC88 \uC8C4\uC1A1\uD569\uB2C8\uB2E4!"
+    expression: 3
+    stageDirection: "(>.<;; \uC0AC\uACFC)"
+    animationId: bow
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  - speaker: 1
+    text: "\uBB50, \uB355\uBD84\uC5D0 \uC794\uC18C\uB9AC\uD558\uB294 \uC218\uACE0\uB294
+      \uB35C\uC5C8\uAD70\uC694."
+    expression: 0
+    stageDirection: 
+    animationId: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  onReinspect: []
+  grantedClue: {fileID: 0}
+  closeUpImage: {fileID: 0}

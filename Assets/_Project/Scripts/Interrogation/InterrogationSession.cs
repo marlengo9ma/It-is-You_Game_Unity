@@ -87,6 +87,10 @@ namespace ItIsYou.Interrogation
         // 직전에 고른 선택지의 <시간 경과> 대사. 다음 무반응 판정에서 회차 대사 대신 나온다.
         private DialogueSequence _pendingIdleFollowUp;
         private ChoiceTone _pendingIdleFollowUpTone;
+        private string _pendingIdleKey;
+
+        // 실제로 화면에 나온 <시간 경과> 대사의 이름표. 시나리오의 "<시간 경과_a> 출현 여부" 조건.
+        private readonly HashSet<string> _seenIdleKeys = new HashSet<string>();
 
         public TimeTokenPool Tokens { get; }
         public PressureTracker Pressure { get; }
@@ -184,7 +188,7 @@ namespace ItIsYou.Interrogation
                 var used = GetUseCount(choice.Id);
                 result.Add(new ChoiceView(
                     choice,
-                    choice.ResolveLabel(_inventory.OwnedIds, used, GetUseCount),
+                    choice.ResolveLabel(_inventory.OwnedIds, ContextFor(choice)),
                     choice.HasUnseenPass(used),
                     used,
                     Tokens.CanAfford(choice.TokenCost)));
@@ -233,14 +237,25 @@ namespace ItIsYou.Interrogation
         public int GetUseCount(string choiceId)
             => (!string.IsNullOrEmpty(choiceId) && _choiceUseCount.TryGetValue(choiceId, out var n)) ? n : 0;
 
+        /// <summary>이 이름표의 &lt;시간 경과&gt; 대사가 실제로 나왔는가.</summary>
+        public bool IdleSeen(string key) => !string.IsNullOrEmpty(key) && _seenIdleKeys.Contains(key);
+
+        /// <summary>이 선택지를 지금 고르면 어떤 칸이 나올지 정하는 데 필요한 상황.</summary>
+        public ChoicePassContext ContextFor(ChoiceDefinition choice)
+            => new ChoicePassContext(GetUseCount(choice.Id), Pressure.PeekAlternation(choice.Tone), GetUseCount, IdleSeen);
+
+        /// <summary>이 심문 오브젝트를 이미 골랐는가. 심문 오브젝트는 한 번만 고를 수 있다.</summary>
+        public bool HasInspectedObject(string objectId) => !string.IsNullOrEmpty(objectId) && _inspectedObjectIds.Contains(objectId);
+
         /// <summary>메인 선택지를 고른다.</summary>
         public InterrogationStep SelectChoice(ChoiceDefinition choice)
         {
             if (IsOver || choice == null) return InterrogationStep.Nothing;
 
             var used = GetUseCount(choice.Id);
-            // 앞서 무엇을 골랐는지에 따라 같은 회차가 다른 내용으로 갈릴 수 있다 ("B선택지 이후, 선택 시").
-            var pass = choice.GetPass(used, GetUseCount);
+            // 앞서 무엇을 골랐는지, 몇 번째 교차인지, 어떤 <시간 경과> 를 보았는지에 따라 같은 선택지가 다른 칸으로 갈린다.
+            // 교차 판정이 바뀌기 전에 정해야 한다 — 그래서 RegisterChoice 보다 앞.
+            var pass = choice.GetPass(ContextFor(choice));
             var main = pass?.Sequence;
 
             _choiceUseCount[choice.Id] = used + 1;
@@ -255,9 +270,16 @@ namespace ItIsYou.Interrogation
 
             // 이 회차 뒤에 <시간 경과> 대사가 있으면 다음 침묵에서 그 줄이 나온다.
             // 회차 칸에 없으면 선택지의 기본값, 그것도 없으면 용의자의 일반 무반응 회차 대사로 넘어간다.
-            _pendingIdleFollowUp = pass != null && pass.HasIdleFollowUp ? pass.IdleFollowUp
-                                 : choice.HasIdleFollowUp ? choice.IdleFollowUp
-                                 : null;
+            if (pass != null && pass.HasIdleFollowUp)
+            {
+                _pendingIdleFollowUp = pass.IdleFollowUp;
+                _pendingIdleKey = pass.IdleFollowUpKey;
+            }
+            else
+            {
+                _pendingIdleFollowUp = choice.HasIdleFollowUp ? choice.IdleFollowUp : null;
+                _pendingIdleKey = null;
+            }
             _pendingIdleFollowUpTone = choice.Tone;
 
             Tokens.Spend(choice.TokenCost, TimeTokenPool.SpendReason.Choice);
@@ -266,7 +288,30 @@ namespace ItIsYou.Interrogation
             if (main != null) TrustDelta += main.TrustDelta;
 
             var verdict = Pressure.RegisterChoice(choice.Tone);
+
+            // 신뢰를 잃는 칸 — 그 대사가 끝나면 심문이 강제로 끝난다.
+            if (pass != null && pass.BreaksTrust)
+                return ResolveTrustBreak(main, verdict);
+
             return Resolve(main, verdict, forcedEnd: main != null && main.EndsInterrogation);
+        }
+
+        /// <summary>
+        /// 신뢰를 잃어 심문이 끝난다. 시나리오의 "[신뢰도 하락으로 인한 ‘세피‘ 심문 강제 종료]".
+        ///
+        /// 판정이 내는 반응 대사(교차 게임오버·공포 거부 등)는 붙이지 않는다 — 이 칸의 대사가 이미 그 반응이고,
+        /// 거기에 한 줄을 더 얹으면 같은 말을 두 번 하게 된다. 대신 강제 종료의 마무리 대사가 이어진다.
+        /// 튜토리얼이 아닌 챕터에서 판정이 게임오버라면 그쪽이 이긴다.
+        /// </summary>
+        private InterrogationStep ResolveTrustBreak(DialogueSequence main, PressureVerdict verdict)
+        {
+            if (PressureTracker.IsTerminal(verdict) && !_chapter.IsTutorial)
+                return Resolve(main, verdict, forcedEnd: false);
+
+            var penaltyLesson = verdict != PressureVerdict.None;
+            if (!IsOver) MarkOver(InterrogationEndReason.TrustBroken);
+            return new InterrogationStep(main, _suspect.OnTrustBroken, verdict, true,
+                InterrogationEndReason.TrustBroken, false, penaltyLesson);
         }
 
         // ---------------------------------------------------------- 심문 오브젝트
@@ -275,6 +320,10 @@ namespace ItIsYou.Interrogation
         public InterrogationStep SelectInterrogationObject(InteractableDefinition target)
         {
             if (IsOver || target == null) return InterrogationStep.Nothing;
+
+            // 심문 오브젝트는 한 번만 고를 수 있다 (2026-10-11 노션: "1회 선택 시, 재선택이 불가능하도록").
+            if (target.Kind == InteractableKind.InterrogationObject && _inspectedObjectIds.Contains(target.Id))
+                return InterrogationStep.Nothing;
 
             var firstTime = _inspectedObjectIds.Add(target.Id);
             var lines = firstTime ? target.OnInspect : target.OnReinspect;
@@ -372,6 +421,8 @@ namespace ItIsYou.Interrogation
             {
                 var followUp = _pendingIdleFollowUp;
                 _pendingIdleFollowUp = null;
+                if (!string.IsNullOrEmpty(_pendingIdleKey)) _seenIdleKeys.Add(_pendingIdleKey);
+                _pendingIdleKey = null;
                 var lesson = _pendingIdleFollowUpTone == ChoiceTone.Aggressive;
                 return new InterrogationStep(followUp, null, PressureVerdict.None,
                     false, InterrogationEndReason.PlayerEnded, false, lesson);

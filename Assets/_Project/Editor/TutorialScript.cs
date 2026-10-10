@@ -254,13 +254,15 @@ namespace ItIsYou.EditorTools
             Line(SpeakerId.Cat, "…뭬웅."),
             P("뭐, 어지럽인건 이 고양이가 들어온게 원인일 거라고 생각했는데, 제가 틀린건가요?"),
             A("그으…건 그렇죠", ExpressionId.Nervous, "(눈을 피하며 땀이 삐질)"),
-            Line(SpeakerId.Cat, "", ExpressionId.Sly, "(고개 피함 / 대충 꼬리 살랑)"));
+            Line(SpeakerId.Cat, "", ExpressionId.Sly, "(고개 피함/대충 꼬리 살랑)"));
 
         // ================================================================ 세피 심문
-        // 2026-09-28 노션 개정본. 같은 선택지를 다시 골라도 주인공이 하는 말이 매번 다르고,
-        // 앞서 반대 성향을 골랐다면 초회가 통째로 바뀐다 (문서의 ❕ 항목).
-        // 그 구조는 ChoicePass 한 칸이 담는다 — 목록 문구 · 대사 · <시간 경과> · 연출이 함께 들어 있다.
-        // 회차를 따로 나열하고 연출을 또 따로 나열하면, 회차가 하나 늘어나는 순간 짝이 어긋난다.
+        // 2026-10-11 노션 최신본. 같은 선택지를 다시 골라도 주인공이 하는 말이 매번 다르고,
+        // 친근↔강압을 갈아타는 순간(교차) 그 회차가 통째로 다른 내용이 된다.
+        //   · 1번째 교차 — "B선택지 이후, 선택 시" / "A선택지 이후 선택 시"
+        //   · 2번째 교차 — "A선택지 > B선택지 이후, A선택지 재 선택 시" 등 → 신뢰도 하락으로 심문 강제 종료
+        // B선택지의 2·3회 연속은 초회 뒤의 <시간 경과_a> 가 실제로 나왔는지에 따라 또 갈린다.
+        // 그 구조는 ChoicePass 한 칸이 담는다 — 목록 문구 · 대사 · <시간 경과> · 연출 · 조건이 함께 들어 있다.
 
         /// <summary>&lt;용의자 ‘세피’ 심문 시작&gt; — 첫 마디. 이 뒤에 튜토리얼 팝업 1.</summary>
         public static DialogueSequence SepiOpening() => Seq("세피 심문 시작",
@@ -268,7 +270,8 @@ namespace ItIsYou.EditorTools
 
         /// <summary>
         /// &lt;시간 경과&gt; 회차별 반응. 고른 선택지에 그 회차용 &lt;시간 경과&gt; 가 없을 때 나온다.
-        /// 3회차가 끝나면 [신뢰도 하락 및 게임 오버에 대한 경고와 설명 튜토리얼 팝업].
+        /// 3회차가 끝나면 [신뢰도 하락 및 게임 오버에 대한 경고와 설명 튜토리얼 팝업]
+        /// (미출현 시 추후 선택지로 인한 설명에서 재출현 — 한 번만 뜬다).
         /// </summary>
         public static List<DialogueSequence> SepiIdleRounds() => new List<DialogueSequence>
         {
@@ -278,7 +281,7 @@ namespace ItIsYou.EditorTools
                 A("…아니면 새로 사시는 건 어때요? 아까 보니까 기차내 매점에서 다양한 잡화도 팔던 걸요?",
                   ExpressionId.Smile)),
             Seq("시간 경과 3회차",
-                A("…저기, 수사관님? / 괜찮으신거죠…?", ExpressionId.Nervous)),
+                A("…저기, 수사관님? 괜찮으신거죠…?", ExpressionId.Nervous)),
         };
 
         // ------------------------------------------------------------ A선택지
@@ -286,10 +289,6 @@ namespace ItIsYou.EditorTools
 
         public const string ChoiceALabel =
             "내가 매우 아끼는 만년필이라. 그러니 행방을 꼭 알려주었음 합니다.";
-
-        /// <summary>❕B선택지 이후에 A를 고르면 이 말로 바뀐다.</summary>
-        public const string ChoiceALabelAfterB =
-            "후우, 미안합니다. 내가 매우 아끼는 만년필이라. 그러니 행방에 대해서 아는 게 있다면 꼭 알려주었음 합니다.";
 
         private const string ChoiceALabel2 =
             "정말로 주변에 없었나요? 워낙 화려한 디자인이라 못 봤을 것 같지는 않아서요.";
@@ -299,7 +298,14 @@ namespace ItIsYou.EditorTools
         private const string ChoiceALabel5 = "정말 정말 진짜 진짜로요??";
         private const string ChoiceALabel6 = "정말, ㅈ…";
 
-        /// <summary>A선택지의 회차 목록. 맨 끝은 초회의 조건부 변형 — B를 먼저 골랐을 때.</summary>
+        /// <summary>1번째 교차 — B선택지 이후에 A를 고르면 이 말로 바뀐다.</summary>
+        private const string ChoiceALabelAfterB1 = "후우, 미안합니다. 내가 매우 아끼는 만년필이라 조금 흥분을 했군요.";
+        private const string ChoiceALabelAfterB2 = "혹 만년필의 행방에 대해서 아는 게 있다면 꼭 알려주었음 합니다.";
+
+        /// <summary>2번째 교차 — A &gt; B 이후 A를 다시 고르면 이 말로 바뀐다. 신뢰를 잃는다.</summary>
+        private const string ChoiceALabelSecondCross = "아, 여러모로 이해합니다. 혹시 제가 가진 다른 물건과 교환하지 않겠습니까?";
+
+        /// <summary>A선택지의 칸 목록 — 보통 회차 6 + 교차 칸 2.</summary>
         public static List<ChoicePass> ChoiceARounds() => new List<ChoicePass>
         {
             Round(ChoiceALabel, ChoiceAPass(), ChoiceAIdle()),
@@ -308,7 +314,10 @@ namespace ItIsYou.EditorTools
             Round(ChoiceALabel4, ChoiceAPass4()),
             Round(ChoiceALabel5, ChoiceAPass5()),
             Round(ChoiceALabel6, ChoiceAPass6()),
-            Variant(0, "CH_SEPI_AGGRESSIVE", ChoiceALabelAfterB, ChoiceAPassAfterB(), ChoiceAIdle()),
+            // "B선택지 이후, 선택 시" — 이후 위와 동일(<시간 경과> 도 초회의 것).
+            Alternation(1, ChoiceALabelAfterB1 + " " + ChoiceALabelAfterB2, ChoiceAAfterB(), ChoiceAIdle()),
+            // "A선택지 > B선택지 이후, A선택지 재 선택 시" — [신뢰도 하락으로 인한 ‘세피‘ 심문 강제 종료]
+            Alternation(2, ChoiceALabelSecondCross, ChoiceASecondCross(), breaksTrust: true),
         };
 
         /// <summary>A 초회 — 봤다는 것까지는 인정한다. 밑줄 구간이 증언 단서가 된다.</summary>
@@ -325,16 +334,6 @@ namespace ItIsYou.EditorTools
         /// <summary>A 초회 뒤의 &lt;시간 경과&gt;.</summary>
         public static DialogueSequence ChoiceAIdle() => Seq("A 초회 — 시간 경과",
             A("…혹시 무슨 문제라도 있을까요…?", ExpressionId.Nervous, "(계속 눈치를 보며)"));
-
-        /// <summary>❕B선택지 이후에 고른 A 초회. 태도가 바뀐 것을 조수가 먼저 알아챈다.</summary>
-        public static DialogueSequence ChoiceAPassAfterB() => Seq("A 초회 (B 이후) — 거짓과 진실을 섞는다",
-            P(ChoiceALabelAfterB),
-            A("…처음 자리에 앉으셨을 때는… <clue=TES_SAW_IT>분명히 저도 봤던 것 같긴 한데요.</clue>",
-              ExpressionId.Flustered, "(바뀐 태도에 조금 당황하고 긴장한 듯)", StageAnimation.Tremble),
-            P("오, 다행이네요. 그래서 어디서 봤을까요?"),
-            A("음…역시 그 이후로는 잘 모르겠어요. 도움이 못 되어서 죄송해요, 수사관님.", ExpressionId.Sad,
-              "(고민하는 듯 눈을 감고 생각하는 듯 하다가, 고양이 쪽을 힐끗 바라보며)", StageAnimation.GlanceCat),
-            I("거짓말과 진실을 섞어서 이야기 하는 것 같군…이유는 모르겠지만서도 일단 만년필의 행방 자체를 모르는 반응은 아니야."));
 
         public static DialogueSequence ChoiceAPass2() => Seq("A 2회 — 알긴 알지만 모른다",
             P(ChoiceALabel2),
@@ -359,7 +358,7 @@ namespace ItIsYou.EditorTools
 
         public static DialogueSequence ChoiceAPass4() => Seq("A 4회 — 저도 속상해요",
             P(ChoiceALabel4),
-            A("…수사관님, 속상하신건 알겠지만…계속 이러시면 저도 속상해요.", ExpressionId.Sad,
+            A("…수사관님, 아쉬우신 마음은 이해하지만…계속 이러시면 저도 속상해요…", ExpressionId.Sad,
               "(살짝 질린 표정으로)"));
 
         public static DialogueSequence ChoiceAPass5() => Seq("A 5회 — 무언의 째려봄",
@@ -371,33 +370,81 @@ namespace ItIsYou.EditorTools
             A("…저기요, 수사관님~~?", ExpressionId.Angry, "(화가 나는 듯 부들거리며)", StageAnimation.Fume),
             Line(SpeakerId.Protagonist, "아, 알겠습니다.", ExpressionId.Neutral, "(땀 삐질, 펼쳐지는 손)"));
 
+        /// <summary>1번째 교차 — B선택지 이후에 고른 A. 태도가 바뀐 것을 조수가 먼저 알아챈다.
+        /// 이 대사가 끝나면 [교차 선택으로 인한 신뢰도 하락 및 게임 오버에 대한 경고와 설명 튜토리얼 팝업].</summary>
+        public static DialogueSequence ChoiceAAfterB() => Seq("A (B 이후, 1번째 교차) — 거짓과 진실을 섞는다",
+            P(ChoiceALabelAfterB1),
+            P(ChoiceALabelAfterB2),
+            A("…처음 자리에 앉으셨을 때는… <clue=TES_SAW_IT>분명히 저도 봤던 것 같긴 한데요.</clue>",
+              ExpressionId.Flustered, "(바뀐 태도에 조금 당황하고 긴장한 듯)", StageAnimation.Tremble),
+            P("오, 다행이네요. 그래서 어디서 봤을까요?"),
+            A("음…역시 그 이후로는 잘 모르겠어요. 도움이 못 되어서 죄송해요, 수사관님.", ExpressionId.Sad,
+              "(고민하는 듯 눈을 감고 생각하는 듯 하다가, 고양이 쪽을 힐끗 바라보며)", StageAnimation.GlanceCat),
+            I("거짓말과 진실을 섞어서 이야기하는 것 같군…이유는 모르겠지만서도 일단 만년필의 행방 자체를 모르는 반응은 아니야."));
+
+        /// <summary>2번째 교차 — A &gt; B 이후 다시 A. 장난으로 받아들인 조수가 실망한다. 심문 강제 종료.</summary>
+        public static DialogueSequence ChoiceASecondCross() => Seq("A (A>B 이후, 2번째 교차) — 신뢰를 잃는다",
+            P(ChoiceALabelSecondCross),
+            A("네? 그, 어…? 뭘 이해하신다는 말씀이실까요…?", ExpressionId.Flustered,
+              "(당신의 행동이 이상하다는 듯)", StageAnimation.Startle),
+            A("그리고 무엇을 교환하신다는 이야기죠?", ExpressionId.Flustered),
+            P("음? 당신이 가진 만년필과 제가 가진 다른 물건들을 이야기하는 거죠?"),
+            A("…진심이세요, 수사관님?", ExpressionId.Angry, "(당신의 이야기에 화가난 듯)", StageAnimation.Glare),
+            A("아무리 제가 어려보여도 엄연한 정식 수사관이에요.", ExpressionId.Angry),
+            A("상황상, 제가 의심될만 하니까 심문하시고 그런 것까지는 이해를 해요.", ExpressionId.Angry),
+            A("하지만 그것과 별개로 저를 그렇게 얕잡고 장난스럽게 대하시는 건", ExpressionId.Angry),
+            A("동료로서 너무하신 거 아닌가요?", ExpressionId.Angry),
+            P("아뇨, 그러려던 의도는 없었습니다만…"),
+            A("분명 말했지만 저는 그 만년필을 가지고 있지도 않고, 행방도 몰라요.", ExpressionId.Sad,
+              "(화나고 속상한 듯한 표정으로)"),
+            A("제가 그렇게 의심스러우시면 본부에 이야기해서 보조인력을 바꾸시는건 어떤가요?", ExpressionId.Sad),
+            A("…수사관님을 존경했던 제 자신에게 실망스러워지네요.", ExpressionId.Sad, null, StageAnimation.LookAway),
+            I("잘못 생각했나…"),
+            I("…신뢰를 완전히 잃어버린 모양이군. 더 이상 심문을 이어가긴 어렵겠어."));
+
         // ------------------------------------------------------------ B선택지
-        // 강압적으로 공격하듯 진행. 초회의 <시간 경과> 뒤에 신뢰도·게임오버 경고 팝업이 붙는다.
+        // 강압적으로 공격하듯 진행. 2·3회는 '연속' — 반대로 갈아타는 순간 교차가 되므로, 실제로도 늘 연속이다.
+        // 2·3회 연속은 초회 뒤의 <시간 경과_a> 가 나왔는지에 따라 -A(미출현) / -B(출현) 로 갈린다.
+        // 4회 연속이면 신뢰를 잃고 심문이 강제로 끝난다.
+
+        /// <summary>B 초회·1번째 교차 뒤의 &lt;시간 경과_a&gt; 이름표.</summary>
+        private const string IdleKeyBTimeA = "SEPI_B_TIME_A";
 
         public const string ChoiceBLabel =
             "아무리 그래도 그렇지 상사의 물건을 훔치다니, 초면부터 적잖이 얕보였나보군요?";
 
-        /// <summary>❕A선택지 이후에 B를 고르면 이 말로 바뀐다.</summary>
-        public const string ChoiceBLabelAfterA =
-            "아무리 그래도 그렇지 상사의 물건을 훔치다니, 제가 적잖이 얕보였나봅니다?";
-
         private const string ChoiceBPressLine =
             "그러면 뭐죠? 제가 모르는 새에 본부에서는 보조 수사관 이수 과목에 ‘현장에서의 짐 관리’같은 과목이라도 포함되었었나 보죠?";
 
-        // [임시] 2~4회차는 노션에 없다. 강압 페널티 규칙(3회 경고 · 4회 공포로 인한 심문 거부)에
-        // 맞춰 점점 겁을 먹는 쪽으로 지어 넣었다. 원문이 생기면 이 세 칸만 갈아끼우면 된다.
-        private const string ChoiceBLabel2 = "…계속 그렇게 잡아떼실 겁니까?";
-        private const string ChoiceBLabel3 = "지금 제 시간을 뺏고 있다는 건 알고 계시죠.";
-        private const string ChoiceBLabel4 = "마지막으로 묻겠습니다. 정말 모릅니까?";
+        private const string ChoiceBLabel2A1 = "저는 그리 좋은 사람은 아닙니다?";
+        private const string ChoiceBLabel2A2 = "어서 빨리 행방을 이야기하는 것이 보조 수사관에게는 좋을 겁니다.";
+        private const string ChoiceBLabel2B1 = "하지만 그렇더라도 저는 참을성이 그리 좋은 사람은 아닙니다.";
+        private const string ChoiceBLabel2B2 = "억울한 부분은 이해하지만 저라면 오히려 솔직하게 이야기해서 어서 빨리 오해를 풀텐데요?";
+        private const string ChoiceBLabel3A1 = "지금 저랑 장난하자는 겁니까?";
+        private const string ChoiceBLabel3B1 = "앞뒤가 안 맞지 않습니까…";
+        private const string ChoiceBLabel3Common = "하다못해 숨기는 것에 대해서 말을 못하는 이유가 뭐죠?";
+        private const string ChoiceBLabel4 = "결국 당신이 가져간 범인이라는 거 아닙니까!";
 
-        /// <summary>B선택지의 회차 목록. 맨 끝은 초회의 조건부 변형 — A를 먼저 골랐을 때.</summary>
+        /// <summary>1번째 교차 — A선택지 이후에 B를 고르면 이 말로 바뀐다.</summary>
+        private const string ChoiceBLabelAfterA = "아무래도 제가 적잖이 얕보였나 봅니다? 당당하게 거짓말을 내뱉고.";
+
+        /// <summary>2번째 교차 — B &gt; A 이후 B를 다시 고르면 이 말로 바뀐다. 신뢰를 잃는다.</summary>
+        private const string ChoiceBLabelSecondCross = "이래도 제가 좋은 사람으로 보입니까? 어서 빨리 실토하는 게 빠를겁니다?";
+
+        /// <summary>B선택지의 칸 목록 — 보통 회차 4 + 회차 변형 2 + 교차 칸 2.</summary>
         public static List<ChoicePass> ChoiceBRounds() => new List<ChoicePass>
         {
-            Round(ChoiceBLabel, ChoiceBPass(), ChoiceBIdle()),
-            Round(ChoiceBLabel2, ChoiceBPass2()),
-            Round(ChoiceBLabel3, ChoiceBPass3()),
-            Round(ChoiceBLabel4, ChoiceBPass4()),
-            Variant(0, "CH_SEPI_FRIENDLY", ChoiceBLabelAfterA, ChoiceBPassAfterA(), ChoiceBIdle()),
+            Round(ChoiceBLabel, ChoiceBPass(), ChoiceBIdleA(), IdleKeyBTimeA),
+            Round(ChoiceBLabel2A1 + " " + ChoiceBLabel2A2, ChoiceBPass2A(), ChoiceBIdle2()),
+            Round(ChoiceBLabel3A1 + " " + ChoiceBLabel3Common, ChoiceBPass3A(), ChoiceBIdle3()),
+            Round(ChoiceBLabel4, ChoiceBPass4(), breaksTrust: true),
+            // <시간 경과_a> 가 나왔다면 2·3회 연속의 말이 바뀐다.
+            Variant(1, ChoiceBLabel2B1 + " " + ChoiceBLabel2B2, ChoiceBPass2B(), ChoiceBIdle2(), requiresSeenIdleKey: IdleKeyBTimeA),
+            Variant(2, ChoiceBLabel3B1 + " " + ChoiceBLabel3Common, ChoiceBPass3B(), ChoiceBIdle3(), requiresSeenIdleKey: IdleKeyBTimeA),
+            // "A선택지 이후 선택 시" — 대사 뒤 경고 팝업, 이어서 <시간 경과_a>.
+            Alternation(1, ChoiceBLabelAfterA, ChoiceBAfterA(), ChoiceBIdleA(), IdleKeyBTimeA),
+            // "B선택지 > A선택지 이후, B 선택지 재 선택 시" — [신뢰도 하락으로 인한 ‘세피‘ 심문 강제 종료]
+            Alternation(2, ChoiceBLabelSecondCross, ChoiceBSecondCross(), breaksTrust: true),
         };
 
         public static DialogueSequence ChoiceBPass() => Seq("B 초회 — 당황, 그러나 거짓은 아님",
@@ -408,79 +455,209 @@ namespace ItIsYou.EditorTools
             A("아니에요, 저는 훔치거나 하지 않았어요! 제가 당황한 건 그런 이유가 아니라, 그저…", ExpressionId.Sad,
               "(당신의 공격적인 언행에 다소 당혹스럽지만 최대한 감정을 가다듬고는 억울한 표정을 지으며) " +
               "(고양이쪽을 힐끔 힐끔 바라보며 고민하는 모습)", StageAnimation.GlanceCat),
-            I("거짓말을 하는 것 같지는 않은데… 뭔가 숨기는 것 같아보이는군."));
+            I("거짓말을 하는 것 같지는 않은데… 뭔가 숨기는 것 같아 보이는군."));
 
-        /// <summary>B 초회 뒤의 &lt;시간 경과&gt;. 이 뒤에 [신뢰도 하락 및 게임 오버에 대한 경고와 설명].</summary>
-        public static DialogueSequence ChoiceBIdle() => Seq("B 초회 — 시간 경과",
+        /// <summary>&lt;시간 경과_a&gt; — B 초회와 1번째 교차 B 뒤. 끝나면 [신뢰도 하락 및 게임 오버에 대한 경고와 설명].</summary>
+        public static DialogueSequence ChoiceBIdleA() => Seq("B — 시간 경과_a",
             A("죄송합니다,수사관님. 하지만 저는 감히 남의 물건을 가지고 탐내거나 하지 않아요.",
               ExpressionId.Neutral, "(작은 한 숨을 쉬고는 감정이 정돈된 말투로)", StageAnimation.Sigh),
             A("제가 오해할 만한 행동을 했다고는 하지만 그렇게 생각하지 않아 주셨음 해요.",
               ExpressionId.Sad, "(또렷하게 주인공을 바라보며)"));
 
-        /// <summary>❕A선택지 이후에 고른 B 초회. 갑자기 바뀐 태도에 더 크게 흔들린다.</summary>
-        public static DialogueSequence ChoiceBPassAfterA() => Seq("B 초회 (A 이후) — 갑자기 바뀐 태도",
+        /// <summary>B 2회 연속 -A — &lt;시간 경과_a&gt; 미출현.</summary>
+        public static DialogueSequence ChoiceBPass2A() => Seq("B 2회 연속 -A (시간 경과_a 미출현)",
+            P(ChoiceBLabel2A1),
+            P(ChoiceBLabel2A2),
+            A("그, 수사관님…죄송하지만 저도 만년필의 행방에 관해서는 아는 게 없어서요...", ExpressionId.Nervous,
+              "(당신이 조금 낯설어진 듯 눈치를 보며)", StageAnimation.LookAway),
+            P("하아… 그러면 무엇하러 제게 거짓말을 한거죠?"),
+            A("그건…말할 수 없어요…", ExpressionId.Nervous,
+              "(눈을 피하고 고양이쪽을 힐끗 바라보며)", StageAnimation.GlanceCat));
+
+        /// <summary>B 2회 연속 -B — &lt;시간 경과_a&gt; 출현.</summary>
+        public static DialogueSequence ChoiceBPass2B() => Seq("B 2회 연속 -B (시간 경과_a 출현)",
+            P(ChoiceBLabel2B1),
+            P(ChoiceBLabel2B2),
+            A("그, 수사관님…죄송하지만 저도 만년필의 행방에 관해서는 아는 게 없어서요...", ExpressionId.Nervous,
+              "(당신이 조금 낯설어진 듯 눈치를 보며)", StageAnimation.LookAway),
+            P("하아… 그러면 무엇하러 제게 거짓말을 한거죠?"),
+            A("그건…말할 수 없어요…", ExpressionId.Nervous,
+              "(눈을 피하고 고양이쪽을 힐끗 바라보며)", StageAnimation.GlanceCat));
+
+        /// <summary>B 2회 연속 뒤의 &lt;시간 경과&gt;.</summary>
+        public static DialogueSequence ChoiceBIdle2() => Seq("B 2회 연속 — 시간 경과",
+            A("…더 하시 말씀이라도 있으신가요…?", ExpressionId.Nervous, "(눈치를 보는 듯)"));
+
+        /// <summary>B 3회 연속 -A — &lt;시간 경과_a&gt; 미출현.</summary>
+        public static DialogueSequence ChoiceBPass3A() => Seq("B 3회 연속 -A (시간 경과_a 미출현)",
+            P(ChoiceBLabel3A1),
+            P(ChoiceBLabel3Common),
+            A("정말이에요!… 어떤 것 때문에 제가 의심받는건지는 모르겠어요.", ExpressionId.Sad, "(억울한 듯 호소하며)"),
+            A("제가 만년필을 가져갈 이유도, 만약에라도 행방을 알고 있다면…", ExpressionId.Sad),
+            A("굳이 숨길 이유도 없는걸요.", ExpressionId.Sad),
+            Line(SpeakerId.Protagonist, "그래도 예상이 가는 이유가 있기 때문에 숨기는 거 아닙니까!",
+                ExpressionId.Neutral, "(책상을 내려치며)"),
+            A("저는 그저 고양이랑 놀아준 것뿐이라고요!", ExpressionId.Flustered,
+              "(모르겠다는 듯 질끈 눈을 감으며)", StageAnimation.Shrink),
+            A("…아마 그 때 어디론가 튕겨나간 거 아닐까 싶긴하네요…", ExpressionId.Sad, "(입삐죽하며)"));
+
+        /// <summary>B 3회 연속 -B — &lt;시간 경과_a&gt; 출현.</summary>
+        public static DialogueSequence ChoiceBPass3B() => Seq("B 3회 연속 -B (시간 경과_a 출현)",
+            P(ChoiceBLabel3B1),
+            P(ChoiceBLabel3Common),
+            A("…정말 말해야 될까요?", ExpressionId.Sad, "(억울하고 서운한 듯 이야기하며)"),
+            A("제가 만년필을 가져갈 이유도, 만약에라도 행방을 알고 있다면…", ExpressionId.Sad),
+            A("굳이 숨길 이유도 없는걸요.", ExpressionId.Sad),
+            Line(SpeakerId.Protagonist, "그래도 예상이 가는 이유가 있기 때문에 숨기는 거 아닙니까!",
+                ExpressionId.Neutral, "(책상을 내려치며)"),
+            A("저는 그저 고양이랑 놀아준 것뿐이라고요!", ExpressionId.Flustered,
+              "(모르겠다는 듯 질끈 눈을 감으며)", StageAnimation.Shrink),
+            A("…아마 그 때 어디론가 튕겨나간 거 아닐까 싶긴하네요…", ExpressionId.Sad, "(입삐죽하며)"));
+
+        /// <summary>B 3회 연속 뒤의 &lt;시간 경과&gt;.</summary>
+        public static DialogueSequence ChoiceBIdle3() => Seq("B 3회 연속 — 시간 경과",
+            A("…이제 된거죠?", ExpressionId.Nervous, "(눈치를 보는 듯)"));
+
+        /// <summary>B 4회 연속 — 조수가 정색한다. 심문 강제 종료.</summary>
+        public static DialogueSequence ChoiceBPass4() => Seq("B 4회 연속 — 신뢰를 잃는다",
+            P(ChoiceBLabel4),
+            A("네? 제가 가져간게 아니라고 몇 번을 말씀드려요!", ExpressionId.Angry,
+              "(억울하고 화가 난 듯 소리치며)", StageAnimation.Fume),
+            A("놀리시는 것도 아니고 정말 너무하시네요, 수사관님.", ExpressionId.Angry),
+            A("제가 아무리 의심된다고 해도 그렇지, 큰소리 내신다고 모든 일이 해결되나요?", ExpressionId.Angry),
+            P("…"),
+            A("하아… 분명 제가 어리다고 무시하시는 거겠죠.", ExpressionId.Angry, "(정색하며)", StageAnimation.Sigh),
+            A("저도 수사관님과 똑같은 수사관입니다.", ExpressionId.Angry),
+            A("여러 까다로운 테스트를 통해 수사관으로서 임명되었어요.", ExpressionId.Angry),
+            A("그리고 아직 현장 경험이 적기 때문에 보조일 뿐,", ExpressionId.Angry),
+            A("저도 엄연히 본부에서 정식으로 발령받은 보조 수사관입니다.", ExpressionId.Angry),
+            A("놀리기 쉬운 어린애도, 수사관님의 심심풀이용 장난감도 아니라고요.", ExpressionId.Angry, null, StageAnimation.Glare),
+            I("…신뢰를 완전히 잃어버린 모양이군. 더 이상 심문을 이어가긴 어렵겠어."));
+
+        /// <summary>1번째 교차 — A선택지 이후에 고른 B. 대사가 끝나면 경고 팝업, 이어서 &lt;시간 경과_a&gt;.</summary>
+        public static DialogueSequence ChoiceBAfterA() => Seq("B (A 이후, 1번째 교차) — 갑자기 바뀐 태도",
             P(ChoiceBLabelAfterA),
-            A("엥? 네? 갑자기요? 그, 그게 아니라요, 수사관님…", ExpressionId.Flustered,
+            A("네,네? 제가요? 그, 그게 아니라요, 수사관님…", ExpressionId.Flustered,
               "(당신의 갑작스럽게 바뀐 태도와 적대적인 언행에 당황한 듯, 눈을 못 마주치며 동공이 떨리는 모습)",
               StageAnimation.Tremble),
-            P(ChoiceBPressLine),
+            Line(SpeakerId.Protagonist, "표정 행동 수사관 앞에서 거짓말을 내뱉으면서까지, 고급 만년필이 탐난 건가요?",
+                ExpressionId.Neutral, "(책상을 내려치며)"),
+            P("그게 아니라면 뭐죠?"),
+            P("제가 모르는 새에 본부에서는 보조 수사관 이수 과목에 ‘현장에서의 짐 관리’같은 과목이라도 포함되었었나 보죠?"),
             A("아니에요, 저는 훔치거나 하지 않았어요! 제가 당황한 건 그런 이유가 아니라, 그저…", ExpressionId.Sad,
               "(당신의 공격적인 언행에 다소 당혹스럽지만 최대한 감정을 가다듬고는 억울한 표정을 지으며) " +
               "(눈을 꾹 감으며 생각하는 모습)", StageAnimation.Ponder),
-            I("거짓말을 하는 것 같지는 않은데… 뭔가 숨기는 것 같아보이는군."));
+            I("거짓말을 하는 것 같지는 않은데… 뭔가 숨기는 것 같아 보이는군."));
 
-        /// <summary>[임시] B 2회 — 같은 말만 돌아온다. 노션 원문 없음.</summary>
-        public static DialogueSequence ChoiceBPass2() => Seq("[임시] B 2회",
-            P(ChoiceBLabel2),
-            A("잡아떼는 게 아니라요… 정말로 제가 가져가지 않았어요.", ExpressionId.Nervous,
-              "(목소리가 조금 작아지며)", StageAnimation.Shrink),
-            I("..같은 말만 돌아온다. 그런데 눈은 아까부터 한 곳을 본다."));
-
-        /// <summary>[임시] B 3회 — 겁을 먹기 시작한다. 노션 원문 없음.</summary>
-        public static DialogueSequence ChoiceBPass3() => Seq("[임시] B 3회",
-            P(ChoiceBLabel3),
-            A("…죄송합니다. 그런데 정말, 제가 아니에요…", ExpressionId.Fearful,
-              "(어깨가 움츠러들며)", StageAnimation.Shrink),
-            A("…믿어주시면 안 될까요.", ExpressionId.Fearful, "(말끝이 떨린다)", StageAnimation.Tremble),
-            I("..겁을 먹었다. 이 이상 몰아붙여도 나올 것이 없겠군."));
-
-        /// <summary>[임시] B 4회 — 대답을 받아낼 수 있는 상태가 아니다. 노션 원문 없음.</summary>
-        public static DialogueSequence ChoiceBPass4() => Seq("[임시] B 4회",
-            P(ChoiceBLabel4),
-            A("…", ExpressionId.Fearful, "(얼굴이 하얗게 질린 채)", StageAnimation.Pale),
-            N("조수는 입술만 달싹이다 끝내 아무 말도 하지 못했다."),
-            I("..대답을 받아낼 수 있는 상태가 아니다."));
+        /// <summary>2번째 교차 — B &gt; A 이후 다시 B. 장난으로 받아들였다가 실망한다. 심문 강제 종료.</summary>
+        public static DialogueSequence ChoiceBSecondCross() => Seq("B (B>A 이후, 2번째 교차) — 신뢰를 잃는다",
+            P(ChoiceBLabelSecondCross),
+            A("그… 수사관님? 장난치시는 거라면 저는 마저 정리하러 갈게요.", ExpressionId.Neutral,
+              "(당신의 행동에 의문을 가지고 안심한 듯, 한 숨을 쉬며)", StageAnimation.Sigh),
+            P("…네?"),
+            A("설마 진심으로 제게 캐물어보셨던 거예요?", ExpressionId.Angry,
+              "(당신의 반응에 실망한 듯, 찡그리며)", StageAnimation.Glare),
+            A("평소에도 그런 식으로 심문하시는 건 아니시죠?", ExpressionId.Angry),
+            I("…신뢰를 완전히 잃어버린 모양이군. 더 이상 심문을 이어가긴 어렵겠어."));
 
         // ------------------------------------------------------------ C선택지
 
         /// <summary>C선택지 - 단서에 대해서(리본 끈).</summary>
-        public const string ChoiceCLabel = "이 리본은 분명 기차역에 두고 왔던 거 같은데 타자기랑 같이 챙겨왔었나보군요?";
+        public const string ChoiceCLabel = "이 리본은 분명 기차역에 두고 왔던 거 같은데 타자기랑 같이 챙겨왔었나 보군요?";
+        private const string ChoiceCLabel2 = "고양이가 물고 다니기라도 했나 보군요? 이리 얼룩지고 털들이 붙은걸 보니.";
+        private const string ChoiceCLabel3 = "고양이가 원래 리본을 이렇게 좋아했나요?";
+        private const string ChoiceCLabel4 = "리본…나름 고급 리본이였는데 말이죠.";
+        private const string ChoiceCLabel5 = "리본…";
+        private const string ChoiceCLabel6 = "내 리본…";
 
         /// <summary>리액션 수집 지점은 데이터 빌더가 <c>Reacting</c> 으로 감싼다 — 6번째 줄.</summary>
-        public static DialogueSequence ChoiceCPass() => Seq("C — 고양이 단어에서 굳는다",
+        public static DialogueSequence ChoiceCPass() => Seq("C 초회 — 고양이 단어에서 굳는다",
             P(ChoiceCLabel),
             A("앗, 네! 수사관님께서 구매하셨던 것 아닌가요?", ExpressionId.Smile,
               "(갑작스러운 주제 전환에 조금 당황한 듯 했지만)"),
-            A("헉 혹시 저희 짐이 아니였나요?! 누군가의 소중한 리본이였다던건… 이미 기차는 출발해 버렸는데 어떻게하죠, 수사관님?",
+            A("헉 혹시 저희 짐이 아니였나요?! 누군가의 소중한 리본이었다던 건… 이미 기차는 출발해 버렸는데 어떻게 하죠, 수사관님?",
               ExpressionId.Surprised, "(미처 생각 못한 부분이 생각난 듯, 살짝 놀라며)", StageAnimation.Startle),
             P("…제가 구매한 게 맞으니 그건 걱정하지 않으셔도 괜찮습니다."),
-            A("그렇다면 다행이네요! 그건 그렇고 이렇게 멋진 리본을 까먹고 두고가시다니, 제가 안 가져왔음 어쩔뻔 했어요?",
+            A("그렇다면 다행이네요! 그건 그렇고 이렇게 멋진 리본을 까먹고 두고가시다니, 제가 안 가져왔으면 어쩔 뻔 했어요?",
               ExpressionId.Smile, "(당신의 말에 안심한 듯 하다가, 장난스러운 표정으로)"),
             P("…고양이 털도 붙어 있고 커피 자국도 그렇고. 멋진 리본이라기엔 이제는 조금 아쉬워졌군요."),
             A("그,그러게요. 하,하핫…", ExpressionId.Flustered,
               "(당신의 고양이라는 단어에 대한 반응으로 다소 비이상적인 당혹감을 보여주며) (결국 시선을 피하며 얼머무린다)",
               StageAnimation.LookAway),
-            I("고양이 때문에 오염된 것은 확실해보이는군. 그런데… 마치 다른 이유라도 있는 듯한 반응인걸."));
+            I("고양이 때문에 오염된 것은 확실해 보이는군. 그런데… 마치 다른 이유라도 있는 듯한 반응인걸."));
+
+        public static DialogueSequence ChoiceCPass2() => Seq("C 2회",
+            P(ChoiceCLabel2),
+            A("그,그랬던 것 같아요. 아마도 붙잡고, 물고, 신나서 여기저기 다녔던 것 같은데요?", ExpressionId.Nervous,
+              "(시선을 피하지만 끄덕이며)", StageAnimation.LookAway));
+
+        public static DialogueSequence ChoiceCPass3() => Seq("C 3회",
+            P(ChoiceCLabel3),
+            A("어…그게 그러게 중요할까요?", ExpressionId.Thinking, "(고개를 갸웃기울이며)"));
+
+        public static DialogueSequence ChoiceCPass4() => Seq("C 4회",
+            P(ChoiceCLabel4),
+            A("아…네…", ExpressionId.Thinking, "(엉뚱하다는 표정으로)"));
+
+        public static DialogueSequence ChoiceCPass5() => Seq("C 5회",
+            P(ChoiceCLabel5),
+            A("…조금 있다가 매점에 리본을 파는지 한 번 보고 올게요.", ExpressionId.Sad, "(한숨을 쉬며)", StageAnimation.Sigh));
+
+        public static DialogueSequence ChoiceCPass6() => Seq("C 6회",
+            P(ChoiceCLabel6),
+            A("…도착해서 제 사비로 하나 사올게요. 기운내세요.", ExpressionId.Sad, "(한숨을 쉬며)", StageAnimation.Sigh));
 
         public static List<ChoicePass> ChoiceCRounds() => new List<ChoicePass>
         {
             Round(ChoiceCLabel, ChoiceCPass()),
+            Round(ChoiceCLabel2, ChoiceCPass2()),
+            Round(ChoiceCLabel3, ChoiceCPass3()),
+            Round(ChoiceCLabel4, ChoiceCPass4()),
+            Round(ChoiceCLabel5, ChoiceCPass5()),
+            Round(ChoiceCLabel6, ChoiceCPass6()),
         };
 
-        /// <summary>세피 심문을 수동으로 마칠 때 — 다음 상대(고양이)로 넘어가는 다리.</summary>
+        // ------------------------------------------------------------ 심문 오브젝트
+        // 심문 화면의 인물·배경 요소. 한 번 고르면 다시 고를 수 없다(노션: "1회 선택 시, 재선택이 불가능하도록 변경").
+
+        /// <summary>심문 오브젝트 — 고양이 엉덩이.</summary>
+        public static List<DialogueLine> InterrogationObjectCat() => new List<DialogueLine>
+        {
+            P("이 아이는 본인이 데려온 겁니까?"),
+            A("앗,아뇨! 에헤헤... 귀엽죠? 기차내에서 돌아다니고 있었어요.", ExpressionId.Smile,
+              "(고양이쪽을 보고 베시시 웃으며)", StageAnimation.GlanceCat),
+            A("…계속 데리고 있는 건 안 되겠죠?", ExpressionId.Nervous),
+            P("뭐, 상황봐서 생각해보죠"),
+            A("앗,네! 고려해주셔서 감사드려요!!", ExpressionId.Smile, "(살짝 놀라 기쁘게 웃으며)", StageAnimation.Startle),
+        };
+
+        /// <summary>심문 오브젝트 — 보조 수사관 프로필 서류.</summary>
+        public static List<DialogueLine> InterrogationObjectProfile() => new List<DialogueLine>
+        {
+            P("혹시 여기있는 본인 서류를 읽어봤습니까?"),
+            A("네,조금 궁금해서요. 멋대로 읽어봐서 죄송해요.", ExpressionId.Smile,
+              "(베시시 미소를 짓고 멋슥하게 끄덕이며)", StageAnimation.Bow),
+            P("…감상은 어떤지 궁금하군요?"),
+            A("대부분 알고 있는 내용이였는데요… 지각은 다시 한 번 죄송합니다!", ExpressionId.Flustered,
+              "(>.<;; 사과)", StageAnimation.Bow),
+            P("뭐, 덕분에 잔소리하는 수고는 덜었군요."),
+        };
+
+        // ------------------------------------------------------------ 마무리
+
+        /// <summary>
+        /// [타임 토큰을 전부 소모하거나, 심문 종료 버튼을 통해 정상적인 심문 종료 시] — 다음 상대(고양이)로 넘어가는 다리.
+        /// </summary>
         public static DialogueSequence SepiEnding() => Seq("세피 심문 마무리",
             P("일단 알았습니다. 그리고 잠시만 기다려보시죠. 아직 이야기를 나눠야 될 분이 남아계시니."),
             A("이야기요…? 설마 이 고양이요?!", ExpressionId.Surprised, "(개그 컷씬?)"));
+
+        /// <summary>[신뢰도 하락으로 인한 ‘세피‘ 심문 강제 종료 시].</summary>
+        public static DialogueSequence SepiTrustBroken() => Seq("세피 심문 강제 종료 — 신뢰도 하락",
+            P("아무래도 이야기를 더 나누기에는 무리가 있는 듯 하군요."),
+            P("뭐, 일단 알았습니다. 그래도 잠시만 기다려보시죠."),
+            P("아직 이야기를 나눠야 될 분이 남아계시니."),
+            A("아,네… 설마 이 고양이요…?", ExpressionId.Sad));
 
         // ================================================================ [임시] 단서 조합 · 2차 심문
         // 노션에 단서 조합의 대사와 2차 심문 스크립트는 없다. 아래는 2026-09-23 기획(가설 조합 · 잉크 · 2차 심문 공용 토큰 ·
@@ -856,30 +1033,48 @@ namespace ItIsYou.EditorTools
         /// <summary>
         /// 순서대로 쌓이는 보통 회차 한 칸. 목록에 뜰 문구와 대사, 그리고 그 회차에만 붙는
         /// &lt;시간 경과&gt; 를 함께 넣는다. 시간 경과를 비우면 용의자의 일반 무반응 회차 대사가 나온다.
+        /// <paramref name="idleKey"/> 는 그 &lt;시간 경과&gt; 가 실제로 나왔는지를 다른 칸이 조건으로 볼 때의 이름표.
         /// </summary>
         private static ChoicePass Round(string label, DialogueSequence sequence,
-            DialogueSequence idleFollowUp = null, string animation = null)
+            DialogueSequence idleFollowUp = null, string idleKey = null, bool breaksTrust = false, string animation = null)
         {
             var pass = new ChoicePass();
             pass.Set("note", sequence != null ? sequence.Note : string.Empty)
                 .Set("labelOverride", label ?? string.Empty)
                 .Set("sequence", sequence ?? new DialogueSequence())
                 .Set("idleFollowUp", idleFollowUp ?? new DialogueSequence())
+                .Set("idleFollowUpKey", idleKey ?? string.Empty)
+                .Set("breaksTrust", breaksTrust)
                 .Set("animationId", animation ?? string.Empty);
             return pass;
         }
 
         /// <summary>
-        /// 조건부 변형 한 칸. <paramref name="round"/> 회차를 대신하되,
-        /// <paramref name="afterChoiceId"/> 를 한 번이라도 먼저 골랐을 때만 쓰인다.
-        /// 시나리오의 ❕ 항목 —— "B선택지 이후, 선택 시" 가 이것이다.
+        /// 회차 변형 한 칸. <paramref name="round"/> 회차(0 = 초회)를 대신하되, 조건이 맞을 때만 쓰인다.
+        /// 예: B선택지 2회 연속의 -B 는 "&lt;시간 경과_a&gt; 가 나왔을 때".
         /// </summary>
-        private static ChoicePass Variant(int round, string afterChoiceId, string label,
-            DialogueSequence sequence, DialogueSequence idleFollowUp = null, string animation = null)
+        private static ChoicePass Variant(int round, string label, DialogueSequence sequence,
+            DialogueSequence idleFollowUp = null, string idleKey = null,
+            string requiresSeenIdleKey = null, string afterChoiceId = null, bool breaksTrust = false)
         {
-            var pass = Round(label, sequence, idleFollowUp, animation);
-            pass.Set("variantOfRound", round)
-                .Set("requiresPriorChoiceIds", new List<string> { afterChoiceId });
+            var pass = Round(label, sequence, idleFollowUp, idleKey, breaksTrust);
+            pass.Set("variantOfRound", round);
+            if (!string.IsNullOrEmpty(requiresSeenIdleKey))
+                pass.Set("requiresSeenIdleKeys", new List<string> { requiresSeenIdleKey });
+            if (!string.IsNullOrEmpty(afterChoiceId))
+                pass.Set("requiresPriorChoiceIds", new List<string> { afterChoiceId });
+            return pass;
+        }
+
+        /// <summary>
+        /// 교차 칸 한 칸. 이번 선택이 <paramref name="n"/> 번째 친근↔강압 교차일 때 쓰인다 — 회차 순서보다 먼저.
+        /// 1번째 = "B선택지 이후, 선택 시", 2번째 = "A선택지 &gt; B선택지 이후, A선택지 재 선택 시".
+        /// </summary>
+        private static ChoicePass Alternation(int n, string label, DialogueSequence sequence,
+            DialogueSequence idleFollowUp = null, string idleKey = null, bool breaksTrust = false)
+        {
+            var pass = Round(label, sequence, idleFollowUp, idleKey, breaksTrust);
+            pass.Set("onAlternation", n);
             return pass;
         }
 

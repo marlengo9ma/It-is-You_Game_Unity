@@ -125,10 +125,15 @@ MonoBehaviour:
       animationId: 
       trustDelta: 0
       endsInterrogation: 0
+    idleFollowUpKey: 
     animationId: 
+    breaksTrust: 0
+    onAlternation: 0
     variantOfRound: -1
     requiresPriorChoiceIds: []
     blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
   - note: "A 2\uD68C \u2014 \uC54C\uAE34 \uC54C\uC9C0\uB9CC \uBAA8\uB978\uB2E4"
     labelOverride: "\uC815\uB9D0\uB85C \uC8FC\uBCC0\uC5D0 \uC5C6\uC5C8\uB098\uC694?
       \uC6CC\uB099 \uD654\uB824\uD55C \uB514\uC790\uC778\uC774\uB77C \uBABB \uBD24\uC744
@@ -200,10 +205,15 @@ MonoBehaviour:
       animationId: 
       trustDelta: 0
       endsInterrogation: 0
+    idleFollowUpKey: 
     animationId: 
+    breaksTrust: 0
+    onAlternation: 0
     variantOfRound: -1
     requiresPriorChoiceIds: []
     blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
   - note: "A 3\uD68C \u2014 \uBD84\uBA85\uD788 \uBD24\uC5C8\uB2E4"
     labelOverride: "\u2026\uC9C4\uC9DC\uB85C \uBAA8\uB974\uACA0\uB098\uC694? \uC81C
       \uAE30\uC5B5\uC0C1\uC73C\uB85C\uB294 \uD14C\uC774\uBE14 \uC704\uC758 \uC11C\uB958\uCCA0
@@ -288,10 +298,15 @@ MonoBehaviour:
       animationId: 
       trustDelta: 0
       endsInterrogation: 0
+    idleFollowUpKey: 
     animationId: 
+    breaksTrust: 0
+    onAlternation: 0
     variantOfRound: -1
     requiresPriorChoiceIds: []
     blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
   - note: "A 4\uD68C \u2014 \uC800\uB3C4 \uC18D\uC0C1\uD574\uC694"
     labelOverride: "\uC815\uB9D0, \uC9C4\uC9DC\uB85C\uC694?"
     sequence:
@@ -310,8 +325,9 @@ MonoBehaviour:
           blurredFromRecallDepth: 2
         autoGrantClueId: 
       - speaker: 3
-        text: "\u2026\uC218\uC0AC\uAD00\uB2D8, \uC18D\uC0C1\uD558\uC2E0\uAC74 \uC54C\uACA0\uC9C0\uB9CC\u2026\uACC4\uC18D
-          \uC774\uB7EC\uC2DC\uBA74 \uC800\uB3C4 \uC18D\uC0C1\uD574\uC694."
+        text: "\u2026\uC218\uC0AC\uAD00\uB2D8, \uC544\uC26C\uC6B0\uC2E0 \uB9C8\uC74C\uC740
+          \uC774\uD574\uD558\uC9C0\uB9CC\u2026\uACC4\uC18D \uC774\uB7EC\uC2DC\uBA74
+          \uC800\uB3C4 \uC18D\uC0C1\uD574\uC694\u2026"
         expression: 5
         stageDirection: "(\uC0B4\uC9DD \uC9C8\uB9B0 \uD45C\uC815\uC73C\uB85C)"
         animationId: 
@@ -331,10 +347,15 @@ MonoBehaviour:
       animationId: 
       trustDelta: 0
       endsInterrogation: 0
+    idleFollowUpKey: 
     animationId: 
+    breaksTrust: 0
+    onAlternation: 0
     variantOfRound: -1
     requiresPriorChoiceIds: []
     blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
   - note: "A 5\uD68C \u2014 \uBB34\uC5B8\uC758 \uC9F8\uB824\uBD04"
     labelOverride: "\uC815\uB9D0 \uC815\uB9D0 \uC9C4\uC9DC \uC9C4\uC9DC\uB85C\uC694??"
     sequence:
@@ -373,10 +394,15 @@ MonoBehaviour:
       animationId: 
       trustDelta: 0
       endsInterrogation: 0
+    idleFollowUpKey: 
     animationId: 
+    breaksTrust: 0
+    onAlternation: 0
     variantOfRound: -1
     requiresPriorChoiceIds: []
     blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
   - note: "A 6\uD68C \u2014 \uC870\uC218\uAC00 \uD654\uB97C \uB0B8\uB2E4"
     labelOverride: "\uC815\uB9D0, \u3148\u2026"
     sequence:
@@ -427,24 +453,43 @@ MonoBehaviour:
       animationId: 
       trustDelta: 0
       endsInterrogation: 0
+    idleFollowUpKey: 
     animationId: 
+    breaksTrust: 0
+    onAlternation: 0
     variantOfRound: -1
     requiresPriorChoiceIds: []
     blockedByChoiceIds: []
-  - note: "A \uCD08\uD68C (B \uC774\uD6C4) \u2014 \uAC70\uC9D3\uACFC \uC9C4\uC2E4\uC744
-      \uC11E\uB294\uB2E4"
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
+  - note: "A (B \uC774\uD6C4, 1\uBC88\uC9F8 \uAD50\uCC28) \u2014 \uAC70\uC9D3\uACFC
+      \uC9C4\uC2E4\uC744 \uC11E\uB294\uB2E4"
     labelOverride: "\uD6C4\uC6B0, \uBBF8\uC548\uD569\uB2C8\uB2E4. \uB0B4\uAC00 \uB9E4\uC6B0
-      \uC544\uB07C\uB294 \uB9CC\uB144\uD544\uC774\uB77C. \uADF8\uB7EC\uB2C8 \uD589\uBC29\uC5D0
-      \uB300\uD574\uC11C \uC544\uB294 \uAC8C \uC788\uB2E4\uBA74 \uAF2D \uC54C\uB824\uC8FC\uC5C8\uC74C
+      \uC544\uB07C\uB294 \uB9CC\uB144\uD544\uC774\uB77C \uC870\uAE08 \uD765\uBD84\uC744
+      \uD588\uAD70\uC694. \uD639 \uB9CC\uB144\uD544\uC758 \uD589\uBC29\uC5D0 \uB300\uD574\uC11C
+      \uC544\uB294 \uAC8C \uC788\uB2E4\uBA74 \uAF2D \uC54C\uB824\uC8FC\uC5C8\uC74C
       \uD569\uB2C8\uB2E4."
     sequence:
-      note: "A \uCD08\uD68C (B \uC774\uD6C4) \u2014 \uAC70\uC9D3\uACFC \uC9C4\uC2E4\uC744
-        \uC11E\uB294\uB2E4"
+      note: "A (B \uC774\uD6C4, 1\uBC88\uC9F8 \uAD50\uCC28) \u2014 \uAC70\uC9D3\uACFC
+        \uC9C4\uC2E4\uC744 \uC11E\uB294\uB2E4"
       lines:
       - speaker: 1
         text: "\uD6C4\uC6B0, \uBBF8\uC548\uD569\uB2C8\uB2E4. \uB0B4\uAC00 \uB9E4\uC6B0
-          \uC544\uB07C\uB294 \uB9CC\uB144\uD544\uC774\uB77C. \uADF8\uB7EC\uB2C8 \uD589\uBC29\uC5D0
-          \uB300\uD574\uC11C \uC544\uB294 \uAC8C \uC788\uB2E4\uBA74 \uAF2D \uC54C\uB824\uC8FC\uC5C8\uC74C
+          \uC544\uB07C\uB294 \uB9CC\uB144\uD544\uC774\uB77C \uC870\uAE08 \uD765\uBD84\uC744
+          \uD588\uAD70\uC694."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 1
+        text: "\uD639 \uB9CC\uB144\uD544\uC758 \uD589\uBC29\uC5D0 \uB300\uD574\uC11C
+          \uC544\uB294 \uAC8C \uC788\uB2E4\uBA74 \uAF2D \uC54C\uB824\uC8FC\uC5C8\uC74C
           \uD569\uB2C8\uB2E4."
         expression: 0
         stageDirection: 
@@ -501,8 +546,8 @@ MonoBehaviour:
           blurredFromRecallDepth: 2
         autoGrantClueId: 
       - speaker: 2
-        text: "\uAC70\uC9D3\uB9D0\uACFC \uC9C4\uC2E4\uC744 \uC11E\uC5B4\uC11C \uC774\uC57C\uAE30
-          \uD558\uB294 \uAC83 \uAC19\uAD70\u2026\uC774\uC720\uB294 \uBAA8\uB974\uACA0\uC9C0\uB9CC\uC11C\uB3C4
+        text: "\uAC70\uC9D3\uB9D0\uACFC \uC9C4\uC2E4\uC744 \uC11E\uC5B4\uC11C \uC774\uC57C\uAE30\uD558\uB294
+          \uAC83 \uAC19\uAD70\u2026\uC774\uC720\uB294 \uBAA8\uB974\uACA0\uC9C0\uB9CC\uC11C\uB3C4
           \uC77C\uB2E8 \uB9CC\uB144\uD544\uC758 \uD589\uBC29 \uC790\uCCB4\uB97C \uBAA8\uB974\uB294
           \uBC18\uC751\uC740 \uC544\uB2C8\uC57C."
         expression: 0
@@ -536,11 +581,242 @@ MonoBehaviour:
       animationId: 
       trustDelta: 0
       endsInterrogation: 0
+    idleFollowUpKey: 
     animationId: 
-    variantOfRound: 0
-    requiresPriorChoiceIds:
-    - CH_SEPI_AGGRESSIVE
+    breaksTrust: 0
+    onAlternation: 1
+    variantOfRound: -1
+    requiresPriorChoiceIds: []
     blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
+  - note: "A (A>B \uC774\uD6C4, 2\uBC88\uC9F8 \uAD50\uCC28) \u2014 \uC2E0\uB8B0\uB97C
+      \uC783\uB294\uB2E4"
+    labelOverride: "\uC544, \uC5EC\uB7EC\uBAA8\uB85C \uC774\uD574\uD569\uB2C8\uB2E4.
+      \uD639\uC2DC \uC81C\uAC00 \uAC00\uC9C4 \uB2E4\uB978 \uBB3C\uAC74\uACFC \uAD50\uD658\uD558\uC9C0
+      \uC54A\uACA0\uC2B5\uB2C8\uAE4C?"
+    sequence:
+      note: "A (A>B \uC774\uD6C4, 2\uBC88\uC9F8 \uAD50\uCC28) \u2014 \uC2E0\uB8B0\uB97C
+        \uC783\uB294\uB2E4"
+      lines:
+      - speaker: 1
+        text: "\uC544, \uC5EC\uB7EC\uBAA8\uB85C \uC774\uD574\uD569\uB2C8\uB2E4. \uD639\uC2DC
+          \uC81C\uAC00 \uAC00\uC9C4 \uB2E4\uB978 \uBB3C\uAC74\uACFC \uAD50\uD658\uD558\uC9C0
+          \uC54A\uACA0\uC2B5\uB2C8\uAE4C?"
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uB124? \uADF8, \uC5B4\u2026? \uBB58 \uC774\uD574\uD558\uC2E0\uB2E4\uB294
+          \uB9D0\uC500\uC774\uC2E4\uAE4C\uC694\u2026?"
+        expression: 3
+        stageDirection: "(\uB2F9\uC2E0\uC758 \uD589\uB3D9\uC774 \uC774\uC0C1\uD558\uB2E4\uB294
+          \uB4EF)"
+        animationId: startle
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uADF8\uB9AC\uACE0 \uBB34\uC5C7\uC744 \uAD50\uD658\uD558\uC2E0\uB2E4\uB294
+          \uC774\uC57C\uAE30\uC8E0?"
+        expression: 3
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 1
+        text: "\uC74C? \uB2F9\uC2E0\uC774 \uAC00\uC9C4 \uB9CC\uB144\uD544\uACFC \uC81C\uAC00
+          \uAC00\uC9C4 \uB2E4\uB978 \uBB3C\uAC74\uB4E4\uC744 \uC774\uC57C\uAE30\uD558\uB294
+          \uAC70\uC8E0?"
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\u2026\uC9C4\uC2EC\uC774\uC138\uC694, \uC218\uC0AC\uAD00\uB2D8?"
+        expression: 4
+        stageDirection: "(\uB2F9\uC2E0\uC758 \uC774\uC57C\uAE30\uC5D0 \uD654\uAC00\uB09C
+          \uB4EF)"
+        animationId: glare
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uC544\uBB34\uB9AC \uC81C\uAC00 \uC5B4\uB824\uBCF4\uC5EC\uB3C4 \uC5C4\uC5F0\uD55C
+          \uC815\uC2DD \uC218\uC0AC\uAD00\uC774\uC5D0\uC694."
+        expression: 4
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uC0C1\uD669\uC0C1, \uC81C\uAC00 \uC758\uC2EC\uB420\uB9CC \uD558\uB2C8\uAE4C
+          \uC2EC\uBB38\uD558\uC2DC\uACE0 \uADF8\uB7F0 \uAC83\uAE4C\uC9C0\uB294 \uC774\uD574\uB97C
+          \uD574\uC694."
+        expression: 4
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uD558\uC9C0\uB9CC \uADF8\uAC83\uACFC \uBCC4\uAC1C\uB85C \uC800\uB97C
+          \uADF8\uB807\uAC8C \uC595\uC7A1\uACE0 \uC7A5\uB09C\uC2A4\uB7FD\uAC8C \uB300\uD558\uC2DC\uB294
+          \uAC74"
+        expression: 4
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uB3D9\uB8CC\uB85C\uC11C \uB108\uBB34\uD558\uC2E0 \uAC70 \uC544\uB2CC\uAC00\uC694?"
+        expression: 4
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 1
+        text: "\uC544\uB1E8, \uADF8\uB7EC\uB824\uB358 \uC758\uB3C4\uB294 \uC5C6\uC5C8\uC2B5\uB2C8\uB2E4\uB9CC\u2026"
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uBD84\uBA85 \uB9D0\uD588\uC9C0\uB9CC \uC800\uB294 \uADF8 \uB9CC\uB144\uD544\uC744
+          \uAC00\uC9C0\uACE0 \uC788\uC9C0\uB3C4 \uC54A\uACE0, \uD589\uBC29\uB3C4
+          \uBAB0\uB77C\uC694."
+        expression: 5
+        stageDirection: "(\uD654\uB098\uACE0 \uC18D\uC0C1\uD55C \uB4EF\uD55C \uD45C\uC815\uC73C\uB85C)"
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\uC81C\uAC00 \uADF8\uB807\uAC8C \uC758\uC2EC\uC2A4\uB7EC\uC6B0\uC2DC\uBA74
+          \uBCF8\uBD80\uC5D0 \uC774\uC57C\uAE30\uD574\uC11C \uBCF4\uC870\uC778\uB825\uC744
+          \uBC14\uAFB8\uC2DC\uB294\uAC74 \uC5B4\uB5A4\uAC00\uC694?"
+        expression: 5
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        text: "\u2026\uC218\uC0AC\uAD00\uB2D8\uC744 \uC874\uACBD\uD588\uB358 \uC81C
+          \uC790\uC2E0\uC5D0\uAC8C \uC2E4\uB9DD\uC2A4\uB7EC\uC6CC\uC9C0\uB124\uC694."
+        expression: 5
+        stageDirection: 
+        animationId: lookaway
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 2
+        text: "\uC798\uBABB \uC0DD\uAC01\uD588\uB098\u2026"
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 2
+        text: "\u2026\uC2E0\uB8B0\uB97C \uC644\uC804\uD788 \uC783\uC5B4\uBC84\uB9B0
+          \uBAA8\uC591\uC774\uAD70. \uB354 \uC774\uC0C1 \uC2EC\uBB38\uC744 \uC774\uC5B4\uAC00\uAE34
+          \uC5B4\uB835\uACA0\uC5B4."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUp:
+      note: 
+      lines: []
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUpKey: 
+    animationId: 
+    breaksTrust: 1
+    onAlternation: 2
+    variantOfRound: -1
+    requiresPriorChoiceIds: []
+    blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
   idleFollowUp:
     note: 
     lines: []

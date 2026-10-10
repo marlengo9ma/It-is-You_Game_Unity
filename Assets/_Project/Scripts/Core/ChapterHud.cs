@@ -1,4 +1,4 @@
-using ItIsYou.Data;
+﻿using ItIsYou.Data;
 using ItIsYou.Interrogation;
 using ItIsYou.UI;
 using TMPro;
@@ -227,6 +227,7 @@ namespace ItIsYou.Core
                 InterrogationEndReason.RefusedByFear => "상대가 공포로 심문을 거부했습니다.",
                 InterrogationEndReason.RefusedByAnger => "상대가 분노로 심문을 거부했습니다.",
                 InterrogationEndReason.GameOverByErraticTone => "신뢰를 잃었습니다.",
+            InterrogationEndReason.TrustBroken => "신뢰를 잃어 심문이 끝났습니다.",
                 _ => string.Empty
             });
         }

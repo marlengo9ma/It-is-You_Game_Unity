@@ -41,6 +41,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 85d9406101ae50240948208cb2a78126, type: 2}
   - {fileID: 11400000, guid: 780b09ff10a12b944b141184d801d765, type: 2}
   - {fileID: 11400000, guid: 4254331776b341d4083ca407884f140e, type: 2}
+  - {fileID: 11400000, guid: bb416f6a05dc66f4282035e5859aaf45, type: 2}
+  - {fileID: 11400000, guid: 724dec5c5d9093c439e92494ac9a6297, type: 2}
   suspects:
   - {fileID: 11400000, guid: c1b4967bab60ba2458ad0375dca13f8b, type: 2}
   - {fileID: 11400000, guid: 7c669ea340d7f6449b9091e79e8879db, type: 2}

@@ -50,23 +50,12 @@ MonoBehaviour:
     animationId: 
     trustDelta: 0
     endsInterrogation: 0
-  interrogationObjects: []
+  interrogationObjects:
+  - {fileID: 11400000, guid: bb416f6a05dc66f4282035e5859aaf45, type: 2}
+  - {fileID: 11400000, guid: 724dec5c5d9093c439e92494ac9a6297, type: 2}
   aggressionWarning:
-    note: "[\uC784\uC2DC] \uAC15\uC555 \uACBD\uACE0"
-    lines:
-    - speaker: 3
-      text: "\uC218\uC0AC\uAD00\uB2D8\u2026 \uC800, \uC815\uB9D0 \uC544\uB2C8\uC5D0\uC694\u2026"
-      expression: 7
-      stageDirection: "(\uBAA9\uC18C\uB9AC\uAC00 \uC791\uC544\uC9C0\uBA70 \uC5B4\uAE68\uAC00
-        \uC6C0\uCE20\uB7EC\uB4E0\uB2E4)"
-      animationId: 
-      reaction:
-        clueId: 
-        openDelay: 0
-        window: 2.5
-        expression: 3
-        blurredFromRecallDepth: 2
-      autoGrantClueId: 
+    note: 
+    lines: []
     animationId: 
     trustDelta: 0
     endsInterrogation: 0
@@ -140,22 +129,8 @@ MonoBehaviour:
     trustDelta: 0
     endsInterrogation: 0
   toneAlternationWarning:
-    note: "[\uC784\uC2DC] \uC131\uD5A5 \uAD50\uCC28 1\uD68C \u2014 \uC758\uBB38"
-    lines:
-    - speaker: 3
-      text: "\u2026\uC5B4, \uC800\uAE30, \uC218\uC0AC\uAD00\uB2D8? \uAD1C\uCC2E\uC73C\uC2E0
-        \uAC70 \uB9DE\uC8E0\u2026?"
-      expression: 3
-      stageDirection: "(\uAC11\uC790\uAE30 \uB2EC\uB77C\uC9C4 \uD0DC\uB3C4\uC5D0
-        \uB2F9\uD669\uD574 \uB208\uC744 \uAE5C\uBE61\uC778\uB2E4)"
-      animationId: 
-      reaction:
-        clueId: 
-        openDelay: 0
-        window: 2.5
-        expression: 3
-        blurredFromRecallDepth: 2
-      autoGrantClueId: 
+    note: 
+    lines: []
     animationId: 
     trustDelta: 0
     endsInterrogation: 0
@@ -193,11 +168,12 @@ MonoBehaviour:
     trustDelta: 0
     endsInterrogation: 0
   onTokensExhausted:
-    note: "[\uC784\uC2DC] \uD0C0\uC784 \uD1A0\uD070 \uC18C\uC9C4"
+    note: "\uC138\uD53C \uC2EC\uBB38 \uB9C8\uBB34\uB9AC"
     lines:
-    - speaker: 0
-      text: "\uAE30\uCC28\uC758 \uD754\uB4E4\uB9BC\uC774 \uD55C \uBC15\uC790 \uB290\uB824\uC84C\uB2E4.
-        \uB354 \uBD99\uC7A1\uACE0 \uC788\uC744 \uC2DC\uAC04\uC740 \uC5C6\uB2E4."
+    - speaker: 1
+      text: "\uC77C\uB2E8 \uC54C\uC558\uC2B5\uB2C8\uB2E4. \uADF8\uB9AC\uACE0 \uC7A0\uC2DC\uB9CC
+        \uAE30\uB2E4\uB824\uBCF4\uC2DC\uC8E0. \uC544\uC9C1 \uC774\uC57C\uAE30\uB97C
+        \uB098\uB220\uC57C \uB420 \uBD84\uC774 \uB0A8\uC544\uACC4\uC2DC\uB2C8."
       expression: 0
       stageDirection: 
       animationId: 
@@ -209,10 +185,9 @@ MonoBehaviour:
         blurredFromRecallDepth: 2
       autoGrantClueId: 
     - speaker: 3
-      text: "\u2026\uC800, \uC774\uC81C \uC815\uB9AC \uC880 \uB3C4\uC640\uB4DC\uB824\uB3C4
-        \uB420\uAE4C\uC694?"
-      expression: 2
-      stageDirection: 
+      text: "\uC774\uC57C\uAE30\uC694\u2026? \uC124\uB9C8 \uC774 \uACE0\uC591\uC774\uC694?!"
+      expression: 6
+      stageDirection: "(\uAC1C\uADF8 \uCEF7\uC52C?)"
       animationId: 
       reaction:
         clueId: 
@@ -275,6 +250,64 @@ MonoBehaviour:
     animationId: 
     trustDelta: 0
     endsInterrogation: 0
+  onTrustBroken:
+    note: "\uC138\uD53C \uC2EC\uBB38 \uAC15\uC81C \uC885\uB8CC \u2014 \uC2E0\uB8B0\uB3C4
+      \uD558\uB77D"
+    lines:
+    - speaker: 1
+      text: "\uC544\uBB34\uB798\uB3C4 \uC774\uC57C\uAE30\uB97C \uB354 \uB098\uB204\uAE30\uC5D0\uB294
+        \uBB34\uB9AC\uAC00 \uC788\uB294 \uB4EF \uD558\uAD70\uC694."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 1
+      text: "\uBB50, \uC77C\uB2E8 \uC54C\uC558\uC2B5\uB2C8\uB2E4. \uADF8\uB798\uB3C4
+        \uC7A0\uC2DC\uB9CC \uAE30\uB2E4\uB824\uBCF4\uC2DC\uC8E0."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 1
+      text: "\uC544\uC9C1 \uC774\uC57C\uAE30\uB97C \uB098\uB220\uC57C \uB420 \uBD84\uC774
+        \uB0A8\uC544\uACC4\uC2DC\uB2C8."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      text: "\uC544,\uB124\u2026 \uC124\uB9C8 \uC774 \uACE0\uC591\uC774\uC694\u2026?"
+      expression: 5
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    animationId: 
+    trustDelta: 0
+    endsInterrogation: 0
   idleRounds:
   - note: "\uC2DC\uAC04 \uACBD\uACFC 1\uD68C\uCC28"
     lines:
@@ -315,7 +348,7 @@ MonoBehaviour:
   - note: "\uC2DC\uAC04 \uACBD\uACFC 3\uD68C\uCC28"
     lines:
     - speaker: 3
-      text: "\u2026\uC800\uAE30, \uC218\uC0AC\uAD00\uB2D8? / \uAD1C\uCC2E\uC73C\uC2E0\uAC70\uC8E0\u2026?"
+      text: "\u2026\uC800\uAE30, \uC218\uC0AC\uAD00\uB2D8? \uAD1C\uCC2E\uC73C\uC2E0\uAC70\uC8E0\u2026?"
       expression: 2
       stageDirection: 
       animationId: 

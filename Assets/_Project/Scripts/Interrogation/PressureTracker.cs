@@ -1,4 +1,4 @@
-using ItIsYou.Data;
+﻿using ItIsYou.Data;
 
 namespace ItIsYou.Interrogation
 {
@@ -104,6 +104,17 @@ namespace ItIsYou.Interrogation
             }
 
             return PressureVerdict.None;
+        }
+
+        /// <summary>
+        /// 이 성향을 지금 고르면 몇 번째 교차가 되는가. 교차가 아니면 0. 상태는 바꾸지 않는다.
+        /// 선택지의 문구와 회차를 미리 정할 때 쓴다 — 목록에 뜨는 문장과 실제로 나오는 대사가 같아야 한다.
+        /// </summary>
+        public int PeekAlternation(ChoiceTone tone)
+        {
+            if (tone != ChoiceTone.Friendly && tone != ChoiceTone.Aggressive) return 0;
+            if (!_lastToneForAlternation.HasValue || _lastToneForAlternation.Value == tone) return 0;
+            return _alternationCount + 1;
         }
 
         /// <summary>심문 오브젝트를 골랐을 때 호출한다.</summary>

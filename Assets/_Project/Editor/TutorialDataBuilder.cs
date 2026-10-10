@@ -132,6 +132,13 @@ namespace ItIsYou.EditorTools
             var objRoomInfo = Obj("OBJ_ROOMINFO", InteractableKind.Ordinary, "객실 안내", roomInfo,
                 TutorialScript.RoomInfoInspect().ToArray());
 
+            // ====================================================== 심문 오브젝트
+            // 심문 화면의 인물·배경 요소. 아무것도 수집하지 않고 대화만 이어진다. 한 번 고르면 끝(2026-10-11 노션).
+            var intCat = Obj("OBJ_INT_CAT", InteractableKind.InterrogationObject, "고양이 엉덩이", null,
+                TutorialScript.InterrogationObjectCat().ToArray());
+            var intProfile = Obj("OBJ_INT_PROFILE", InteractableKind.InterrogationObject, "보조 수사관 프로필 서류", null,
+                TutorialScript.InterrogationObjectProfile().ToArray());
+
             // ========================================================== 선택지
 
             // A — 친근. 경계를 낮추며 행방을 묻는다. 회차마다 문구와 대사가 다르고,
@@ -252,16 +259,16 @@ namespace ItIsYou.EditorTools
                 .Set("secondRoundTokens", 3)
                 .Set("onEnterSecondInterrogation", TutorialScript.SepiSecondOpening())
                 // ---- 아래 반응 대사는 [임시]. 노션에 "용의자의 의문 및 당황에 대한 반응" 같은 지시만 있고 문장은 없다. ----
-                .Set("aggressionWarning", Seq("[임시] 강압 경고",
-                    Line(SpeakerId.Assistant, "수사관님… 저, 정말 아니에요…",
-                        ExpressionId.Fearful, "(목소리가 작아지며 어깨가 움츠러든다)")))
+                // 2026-10-11: 강압 3회째의 [임시] 경고 줄은 뺐다. 노션의 B선택지 3회 연속 대사가 그 자리를 채우고,
+                // 규칙상 경고는 '팝업'이다 — 대사 뒤에 한 줄을 더 얹으면 같은 말을 두 번 하게 된다.
+                .Set("aggressionWarning", new DialogueSequence())
                 .Set("refusalByFear", Seq("[임시] 강압 누적 — 실신",
                     Line(SpeakerId.Assistant, "…죄, 죄송합니다…",
                         ExpressionId.Fearful, "(말을 잇지 못하고 얼굴이 하얗게 질린다)"),
                     Line(SpeakerId.Narration, "조수는 더 이상 당신의 질문에 답하지 못했다.")))
-                .Set("toneAlternationWarning", Seq("[임시] 성향 교차 1회 — 의문",
-                    Line(SpeakerId.Assistant, "…어, 저기, 수사관님? 괜찮으신 거 맞죠…?",
-                        ExpressionId.Flustered, "(갑자기 달라진 태도에 당황해 눈을 깜빡인다)")))
+                // 2026-10-11 제작자 지시: 교차 선택의 튜토리얼 팝업은 그 선택지의 대사가 다 나온 뒤에 바로 뜬다.
+                // 팝업 앞에 끼던 [임시] '괜찮으신 거 맞죠…?' 줄은 뺐다.
+                .Set("toneAlternationWarning", new DialogueSequence())
                 .Set("toneAlternationGameOver", Seq("[임시] 성향 교차 2회 — 게임오버",
                     Line(SpeakerId.Assistant, "…수사관님, 지금 저를 놀리시는 건가요?",
                         ExpressionId.Angry, "(당혹을 넘어선 표정으로 당신을 바라본다)"),
@@ -272,9 +279,10 @@ namespace ItIsYou.EditorTools
                 .Set("refusalByAnger", Seq("[임시] 오브젝트 반복 — 분노",
                     Line(SpeakerId.Assistant, "…계속 딴 데만 보실 거면, 저는 이만 가보겠습니다.",
                         ExpressionId.Angry, "(자리에서 일어선다)")))
-                .Set("onTokensExhausted", Seq("[임시] 타임 토큰 소진",
-                    Line(SpeakerId.Narration, "기차의 흔들림이 한 박자 느려졌다. 더 붙잡고 있을 시간은 없다."),
-                    Line(SpeakerId.Assistant, "…저, 이제 정리 좀 도와드려도 될까요?", ExpressionId.Nervous)))
+                // 노션: [타임 토큰을 전부 소모하거나, 심문 종료 버튼을 통해 정상적인 심문 종료 시] — 같은 마무리.
+                .Set("onTokensExhausted", TutorialScript.SepiEnding())
+                .Set("onTrustBroken", TutorialScript.SepiTrustBroken())
+                .Set("interrogationObjects", Ed.L(intCat, intProfile))
                 // ---- 여기부터는 원문 ----
                 .Set("onEnterInterrogation", TutorialScript.SepiOpening())
                 .Set("onEndInterrogation", TutorialScript.SepiEnding())
@@ -353,11 +361,11 @@ namespace ItIsYou.EditorTools
                 Ed.L(chapter),
                 Ed.L(ribbon, coffee, glimpse, newspaper, typewriter, roomInfo, sawIt, catFlinch, penUnderCat, sepiHidesCat, spillMoment),
                 Ed.L(choiceFriendly, choiceAggressive, choiceRibbon, choice2Friendly, choice2Aggressive, choice2Deduced, choice2Cat),
-                Ed.L(objRibbon, objCoffee, objGlimpse, objNewspaper, objTypewriter, objRoomInfo),
+                Ed.L(objRibbon, objCoffee, objGlimpse, objNewspaper, objTypewriter, objRoomInfo, intCat, intProfile),
                 Ed.L(sepi, cat));
 
             Ed.Save(ribbon, coffee, glimpse, newspaper, typewriter, roomInfo, sawIt, catFlinch, penUnderCat, sepiHidesCat, spillMoment,
-                    objRibbon, objCoffee, objGlimpse, objNewspaper, objTypewriter, objRoomInfo,
+                    objRibbon, objCoffee, objGlimpse, objNewspaper, objTypewriter, objRoomInfo, intCat, intProfile,
                     choiceFriendly, choiceAggressive, choiceRibbon, choice2Friendly, choice2Aggressive, choice2Deduced, choice2Cat,
                     hypPen, hypHides, hypSpill, accPenSepi, accPenCat, accHidesSepi, accHidesCat, accSpillSepi, accSpillCat, accDefault,
                     sepi, cat, chapter, db);

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace ItIsYou.Data
@@ -60,6 +60,7 @@ namespace ItIsYou.Data
         {
             if (string.IsNullOrEmpty(id)) id = name;
 
+            if (kind == InteractableKind.InterrogationObject) return;   // 심문 오브젝트는 원래 아무것도 수집하지 않는다
             if (grantedClue == null)
                 Debug.LogWarning($"[{name}] 수집품이 비어 있습니다. 클릭해도 목록에 들어가지 않습니다.", this);
             else if (kind == InteractableKind.Special && !grantedClue.HasUsableHighlight)

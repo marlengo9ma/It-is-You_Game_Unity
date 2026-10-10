@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -98,7 +98,7 @@ namespace ItIsYou.Data
 
         // ------------------------------------------------------------ 회차 고르기
 
-        /// <summary>순서대로 쌓이는 보통 회차가 몇 칸인가. 변형은 세지 않는다.</summary>
+        /// <summary>순서대로 쌓이는 보통 회차가 몇 칸인가. 변형·교차 칸은 세지 않는다.</summary>
         public int RoundCount
         {
             get
@@ -106,7 +106,7 @@ namespace ItIsYou.Data
                 if (passes == null) return 0;
                 var n = 0;
                 for (int i = 0; i < passes.Count; i++)
-                    if (passes[i] != null && !passes[i].IsVariant) n++;
+                    if (passes[i] != null && passes[i].IsRound) n++;
                 return n;
             }
         }
@@ -118,7 +118,7 @@ namespace ItIsYou.Data
             for (int i = 0; i < passes.Count; i++)
             {
                 var p = passes[i];
-                if (p == null || p.IsVariant) continue;
+                if (p == null || !p.IsRound) continue;
                 if (n == round) return p;
                 n++;
             }
@@ -126,30 +126,53 @@ namespace ItIsYou.Data
         }
 
         /// <summary>
-        /// <paramref name="timesUsed"/> 번 고른 뒤 재생할 회차.
-        /// 같은 회차의 변형 중 조건이 맞는 것이 있으면 그쪽이 이긴다.
+        /// 지금 고르면 재생될 칸. 교차 칸 → 회차 변형 → 보통 회차 순으로 본다.
         /// </summary>
-        public ChoicePass GetPass(int timesUsed, Func<string, int> useCount = null)
+        public ChoicePass GetPass(in ChoicePassContext ctx)
         {
+            if (passes == null || passes.Count == 0) return null;
+
+            // 1) 이번 선택이 N번째 교차라면, 그 교차 전용 칸이 이긴다.
+            //    1번째 교차 칸은 딱 1번째에만 쓴다("B선택지 이후, 선택 시" 는 처음 갈아탈 때의 말이다).
+            //    2번째 이상 칸은 그 이후 교차에도 계속 쓴다.
+            if (ctx.Alternation > 0)
+            {
+                ChoicePass best = null;
+                for (int i = 0; i < passes.Count; i++)
+                {
+                    var p = passes[i];
+                    if (p == null || !p.IsAlternation || !p.Matches(ctx)) continue;
+                    var fits = p.OnAlternation == ctx.Alternation
+                            || (p.OnAlternation >= 2 && p.OnAlternation < ctx.Alternation);
+                    if (!fits) continue;
+                    if (best == null || p.OnAlternation > best.OnAlternation) best = p;
+                }
+                if (best != null) return best;
+            }
+
             var rounds = RoundCount;
             if (rounds == 0) return null;
+            var round = Mathf.Clamp(ctx.TimesUsed, 0, rounds - 1);
 
-            var round = Mathf.Clamp(timesUsed, 0, rounds - 1);
-
+            // 2) 그 회차의 변형 중 조건이 맞는 것.
             for (int i = 0; i < passes.Count; i++)
             {
                 var p = passes[i];
                 if (p == null || !p.IsVariant || p.VariantOfRound != round) continue;
-                if (p.Matches(useCount)) return p;
+                if (p.Matches(ctx)) return p;
             }
 
+            // 3) 보통 회차.
             return RoundAt(round);
         }
 
-        /// <summary>보유 단서와 회차에 따라 달라지는 표시 문구.</summary>
-        public string ResolveLabel(ICollection<string> ownedClueIds, int timesUsed = 0, Func<string, int> useCount = null)
+        /// <summary>호환용 — 회차 수만으로 고른다.</summary>
+        public ChoicePass GetPass(int timesUsed) => GetPass(ChoicePassContext.ForRound(timesUsed));
+
+        /// <summary>보유 단서와 지금 고르면 나올 칸에 따라 달라지는 표시 문구.</summary>
+        public string ResolveLabel(ICollection<string> ownedClueIds, in ChoicePassContext ctx)
         {
-            var pass = GetPass(timesUsed, useCount);
+            var pass = GetPass(ctx);
             if (pass != null && pass.HasLabelOverride) return pass.LabelOverride;
 
             if (string.IsNullOrEmpty(labelWhenInformed) || labelSwapClueIds == null || labelSwapClueIds.Count == 0)
@@ -163,6 +186,9 @@ namespace ItIsYou.Data
             }
             return labelWhenInformed;
         }
+
+        public string ResolveLabel(ICollection<string> ownedClueIds, int timesUsed = 0)
+            => ResolveLabel(ownedClueIds, ChoicePassContext.ForRound(timesUsed));
 
         /// <summary>
         /// 아직 못 본 내용이 남아 있는가. 기획서의 "이미 선택했었던 메인 선택지 위로
