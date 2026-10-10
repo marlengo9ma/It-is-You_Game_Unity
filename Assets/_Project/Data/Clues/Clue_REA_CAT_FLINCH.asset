@@ -25,5 +25,6 @@ MonoBehaviour:
     \uBC18\uC751\uC774\uB2E4.</hl>"
   icon: {fileID: 0}
   closeUpImage: {fileID: 0}
+  sourceSuspectId: SEPI
   isKeyClue: 1
   countsTowardCompletion: 0

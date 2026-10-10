@@ -23,5 +23,6 @@ MonoBehaviour:
     \uC62E\uACBC\uB2E4."
   icon: {fileID: 0}
   closeUpImage: {fileID: 0}
+  sourceSuspectId: 
   isKeyClue: 0
   countsTowardCompletion: 0

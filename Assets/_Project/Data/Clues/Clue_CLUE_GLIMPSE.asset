@@ -22,5 +22,6 @@ MonoBehaviour:
     \uBB3C\uAC74\uC758 \uC77C\uBD80\uBD84 \uC77C\uC9C0\uB3C4 \uBAA8\uB978\uB2E4.</hl>"
   icon: {fileID: 0}
   closeUpImage: {fileID: 0}
+  sourceSuspectId: 
   isKeyClue: 1
   countsTowardCompletion: 1

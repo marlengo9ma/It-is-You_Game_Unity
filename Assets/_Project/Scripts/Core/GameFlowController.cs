@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using ItIsYou.Characters;
@@ -447,11 +447,13 @@ namespace ItIsYou.Core
             cursor?.ResetState();
 
             // 상대가 무대에 있는 구간에서는 상대의 말이 위 말풍선으로 간다.
-            var split = phase == GamePhase.Interrogation1 || phase == GamePhase.Interrogation2 || phase == GamePhase.Deduction;
+            var split = phase == GamePhase.Interrogation1 || phase == GamePhase.Interrogation2;
             dialogue?.SetSplitBySpeaker(split);
 
             // 평범한 대화 구간은 화면 전체를 쓰는 시네마틱 대사창을, 나머지는 수첩형 대사창을 쓴다.
-            var cinematic = phase == GamePhase.PreIncidentTalk || phase == GamePhase.Cutscene || phase == GamePhase.Intro;
+            // 추론도 시네마틱 — 서류철 위에 아래 그라데이션 + 이름표로 얹힌다(2026-10-11 스케치).
+            var cinematic = phase == GamePhase.PreIncidentTalk || phase == GamePhase.Cutscene || phase == GamePhase.Intro
+                         || phase == GamePhase.Deduction;
             dialogue?.SetCinematic(cinematic);
 
             PhaseChanged?.Invoke(phase);

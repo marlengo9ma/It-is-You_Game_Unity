@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using ItIsYou.Clues;
@@ -151,6 +151,19 @@ namespace ItIsYou.UI
 
         /// <summary>물품 증거는 격자에, 정황·실마리는 아래 목록에. 둘 다 수집 순서대로.</summary>
         private static bool IsLead(ClueDefinition clue) => clue.Kind != ClueKind.Object;
+
+        /// <summary>
+        /// 바깥에서 열람창을 연다 — 고르기 모드여도 읽기로. 추론 서류철의 우클릭·가설 탭이 쓴다.
+        /// 우측 목록이 숨겨진 페이즈에서도 열람창은 따로 떠 있으므로 그대로 동작한다.
+        /// </summary>
+        public void OpenReading(ClueDefinition clue)
+        {
+            if (clue == null) return;
+            var was = _selectionMode;
+            _selectionMode = false;
+            OnSlotClicked(clue);
+            _selectionMode = was;
+        }
 
         private void OnSlotClicked(ClueDefinition clue)
         {

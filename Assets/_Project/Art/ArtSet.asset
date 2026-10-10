@@ -36,6 +36,13 @@ MonoBehaviour:
     scale: 1
     flipX: 0
     preserveAspect: 1
+  deductionDesk: {fileID: 0}
+  deductionDeskPlace:
+    offset: {x: 0, y: 0}
+    scale: 1
+    flipX: 0
+    preserveAspect: 0
+  dossierPaper: {fileID: 0}
   sepiTalk: {fileID: 21300000, guid: 08b21a8f29ff1e048a776bba4d3014f8, type: 3}
   sepiTalkPlace:
     offset: {x: 0, y: 0}

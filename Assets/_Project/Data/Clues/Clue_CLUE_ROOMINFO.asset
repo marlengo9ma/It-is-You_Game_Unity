@@ -31,5 +31,6 @@ MonoBehaviour:
     \uD2F0\uCF13\uC744 \uC9C0\uC6D0 \uBC1B\uC558\uB2E4. "
   icon: {fileID: 0}
   closeUpImage: {fileID: 0}
+  sourceSuspectId: 
   isKeyClue: 0
   countsTowardCompletion: 1

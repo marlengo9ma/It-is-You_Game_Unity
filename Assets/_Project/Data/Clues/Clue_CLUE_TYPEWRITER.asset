@@ -28,5 +28,6 @@ MonoBehaviour:
     \uC7A1\uB2E4\uD55C \uAE00\uB4E4\uC774 \uC801\uD600\uC788\uB2E4."
   icon: {fileID: 0}
   closeUpImage: {fileID: 0}
+  sourceSuspectId: 
   isKeyClue: 0
   countsTowardCompletion: 1

@@ -32,5 +32,6 @@ MonoBehaviour:
     \uC788\uB2E4."
   icon: {fileID: 0}
   closeUpImage: {fileID: 0}
+  sourceSuspectId: 
   isKeyClue: 1
   countsTowardCompletion: 1

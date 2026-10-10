@@ -23,5 +23,6 @@ MonoBehaviour:
     \uBD84\uBA85\uD788 \uB2E4\uB974\uB2E4."
   icon: {fileID: 0}
   closeUpImage: {fileID: 0}
+  sourceSuspectId: SEPI
   isKeyClue: 0
   countsTowardCompletion: 0

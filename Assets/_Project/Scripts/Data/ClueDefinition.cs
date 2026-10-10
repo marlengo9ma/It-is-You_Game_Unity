@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ItIsYou.Data
 {
@@ -37,6 +37,9 @@ namespace ItIsYou.Data
         [Tooltip("열람창 가운데에 크게 띄울 이미지. 비어 있으면 아이콘을 쓴다.")]
         [SerializeField] private Sprite closeUpImage;
 
+        [Tooltip("정황(증언·리액션)이 누구에게서 나온 것인가. 추론 서류철의 Leads 장이 이 사람의 인적 사항 아래로 묶는다. 물품이면 비워 둔다.")]
+        [SerializeField] private string sourceSuspectId;
+
         [Header("규칙")]
         [Tooltip("켜면 이 단서 없이는 수집률과 무관하게 다음 페이즈로 넘어갈 수 없다.")]
         [SerializeField] private bool isKeyClue;
@@ -53,6 +56,7 @@ namespace ItIsYou.Data
         public Sprite CloseUpImage => closeUpImage != null ? closeUpImage : icon;
         public bool IsKeyClue => isKeyClue;
         public bool CountsTowardCompletion => countsTowardCompletion;
+        public string SourceSuspectId => sourceSuspectId;
 
         /// <summary>툴팁에 강조 구간이 있는가 — 즉 '단서 오브젝트'로 승격할 수 있는 수집품인가.</summary>
         public bool HasUsableHighlight => !string.IsNullOrEmpty(tooltip) && tooltip.Contains("<hl>");

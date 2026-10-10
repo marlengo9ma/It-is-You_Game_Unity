@@ -26,5 +26,6 @@ MonoBehaviour:
     \uC790\uCCB4\uB97C \uC228\uAE30\uACE0 \uC788\uB294 \uB4EF\uD558\uB2E4."
   icon: {fileID: 0}
   closeUpImage: {fileID: 0}
+  sourceSuspectId: 
   isKeyClue: 0
   countsTowardCompletion: 0

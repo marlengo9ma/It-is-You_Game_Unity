@@ -26,5 +26,6 @@ MonoBehaviour:
     \uD588\uB2E4. \uB2E4\uC2DC \uBB3C\uC5B4\uBCFC \uCC28\uB840\uB2E4."
   icon: {fileID: 0}
   closeUpImage: {fileID: 0}
+  sourceSuspectId: 
   isKeyClue: 0
   countsTowardCompletion: 0

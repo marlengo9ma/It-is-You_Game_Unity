@@ -601,172 +601,330 @@ namespace ItIsYou.EditorTools
             alvg.childAlignment = TextAnchor.UpperLeft;
             accuseListRoot.SetActive(false);
 
-            // ======================================================= 조합 화면
-            // 2026-09-23 기획: 우측 목록에서 물품 하나 + 정황 하나를 골라 무대의 판에 올리고 〈가설〉을 세운다.
-            // 조수는 무대 왼쪽에, 판은 오른쪽에. 잉크는 좌상단.
+            // ======================================================= 추론 화면
+            // 2026-10-11 제작자 스케치: 나무 책상 위에 펼친 서류 두 장.
+            //   왼쪽 Evidence — 단서 수집에서 모은 물품 / 오른쪽 Leads — 심문에서 얻은 정황(그 말을 한 사람의 인적 사항 아래).
+            //   하나씩 고르면 두 장 사이 골을 따라 붉은 선 → 선 위 「가설 추론」 → 어두워지며 추론 대사 + 「가설 도출 성공!」
+            //   → 오른쪽 끝 가설 탭에 꽂힌다. 좌상단 「추론」 판과 「돌아가기」, 위 가운데 잉크, 우상단 시계.
+            // 화면 전체를 덮는다 — 이 페이즈에서는 상단 바와 우측 단서 목록이 숨는다(서류 두 장이 그 역할을 한다).
 
             var deductScreen = UI("Screen_Deduction", root);
             var deductRt = deductScreen.GetComponent<RectTransform>();
-            Anchor(deductRt, V(0, 0), V(1, 1), V(L.Gutter, L.Gutter), V(L.MainRight, -L.Gutter));
+            Stretch(deductRt);
+            var deductGroup = deductScreen.AddComponent<CanvasGroup>();
 
-            var deductStage = Img("Stage", deductRt, new Color32(0x1E, 0x22, 0x27, 0xFF));
-            var dStageRt = deductStage.rectTransform;
-            Stretch(dStageRt);
-            deductStage.raycastTarget = false;
+            var desk = Img("Desk", deductRt, new Color32(0x2A, 0x1C, 0x13, 0xFF));
+            Stretch(desk.rectTransform);
+            desk.raycastTarget = true;   // 뒤의 화면이 눌리지 않게
+            Art(desk, _art.deductionDesk, _art.deductionDeskPlace);
 
-            var dStageTag = Text("Tag", dStageRt, "객실  —  게임플레이 배경 (아트 대기)", T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Bottom);
-            Anchor(dStageTag.rectTransform, V(0.4f, 0), V(0.9f, 0), V(0, L.Unit * 31), V(0, L.Unit * 34));
-            Art(deductStage, _art.StageOrRoom, _art.stageBackgroundPlace, false, dStageTag);
+            // 서류철은 그림 한 장처럼 배치한다 — 1920×1080 판 하나에 전부 올리고, 판을 화면에 맞춰 통째로 줄였다 늘린다.
+            // 요소마다 앵커를 잡으면 창 비율(16:9 ↔ 4:3)이 바뀔 때 서류·선·탭이 제각각 밀린다.
+            var dFrame = UI("Frame", deductRt);
+            var dFrameRt = dFrame.GetComponent<RectTransform>();
+            dFrameRt.anchorMin = dFrameRt.anchorMax = V(0.5f, 0.5f);
+            dFrameRt.sizeDelta = new Vector2(1920f, 1080f);
+            dFrame.AddComponent<UniformFitScaler>();
 
-            var dSepi = Img("Sepi_Placeholder", dStageRt, new Color32(0x3A, 0x40, 0x48, 0xFF));
-            Anchor(dSepi.rectTransform, V(0.17f, 0), V(0.17f, 0), V(-200f, L.Unit * 12), V(200f, 784f));
-            dSepi.raycastTarget = false;
-            var dSepiTag = Text("Label", dSepi.rectTransform, "세피\n(아트 대기 — 곁에서 거드는 쪽)", T.Caption, P.InkSoft, TextAlignmentOptions.Center);
-            Stretch(dSepiTag.rectTransform);
-            Art(dSepi, _art.SepiOnStage, _art.sepiStagePlace, false, dSepiTag);
+            Color paper = new Color32(0x8E, 0x84, 0x7B, 0xFF);
+            Color paperBack = new Color32(0x6B, 0x62, 0x5B, 0xFF);
+            Color paperInk = new Color32(0x2E, 0x24, 0x1D, 0xFF);
+            Color paperSoft = new Color32(0x55, 0x48, 0x3E, 0xFF);
+            Color deskInk = new Color32(0xE3, 0xDE, 0xD6, 0xFF);
+            Color deskSoft = new Color32(0xB4, 0xA6, 0x98, 0xFF);
+            Color linkRed = new Color32(0xC8, 0x24, 0x1C, 0xFF);
 
-            // ---- 가설 판 ----
-            var boardImg = Img("HypothesisBoard", dStageRt, P.PanelSunk);
-            var boardRt = boardImg.rectTransform;
-            Anchor(boardRt, V(0.36f, 0), V(0.98f, 1), V(0, L.Unit * 36), V(0, -L.Unit * 12));
-            boardImg.sprite = _uiSprite; boardImg.type = Image.Type.Sliced;
-            var boardGroup = boardImg.gameObject.AddComponent<CanvasGroup>();
+            Image Sheet(string name, Vector2 min, Vector2 max, Color c)
+            {
+                var s = Img(name, dFrameRt, c);
+                Anchor(s.rectTransform, V(0, 0), V(0, 0), min, max);
+                s.sprite = _art.dossierPaper != null ? _art.dossierPaper : _uiSprite;
+                s.type = Image.Type.Sliced;
+                s.raycastTarget = false;
+                if (_art.dossierPaper != null && c != paperBack) s.color = Color.white;
+                return s;
+            }
 
-            var boardTitle = Text("Title", boardRt, "Hypothesis — 가설 도출", T.Label, P.Brass, TextAlignmentOptions.Left);
-            Spaced(boardTitle);
-            Anchor(boardTitle.rectTransform, V(0, 1), V(1, 1), V(L.Pad, -L.Unit * 6), V(-L.Pad, -L.Unit * 2));
+            TMP_Text Plaque(string name, string label, Vector2 min, Vector2 max, float rotate, Color fill, Color ink, float size)
+            {
+                var p = Img(name, dFrameRt, fill);
+                Anchor(p.rectTransform, V(0, 0), V(0, 0), min, max);
+                p.sprite = _uiSprite; p.type = Image.Type.Sliced;
+                p.raycastTarget = false;
+                p.rectTransform.localEulerAngles = new Vector3(0f, 0f, rotate);
+                var t = Text("Label", p.rectTransform, label, size, ink, TextAlignmentOptions.Center);
+                Stretch(t.rectTransform);
+                return t;
+            }
 
-            // 잉크 방울 — 판의 제목 아래. 숫자가 아니라 방울이다.
-            var inkCaption = Text("InkCaption", boardRt, "잉크", T.Caption, P.InkSoft, TextAlignmentOptions.Left);
-            Spaced(inkCaption);
-            Anchor(inkCaption.rectTransform, V(0, 1), V(0, 1), V(L.Pad, -L.Unit * 11), V(L.Pad + 56f, -L.Unit * 8));
-            var inkRow = UI("InkDrops", boardRt);
+            // 뒤에 깔린 종이 — 겹쳐 놓은 서류처럼.
+            Sheet("EvidenceBack", V(196, 116), V(812, 980), paperBack);
+            Sheet("LeadsBack2", V(952, 108), V(1600, 972), paperBack);
+            Sheet("LeadsBack", V(944, 126), V(1590, 990), new Color32(0x7C, 0x73, 0x6B, 0xFF));
+            var evPage = Sheet("EvidencePage", V(176, 136), V(792, 1000), paper);
+            var ldPage = Sheet("LeadsPage", V(928, 144), V(1576, 1008), paper);
+
+            // ---- Evidence 장 ----
+            var evBody = UI("Body", evPage.rectTransform).GetComponent<RectTransform>();
+            Anchor(evBody, V(0, 0), V(1, 1), V(32, 96), V(-32, -40));
+            var evEmpty = Text("Empty", evPage.rectTransform, "펼쳐 둘 물품이 없다", T.Choice, paperSoft, TextAlignmentOptions.Center);
+            Stretch(evEmpty.rectTransform);
+            var evPager = Text("Pager", evPage.rectTransform, "1 / 1", 26f, paperInk, TextAlignmentOptions.Center);
+            Anchor(evPager.rectTransform, V(0.5f, 0), V(0.5f, 0), V(-80, 28), V(80, 76));
+            var evPrev = PlainButton("Prev", evPage.rectTransform, "<", 30f);
+            Anchor(evPrev.Item1, V(0.5f, 0), V(0.5f, 0), V(-144, 28), V(-96, 76));
+            var evNext = PlainButton("Next", evPage.rectTransform, ">", 30f);
+            Anchor(evNext.Item1, V(0.5f, 0), V(0.5f, 0), V(96, 28), V(144, 76));
+            foreach (var b in new[] { evPrev, evNext })
+            {
+                b.Item1.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0f);
+                b.Item1.Find("Label").GetComponent<TMP_Text>().color = paperInk;
+            }
+
+            // ---- Leads 장 — 위에 인물의 인적 사항, 아래에 그 사람에게서 나온 정황 ----
+            var profileRoot = UI("Profile", ldPage.rectTransform);
+            var profileRt = profileRoot.GetComponent<RectTransform>();
+            Anchor(profileRt, V(0, 1), V(1, 1), V(36, -292), V(-36, -40));
+            var portraitFrame = Img("PortraitFrame", profileRt, new Color32(0x3E, 0x33, 0x2C, 0xFF));
+            Anchor(portraitFrame.rectTransform, V(0, 0), V(0, 0), V(0, 0), V(184, 252));
+            portraitFrame.sprite = _uiSprite; portraitFrame.type = Image.Type.Sliced;
+            portraitFrame.raycastTarget = false;
+            var portrait = Img("Portrait", portraitFrame.rectTransform, new Color32(0x4E, 0x40, 0x38, 0xFF));
+            Anchor(portrait.rectTransform, V(0, 0), V(1, 1), V(8, 8), V(-8, -8));
+            portrait.raycastTarget = false;
+            var profileName = Text("Name", profileRt, "", 32f, paperInk, TextAlignmentOptions.TopLeft);
+            profileName.fontStyle = FontStyles.Bold;
+            Anchor(profileName.rectTransform, V(0, 1), V(1, 1), V(212, -52), V(0, -4));
+            var profileText = Text("Text", profileRt, "", 19f, paperSoft, TextAlignmentOptions.TopLeft);
+            profileText.textWrappingMode = TextWrappingModes.Normal;
+            profileText.overflowMode = TextOverflowModes.Ellipsis;
+            profileText.lineSpacing = 6f;
+            Anchor(profileText.rectTransform, V(0, 0), V(1, 1), V(212, 0), V(0, -64));
+            var profileRule = Img("Rule", ldPage.rectTransform, new Color32(0x4A, 0x3E, 0x36, 0xFF));
+            Anchor(profileRule.rectTransform, V(0, 1), V(1, 1), V(36, -312), V(-36, -306));
+            profileRule.raycastTarget = false;
+
+            var ldBody = UI("Body", ldPage.rectTransform).GetComponent<RectTransform>();
+            Anchor(ldBody, V(0, 0), V(1, 1), V(28, 96), V(-28, -324));
+            var ldEmpty = Text("Empty", ldPage.rectTransform, "심문에서 얻은 정황이 없다", T.Choice, paperSoft, TextAlignmentOptions.Center);
+            Stretch(ldEmpty.rectTransform);
+            var ldPager = Text("Pager", ldPage.rectTransform, "1 / 1", 26f, paperInk, TextAlignmentOptions.Center);
+            Anchor(ldPager.rectTransform, V(0.5f, 0), V(0.5f, 0), V(-80, 28), V(80, 76));
+            var ldPrev = PlainButton("Prev", ldPage.rectTransform, "<", 30f);
+            Anchor(ldPrev.Item1, V(0.5f, 0), V(0.5f, 0), V(-144, 28), V(-96, 76));
+            var ldNext = PlainButton("Next", ldPage.rectTransform, ">", 30f);
+            Anchor(ldNext.Item1, V(0.5f, 0), V(0.5f, 0), V(96, 28), V(144, 76));
+            foreach (var b in new[] { ldPrev, ldNext })
+            {
+                b.Item1.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0f);
+                b.Item1.Find("Label").GetComponent<TMP_Text>().color = paperInk;
+            }
+
+            // 서류에 꽂힌 꼬리표 — 스케치의 기울어진 Evidence / Leads 판.
+            Plaque("EvidenceTab", "Evidence", V(700, 916), V(860, 970), -6f, new Color32(0x2B, 0x24, 0x1F, 0xFF), deskInk, 22f);
+            Plaque("LeadsTab", "Leads", V(816, 704), V(964, 760), -8f, new Color32(0x2B, 0x24, 0x1F, 0xFF), deskInk, 22f);
+
+            // ---- 잇는 선 · 「가설 추론」 도장 ----
+            var linkLayer = UI("LinkLayer", dFrameRt);
+            var linkRt = linkLayer.GetComponent<RectTransform>();
+            Stretch(linkRt);
+            Image LinkLine(string name)
+            {
+                var l = Img(name, linkRt, linkRed);
+                l.sprite = null;
+                l.raycastTarget = false;
+                l.enabled = false;
+                return l;
+            }
+            var lineA = LinkLine("LineA");
+            var lineB = LinkLine("LineB");
+            var lineC = LinkLine("LineC");
+
+            var stampImg = Img("Stamp", linkRt, new Color32(0x8E, 0x1B, 0x16, 0xFF));
+            stampImg.sprite = _uiSprite; stampImg.type = Image.Type.Sliced;
+            stampImg.rectTransform.anchorMin = stampImg.rectTransform.anchorMax = V(0.5f, 0.5f);
+            stampImg.rectTransform.sizeDelta = new Vector2(232f, 76f);
+            stampImg.rectTransform.localEulerAngles = new Vector3(0f, 0f, -3f);
+            var stampBtn = stampImg.gameObject.AddComponent<Button>();
+            stampBtn.targetGraphic = stampImg;
+            var stampColors = stampBtn.colors;
+            stampColors.highlightedColor = new Color(1.25f, 1.25f, 1.25f, 1f);
+            stampColors.disabledColor = new Color(0.6f, 0.6f, 0.6f, 0.7f);
+            stampBtn.colors = stampColors;
+            var stampLabel = Text("Label", stampImg.rectTransform, "가설 추론", 34f, new Color32(0xF2, 0xA2, 0x3A, 0xFF), TextAlignmentOptions.Center);
+            stampLabel.fontStyle = FontStyles.Bold;
+            Stretch(stampLabel.rectTransform);
+            stampImg.gameObject.SetActive(false);
+
+            var dHint = Text("Hint", dFrameRt, "", 19f, deskSoft, TextAlignmentOptions.Center);
+            Anchor(dHint.rectTransform, V(0, 0), V(0, 0), V(560, 44), V(1360, 96));
+
+            // ---- 좌상단: 「추론」 판 · 돌아가기 ----
+            var titlePlaque = Img("TitlePlaque", dFrameRt, new Color32(0xD9, 0xD1, 0xC5, 0xFF));
+            Anchor(titlePlaque.rectTransform, V(0, 0), V(0, 0), V(24, 984), V(424, 1060));
+            titlePlaque.sprite = _uiSprite; titlePlaque.type = Image.Type.Sliced;
+            titlePlaque.raycastTarget = false;
+            var titlePlaqueOutline = titlePlaque.gameObject.AddComponent<Outline>();
+            titlePlaqueOutline.effectColor = new Color32(0x2B, 0x24, 0x1F, 0xFF);
+            titlePlaqueOutline.effectDistance = new Vector2(3f, -3f);
+            var titlePlaqueLabel = Text("Label", titlePlaque.rectTransform, "추     론", 42f, new Color32(0x2B, 0x24, 0x1F, 0xFF), TextAlignmentOptions.Center);
+            titlePlaqueLabel.fontStyle = FontStyles.Bold;
+            Stretch(titlePlaqueLabel.rectTransform);
+
+            var backBtn = PlainButton("Back", dFrameRt, "돌아가기", 26f);
+            Anchor(backBtn.Item1, V(0, 0), V(0, 0), V(0, 900), V(216, 964));
+            backBtn.Item1.GetComponent<Image>().color = new Color32(0x5A, 0x2E, 0x34, 0xFF);
+            backBtn.Item1.Find("Label").GetComponent<TMP_Text>().color = deskInk;
+
+            // ---- 위 가운데: 잉크 ----
+            var inkBlot = Img("InkBlot", dFrameRt, new Color32(0x12, 0x0C, 0x0A, 0xF2));
+            Anchor(inkBlot.rectTransform, V(0, 0), V(0, 0), V(772, 968), V(1148, 1096));
+            inkBlot.sprite = _uiSprite; inkBlot.type = Image.Type.Sliced;
+            inkBlot.raycastTarget = false;
+            var inkRow = UI("InkDrops", dFrameRt);
             var inkRowRt = inkRow.GetComponent<RectTransform>();
-            Anchor(inkRowRt, V(0, 1), V(0, 1), V(L.Pad + 56f, -L.Unit * 12), V(L.Pad + 240f, -L.Unit * 7));
+            Anchor(inkRowRt, V(0, 0), V(0, 0), V(800, 984), V(1120, 1064));
             var inkLayout = inkRow.AddComponent<HorizontalLayoutGroup>();
-            inkLayout.spacing = L.Unit;
-            inkLayout.childAlignment = TextAnchor.MiddleLeft;
+            inkLayout.spacing = 10f;
+            inkLayout.childAlignment = TextAnchor.MiddleCenter;
             inkLayout.childControlWidth = false;
             inkLayout.childControlHeight = false;
             inkLayout.childForceExpandWidth = false;
             inkLayout.childForceExpandHeight = false;
-            var dropTemplate = Img("Drop", inkRowRt, P.Brass);
-            dropTemplate.rectTransform.sizeDelta = new Vector2(28f, 28f);
+            var dropTemplate = Img("Drop", inkRowRt, Color.white);
+            dropTemplate.rectTransform.sizeDelta = _art.inkDrop != null ? new Vector2(44f, 56f) : new Vector2(40f, 40f);
             dropTemplate.sprite = _art.inkDrop != null ? _art.inkDrop : AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
-            if (_art.inkDrop != null) dropTemplate.rectTransform.sizeDelta = new Vector2(32f, 32f);
+            dropTemplate.type = Image.Type.Simple;
+            dropTemplate.preserveAspect = true;
             dropTemplate.raycastTarget = false;
+            var dropOutline = dropTemplate.gameObject.AddComponent<Outline>();
+            dropOutline.effectColor = new Color(1f, 1f, 1f, 0.85f);
+            dropOutline.effectDistance = new Vector2(2f, -2f);
             dropTemplate.gameObject.SetActive(false);
             var inkView = inkRow.AddComponent<InkDropsView>();
-            inkView.Set("container", inkRowRt).Set("dropPrefab", dropTemplate);
+            inkView.Set("container", inkRowRt).Set("dropPrefab", dropTemplate)
+                   .Set("fullColor", (Color)new Color32(0x52, 0x3C, 0x74, 0xFF))
+                   .Set("driedColor", (Color)new Color32(0xD8, 0xC8, 0xA6, 0xFF));
 
+            // ---- 우상단: 시계 · 장소 ----
+            var dClock = Text("Clock", dFrameRt, "", 64f, deskInk, TextAlignmentOptions.Right);
+            dClock.characterSpacing = 6f;
+            Anchor(dClock.rectTransform, V(0, 0), V(0, 0), V(1440, 984), V(1880, 1064));
+            var dLocation = Text("Location", dFrameRt, "", 20f, deskSoft, TextAlignmentOptions.Right);
+            Anchor(dLocation.rectTransform, V(0, 0), V(0, 0), V(1440, 944), V(1880, 980));
 
-            (RectTransform root, Image frame, Image icon, TMP_Text name, TMP_Text placeholder, Button clear) BuildSlot(string id, float ax, string placeholderText)
+            // ---- 오른쪽 끝: 가설 탭 ----
+            var hypTabs = new List<DeductionDossierView.HypothesisTab>();
+            for (int i = 0; i < 3; i++)
             {
-                var slotGo = UI(id, boardRt);
-                var slotRt = slotGo.GetComponent<RectTransform>();
-                Anchor(slotRt, V(ax, 0.56f), V(ax, 0.56f), V(-100f, -100f), V(100f, 100f));
-                var frame = Img("Frame", slotRt, new Color(0.18f, 0.20f, 0.23f, 1f));
-                Stretch(frame.rectTransform);
-                frame.sprite = _uiSprite; frame.type = Image.Type.Sliced;
-                var inner = Img("Inner", slotRt, P.Panel);
-                Anchor(inner.rectTransform, V(0, 0), V(1, 1), V(4f, 4f), V(-4f, -4f));
-                inner.sprite = _uiSprite; inner.type = Image.Type.Sliced;
-                inner.raycastTarget = false;
-                var icon = Img("Icon", slotRt, Color.white);
-                Anchor(icon.rectTransform, V(0, 0), V(1, 1), V(L.Pad, L.Pad), V(-L.Pad, -L.Pad));
-                icon.preserveAspect = true; icon.raycastTarget = false; icon.enabled = false;
-                var ph = Text("Placeholder", slotRt, placeholderText, T.Caption, P.InkSoft, TextAlignmentOptions.Center);
-                ph.textWrappingMode = TextWrappingModes.Normal;
-                Stretch(ph.rectTransform);
-                var nameLabel = Text("Name", slotRt, "", T.Choice, P.Ink, TextAlignmentOptions.Top);
-                nameLabel.textWrappingMode = TextWrappingModes.Normal;
-                Anchor(nameLabel.rectTransform, V(-0.3f, 0), V(1.3f, 0), V(0, -L.Unit * 9), V(0, -L.Unit));
-                var clearBtn = PlainButton("Clear", slotRt, "×", T.Choice);
-                Anchor(clearBtn.Item1, V(1, 1), V(1, 1), V(-16f, -16f), V(16f, 16f));
-                clearBtn.Item1.GetComponent<Image>().color = new Color32(0x16, 0x19, 0x1D, 0xFF);
-                return (slotRt, frame, icon, nameLabel, ph, clearBtn.Item2);
+                var top = 792f - i * 128f;
+                var tabGo = UI("HypothesisTab_" + (i + 1), dFrameRt);
+                var tabRt = tabGo.GetComponent<RectTransform>();
+                Anchor(tabRt, V(0, 0), V(0, 0), V(1608, top - 100), V(1916, top));
+
+                var barFrame = Img("BarFrame", tabRt, new Color(0f, 0f, 0f, 0f));
+                Anchor(barFrame.rectTransform, V(0, 0), V(0, 0), V(16, -4), V(312, 64));
+                barFrame.sprite = _uiSprite; barFrame.type = Image.Type.Sliced;
+                barFrame.raycastTarget = false;
+                var bar = Img("Bar", tabRt, paper);
+                Anchor(bar.rectTransform, V(0, 0), V(0, 0), V(20, 0), V(308, 60));
+                bar.sprite = _uiSprite; bar.type = Image.Type.Sliced;
+                var barBtn = bar.gameObject.AddComponent<Button>();
+                barBtn.targetGraphic = bar;
+                var pill = Img("Pill", tabRt, new Color32(0x3A, 0x2F, 0x28, 0xFF));
+                Anchor(pill.rectTransform, V(0, 0), V(0, 0), V(0, 56), V(112, 100));
+                pill.sprite = _uiSprite; pill.type = Image.Type.Sliced;
+                pill.raycastTarget = false;
+                var pillLabel = Text("Label", pill.rectTransform, "가설" + (i + 1), 20f, deskInk, TextAlignmentOptions.Center);
+                Stretch(pillLabel.rectTransform);
+                var lens = Img("Lens", bar.rectTransform, paperInk);
+                Anchor(lens.rectTransform, V(0, 0.5f), V(0, 0.5f), V(10, -18), V(46, 18));
+                lens.sprite = _art.iconRecord != null ? _art.iconRecord : AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
+                lens.preserveAspect = true;
+                lens.raycastTarget = false;
+                lens.enabled = false;
+                var tabTitle = Text("Title", bar.rectTransform, "", 16f, paperInk, TextAlignmentOptions.Left);
+                tabTitle.overflowMode = TextOverflowModes.Ellipsis;
+                tabTitle.textWrappingMode = TextWrappingModes.Normal;
+                tabTitle.lineSpacing = -8f;
+                Anchor(tabTitle.rectTransform, V(0, 0), V(1, 1), V(54, 0), V(-12, 0));
+
+                hypTabs.Add(new DeductionDossierView.HypothesisTab
+                {
+                    root = tabRt, bar = bar, barFrame = barFrame, title = tabTitle, lens = lens, button = barBtn
+                });
             }
 
-            var objSlot = BuildSlot("ObjectSlot", 0.25f, "물품 증거\n(단서 수집)");
-            var leadSlot = BuildSlot("LeadSlot", 0.75f, "정황 증거\n(심문)");
+            // ---- 어둡게 · 가운데 한 줄 · 지우기 막대 ----
+            var scrimImg = Img("Scrim", dFrameRt, new Color(0f, 0f, 0f, 0.6f));
+            Anchor(scrimImg.rectTransform, V(0, 0), V(1, 1), V(-2000, -2000), V(2000, 2000));   // 판 밖까지 — 화면 전체
+            scrimImg.raycastTarget = false;
+            var scrimGroup = scrimImg.gameObject.AddComponent<CanvasGroup>();
+            scrimGroup.alpha = 0f; scrimGroup.blocksRaycasts = false; scrimGroup.interactable = false;
 
-            var linkMark = Text("LinkMark", boardRt, "+", T.Display + 8f, new Color(0.18f, 0.20f, 0.23f, 1f), TextAlignmentOptions.Center);
-            Anchor(linkMark.rectTransform, V(0.5f, 0.56f), V(0.5f, 0.56f), V(-40f, -40f), V(40f, 40f));
+            var bannerGo = UI("Banner", dFrameRt);
+            var bannerRt = bannerGo.GetComponent<RectTransform>();
+            Anchor(bannerRt, V(0, 0), V(0, 0), V(480, 520), V(1440, 680));
+            var bannerBand = Img("Band", bannerRt, new Color(0f, 0f, 0f, 0.35f));
+            Stretch(bannerBand.rectTransform);
+            bannerBand.raycastTarget = false;
+            var bannerLabel = Text("Label", bannerRt, "", 68f, new Color32(0xF2, 0xEA, 0xDC, 0xFF), TextAlignmentOptions.Center);
+            bannerLabel.fontStyle = FontStyles.Bold;
+            Stretch(bannerLabel.rectTransform);
+            var bannerGroup = bannerGo.AddComponent<CanvasGroup>();
+            bannerGroup.alpha = 0f; bannerGroup.blocksRaycasts = false; bannerGroup.interactable = false;
 
-            var boardHint = Text("Hint", boardRt, "", T.Caption, P.InkSoft, TextAlignmentOptions.Center);
-            boardHint.textWrappingMode = TextWrappingModes.Normal;
-            Anchor(boardHint.rectTransform, V(0, 0.27f), V(1, 0.27f), V(L.Pad, -L.Unit * 2), V(-L.Pad, L.Unit * 3));
-
-            var boardResult = Text("Result", boardRt, "", T.Choice, P.Brass, TextAlignmentOptions.Center);
-            boardResult.textWrappingMode = TextWrappingModes.Normal;
-            Anchor(boardResult.rectTransform, V(0, 0.27f), V(1, 0.27f), V(L.Pad, L.Unit * 3), V(-L.Pad, L.Unit * 9));
-
-            var combineBtn = PlainButton("Combine", boardRt, "가설 도출", T.Choice);
-            Anchor(combineBtn.Item1, V(0.5f, 0), V(0.5f, 0), V(-128f, L.Unit * 3), V(128f, L.Unit * 3 + 64f));
-            combineBtn.Item1.GetComponent<Image>().color = P.Brass;
-            combineBtn.Item1.Find("Label").GetComponent<TMP_Text>().color = new Color32(0x16, 0x19, 0x1D, 0xFF);
-
-            var endDeductBtn = PlainButton("EndDeduction", boardRt, "추리를 마친다", T.Caption);
-            Anchor(endDeductBtn.Item1, V(1, 1), V(1, 1), V(-L.Pad - 176f, -L.Unit * 8), V(-L.Pad, -L.Unit * 2));
-
-            var successFlash = Img("SuccessFlash", boardRt, new Color(0.77f, 0.65f, 0.36f, 0.35f));
-            Stretch(successFlash.rectTransform);
-            successFlash.sprite = _uiSprite; successFlash.type = Image.Type.Sliced;
-            successFlash.raycastTarget = false;
-            var successGroup = successFlash.gameObject.AddComponent<CanvasGroup>();
-            successGroup.alpha = 0f; successGroup.blocksRaycasts = false; successGroup.interactable = false;
-
-            // ---- 가설이 가득 찼을 때 — 지울 것을 고르는 덧창 ----
-            var replaceRoot = UI("ReplaceOverlay", deductRt);
-            Stretch(replaceRoot.GetComponent<RectTransform>());
-            var replaceScrim = Img("Scrim", replaceRoot.transform, new Color(0f, 0f, 0f, 0.6f));
-            Stretch(replaceScrim.rectTransform);
-            var replacePanel = Img("Panel", replaceRoot.transform, new Color32(0x16, 0x19, 0x1D, 0xFF));
-            Anchor(replacePanel.rectTransform, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-360f, -240f), V(360f, 240f));
-            var replacePrompt = Text("Prompt", replacePanel.rectTransform, "", T.Body, P.Ink, TextAlignmentOptions.Center);
+            var replaceBar = Img("ReplaceBar", dFrameRt, new Color32(0x16, 0x10, 0x0D, 0xF2));
+            Anchor(replaceBar.rectTransform, V(0, 0), V(0, 0), V(440, 28), V(1480, 108));
+            replaceBar.sprite = _uiSprite; replaceBar.type = Image.Type.Sliced;
+            var replacePrompt = Text("Prompt", replaceBar.rectTransform, "", 22f, deskInk, TextAlignmentOptions.Left);
             replacePrompt.textWrappingMode = TextWrappingModes.Normal;
-            Anchor(replacePrompt.rectTransform, V(0, 1), V(1, 1), V(L.Pad, -L.Unit * 14), V(-L.Pad, -L.Unit * 4));
-            var replaceList = UI("List", replacePanel.rectTransform);
-            var replaceListRt = replaceList.GetComponent<RectTransform>();
-            Anchor(replaceListRt, V(0, 0), V(1, 1), V(L.Pad * 2, L.Unit * 12), V(-L.Pad * 2, -L.Unit * 15));
-            var rvlg = replaceList.AddComponent<VerticalLayoutGroup>();
-            rvlg.spacing = L.Unit;
-            rvlg.childControlHeight = false;
-            rvlg.childControlWidth = true;
-            rvlg.childForceExpandWidth = true;
-            rvlg.childForceExpandHeight = false;
-            rvlg.childAlignment = TextAnchor.UpperCenter;
-            var replaceCancel = PlainButton("Cancel", replacePanel.rectTransform, "새 가설을 버린다", T.Caption);
-            Anchor(replaceCancel.Item1, V(0.5f, 0), V(0.5f, 0), V(-120f, L.Unit * 3), V(120f, L.Unit * 3 + 56f));
+            Anchor(replacePrompt.rectTransform, V(0, 0), V(1, 1), V(24, 0), V(-232, 0));
+            var replaceCancel = PlainButton("Cancel", replaceBar.rectTransform, "새 가설을 버린다", 20f);
+            Anchor(replaceCancel.Item1, V(1, 0.5f), V(1, 0.5f), V(-216, -26), V(-16, 26));
+            replaceBar.gameObject.SetActive(false);
 
-            var boardView = boardImg.gameObject.AddComponent<HypothesisBoardView>();
-            boardView.Set("objectSlot", objSlot.root).Set("objectFrame", objSlot.frame).Set("objectIcon", objSlot.icon)
-                     .Set("objectName", objSlot.name).Set("objectPlaceholder", objSlot.placeholder).Set("objectClear", objSlot.clear)
-                     .Set("leadSlot", leadSlot.root).Set("leadFrame", leadSlot.frame).Set("leadIcon", leadSlot.icon)
-                     .Set("leadName", leadSlot.name).Set("leadPlaceholder", leadSlot.placeholder).Set("leadClear", leadSlot.clear)
-                     .Set("linkMark", linkMark)
-                     .Set("combineButton", combineBtn.Item2)
-                     .Set("endButton", endDeductBtn.Item2)
-                     .Set("hintLabel", boardHint)
-                     .Set("resultLabel", boardResult)
-                     .Set("successFlash", successGroup)
-                     .Set("group", boardGroup)
-                     .Set("replaceRoot", replaceRoot)
-                     .Set("replacePrompt", replacePrompt)
-                     .Set("replaceContainer", replaceListRt)
-                     .Set("replaceButtonPrefab", plainButtonPrefab)
-                     .Set("replaceCancel", replaceCancel.Item2);
-            replaceRoot.SetActive(false);
-
-            // 가설이 생길 때 단서 패널이 잠깐 놋쇠 빛으로 물든다.
-            var flashImg = Img("ConfirmFlash", clueRt, new Color(0.77f, 0.65f, 0.36f, 0.35f));
-            Stretch(flashImg.rectTransform);
-            flashImg.sprite = _uiSprite; flashImg.type = Image.Type.Sliced;
-            flashImg.raycastTarget = false;
-            var flashGroup = flashImg.gameObject.AddComponent<CanvasGroup>();
-            flashGroup.alpha = 0f;
-            flashGroup.blocksRaycasts = false;
-            flashGroup.interactable = false;
+            var dossierView = deductScreen.AddComponent<DeductionDossierView>();
+            dossierView.Set("group", deductGroup)
+                       .Set("overlay", linkRt)
+                       .Set("font", _font)
+                       .Set("panelSprite", _uiSprite)
+                       .Set("evidencePage", evPage.rectTransform)
+                       .Set("evidenceBody", evBody)
+                       .Set("evidencePager", evPager)
+                       .Set("evidencePrev", evPrev.Item2)
+                       .Set("evidenceNext", evNext.Item2)
+                       .Set("evidenceEmpty", evEmpty)
+                       .Set("leadsPage", ldPage.rectTransform)
+                       .Set("leadsBody", ldBody)
+                       .Set("profileRoot", profileRoot)
+                       .Set("profilePortrait", portrait)
+                       .Set("profileName", profileName)
+                       .Set("profileText", profileText)
+                       .Set("leadsPager", ldPager)
+                       .Set("leadsPrev", ldPrev.Item2)
+                       .Set("leadsNext", ldNext.Item2)
+                       .Set("leadsEmpty", ldEmpty)
+                       .Set("portraits", new List<DeductionDossierView.PortraitBinding>
+                       {
+                           new DeductionDossierView.PortraitBinding { suspectId = "SEPI", portrait = _art.SepiOnTalk },
+                           new DeductionDossierView.PortraitBinding { suspectId = "CAT", portrait = _art.CatOnTalk },
+                       })
+                       .Set("lineA", lineA).Set("lineB", lineB).Set("lineC", lineC)
+                       .Set("stamp", stampBtn)
+                       .Set("stampLabel", stampLabel)
+                       .Set("hintLabel", dHint)
+                       .Set("backButton", backBtn.Item2)
+                       .Set("ink", inkView)
+                       .Set("clockLabel", dClock)
+                       .Set("locationLabel", dLocation)
+                       .Set("tabs", hypTabs)
+                       .Set("scrim", scrimGroup)
+                       .Set("banner", bannerGroup)
+                       .Set("bannerLabel", bannerLabel)
+                       .Set("replaceBar", replaceBar.gameObject)
+                       .Set("replacePrompt", replacePrompt)
+                       .Set("replaceCancel", replaceCancel.Item2);
 
             // ======================================================= 게임오버 화면
             // 컷씬 #GameOver 자리. 복귀 지점은 실패한 페이즈의 시작(조합 실패 → 조합 시작).
@@ -1205,12 +1363,10 @@ namespace ItIsYou.EditorTools
 
             var deductionCtl = systems.AddComponent<DeductionController>();
             deductionCtl.Set("dialogue", presenter)
-                        .Set("board", boardView)
+                        .Set("dossier", dossierView)
                         .Set("clueTray", clueTrayView)
-                        .Set("ink", inkView)
                         .Set("tutorialPopup", popupView)
-                        .Set("cursor", cursor)
-                        .Set("confirmFlash", flashGroup);
+                        .Set("cursor", cursor);
 
             var gameOverView = systems.AddComponent<GameOverView>();
             gameOverView.Set("root", gameOverScreen)
@@ -1256,7 +1412,8 @@ namespace ItIsYou.EditorTools
             binder.Set("flow", flow)
                   .Set("groups", BuildScreenGroups(talkScreen, cutsceneScreen, selectScreen,
                                                     collectScreen, interrogateScreen, deductScreen, accuseScreen,
-                                                    gameOverScreen, endingScreen, cluePanel.gameObject))
+                                                    gameOverScreen, endingScreen, cluePanel.gameObject,
+                                                    topBar, titleLabel.gameObject))
                   .Set("alwaysVisible", new List<GameObject> { dialoguePanel.gameObject });
 
             var logView = systems.AddComponent<DialogueLogView>();
@@ -1349,8 +1506,17 @@ namespace ItIsYou.EditorTools
         }
 
         private static object BuildScreenGroups(GameObject talk, GameObject cutscene, GameObject select,
-            GameObject collect, GameObject interrogate, GameObject deduct, GameObject accuse, GameObject gameOver, GameObject ending, GameObject cluePanel)
+            GameObject collect, GameObject interrogate, GameObject deduct, GameObject accuse, GameObject gameOver, GameObject ending, GameObject cluePanel,
+            GameObject topBar, GameObject chapterTitle)
         {
+            // 추론 화면은 화면 전체를 쓰는 서류철이다 — 그 동안만 상단 바와 챕터 제목이 숨는다.
+            var allButDeduction = new List<GamePhase>
+            {
+                GamePhase.PreIncidentTalk, GamePhase.Cutscene, GamePhase.Intro, GamePhase.ClueCollection,
+                GamePhase.SuspectSelect, GamePhase.Interrogation1, GamePhase.Interrogation2,
+                GamePhase.Accusation, GamePhase.Ending, GamePhase.GameOver
+            };
+
             var list = new List<PhaseScreenBinder.ScreenGroup>
             {
                 // 사건 이전의 대화와 사건 직후의 인트로는 같은 배경을 쓴다.
@@ -1396,9 +1562,11 @@ namespace ItIsYou.EditorTools
                     root = cluePanel,
                     phases = new List<GamePhase> {
                         GamePhase.ClueCollection, GamePhase.SuspectSelect, GamePhase.Interrogation1,
-                        GamePhase.Deduction, GamePhase.Interrogation2, GamePhase.Accusation
+                        GamePhase.Interrogation2, GamePhase.Accusation
                     }
-                }
+                },
+                new PhaseScreenBinder.ScreenGroup { root = topBar, phases = new List<GamePhase>(allButDeduction) },
+                new PhaseScreenBinder.ScreenGroup { root = chapterTitle, phases = new List<GamePhase>(allButDeduction) }
             };
             return list;
         }

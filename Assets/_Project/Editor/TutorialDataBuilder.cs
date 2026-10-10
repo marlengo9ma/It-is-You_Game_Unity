@@ -86,6 +86,10 @@ namespace ItIsYou.EditorTools
                 "<hl>조수의 표정이 부자연스럽게 굳고 시선이 흔들렸다.</hl>\n\n" +
                 "리본이 더러워진 것 자체는 숨길 일이 아니다. <hl>다른 이유가 있는 듯한 반응이다.</hl>");
 
+            // 정황은 누구에게서 나온 것인지 적어 둔다 — 추론 서류철의 Leads 장이 그 사람의 인적 사항 아래로 묶는다.
+            sawIt.Set("sourceSuspectId", "SEPI");
+            catFlinch.Set("sourceSuspectId", "SEPI");
+
             // [임시] 단서 조합의 결과 — '추론' 카드. 노션에 항목이 없다. 개선안: 결과가 목록에 남고 2차 심문의 단서 제시가 여기에 열린다.
             var penUnderCat = Clue("DED_PEN_UNDER_CAT", ClueKind.Deduced,
                 unread: "가설",

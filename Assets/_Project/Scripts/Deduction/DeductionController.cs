@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using ItIsYou.Clues;
 using ItIsYou.Core;
@@ -9,26 +9,32 @@ using UnityEngine;
 namespace ItIsYou.Deduction
 {
     /// <summary>
-    /// 단서 조합(가설) 페이즈의 진행자. 규칙은 <see cref="DeductionSession"/> 이, 이 클래스는 화면과 입력만.
+    /// 추론(단서 조합 → 〈가설〉) 페이즈의 진행자. 규칙은 <see cref="DeductionSession"/> 이, 이 클래스는 화면과 입력만.
     ///
-    /// 흐름: 진입 대사 → (튜토리얼 팝업 4) → [우측 목록에서 물품 하나 + 정황 하나 → "가설 도출" →
-    /// 성공: 연출 + 주인공 대사 + 가설 칸에 저장 (가득 차면 지울 것을 고른다) /
-    /// 실패: 연출 + 회차 반응 + 잉크 −1] → 잉크 0 & 가설 0 = 게임오버 / 잉크 0 & 가설 ≥ 1 = 저절로 끝 /
-    /// 가설 ≥ 1 이면 "추리를 마친다" 로 먼저 끝낼 수 있다.
+    /// 2026-10-11 화면 개편 — 책상 위 서류 두 장(<see cref="DeductionDossierView"/>):
+    /// 진입 대사 → (튜토리얼 팝업 4) → [왼쪽 Evidence 하나 + 오른쪽 Leads 하나 → 붉은 선 → 「가설 추론」 →
+    /// 화면이 어두워지고 주인공의 추론 + 「가설 도출 성공!」 → 가설 탭에 꽂힌다 (가득 차면 탭 하나를 골라 지운다) /
+    /// 실패: 「가설 도출 실패」 + 회차 반응] → 모든 시도가 잉크 −1 → 잉크 0 &amp; 가설 0 = 게임오버 /
+    /// 잉크 0 &amp; 가설 ≥ 1 = 저절로 끝 / 가설 ≥ 1 이면 「돌아가기」로 먼저 끝낼 수 있다.
     /// </summary>
     [AddComponentMenu("It is You/Deduction Controller")]
     public class DeductionController : MonoBehaviour
     {
         [Header("UI")]
         [SerializeField] private DialoguePresenter dialogue;
-        [SerializeField] private HypothesisBoardView board;
+        [SerializeField] private DeductionDossierView dossier;
+        [Tooltip("단서·가설을 크게 열어 읽는 열람창. 우측 목록이 숨겨져 있어도 열람창은 따로 뜬다.")]
         [SerializeField] private ClueTrayView clueTray;
-        [SerializeField] private InkDropsView ink;
         [SerializeField] private TutorialPopupView tutorialPopup;
         [SerializeField] private CursorController cursor;
 
-        [Tooltip("가설이 생겼을 때 잠깐 놋쇠 빛으로 물드는 판. 보통 단서 패널.")]
-        [SerializeField] private CanvasGroup confirmFlash;
+        [Header("문구")]
+        [SerializeField] private string successBanner = "가설 도출 성공!";
+        [SerializeField] private string failBanner = "가설 도출 실패";
+        [SerializeField] private string hintPick = "Evidence 하나, Leads 하나를 고른다.";
+        [SerializeField] private string hintTried = "이 둘은 이미 이어 보았다.";
+        [Tooltip("{0} = 새 가설 이름, {1} = 을/를 (받침에 맞춰).")]
+        [SerializeField] private string replacePromptFormat = "새 가설 「{0}」{1} 남기려면, 지울 가설 탭을 누른다.";
 
         private DeductionSession _session;
         private ChapterDefinition _chapter;
@@ -58,12 +64,19 @@ namespace ItIsYou.Deduction
             _objectPick = null;
             _leadPick = null;
 
+            // 책상에 서류를 펼친 자리다 — 모은 것은 전부 펼쳐 보이므로 이름도 세부 명칭으로 읽힌다.
+            foreach (var id in new System.Collections.Generic.List<string>(inventory.OrderedIds))
+            {
+                var c = inventory.Get(id);
+                if (c != null && (DeductionSession.IsObjectSide(c) || DeductionSession.IsLeadSide(c))) inventory.MarkRead(id);
+            }
+
             Subscribe();
 
-            if (ink != null)
+            if (dossier != null)
             {
-                ink.SetCapacity(_session.InkCapacity);
-                ink.SetRemaining(_session.Ink);
+                dossier.Open(inventory, chapter.FirstRoundSuspects, _session.MaxHypotheses, chapter.SceneClock, chapter.SceneLocation);
+                dossier.SetInk(_session.InkCapacity, _session.Ink);
             }
 
             dialogue?.SetPacing(slowSpeech: false, allowSkip: true);
@@ -73,28 +86,26 @@ namespace ItIsYou.Deduction
         private void Subscribe()
         {
             Unsubscribe();
-            if (board != null)
-            {
-                board.CombineRequested += OnCombineRequested;
-                board.EndRequested += OnEndRequested;
-                board.SlotCleared += OnSlotCleared;
-                board.ReplacePicked += OnReplacePicked;
-                board.ReplaceCancelled += OnReplaceCancelled;
-            }
-            if (clueTray != null) clueTray.ClueSelected += OnClueSelected;
+            if (dossier == null) return;
+            dossier.EvidencePicked += OnEvidencePicked;
+            dossier.LeadPicked += OnLeadPicked;
+            dossier.CombineRequested += OnCombineRequested;
+            dossier.EndRequested += OnEndRequested;
+            dossier.ReadRequested += OnReadRequested;
+            dossier.ReplacePicked += OnReplacePicked;
+            dossier.ReplaceCancelled += OnReplaceCancelled;
         }
 
         private void Unsubscribe()
         {
-            if (board != null)
-            {
-                board.CombineRequested -= OnCombineRequested;
-                board.EndRequested -= OnEndRequested;
-                board.SlotCleared -= OnSlotCleared;
-                board.ReplacePicked -= OnReplacePicked;
-                board.ReplaceCancelled -= OnReplaceCancelled;
-            }
-            if (clueTray != null) clueTray.ClueSelected -= OnClueSelected;
+            if (dossier == null) return;
+            dossier.EvidencePicked -= OnEvidencePicked;
+            dossier.LeadPicked -= OnLeadPicked;
+            dossier.CombineRequested -= OnCombineRequested;
+            dossier.EndRequested -= OnEndRequested;
+            dossier.ReadRequested -= OnReadRequested;
+            dossier.ReplacePicked -= OnReplacePicked;
+            dossier.ReplaceCancelled -= OnReplaceCancelled;
         }
 
         private void OnDisable() => Unsubscribe();
@@ -102,38 +113,34 @@ namespace ItIsYou.Deduction
         private IEnumerator Run()
         {
             _busy = true;
-            board?.SetInteractable(false);
-            board?.SetResult(string.Empty);
-            RefreshBoard();
+            dossier?.SetInteractable(false);
+            RefreshView();
 
             if (_chapter.DeductionIntro != null && !_chapter.DeductionIntro.IsEmpty)
                 yield return dialogue.Play(_chapter.DeductionIntro);
 
             yield return ShowTutorial(TutorialPopupTrigger.BeforeDeduction);
 
-            clueTray?.SetSelectionMode(true);
-            board?.SetInteractable(true);
-
             while (!_session.IsOver)
             {
-                // 입력을 기다린다 — 자리 채우기는 이벤트로, 여기서는 버튼만.
+                // 입력을 기다린다 — 고르기는 이벤트로, 여기서는 도장과 돌아가기만.
                 _busy = false;
                 _combineRequested = false;
                 _endRequested = false;
-                RefreshBoard();
+                RefreshView();
+                dossier?.SetInteractable(true);
                 while (!_combineRequested && !_endRequested) yield return null;
                 _busy = true;
-                board?.SetInteractable(false);
+                dossier?.SetInteractable(false);
 
                 if (_endRequested)
                 {
                     if (_session.EndManually()) break;
-                    board?.SetInteractable(true);
                     continue;
                 }
 
                 var result = _session.TryCombine(_objectPick, _leadPick);
-                if (ink != null) ink.SetRemaining(_session.Ink);   // 모든 시도가 잉크를 쓴다
+                dossier?.SetInk(_session.InkCapacity, _session.Ink);   // 모든 시도가 잉크를 쓴다
                 switch (result.Outcome)
                 {
                     case HypothesisOutcome.Success:
@@ -143,7 +150,7 @@ namespace ItIsYou.Deduction
                         yield return OnNeedsReplace(result.Recipe);
                         break;
                     case HypothesisOutcome.Duplicate:
-                        yield return OnDuplicate(result.Recipe);
+                        yield return OnDuplicate();
                         break;
                     case HypothesisOutcome.Fail:
                         yield return OnFail(result);
@@ -156,14 +163,11 @@ namespace ItIsYou.Deduction
                 // 잉크가 다 말랐는데 가설이 있으면 여기서 저절로 끝난다.
                 if (_session.IsOver && _session.Succeeded && _chapter.DeductionInkOut != null && !_chapter.DeductionInkOut.IsEmpty)
                     yield return dialogue.Play(_chapter.DeductionInkOut);
-
-                board?.SetInteractable(true);
             }
 
-            clueTray?.SetSelectionMode(false);
-            board?.SetInteractable(false);
+            dossier?.SetInteractable(false);
             ClearPicks();
-            RefreshBoard();
+            RefreshView();
 
             if (_session.Succeeded && _chapter.DeductionOutro != null && !_chapter.DeductionOutro.IsEmpty)
                 yield return dialogue.Play(_chapter.DeductionOutro);
@@ -174,74 +178,96 @@ namespace ItIsYou.Deduction
 
         // ------------------------------------------------------------------ 결과
 
+        /// <summary>
+        /// 대사를 틀면서, 마지막 줄이 다 나온 순간 가운데 한 줄을 띄운다 — 스케치 5 → 6.
+        /// 대사가 없으면 한 줄만 잠깐 띄운다.
+        /// </summary>
+        private IEnumerator PlayWithBanner(DialogueSequence sequence, string text, bool success)
+        {
+            if (dossier == null)
+            {
+                if (sequence != null && !sequence.IsEmpty) yield return dialogue.Play(sequence);
+                yield break;
+            }
+
+            if (sequence == null || sequence.IsEmpty)
+            {
+                dossier.ShowBanner(text, success);
+                yield return new WaitForSecondsRealtime(1.4f);
+                dossier.HideBanner();
+                yield break;
+            }
+
+            var remaining = sequence.Count;
+            void OnLine(DialogueLine _) { if (--remaining <= 0) dossier.ShowBanner(text, success); }
+            dialogue.LineCompleted += OnLine;
+            yield return dialogue.Play(sequence);
+            dialogue.LineCompleted -= OnLine;
+            dossier.HideBanner();
+        }
+
         private IEnumerator OnSuccess(HypothesisRecipe recipe)
         {
-            if (board != null) yield return board.PlaySuccess();
-            board?.SetResult("〈가설〉 " + recipe.Title);
+            dossier?.SetDim(true);
+            yield return PlayWithBanner(recipe.OnSuccess, successBanner, true);
+            dossier?.SetDim(false);
+
             Deduced?.Invoke(recipe.Result);
-            StartCoroutine(Flash());
             ClearPicks();
-            RefreshBoard();
-            if (recipe.OnSuccess != null && !recipe.OnSuccess.IsEmpty)
-                yield return dialogue.Play(recipe.OnSuccess);
+            RefreshView();
+            if (recipe.Result != null) dossier?.Pulse(recipe.Result.Id);
         }
 
         private IEnumerator OnNeedsReplace(HypothesisRecipe recipe)
         {
-            if (board != null) yield return board.PlaySuccess();
-            board?.SetResult("〈가설〉 " + recipe.Title + " — 자리가 없다");
+            dossier?.SetDim(true);
+            yield return PlayWithBanner(recipe.OnSuccess, successBanner, true);
+            dossier?.SetDim(false);
 
             if (_chapter.DeductionReplacePrompt != null && !_chapter.DeductionReplacePrompt.IsEmpty)
                 yield return dialogue.Play(_chapter.DeductionReplacePrompt);
 
             _replacePick = null;
             _replaceCancelled = false;
-            board?.ShowReplace($"새 가설 「{recipe.Title}」 을 남기려면 지울 가설을 고른다",
-                _session.Hypotheses, id => _inventory.DisplayName(id));
-            board?.SetInteractable(true);
+            dossier?.BeginReplace(string.Format(replacePromptFormat, recipe.Title, ObjectParticle(recipe.Title)));
+            dossier?.SetInteractable(true);
             while (_replacePick == null && !_replaceCancelled) yield return null;
-            board?.HideReplace();
+            dossier?.SetInteractable(false);
+            dossier?.EndReplace();
 
             if (_replaceCancelled)
             {
                 _session.CancelReplace();
-                board?.SetResult(string.Empty);
                 ClearPicks();
-                RefreshBoard();
+                RefreshView();
                 yield break;
             }
 
             var added = _session.ConfirmReplace(_replacePick);
+            ClearPicks();
+            RefreshView();
             if (added != null)
             {
                 Deduced?.Invoke(added);
-                StartCoroutine(Flash());
+                dossier?.Pulse(added.Id);
             }
-            ClearPicks();
-            RefreshBoard();
-            if (recipe.OnSuccess != null && !recipe.OnSuccess.IsEmpty)
-                yield return dialogue.Play(recipe.OnSuccess);
         }
 
-        private IEnumerator OnDuplicate(HypothesisRecipe recipe)
+        private IEnumerator OnDuplicate()
         {
-            board?.SetResult("이미 세운 가설이다 — " + recipe.Title);
             ClearPicks();
-            RefreshBoard();
+            RefreshView();
             if (_chapter.DeductionDuplicate != null && !_chapter.DeductionDuplicate.IsEmpty)
                 yield return dialogue.Play(_chapter.DeductionDuplicate);
         }
 
         private IEnumerator OnFail(HypothesisResult result)
         {
-            if (board != null) yield return board.PlayFail();
-            board?.SetResult("이어지지 않는다");
+            dossier?.SetDim(true);
+            yield return PlayWithBanner(_chapter.GetDeductionFailure(result.FailRound), failBanner, false);
+            dossier?.SetDim(false);
             ClearPicks();
-            RefreshBoard();
-
-            var reaction = _chapter.GetDeductionFailure(result.FailRound);
-            if (reaction != null && !reaction.IsEmpty)
-                yield return dialogue.Play(reaction);
+            RefreshView();
 
             if (result.FailRound == 1)
                 yield return ShowTutorial(TutorialPopupTrigger.OnDeductionFirstMiss);
@@ -249,43 +275,36 @@ namespace ItIsYou.Deduction
 
         private IEnumerator OnFatal(HypothesisResult result)
         {
-            if (board != null) yield return board.PlayFail();
-            board?.SetResult("잉크가 다 말랐다");
+            dossier?.SetDim(true);
+            yield return PlayWithBanner(_chapter.GetDeductionFailure(result.FailRound), failBanner, false);
             ClearPicks();
-            RefreshBoard();
-
-            var reaction = _chapter.GetDeductionFailure(result.FailRound);
-            if (reaction != null && !reaction.IsEmpty)
-                yield return dialogue.Play(reaction);
+            RefreshView();
 
             if (_chapter.SelfLoathingEnding != null && !_chapter.SelfLoathingEnding.IsEmpty)
                 yield return dialogue.Play(_chapter.SelfLoathingEnding);
+            dossier?.SetDim(false);
         }
 
         // ------------------------------------------------------------------ 입력
 
-        private void OnClueSelected(ClueDefinition clue)
+        private void OnEvidencePicked(ClueDefinition clue)
         {
-            if (_busy || !IsRunning || clue == null) return;
-
-            if (DeductionSession.IsObjectSide(clue)) _objectPick = _objectPick == clue ? null : clue;
-            else if (DeductionSession.IsLeadSide(clue)) _leadPick = _leadPick == clue ? null : clue;
-            else return;
-
-            board?.SetResult(string.Empty);
-            RefreshBoard();
+            if (_busy || !IsRunning || !DeductionSession.IsObjectSide(clue)) return;
+            _objectPick = _objectPick == clue ? null : clue;
+            RefreshView();
         }
 
-        private void OnSlotCleared(bool objectSide)
+        private void OnLeadPicked(ClueDefinition clue)
         {
-            if (_busy || !IsRunning) return;
-            if (objectSide) _objectPick = null; else _leadPick = null;
-            RefreshBoard();
+            if (_busy || !IsRunning || !DeductionSession.IsLeadSide(clue)) return;
+            _leadPick = _leadPick == clue ? null : clue;
+            RefreshView();
         }
 
         private void OnCombineRequested()
         {
             if (_busy || !IsRunning || _objectPick == null || _leadPick == null) return;
+            if (_session.TriedAndFailed(_objectPick.Id, _leadPick.Id)) return;
             _combineRequested = true;
         }
 
@@ -293,6 +312,12 @@ namespace ItIsYou.Deduction
         {
             if (_busy || !IsRunning || !_session.CanEnd) return;
             _endRequested = true;
+        }
+
+        private void OnReadRequested(ClueDefinition clue)
+        {
+            if (clue == null || clueTray == null) return;
+            clueTray.OpenReading(clue);
         }
 
         private void OnReplacePicked(string id) => _replacePick = id;
@@ -304,23 +329,27 @@ namespace ItIsYou.Deduction
             _leadPick = null;
         }
 
-        private void RefreshBoard()
+        private void RefreshView()
         {
-            if (board == null) return;
-            board.SetSlot(true, _objectPick, _objectPick != null ? _inventory.DisplayName(_objectPick.Id) : null);
-            board.SetSlot(false, _leadPick, _leadPick != null ? _inventory.DisplayName(_leadPick.Id) : null);
+            if (dossier == null || _session == null) return;
+
+            // 서류 두 장의 내용(물품·정황)은 이 페이즈 동안 바뀌지 않는다 — 다시 그리지 않고 고른 표시만 바꾼다.
+            dossier.SetHypotheses(_session.Hypotheses);
 
             var both = _objectPick != null && _leadPick != null;
-            var tried = both && _session != null && _session.TriedAndFailed(_objectPick.Id, _leadPick.Id);
-            board.SetCombineEnabled(both && !tried && IsRunning);
-            board.SetEndEnabled(_session != null && _session.CanEnd && IsRunning);
+            var tried = both && _session.TriedAndFailed(_objectPick.Id, _leadPick.Id);
+            var hint = !IsRunning ? string.Empty : tried ? hintTried : !both ? hintPick : string.Empty;
+            dossier.SetSelection(_objectPick, _leadPick, both && !tried && IsRunning, hint);
+            dossier.SetEndEnabled(_session.CanEnd && IsRunning);
+        }
 
-            if (_session == null || _session.IsOver) board.SetHint(string.Empty);
-            else if (tried) board.SetHint("이 둘은 이미 이어 보았다.");
-            else if (!both) board.SetHint("우측 목록에서 물품 하나, 정황 하나를 고른다.");
-            else board.SetHint($"가설 {_session.HypothesisCount}/{_session.MaxHypotheses} · 잉크 {_session.Ink}");
-
-            clueTray?.SetSelection(_objectPick?.Id, _leadPick?.Id);
+        /// <summary>마지막 글자에 받침이 있으면 '을', 없으면 '를'. 한글이 아니면 '을(를)'.</summary>
+        private static string ObjectParticle(string word)
+        {
+            if (string.IsNullOrEmpty(word)) return "을(를)";
+            var c = word[word.Length - 1];
+            if (c < '가' || c > '힣') return "을(를)";
+            return (c - '가') % 28 == 0 ? "를" : "을";
         }
 
         private IEnumerator ShowTutorial(TutorialPopupTrigger trigger)
@@ -329,18 +358,6 @@ namespace ItIsYou.Deduction
             var popup = _chapter.FindTutorialPopup(trigger);
             if (popup == null || tutorialPopup.HasShown(popup)) yield break;
             yield return tutorialPopup.ShowOnce(popup);
-        }
-
-        /// <summary>가설이 생긴 순간 단서 패널이 잠깐 밝아진다.</summary>
-        private IEnumerator Flash()
-        {
-            if (confirmFlash == null) yield break;
-            var t = 0f;
-            const float up = 0.12f, down = 0.5f;
-            while (t < up) { t += Time.unscaledDeltaTime; confirmFlash.alpha = Mathf.Lerp(0f, 1f, t / up); yield return null; }
-            t = 0f;
-            while (t < down) { t += Time.unscaledDeltaTime; confirmFlash.alpha = Mathf.Lerp(1f, 0f, t / down); yield return null; }
-            confirmFlash.alpha = 0f;
         }
     }
 }

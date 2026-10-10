@@ -92,5 +92,6 @@ MonoBehaviour:
     \uC0DD\uAC01\uD55C\uB2E4.\n(\uC774\uD558 \uC0DD\uB7B5)"
   icon: {fileID: 0}
   closeUpImage: {fileID: 0}
+  sourceSuspectId: 
   isKeyClue: 0
   countsTowardCompletion: 1

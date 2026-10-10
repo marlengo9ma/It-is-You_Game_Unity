@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -82,6 +82,13 @@ namespace ItIsYou.Data
         [Tooltip("엔딩 자리 배경 1920×1080. 엔딩 컷씬이 오기 전까지의 판.")]
         public Sprite endingBackground;
         public Placement endingBackgroundPlace = Placement.Stretch;
+
+        [Tooltip("추론 화면의 책상 1920×1080 — 서류 두 장이 놓이는 나무 책상. 비우면 짙은 나무색 판.")]
+        public Sprite deductionDesk;
+        public Placement deductionDeskPlace = Placement.Stretch;
+
+        [Tooltip("추론 화면의 서류 한 장(종이 질감). 9-slice 로 늘어난다. 비우면 회갈색 판.")]
+        public Sprite dossierPaper;
 
         [Header("인물 — 세피")]
         [Tooltip("사건 이전 대화 · 인트로 화면의 세피 (서 있는 전신). 약 576×994, 아래 정렬.")]
