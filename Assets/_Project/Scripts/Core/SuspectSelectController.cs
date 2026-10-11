@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using ItIsYou.Data;
@@ -115,6 +115,7 @@ namespace ItIsYou.Core
         }
 
         private bool _allowDeduction;
+        private DialogueSequence _opening;
 
         private void OnDeductionClicked()
         {
@@ -144,9 +145,10 @@ namespace ItIsYou.Core
         /// finishedIds 에 든 상대는 '이미 이야기를 마쳤다' 로 잠긴다.
         /// </summary>
         public void BeginRound(ChapterDefinition chapter, IReadOnlyList<SuspectDefinition> suspects,
-            ISet<string> finishedIds, string prompt, bool skipTalk, bool allowDeduction = false)
+            ISet<string> finishedIds, string prompt, bool skipTalk, bool allowDeduction = false, DialogueSequence opening = null)
         {
             _allowDeduction = allowDeduction;
+            _opening = opening;
             if (deductionButton != null) deductionButton.gameObject.SetActive(false);
             _chapter = chapter;
             _suspects = suspects;
@@ -173,6 +175,10 @@ namespace ItIsYou.Core
                 if (_chapter.SuspectSelectTalk != null && !_chapter.SuspectSelectTalk.IsEmpty)
                     yield return dialogue.Play(_chapter.SuspectSelectTalk);
             }
+
+            // 카드를 앉혀 둔 채로 한마디 — 예: 추론에서 돌아왔는데 더 심문할 사람이 없을 때.
+            if (_opening != null && !_opening.IsEmpty)
+                yield return dialogue.Play(_opening);
 
             if (promptLabel != null) promptLabel.text = _prompt ?? string.Empty;
             SetArmed(true);

@@ -342,6 +342,7 @@ namespace ItIsYou.EditorTools
                    .Set("deductionFailures", TutorialScript.DeductionFailures())
                    .Set("deductionDuplicate", TutorialScript.DeductionDuplicate())
                    .Set("deductionReplacePrompt", TutorialScript.DeductionReplacePrompt())
+                .Set("noSuspectsLeft", TutorialScript.NoSuspectsLeft())
                    .Set("deductionInkOut", TutorialScript.DeductionInkOut())
                    .Set("deductionIntro", TutorialScript.DeductionIntro())
                    .Set("deductionOutro", TutorialScript.DeductionOutro())

@@ -1142,7 +1142,7 @@ namespace ItIsYou.EditorTools
             var toDeductionBtn = PlainButton("ToDeduction", selectRt, "추론 진행하기", T.Choice);
             var toDeductionBottom = L.Unit * 30f - L.BandBottom + 16f;
             Anchor(toDeductionBtn.Item1, V(0, 0), V(0, 0), V(1064f - 300f, toDeductionBottom), V(1064f, toDeductionBottom + 64f));
-            toDeductionBtn.Item1.GetComponent<Image>().color = new Color32(0x52, 0x3C, 0x74, 0xFF);
+            toDeductionBtn.Item1.GetComponent<Image>().color = new Color32(0x5A, 0x2E, 0x34, 0xFF);   // 「돌아가기」「추리를 마친다」와 같은 색
             toDeductionBtn.Item1.Find("Label").GetComponent<TMP_Text>().color = new Color32(0xF2, 0xEA, 0xDC, 0xFF);
             toDeductionBtn.Item1.gameObject.SetActive(false);
 

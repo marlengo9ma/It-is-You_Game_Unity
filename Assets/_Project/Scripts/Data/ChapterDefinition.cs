@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace ItIsYou.Data
@@ -137,6 +137,8 @@ namespace ItIsYou.Data
 
         [Tooltip("가설이 가득 찬 채 새 가설이 생겼을 때 — 지울 것을 고르라는 말.")]
         [SerializeField] private DialogueSequence deductionReplacePrompt = new DialogueSequence();
+        [Tooltip("추론에서 「돌아가기」로 인물 선택에 왔는데 더 심문할 사람이 없을 때.")]
+        [SerializeField] private DialogueSequence noSuspectsLeft = new DialogueSequence();
 
         [Tooltip("잉크가 다 마르고 가설이 하나라도 있어 페이즈가 저절로 끝날 때.")]
         [SerializeField] private DialogueSequence deductionInkOut = new DialogueSequence();
@@ -202,6 +204,7 @@ namespace ItIsYou.Data
         public IReadOnlyList<DialogueSequence> DeductionFailures => deductionFailures;
         public DialogueSequence DeductionDuplicate => deductionDuplicate;
         public DialogueSequence DeductionReplacePrompt => deductionReplacePrompt;
+        public DialogueSequence NoSuspectsLeft => noSuspectsLeft;
         public DialogueSequence DeductionInkOut => deductionInkOut;
         public DialogueSequence DeductionIntro => deductionIntro;
         public DialogueSequence DeductionOutro => deductionOutro;

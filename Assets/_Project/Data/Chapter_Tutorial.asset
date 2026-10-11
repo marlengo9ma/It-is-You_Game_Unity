@@ -1186,9 +1186,10 @@ MonoBehaviour:
       \uAC00\uC124\uC744 \uC5B8\uC81C\uB4E0 \uC9C0\uC6B8 \uC218 \uC788\uC2B5\uB2C8\uB2E4(\uC789\uD06C\uB294
       \uB3CC\uC544\uC624\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4). \uAC00\uC124\uC774 \uD558\uB098\uB77C\uB3C4
       \uC788\uC73C\uBA74 \uBAA9\uB85D \uC544\uB798 [\uCD94\uB9AC\uB97C \uB9C8\uCE5C\uB2E4]\uB85C
-      \uCD94\uB860\uC744 \uB9C8\uCE69\uB2C8\uB2E4. \uC544\uC9C1 \uC2EC\uBB38\uD558\uC9C0
-      \uC54A\uC740 \uC778\uBB3C\uC774 \uC788\uB2E4\uBA74 [\uB3CC\uC544\uAC00\uAE30]\uB85C
-      \uC778\uBB3C \uC120\uD0DD\uC73C\uB85C \uB3CC\uC544\uAC08 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+      \uCD94\uB860\uC744 \uB9C8\uCE69\uB2C8\uB2E4. [\uB3CC\uC544\uAC00\uAE30]\uB85C
+      \uC778\uBB3C \uC120\uD0DD \uD654\uBA74\uC5D0 \uB3CC\uC544\uAC08 \uC218 \uC788\uC73C\uBA70,
+      \uADF8\uACF3\uC758 [\uCD94\uB860 \uC9C4\uD589\uD558\uAE30]\uB85C \uB2E4\uC2DC
+      \uC774\uC5B4 \uAC11\uB2C8\uB2E4."
   - id: POPUP_4B
     title: "\uC789\uD06C\uC640 \uC2E4\uD328"
     trigger: 7
@@ -1334,6 +1335,25 @@ MonoBehaviour:
     - speaker: 2
       text: "\uC774\uBCF4\uB2E4 \uB354 \uB9CE\uC740 \uAC00\uC124\uC744 \uC0DD\uAC01\uD574\uB450\uAE30\uC5D0\uB294
         \uC5B4\uB824\uC6CC."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    animationId: 
+    trustDelta: 0
+    endsInterrogation: 0
+  noSuspectsLeft:
+    note: "\uB354 \uC774\uC0C1 \uC2EC\uBB38\uD560 \uC6A9\uC758\uC790\uAC00 \uC5C6\uC74C"
+    lines:
+    - speaker: 2
+      text: "\uB354 \uC774\uC0C1 \uC2EC\uBB38 \uD560 \uC6A9\uC758\uC790\uAC00 \uC5C6\uC5B4.
+        \uC9C0\uAE08\uC740 \uAC00\uC124\uC744 \uC138\uC6B8 \uB54C\uC57C."
       expression: 0
       stageDirection: 
       animationId: 

@@ -182,8 +182,13 @@ namespace ItIsYou.Core
                             suspectSelect.DeductionRequested += OnWantDeduction;
 
                             yield return Transition(GamePhase.SuspectSelect);
-                            suspectSelect.BeginRound(chapter, chapter.FirstRoundSuspects, interrogated, chapter.SuspectSelectPrompt,
-                                skipTalk: talkDone, allowDeduction: deductionEntered);
+
+                            // 추론에서 돌아왔는데 더 심문할 사람이 없다 — 한마디 하고 「추론 진행하기」만 남긴다.
+                            var noneLeft = deductionEntered && FirstLeftToInterrogate(interrogated) == null;
+
+                            suspectSelect.BeginRound(chapter, chapter.FirstRoundSuspects, interrogated, noneLeft ? string.Empty : chapter.SuspectSelectPrompt,
+                                skipTalk: talkDone, allowDeduction: deductionEntered,
+                                opening: noneLeft ? chapter.NoSuspectsLeft : null);
                             talkDone = true;
 
                             while (picked == null && !wantDeduction) yield return null;
@@ -215,7 +220,8 @@ namespace ItIsYou.Core
                 DeductionExit? exit = null;
                 void OnExit(DeductionExit e) => exit = e;
                 deduction.Exited += OnExit;
-                deduction.Begin(chapter, Session.Clues, canReturn: FirstLeftToInterrogate(interrogated) != null, resume: resumeDeduction);
+                // 「돌아가기」는 언제나 눌린다 — 심문할 사람이 없으면 인물 선택에서 그렇다고 말해 준다 (2026-10-11 제작자 지시).
+                deduction.Begin(chapter, Session.Clues, canReturn: true, resume: resumeDeduction);
                 deductionEntered = true;
                 while (exit == null) yield return null;
                 deduction.Exited -= OnExit;
