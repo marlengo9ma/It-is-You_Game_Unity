@@ -22,6 +22,7 @@ MonoBehaviour:
       note: "[\uC784\uC2DC] \uCD94\uB860 H1\xD7\uC138\uD53C A"
       lines:
       - speaker: 1
+        speakerName: 
         text: "\uC138\uD53C \uC528. \uB9CC\uB144\uD544\uC740 \uCC98\uC74C\uBD80\uD130
           \uACE0\uC591\uC774 \uC544\uB798\uC5D0 \uC788\uC5C8\uC2B5\uB2C8\uB2E4. \uB2F9\uC2E0\uC774
           \uADF8\uB9AC\uB85C \uBC00\uC5B4 \uB123\uC5C8\uC8E0."
@@ -36,6 +37,7 @@ MonoBehaviour:
           blurredFromRecallDepth: 2
         autoGrantClueId: 
       - speaker: 3
+        speakerName: 
         text: "\uC81C, \uC81C\uAC00\uC694\u2026?"
         expression: 3
         stageDirection: 
@@ -48,6 +50,7 @@ MonoBehaviour:
           blurredFromRecallDepth: 2
         autoGrantClueId: 
       - speaker: 4
+        speakerName: 
         text: "\uB0D0\uC639."
         expression: 0
         stageDirection: 
@@ -66,6 +69,7 @@ MonoBehaviour:
       note: "[\uC784\uC2DC] \uD638\uC18C H1\xD7\uC138\uD53C A"
       lines:
       - speaker: 3
+        speakerName: 
         text: "\uC544\uB2C8\uC5D0\uC694! \uADF8\uAC74\u2026 \uACE0\uC591\uC774\uAC00
           \uC81C\uBA4B\uB300\uB85C \uC549\uC740 \uAC70\uC608\uC694. \uC800\uB294
           \uB9CC\uB144\uD544 \uADFC\uCC98\uC5D0\uB3C4 \uC548 \uAC14\uC5B4\uC694."
@@ -89,6 +93,7 @@ MonoBehaviour:
       note: "[\uC784\uC2DC] \uBC18\uBC15 \uC2E4\uD328 H1\xD7\uC138\uD53C A"
       lines:
       - speaker: 3
+        speakerName: 
         text: "\u2026\uADF8\uAC8C \uBB34\uC2A8 \uC0C1\uAD00\uC774\uC8E0?"
         expression: 2
         stageDirection: 
@@ -101,6 +106,7 @@ MonoBehaviour:
           blurredFromRecallDepth: 2
         autoGrantClueId: 
       - speaker: 2
+        speakerName: 
         text: "..\uC544\uB2C8\uB2E4. \uC774\uAC78\uB85C\uB294 \uC548 \uB41C\uB2E4."
         expression: 0
         stageDirection: 
@@ -119,6 +125,7 @@ MonoBehaviour:
       note: "[\uC784\uC2DC] \uBC18\uBC15 \uC131\uACF5 H1\xD7\uC138\uD53C A"
       lines:
       - speaker: 1
+        speakerName: 
         text: "'\uBCF8 \uC801\uC740 \uC788\uB2E4'\uACE0 \uD588\uC8E0. \uC5B4\uB514\uC11C
           \uBD24\uB294\uC9C0\uB294 \uB05D\uB0B4 \uB9D0\uD558\uC9C0 \uC54A\uC558\uACE0."
         expression: 0
@@ -132,6 +139,7 @@ MonoBehaviour:
           blurredFromRecallDepth: 2
         autoGrantClueId: 
       - speaker: 3
+        speakerName: 
         text: "\u2026\uB124. \uC81C\uAC00 \uBC00\uC5B4 \uB123\uC5C8\uC5B4\uC694.
           \uACE0\uC591\uC774\uB97C \uB4E4\uD0AC\uAE4C \uBD10."
         expression: 5
@@ -152,6 +160,7 @@ MonoBehaviour:
       note: "[\uC784\uC2DC] \uACB0\uACFC H1\xD7\uC138\uD53C A"
       lines:
       - speaker: 0
+        speakerName: 
         text: "\uC870\uC218\uB294 \uB9CC\uB144\uD544\uC744 \uAEBC\uB0B4 \uB2F9\uC2E0\uC5D0\uAC8C
           \uAC74\uB138\uB2E4."
         expression: 0
@@ -165,6 +174,7 @@ MonoBehaviour:
           blurredFromRecallDepth: 2
         autoGrantClueId: 
       - speaker: 2
+        speakerName: 
         text: "..\uC0AC\uAC74\uC740 \uB05D\uB0AC\uB2E4. \uACE0\uC591\uC774 \uBB38\uC81C\uB294
           \uB2E4\uB978 \uC774\uC57C\uAE30\uC9C0\uB9CC."
         expression: 0
@@ -187,6 +197,7 @@ MonoBehaviour:
       note: "[\uC784\uC2DC] \uCD94\uB860 H1\xD7\uC138\uD53C B"
       lines:
       - speaker: 1
+        speakerName: 
         text: "\uB9CC\uB144\uD544\uC740 \uACE0\uC591\uC774 \uC544\uB798\uC5D0 \uC788\uC5C8\uC2B5\uB2C8\uB2E4.
           \uC138\uD53C \uC528\uB294 \uADF8\uC800 \uB208\uCE58\uCC44\uC9C0 \uBABB\uD588\uB358
           \uAC70\uACE0\uC694."
@@ -201,6 +212,7 @@ MonoBehaviour:
           blurredFromRecallDepth: 2
         autoGrantClueId: 
       - speaker: 3
+        speakerName: 
         text: "\u2026\uB124, \uB124. \uADF8\uB807\uC8E0."
         expression: 2
         stageDirection: 
@@ -239,6 +251,7 @@ MonoBehaviour:
       note: "[\uC784\uC2DC] \uACB0\uACFC H1\xD7\uC138\uD53C B"
       lines:
       - speaker: 0
+        speakerName: 
         text: "\uB2F9\uC2E0\uC740 \uB9CC\uB144\uD544\uC744 \uAEBC\uB0B4 \uB4E4\uC5C8\uB2E4.
           \uC870\uC218\uB294 \uC2DC\uC120\uC744 \uD53C\uD588\uB2E4."
         expression: 0
@@ -252,6 +265,7 @@ MonoBehaviour:
           blurredFromRecallDepth: 2
         autoGrantClueId: 
       - speaker: 2
+        speakerName: 
         text: "..\uBB54\uAC00 \uB354 \uC788\uC5C8\uB358 \uAC83 \uAC19\uC9C0\uB9CC,
           \uB9CC\uB144\uD544\uC740 \uB3CC\uC544\uC654\uB2E4."
         expression: 0

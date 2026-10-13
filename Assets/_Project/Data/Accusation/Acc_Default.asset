@@ -21,6 +21,7 @@ MonoBehaviour:
       note: "[\uC784\uC2DC] \uCD94\uB860 \uAE30\uBCF8 A"
       lines:
       - speaker: 2
+        speakerName: 
         text: "..\uADFC\uAC70\uB294 \uC5C6\uB2E4. \uD558\uC9C0\uB9CC \uC774 \uC0AC\uB78C\uC774\uB2E4."
         expression: 0
         stageDirection: 
@@ -59,6 +60,7 @@ MonoBehaviour:
       note: "[\uC784\uC2DC] \uACB0\uACFC \uAE30\uBCF8 A"
       lines:
       - speaker: 0
+        speakerName: 
         text: "\uC544\uBB34\uB3C4 \uC218\uAE0D\uD558\uC9C0 \uC54A\uC558\uB2E4. \uAE30\uCC28\uB294
           \uB2E4\uC74C \uC5ED\uC5D0 \uB2FF\uC558\uB2E4."
         expression: 0
@@ -80,6 +82,7 @@ MonoBehaviour:
       note: "[\uC784\uC2DC] \uB418\uB3CC\uC544\uAC00\uAE30"
       lines:
       - speaker: 2
+        speakerName: 
         text: "..\uC774 \uAC00\uC124\uB85C\uB294 \uC774 \uC0AC\uB78C\uC744 \uAC00\uB9AC\uD0AC
           \uC218 \uC5C6\uB2E4."
         expression: 0

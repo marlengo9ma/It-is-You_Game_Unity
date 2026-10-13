@@ -490,7 +490,22 @@ namespace ItIsYou.EditorTools
                 new Color32(0x5A, 0x61, 0x69, 0xFF), TextAlignmentOptions.Center);
             Stretch(interCatTag.rectTransform);
             var interStageHasArt = _art.StageOrRoom != null;
-            if (!Art(interCat, _art.catStage, _art.catStagePlace, false, interCatTag) && interStageHasArt) interCat.gameObject.SetActive(false);
+            var catHasArt = Art(interCat, _art.catStage, _art.catStagePlace, false, interCatTag);
+            if (!catHasArt && interStageHasArt) interCat.gameObject.SetActive(false);
+
+            // 고양이 심문(2026-10-13) — 고양이 판이 그대로 심문 상대의 캐릭터 뷰가 된다. 표정·연출은 세피와 같은 방식.
+            var catGroup = interCat.gameObject.AddComponent<CanvasGroup>();
+            var catOutline = interCat.gameObject.AddComponent<Outline>();
+            catOutline.effectColor = P.Brass;
+            catOutline.effectDistance = new Vector2(4f, -4f);
+            catOutline.enabled = false;
+            var catView = interCat.gameObject.AddComponent<PlaceholderCharacterView>();
+            catView.Set("characterId", "CAT")
+                   .Set("body", interCat)
+                   .Set("reactionOutline", catOutline)
+                   .Set("canvasGroup", catGroup)
+                   .Set("hasArt", catHasArt)
+                   .Set("defaultSprite", _art.catStage);
 
             var interHotspotRects = new (string id, float x0, float y0, float x1, float y1)[]
             {
@@ -521,6 +536,27 @@ namespace ItIsYou.EditorTools
 
                 var io = spot.gameObject.AddComponent<InteractableObject>();
                 io.Set("definition", def).Set("outline", outline).Set("hitArea", spot);
+                interHotspots.Add(io);
+            }
+
+            // 고양이 심문의 심문 오브젝트 '세피' — 화면 가운데의 세피 위. 세피 심문 중에는 보이지 않는다(InterrogationController).
+            var sepiDef = AssetDatabase.LoadAssetAtPath<InteractableDefinition>($"{DataRoot}/Objects/Obj_OBJ_INT_SEPI.asset");
+            if (sepiDef != null)
+            {
+                var spot = Img("Hotspot_OBJ_INT_SEPI", charRt, new Color32(0x2E, 0x34, 0x3B, 0xC8));
+                Anchor(spot.rectTransform, V(0.18f, 0.22f), V(0.82f, 0.88f), Vector2.zero, Vector2.zero);
+                spot.sprite = _uiSprite; spot.type = Image.Type.Sliced;
+                spot.gameObject.AddComponent<CanvasGroup>();
+                var spotLabel = Text("Label", spot.rectTransform, sepiDef.HoverLabel, T.Caption,
+                    new Color32(0x8A, 0x90, 0x97, 0xFF), TextAlignmentOptions.Center);
+                Stretch(spotLabel.rectTransform);
+                if (interStageHasArt || sepiHasArt) { spot.color = new Color(0f, 0f, 0f, 0f); spotLabel.gameObject.SetActive(false); }
+                var outline = spot.gameObject.AddComponent<Outline>();
+                outline.effectColor = new Color(1f, 0.97f, 0.88f, 0.55f);
+                outline.effectDistance = new Vector2(3f, -3f);
+                outline.enabled = false;
+                var io = spot.gameObject.AddComponent<InteractableObject>();
+                io.Set("definition", sepiDef).Set("outline", outline).Set("hitArea", spot);
                 interHotspots.Add(io);
             }
 
@@ -1107,6 +1143,8 @@ namespace ItIsYou.EditorTools
             Anchor(cutsceneLabel.rectTransform, V(0.1f, 0.35f), V(0.9f, 0.65f), Vector2.zero, Vector2.zero);
 
             cutsceneLabel.text = chapter.CutsceneName;
+            var cutsceneView = cutsceneScreen.AddComponent<CutsceneScreenView>();
+            cutsceneView.Set("image", cutsceneImg).Set("label", cutsceneLabel);
             cutsceneLabel.gameObject.SetActive(chapter.CutsceneImage == null);
             if (chapter.CutsceneImage != null)
             {
@@ -1395,6 +1433,69 @@ namespace ItIsYou.EditorTools
                      .Set("card", titleBand.rectTransform)
                      .Set("label", titleText);
 
+            // ================================================== 수집 튜토리얼 — 어둡게 덮고 한 곳만 밝힌다 (2026-10-13 노션)
+            var coachRoot = UI("CoachMark", root);
+            var coachRt = coachRoot.GetComponent<RectTransform>();
+            Stretch(coachRt);
+            Image Shade(string name)
+            {
+                var s = Img(name, coachRt, new Color(0f, 0f, 0f, 0.74f));
+                s.raycastTarget = true;   // 구멍 밖은 누르지 못한다
+                s.enabled = false;
+                return s;
+            }
+            var shadeT = Shade("Shade_Top"); var shadeB = Shade("Shade_Bottom");
+            var shadeL = Shade("Shade_Left"); var shadeR = Shade("Shade_Right");
+            var coachCaption = Img("Caption", coachRt, new Color32(0x16, 0x19, 0x1D, 0xF4));
+            var coachCaptionRt = coachCaption.rectTransform;
+            coachCaptionRt.anchorMin = coachCaptionRt.anchorMax = V(0.5f, 0.5f);
+            coachCaptionRt.sizeDelta = V(1280f, 196f);
+            coachCaption.sprite = _uiSprite; coachCaption.type = Image.Type.Sliced;
+            var coachCaptionOutline = coachCaption.gameObject.AddComponent<Outline>();
+            coachCaptionOutline.effectColor = P.Brass;
+            coachCaptionOutline.effectDistance = V(2f, -2f);
+            var coachText = Text("Text", coachCaptionRt, "", T.Body, P.Ink, TextAlignmentOptions.MidlineLeft);
+            coachText.textWrappingMode = TextWrappingModes.Normal;
+            coachText.lineSpacing = 10f;
+            Anchor(coachText.rectTransform, V(0, 0), V(1, 1), V(40f, 20f), V(-220f, -20f));
+            var coachNext = PlainButton("Next", coachCaptionRt, "다음", T.Choice);
+            Anchor(coachNext.Item1, V(1, 0.5f), V(1, 0.5f), V(-196f, -30f), V(-28f, 30f));
+            coachCaption.gameObject.SetActive(false);
+            var coachView = coachRoot.AddComponent<CoachMarkView>();
+            coachView.Set("root", coachRt)
+                     .Set("top", shadeT).Set("bottom", shadeB).Set("left", shadeL).Set("right", shadeR)
+                     .Set("caption", coachCaptionRt)
+                     .Set("captionText", coachText)
+                     .Set("captionButton", coachNext.Item2)
+                     .Set("captionButtonLabel", coachNext.Item1.Find("Label").GetComponent<TMP_Text>());
+
+            // ================================================== 진행 확인 팝업 — [아직 수집하지 못한 …단서 수집을 종료할까요?]
+            var gateRoot = UI("ConfirmPopup", root);
+            Stretch(gateRoot.GetComponent<RectTransform>());
+            var gateScrim = Img("Scrim", gateRoot.transform, new Color(0f, 0f, 0f, 0.62f));
+            Stretch(gateScrim.rectTransform);
+            var gatePanel = Img("Panel", gateRoot.transform, new Color32(0x16, 0x19, 0x1D, 0xFF));
+            Anchor(gatePanel.rectTransform, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-400f, -170f), V(400f, 170f));
+            var gateOutline = gatePanel.gameObject.AddComponent<Outline>();
+            gateOutline.effectColor = P.Alarm;
+            gateOutline.effectDistance = V(2f, -2f);
+            var gateText = Text("Message", gatePanel.rectTransform, "", T.Body, P.Ink, TextAlignmentOptions.Center);
+            gateText.textWrappingMode = TextWrappingModes.Normal;
+            gateText.lineSpacing = 10f;
+            Anchor(gateText.rectTransform, V(0, 0), V(1, 1), V(48f, 112f), V(-48f, -40f));
+            var gateYes = PlainButton("Yes", gatePanel.rectTransform, "예", T.Choice);
+            Anchor(gateYes.Item1, V(0.5f, 0), V(0.5f, 0), V(-236f, 36f), V(-16f, 96f));
+            var gateNo = PlainButton("No", gatePanel.rectTransform, "아니오", T.Choice);
+            Anchor(gateNo.Item1, V(0.5f, 0), V(0.5f, 0), V(16f, 36f), V(236f, 96f));
+            var gateView = gateRoot.AddComponent<ConfirmPopupView>();
+            gateView.Set("root", gateRoot)
+                       .Set("message", gateText)
+                       .Set("yesButton", gateYes.Item2)
+                       .Set("yesLabel", gateYes.Item1.Find("Label").GetComponent<TMP_Text>())
+                       .Set("noButton", gateNo.Item2)
+                       .Set("noLabel", gateNo.Item1.Find("Label").GetComponent<TMP_Text>());
+            gateRoot.SetActive(false);
+
             // ---- 설정 / 일시 정지 (막 아래, 다른 팝업 위) ----
             var systems = new GameObject("Systems");
             ItIsYou.EditorTools.UiKit.Prepare();
@@ -1429,7 +1530,9 @@ namespace ItIsYou.EditorTools
                          .Set("clueTray", clueTrayView)
                          .Set("closeUp", closeUpView)
                          .Set("advanceButton", goInterrogate.Item2)
-                         .Set("progressLabel", progressLabel);
+                         .Set("progressLabel", progressLabel)
+                         .Set("coachMark", coachView)
+                         .Set("confirmPopup", gateView);
 
             var selectController = systems.AddComponent<SuspectSelectController>();
             selectController.Set("dialogue", presenter)
@@ -1495,7 +1598,8 @@ namespace ItIsYou.EditorTools
                 .Set("dialogue", presenter)
                 .Set("clueTray", clueTrayView)
                 .Set("cursor", cursor)
-                .Set("characterBindings", BuildCharacterBindings("SEPI", characterView));
+                .Set("cutsceneView", cutsceneView)
+                .Set("characterBindings", BuildCharacterBindings(("SEPI", characterView), ("CAT", catView)));
 
             var accusation = accuseScreen.AddComponent<AccusationView>();
             accusation.Set("dialogue", presenter)
@@ -1596,19 +1700,21 @@ namespace ItIsYou.EditorTools
         // ====================================================== 리플렉션 보조
 
         /// <summary>GameFlowController 안의 private 중첩 구조체 목록을 만든다.</summary>
-        private static object BuildCharacterBindings(string suspectId, MonoBehaviour view)
+        private static object BuildCharacterBindings(params (string suspectId, MonoBehaviour view)[] pairs)
         {
             var bindingType = typeof(GameFlowController).GetNestedType("CharacterBinding",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
             if (bindingType == null) return null;
 
-            var binding = System.Activator.CreateInstance(bindingType);
-            bindingType.GetField("suspectId").SetValue(binding, suspectId);
-            bindingType.GetField("view").SetValue(binding, view);
-
             var listType = typeof(List<>).MakeGenericType(bindingType);
             var list = (IList)System.Activator.CreateInstance(listType);
-            list.Add(binding);
+            foreach (var p in pairs)
+            {
+                var binding = System.Activator.CreateInstance(bindingType);
+                bindingType.GetField("suspectId").SetValue(binding, p.suspectId);
+                bindingType.GetField("view").SetValue(binding, p.view);
+                list.Add(binding);
+            }
             return list;
         }
 

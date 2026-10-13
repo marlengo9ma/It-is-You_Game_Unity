@@ -34,6 +34,18 @@ namespace ItIsYou.Data
         [Tooltip("컷씬에서 돌아온 뒤의 대화. 다시 [게임플레이 배경_캐릭터 씬].")]
         [SerializeField] private DialogueSequence afterCutsceneTalk = new DialogueSequence();
 
+        [Tooltip("컷씬 뒤 대화 중간의 회상 장면들 — 노션 <회상씬으로 전환 E#1> <E#2>. 차례로 화면을 덮었다 걷는다.")]
+        [SerializeField] private List<FlashbackScene> flashbacks = new List<FlashbackScene>();
+
+        [Tooltip("회상에서 돌아온 뒤의 대화 — <게임플레이 배경_캐릭터 일반 대화 씬으로 전환>.")]
+        [SerializeField] private DialogueSequence afterFlashbackTalk = new DialogueSequence();
+
+        [Tooltip("단서 수집 페이즈 처음에 한 번 도는 튜토리얼 — 노션 〈수집페이즈에 대한 튜토리얼 팝업〉.")]
+        [SerializeField] private List<GuideStep> collectionGuide = new List<GuideStep>();
+
+        [Tooltip("수집률이 경고 구간일 때 진행 여부를 묻는 팝업 문구.")]
+        [SerializeField] private string collectionWarnQuestion = "아직 수집하지 못한 수집품/기록이 존재합니다. 단서 수집을 종료할까요?";
+
         [Header("인트로 (사건 발생)")]
         [Tooltip("<화면 전환> 사건 진행 #1 부터의 대사.")]
         [SerializeField] private DialogueSequence intro = new DialogueSequence();
@@ -270,6 +282,10 @@ namespace ItIsYou.Data
         public Sprite CutsceneImage => cutsceneImage;
         public DialogueSequence Cutscene => cutscene;
         public DialogueSequence AfterCutsceneTalk => afterCutsceneTalk;
+        public IReadOnlyList<FlashbackScene> Flashbacks => flashbacks;
+        public DialogueSequence AfterFlashbackTalk => afterFlashbackTalk;
+        public IReadOnlyList<GuideStep> CollectionGuide => collectionGuide;
+        public string CollectionWarnQuestion => collectionWarnQuestion;
         public DialogueSequence Intro => intro;
         public IReadOnlyList<InteractableDefinition> SceneObjects => sceneObjects;
         public float PassThreshold => passThreshold;

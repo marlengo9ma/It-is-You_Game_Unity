@@ -86,6 +86,9 @@ namespace ItIsYou.Data
         [Tooltip("고를 수 없을 때 카드에 표시할 사유.")]
         [SerializeField] private string lockedReason = "아직은 아니다.";
 
+        [Tooltip("이 인물들을 먼저 심문해야 고를 수 있다. 튜토리얼: 고양이는 세피 다음 (조수 선택 — 튜토리얼 중 가이드).")]
+        [SerializeField] private List<string> unlockAfterSuspectIds = new List<string>();
+
         public string Id => id;
         public string DisplayName => string.IsNullOrEmpty(displayName) ? id : displayName;
         public SpeakerId Speaker => speaker;
@@ -118,6 +121,16 @@ namespace ItIsYou.Data
         public DialogueSequence OnIdle => onIdle;
         public bool Selectable => selectable;
         public string LockedReason => lockedReason;
+        public IReadOnlyList<string> UnlockAfterSuspectIds => unlockAfterSuspectIds;
+
+        /// <summary>먼저 심문해야 하는 사람을 다 마쳤는가.</summary>
+        public bool IsUnlockedBy(ICollection<string> interrogated)
+        {
+            if (unlockAfterSuspectIds == null) return true;
+            for (int i = 0; i < unlockAfterSuspectIds.Count; i++)
+                if (interrogated == null || !interrogated.Contains(unlockAfterSuspectIds[i])) return false;
+            return true;
+        }
 
         /// <summary>회차별 무반응 대사가 몇 벌 있는가. 다 쓰고 나면 페널티 설명 팝업의 트리거가 된다.</summary>
         public int IdleRoundCount => idleRounds != null ? idleRounds.Count : 0;

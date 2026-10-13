@@ -411,14 +411,15 @@ namespace ItIsYou.UI
 
             var speaker = _useBubble ? bubbleSpeakerLabel : BottomSpeaker;
             var direction = _useBubble ? bubbleDirectionLabel : BottomDirection;
-            if (speaker != null) speaker.text = SpeakerName(line.Speaker);
+            if (speaker != null) speaker.text = SpeakerLabelFor(line);
             if (!_useBubble && _cinematic)
             {
-                var named = !string.IsNullOrEmpty(SpeakerName(line.Speaker));
-                if (cinematicRoleLabel != null) cinematicRoleLabel.text = named ? "_ " + SpeakerRole(line.Speaker) : string.Empty;
+                var named = !string.IsNullOrEmpty(SpeakerLabelFor(line));
+                var role = line.HasSpeakerNameOverride ? string.Empty : SpeakerRole(line.Speaker);
+                if (cinematicRoleLabel != null) cinematicRoleLabel.text = named && !string.IsNullOrEmpty(role) ? "_ " + role : string.Empty;
                 if (cinematicStroke != null)
                 {
-                    cinematicStroke.color = SpeakerColor(line.Speaker);
+                    cinematicStroke.color = line.HasSpeakerNameOverride ? narrationColor : SpeakerColor(line.Speaker);
                     cinematicStroke.gameObject.SetActive(named);
                 }
             }
@@ -711,6 +712,10 @@ namespace ItIsYou.UI
 
         /// <summary>대사 로그가 같은 표기를 쓰도록 화자 이름을 열어 둔다.</summary>
         public string SpeakerLabelFor(SpeakerId speaker) => SpeakerName(speaker);
+
+        /// <summary>줄에 화자 이름이 직접 적혀 있으면 그것을, 아니면 화자 종류의 이름.</summary>
+        public string SpeakerLabelFor(DialogueLine line)
+            => line == null ? string.Empty : line.HasSpeakerNameOverride ? line.SpeakerNameOverride : SpeakerName(line.Speaker);
 
         private string SpeakerName(SpeakerId speaker) => speaker switch
         {

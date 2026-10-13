@@ -238,7 +238,18 @@ namespace ItIsYou.Interrogation
             => (!string.IsNullOrEmpty(choiceId) && _choiceUseCount.TryGetValue(choiceId, out var n)) ? n : 0;
 
         /// <summary>이 이름표의 &lt;시간 경과&gt; 대사가 실제로 나왔는가.</summary>
-        public bool IdleSeen(string key) => !string.IsNullOrEmpty(key) && _seenIdleKeys.Contains(key);
+        public bool IdleSeen(string key) => !string.IsNullOrEmpty(key) && (_seenIdleKeys.Contains(key) || ClueFlag(key));
+
+        /// <summary>
+        /// 회차 조건에 단서도 쓸 수 있게 한다 — "HAS:단서id" 는 그 단서를 얻었는가, "PROMOTED:단서id" 는 단서로 정리했는가.
+        /// 예: 고양이 B선택지 2회 연속 -A "(앞서 &lt;단서_고양이 밑에 깔린 무언가&gt;를 획득 했을 시)".
+        /// </summary>
+        private bool ClueFlag(string key)
+        {
+            if (key.StartsWith("HAS:", StringComparison.Ordinal)) return _inventory.Has(key.Substring(4));
+            if (key.StartsWith("PROMOTED:", StringComparison.Ordinal)) return _inventory.IsPromoted(key.Substring(9));
+            return false;
+        }
 
         /// <summary>이 선택지를 지금 고르면 어떤 칸이 나올지 정하는 데 필요한 상황.</summary>
         public ChoicePassContext ContextFor(ChoiceDefinition choice)

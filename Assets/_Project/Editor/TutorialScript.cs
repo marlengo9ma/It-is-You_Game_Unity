@@ -72,13 +72,37 @@ namespace ItIsYou.EditorTools
         /// <summary>[게임플레이 배경_캐릭터 씬] — 복도를 지나 자리로 돌아가는 길.</summary>
         public static DialogueSequence AfterCutsceneTalk() => Seq("사건 이전 — 복도",
             P("…그러니까 조심 좀 하라니까."),
-            N("당신은 복도를 통해 객실 방향으로 걸어가며 앞선 사건까지 함께 했었던, " +
-              "말주변은 없지만 일에는 열정이 넘쳤던 전 보조 수사관을 생각했다."),
-            N("그는 바로 이전 사건에서 심문 도중에 도주하려던 용의자를 추적하는 도중, 마차에 치여 부상을 입게 되었다."),
-            N("본부에서는 그런 그를 대신하여, 아까의 소녀를 당신의 보조 수사관으로 배치해 주었고, " +
-              "함께 이 기차에 오르게 된 것이다."),
+            N("당신은 복도를 통해 객실 방향으로 걸어가며 앞선 사건까지 함께 했던, " +
+              "말 주변은 없지만 일에는 열정이 넘쳤던 전 보조 수사관을 생각했다."));
+
+        /// <summary>
+        /// &lt;회상씬으로 전환 E#1&gt; · &lt;E#2&gt; — 2026-10-13 노션 추가. 회상 속 인물(용의자 · 이전 조수 · 행인)은
+        /// 한 번만 나오므로 화자 종류 대신 이름을 직접 적는다.
+        /// </summary>
+        public static DialogueSequence FlashbackE1() => Seq("회상씬 E#1",
+            P("뭐, 어떻게 봐도 당신이 범인임을 모든 정황과 단서들이 말해주는 듯 하군요."),
+            Who("용의자", SpeakerId.SuspectA, "에잇, 이젠 됐습니다! 이야기도 제대로 듣지도 않고, 나라고 그러고 싶어서 그런 건 줄 알아!"),
+            P("?! 어딜 도망가는 겁니까!!"),
+            Who("이전 조수", SpeakerId.SuspectB, "…제가 가겠습니다!"),
+            Who("용의자", SpeakerId.SuspectA, "하하!! 내가 그 동안의 소매치기 짬빠가 얼마인데! 쉽게 잡혀줄 것 같아?"));
+
+        public static DialogueSequence FlashbackE2() => Seq("회상씬 E#2",
+            Who("이전 조수", SpeakerId.SuspectB, "붙잡았ㅅ..!"),
+            Who("용의자", SpeakerId.SuspectA, "으앗! 자,잠깐! 여기는 위험ㅎ…!"),
+            P("…!  조심하십시오! 그 방향은..!"),
+            N("((쾅))"),
+            Who("행인", SpeakerId.SuspectC, "꺄악! 여기 사람이 치였어요!!"),
+            N("…"),
+            N("그는 바로 이전 사건에서 심문 도중에 도주하려던 용의자를 추적하는 도중, 용의자와 함께 자동차에 치여 부상을 입게 되었다."),
+            N("불행 중 다행(?)인지 치이기 직전 붙잡았던 용의자가 대부분의 충격을 흡수해준 덕에 생명에는 큰 지장은 없는 듯 하다."),
+            N("하지만 그렇더라도 당분간은 거동에 문제가 생겼기에, 아무래도 현장 수사를 함께하기에는 무리가 있게 되었다."));
+
+        /// <summary>&lt;게임플레이 배경_캐릭터 일반 대화 씬으로 전환&gt; — 회상에서 돌아와 객실까지.</summary>
+        public static DialogueSequence AfterFlashbackTalk() => Seq("사건 이전 — 회상 뒤",
+            N("본부에서는 그런 그를 대신하여 아까의 소녀를 당신의 보조 수사관으로 배치해 주어, 함께 이 기차에 오르게 된 것이다."),
             P("아무렴, 조용히만 갔으면 좋겠군요."),
-            N("약간의 바램을 담은 혼잣말은 안타깝게도 좌석에 도착과 함께 거부 당해버렸지만 말이다."));
+            N("아까의 상황을 재차 떠올렸던 당신은 약간 질린 듯한 표정을 지으며 소리내어 혼잣말을 뱉어내었다."),
+            N("약간의 바램을 담은 혼잣말은 안타깝게도 객실에 복귀함과 함께 거부당해버렸지만 말이다."));
 
         // ================================================================ 사건 진행
 
@@ -90,16 +114,18 @@ namespace ItIsYou.EditorTools
               "만족스러운 표정으로 식빵을 굽고 있는 검은 고양이 한 마리를 마주했다."),
             A("하하… 어서 오세요, 수사관님. 금방 정리할게요. 조금만 기다려주세요!", ExpressionId.Nervous),
             C("웨옹."),
-            N("아무래도 이 난장판이 된 상황은 저 고양이의 등장과 연관이 있겠거니 싶어보였다."),
+            N("아무래도 이 난장판이 된 상황은 저 고양이의 등장과 연관이 있겠거니 싶어 보였다."),
             N("당신은 버릇처럼 미간을 문지르며, 소녀를 도와 자리를 정돈하기 시작했다."),
             I("입 밖으로도 꺼냈으면 안 되는 거였나."),
-            N("당신은 방금 전에 혼잣말로 빌었던 바램을 생각하며, 이전에 동료들과 이야기 나누었던 " +
+            N("당신은 방금 전에 혼잣말로 빌었던 바람을 생각하며, 이전에 동료들과 이야기 나누었던 " +
               "‘징크스’나 ‘플래그’와 같은 심리적 현상에 대한 이야기를 떠올렸다."),
-            N("그러는 와중, 아까 서류 뭉치와 함께 테이블에 올려놓고 갔던, -고급 만년필-이 보이지 않음을 알아차린다."),
+            N("그러는 와중, 아까 서류 뭉치와 함께 테이블에 올려놓고 갔던, -고급 만년필-이 보이지 않음을 알아차렸다."),
             N("기차에 탑승하기 전, 잠깐 사용했던 그 만년필은 수사관 임명 당시에 선물 받은 물건으로, " +
               "클래식하지만 수려한 외형과 필기감 및 코너링이 뛰어나고…(생략)"),
-            N("아무튼 고급진 외형 만큼이나 좋은 퀄리티의 만년필이기에 눈에 띌 수 밖에 없는 물건이다."),
+            N("아무튼 고급진 외형만큼이나 좋은 퀄리티의 만년필이기에 눈에 띌 수밖에 없는 물건이다."),
             N("꽤나 애용하던 만년필이기도 한 만큼, 소녀에게 행방을 물어보려 뒤쪽을 바라보는 순간,"),
+            A("흐음~~..", ExpressionId.Sly),
+            Line(SpeakerId.Cat, "그릉..", ExpressionId.Sly),
             N("당신은 수사관으로서의 ‘감’을 느꼈다."));
 
         // ================================================================ 단서 수집
@@ -133,10 +159,10 @@ namespace ItIsYou.EditorTools
                 "어디서 많이 본 듯한 형태의 일부분. 지금은 고양이의 아래에 깔려있다.\n" +
                 "<hl>아마 당신이 찾고있는 물건의 일부분 일지도 모른다.</hl>";
 
+            // 2026-10-13 〈시스템 기획〉: ">> 수집 시 나레이션" 두 줄은 NewspaperCollect 로, ">> 수집품 클릭 시" 의 기사만 여기에.
+            // 기사 제목의 꺾쇠는 TMP 가 태그로 읽지 않도록 noparse 로 감싼다.
             public const string Newspaper =
-                "기차역에서 구매했던 오늘자 신문이다. \n" +
-                "펼쳐진 신문의 페이지의 한 쪽에는 최근 대두되는 신종 범죄 사건에 관련된 이야기를 다루고 있다.\n\n" +
-                "최첨단 기술이라고 자부하던 과학 수사, 죄 없는 이에게 사형을?\n\n" +
+                "<noparse><최첨단 기술이라고 자부하던 과학 수사, 죄 없는 이에게 사형을?></noparse>\n" +
                 "최근 급진적인 산업의 발달로 인해서 우리들은 귀족 평민 할 것 없이 일상의 새로움을 느끼고 있음은 아무도 부정하지 못할 것이다. " +
                 "말 대신 돌을 넣어서 철길 위를 달리는 무쇠로 된 마차와 불안했던 어두운 골목에 불빛을 켜준 가로등 등, " +
                 "우리들은 일상생활에서 점점 편리와 편안을 보다 쉽게 느낄 수 있게 되었다. \n" +
@@ -173,7 +199,20 @@ namespace ItIsYou.EditorTools
                 "당신은 수사 본부를 통해 해당 기차의 3번 객실 티켓을 지원 받았다. ";
         }
 
-        /// <summary>오늘자 신문을 살펴본 뒤의 대사. 툴팁의 &gt;&gt; 줄.</summary>
+        /// <summary>오늘자 신문 — ">> 수집 시 나레이션".</summary>
+        public static List<DialogueLine> NewspaperCollect() => new List<DialogueLine>
+        {
+            N("기차역에서 구매했던 오늘자 신문이다."),
+            N("펼쳐진 신문의 페이지의 한 쪽에는 최근 대두되는 신종 범죄 사건에 관련된 이야기를 다루고 있다."),
+        };
+
+        /// <summary>객실 정보 — ">> 수집 시 나리에션".</summary>
+        public static List<DialogueLine> RoomInfoCollect() => new List<DialogueLine>
+        {
+            N("문의 벽면에 고급스러운 장식과 <noparse><3></noparse>이라는 숫자가 적혀있다."),
+        };
+
+        /// <summary>오늘자 신문 — "*수집품을 읽고 난 뒤, 대사 및 나레이션 재생". 열람창을 처음 닫을 때.</summary>
         public static List<DialogueLine> NewspaperInspect() => new List<DialogueLine>
         {
             I("좋게 봐주는 건 고맙지만 오히려 이런 조명 때문에 관련 시험들이 깐깐해져서 신입들이 잘 안 들어온단 말이죠."),
@@ -181,7 +220,7 @@ namespace ItIsYou.EditorTools
             N("당신은 작은 한숨을 쉬며, 신문을 덮어 해당 기사를 외면했다."),
         };
 
-        /// <summary>객실 정보를 살펴본 뒤의 대사. 툴팁의 &gt;&gt; 줄.</summary>
+        /// <summary>객실 정보 — 툴팁 뒤의 &gt;&gt; 줄. 신문과 같이 열람창을 처음 닫을 때.</summary>
         public static List<DialogueLine> RoomInfoInspect() => new List<DialogueLine>
         {
             I("하마터면 못 탈뻔 했지만 말이죠."),
@@ -222,12 +261,43 @@ namespace ItIsYou.EditorTools
             A("이거 정말 좋아요! 속기할 때 손목이 하나도 안 아파요.", ExpressionId.Smile),
         };
 
+        // ================================================================ 수집 튜토리얼
+
+        /// <summary>
+        /// 〈수집페이즈에 대한 튜토리얼 팝업〉 — 2026-10-13 노션. 문장은 원문 그대로, &lt;화면이 어두워지고 …만이 하이라이트 된다&gt;
+        /// 지시는 무엇을 밝힐지(focus)와 무엇을 해야 넘어가는지(advance)로 옮겼다.
+        /// </summary>
+        public static List<GuideStep> CollectionGuide() => new List<GuideStep>
+        {
+            Guide("COLLECT_1", GuideFocus.Dim, GuideAdvance.Button, null,
+                "이 화면은 증거 수집 화면입니다.\n" +
+                "당신은 유능한 표정행동수사관이자 심문관으로, 앞으로 진행할 심문을 확실하고 보다 용이하게 하기 위해 현장의 여러 단서들을 수집해야 합니다."),
+            // <화면이 어두워지고 테이블 위의 리본만이 하이라이트 된다.>
+            Guide("COLLECT_2", GuideFocus.SceneObject, GuideAdvance.ObjectCollected, "OBJ_RIBBON",
+                "우선 저 물건이 수상해 보이는 군요.\n" +
+                "좌측 화면에서 수상한 물건을 좌클릭해서 수집하거나 기록할 수 있습니다."),
+            // <화면이 다시 어두워지고 우측에 수집된 수집품만이 하이라이트 된다.>
+            Guide("COLLECT_3", GuideFocus.TraySlot, GuideAdvance.TooltipOpened, "CLUE_RIBBON",
+                "기록하거나 수집한 수집품/기록은 이처럼 우측 ‘수집 인벤토리’ 내에 정리됩니다.\n" +
+                "방금 수집한 ‘리본’수집품을 클릭하여 세부적인 내용을 확인해 보세요."),
+            // <수집품을 재차 좌클릭 시, 수집품에 대한 툴팁이 뜨며 화면이 다시 어두워진다.>
+            Guide("COLLECT_4", GuideFocus.TooltipWindow, GuideAdvance.Button, "CLUE_RIBBON",
+                "수집한 기록/수집품들 중, 추후 심문에 ‘단서’로 활용할 수 있는 경우도 존재합니다."),
+            // <증거 수집이 가능한 강조된 텍스트 박스만 하이라이트 된다.>
+            Guide("COLLECT_5", GuideFocus.TooltipHighlight, GuideAdvance.Promoted, "CLUE_RIBBON",
+                "이 경우에는 세부 툴팁 내에서 강조된 텍스트를 찾아 좌클릭함으로써, 단순 수집품/기록이 아닌, 이후 심문에서 활용할 수 있는 ’단서‘로 갱신시킬 수 있습니다."),
+            // <강조 텍스트 박스 좌클릭 시 … 추가 팝업 창으로 예시 이미지와 설명이 뜬다.>
+            Guide("COLLECT_6", GuideFocus.Dim, GuideAdvance.Button, null,
+                "’단서‘로 갱신된 수집품/기록들은 수집 인벤토리 내에서 표시가 되며, 상단에 우선 정렬됩니다.\n" +
+                "추가로 일반 수집품/기록들도 세부 툴팁을 확인하면 단순화되어 있던 이름이 갱신되거나, 알 수 없었던 이후 단서나 심문 등에 도움을 주는 힌트 등도 얻을 수 있습니다."),
+        };
+
         // ================================================================ 용의자 선택
 
         /// <summary>단서 수집이 끝나고, 두 사람을 자리에 앉히기까지.</summary>
         public static DialogueSequence BeforeSuspectSelect() => Seq("두 용의자를 자리에 앉히다",
-            N("당신은 대부분 정돈이 되었으나, 어딘가 어색하게 주변을 정돈하고 있던 조수를 나즈막히 불러 " +
-              "멈추게 하고 고양이가 엎드려있는 테이블 자리에 앉아 소녀를 부른다."),
+            N("당신은 대부분 정돈이 되었음에도 어딘가 어색하게 주변을 정돈하고 있던 조수를 나즈막히 불러 " +
+              "멈추게 하고 고양이가 엎드려 있는 테이블 자리에 앉아 소녀를 부른다."),
             P("보조 수사관? 잠시 이리로 와 앉아보도록."),
             A("..네? 저, 저요?", ExpressionId.Surprised),
             N("그런 분위기 탓일까? 늘어지게 하품만 하던 검은 고양이가 스윽하고 당신의 눈치를 보더니, " +
@@ -650,7 +720,7 @@ namespace ItIsYou.EditorTools
         /// </summary>
         public static DialogueSequence SepiEnding() => Seq("세피 심문 마무리",
             P("일단 알았습니다. 그리고 잠시만 기다려보시죠. 아직 이야기를 나눠야 될 분이 남아계시니."),
-            A("이야기요…? 설마 이 고양이요?!", ExpressionId.Surprised, "(개그 컷씬?)"));
+            A("이야기요…? 설마 이 고양이요?!", ExpressionId.Surprised));
 
         /// <summary>[신뢰도 하락으로 인한 ‘세피‘ 심문 강제 종료 시].</summary>
         public static DialogueSequence SepiTrustBroken() => Seq("세피 심문 강제 종료 — 신뢰도 하락",
@@ -658,6 +728,200 @@ namespace ItIsYou.EditorTools
             P("뭐, 일단 알았습니다. 그래도 잠시만 기다려보시죠."),
             P("아직 이야기를 나눠야 될 분이 남아계시니."),
             A("아,네… 설마 이 고양이요…?", ExpressionId.Sad));
+
+        // ================================================================ 고양이 심문
+        // 2026-10-13 노션 신규. 세피 심문과 같은 틀 — 회차마다 다른 말, 친근↔강압 교차 2단계(2번째는 신뢰 상실로 강제 종료),
+        // B선택지 4회 연속도 강제 종료. 고양이의 대사 속 괄호 묘사는 지문 칸으로 옮겼다(“…뮥.(꼬리를 좌우로 …)” → 대사 “…뮥.” + 지문).
+
+        /// <summary>&lt;용의자 ‘고양이’ 심문 시작&gt; — 첫 마디.</summary>
+        public static DialogueSequence CatOpening() => Seq("고양이 심문 시작",
+            K("뭬에옹", "(무언가 마음에 들지 않는 듯 하다.)", ExpressionId.Angry));
+
+        /// <summary>&lt;시간 경과*n회차&gt;. 3회차 뒤 [이전, 해당 팝업이 뜨지 않았을 경우에만] 신뢰도 경고 팝업.</summary>
+        public static List<DialogueSequence> CatIdleRounds() => new List<DialogueSequence>
+        {
+            Seq("고양이 시간 경과 1회차", K("", "(꼬리를 몸쪽으로 말며 당신의 기분을 살핀다)", ExpressionId.Nervous)),
+            Seq("고양이 시간 경과 2회차", CatGrumble()),
+            Seq("고양이 시간 경과 3회차", K("…므응", "(테이블에 꼬리를 탁탁치며 짜증을 토로하는 듯하다.)", ExpressionId.Angry, StageAnimation.Fume)),
+        };
+
+        private static DialogueLine CatGrumble() => K("…뮥.", "(꼬리를 좌우로 흔들며 불만을 표하는 듯하다.)", ExpressionId.Sly);
+        private static DialogueSequence CatIdleGrumble() => Seq("고양이 — 시간 경과", CatGrumble());
+
+        private const string SlamDirection = "(왼쪽 하단 손이 책상을 내려친다.-효과음 ‘쾅‘)";
+        private const string PetDirection = "*쓰다듬으며*";
+
+        // ------------------------------------------------------------ A선택지 — 감성적으로 경계를 낮추며 진행
+
+        public const string CatALabel = "쓰다듬는다.";
+        private const string CatAAfterB1 = "후우… 미안합니다. 제가 침착하지 못했군요.";
+        private const string CatAAfterB2 = "내가 매우 아끼는 물건이라서 그러니, 행방을 꼭 알려주었음 합니다.";
+        private const string CatASecondCross = "후우, 미안합니다… 겁을 준 모양이군요.";
+
+        public static List<ChoicePass> CatARounds() => new List<ChoicePass>
+        {
+            Round(CatALabel, Seq("고양이 A 초회 — 쓰다듬는다",
+                Line(SpeakerId.Protagonist, "내가 매우 아끼는 만년필이라. 그러니 행방을 꼭 알려주었음 합니다.", ExpressionId.Neutral, PetDirection),
+                K("그르릉…", "(그저 쓰다듬음에 기분이 좋아진 듯 그르릉거리는 모습)", ExpressionId.Smile),
+                P("음, 그렇군요."),
+                A("…혹시 조사관님은 고양이들의 언어도 알아들으시는 건가요…?", ExpressionId.Surprised),
+                I("음, 귀엽군")), CatIdleGrumble()),
+            Round("음…그래서 알겠습니까?", Seq("고양이 A 2회",
+                P("음…그래서 알겠습니까?"),
+                K("먁?", "(고개를 갸웃거리며 꼬리를 흔든다.)", ExpressionId.Thinking),
+                P("흐음…그렇군요, 우선 알겠습니다."),
+                A("…?", ExpressionId.Thinking),
+                I("뭔가 반응은 있는 듯 한데..."))),
+            Round("혹, 이 정도 크기의 만년필에 대해서…정말 모릅니까?", Seq("고양이 A 3회",
+                P("혹, 이 정도 크기의 만년필에 대해서…정말 모릅니까?"),
+                K("웨옹…", "(시선을 피하며 앉아 있는 자세로 몸을 꼼지락 거린다.)", ExpressionId.Nervous, StageAnimation.LookAway),
+                I("음? 뭔가 확실한 반응이 있군. 똑똑한 아이로 보이니 비슷한 거라도 본 적이 있는게 분명해."))),
+            Round("…야옹.", Seq("고양이 A 4회",
+                P("…야옹."),
+                K("…! 야옹!", "(놀랐다는 듯 동공이 수축되며 꼬리가 세워진다.)", ExpressionId.Surprised, StageAnimation.Startle),
+                A("…풉.. 아, 죄송해요. 의외의 모습이라…", ExpressionId.Smile),
+                P("크흠…"))),
+            Round("…먀,아옹.", Seq("고양이 A 5회",
+                P("…먀,아옹."),
+                K("그르릉~", "(웃으며 꼬리가 세워진다.)", ExpressionId.Smile))),
+            Round("하아…이게 무슨 짓인지.", Seq("고양이 A 6회",
+                Line(SpeakerId.Protagonist, "하아…이게 무슨 짓인지.", ExpressionId.Neutral, PetDirection),
+                K("므응?", null, ExpressionId.Thinking),
+                A("하하…", ExpressionId.Nervous))),
+            // "B선택지 이후, 선택 시" — 이후 위와 동일(<시간 경과> 도 초회의 것).
+            Alternation(1, CatAAfterB1 + " " + CatAAfterB2, Seq("고양이 A (B 이후, 1번째 교차)",
+                P(CatAAfterB1),
+                Line(SpeakerId.Protagonist, CatAAfterB2, ExpressionId.Neutral, PetDirection),
+                K("", "(마치 무슨 말을 하느냐는 듯 귀를 쫑긋 거리는 모습)", ExpressionId.Thinking),
+                P("…음, 그렇군요."),
+                A("…혹시 조사관님은 고양이들의 언어도 알아들으시는 건가요…?", ExpressionId.Surprised),
+                I("음.")), CatIdleGrumble()),
+            // "A선택지 > B선택지 이후, A선택지 재 선택 시" — [신뢰도 하락으로 인한 ‘검은 고양이‘ 심문 강제 종료]
+            Alternation(2, CatASecondCross, Seq("고양이 A (A>B 이후, 2번째 교차) — 신뢰를 잃는다",
+                P(CatASecondCross),
+                K("마, 먀옹~", "(당신에게서 겁을 먹은 듯, 식은 땀을 흘리고 눈치 보듯 딴짓을 하며)", ExpressionId.Fearful, StageAnimation.Tremble),
+                P("…제 사과를 받아주시겠습니까?"),
+                K("므응…", "(당신의 태도의 변화에 당황스러워하며 아예 눈을 피한다.)", ExpressionId.Fearful, StageAnimation.LookAway),
+                A("…수사관님, 고양이가 겁을 먹었나봐요.", ExpressionId.Nervous),
+                I("잘못된 접근이였나…"),
+                I("…역시 고양이에게 미움받는건 싫군..."),
+                I("고양이도 겁을 먹어버린 모양이고… 더 이상 심문을 이어가긴 어렵겠어.")), breaksTrust: true),
+        };
+
+        // ------------------------------------------------------------ B선택지 — 강압적으로 공격하듯 진행
+        // 2회 연속은 <단서_고양이 밑에 깔린 무언가> 를 얻었는지에 따라 -A(획득) / -B(미획득).
+
+        public const string CatBLabel = "책상을 내려치며 째려본다.";
+        private const string CatBSecondCross1 = "이렇게 물어본다고 제가 좋은 사람으로 보입니까?";
+        private const string CatBSecondCross2 = "어서 빨리 뭐라도 이야기하는 게 좋을 겁니다?";
+
+        public static List<ChoicePass> CatBRounds() => new List<ChoicePass>
+        {
+            Round(CatBLabel, Seq("고양이 B 초회 — 책상을 내려치며 째려본다",
+                Line(SpeakerId.Protagonist, "", ExpressionId.Neutral, SlamDirection),
+                K("므으응…", "(당신의 갑작스러운 행동에 놀란 듯 하다가 곧 반항하듯이 눈을 째려보며 꼬리를 탁탁 치며 찡그린다.)", ExpressionId.Angry, StageAnimation.Glare),
+                A("ㅅ,수사관님? 이야기를 해 보신다지 않으셨어요?", ExpressionId.Flustered)), CatIdleGrumble()),
+            // 2회 연속 -B (앞서 <단서_고양이 밑에 깔린 무언가>를 미획득 했을 시) — 기본 칸
+            Round("뭐, 어쩌자는 거죠?", Seq("고양이 B 2회 연속 -B (단서 미획득)",
+                P("뭐, 어쩌자는 거죠? 제가 뭘 찾고 있는지는 알텐데요?"),
+                K("햐아악.", "(당신의 날카로운 태도가 마음에 안 드는 듯, 하악질한다.)", ExpressionId.Angry, StageAnimation.Fume),
+                A("저… 수사관님? 상대가 고양이인건 알고 계신거죠?", ExpressionId.Nervous),
+                K("", "(꼼지락 거리더니 고개를 획 돌려버린다.)", ExpressionId.Sly, StageAnimation.LookAway))),
+            Round("알아 듣고 있는 거,", Seq("고양이 B 3회 연속",
+                P("알아 듣고 있는 거, 다 알고 있습니다!"),
+                K("…므응?", "(찡그린 표정으로 갸웃거린다)", ExpressionId.Thinking),
+                A("…정말요?", ExpressionId.Flustered))),
+            Round("하아…됐습니다.", Seq("고양이 B 4회 연속 — 신뢰를 잃는다",
+                P("하아…됐습니다."),
+                P("베라씨, 고양이를 데리고 직원한테 맡겨두고 오시죠."),
+                K("캬아악. 크르릉…", "(당신의 말에 하악질을 하고 털이 스며 적의를 들어내고 꼬리펑)", ExpressionId.Angry, StageAnimation.Fume),
+                A("…? 혹시 저 이야기 하시는 건가요?", ExpressionId.Flustered),
+                P("…여기 제가 부를 사람이 누가 있죠?"),
+                A("아, 제 이름은 세피라서요…", ExpressionId.Sad),
+                P("…"),
+                K("…웨옹.", "(됐다는 듯, 한숨을 쉬고 고개를 돌린다.)", ExpressionId.Exhausted, StageAnimation.Sigh),
+                A("하하…지금은 잘못건들면 상처를 입을 것 같으니…조금 뒤에 직원을 불러볼게요.", ExpressionId.Nervous),
+                I("…더 이상 이야기하다가는 이상한 눈초리를 받겠군."),
+                I("고양이도 흥미를 잃어버린 모양이고. 더 이상 심문을 이어가긴 어렵겠어.")), breaksTrust: true),
+            // 2회 연속 -A (앞서 <단서_고양이 밑에 깔린 무언가>를 획득 했을 시) — 단서가 있으면 2회차를 대신한다.
+            Variant(1, "그 밑에 깔려있는 거,", Seq("고양이 B 2회 연속 -A (단서 획득)",
+                P("그 밑에 깔려있는 거, 제가 찾고 있는 것 같은데. 아직도 엉덩이가 무겁군요?"),
+                K("햐아악.", "(당신의 날카로운 태도가 마음에 안 드는 듯, 하악질한다.)", ExpressionId.Angry, StageAnimation.Fume),
+                P("뭐, 어쩌자는 거죠?"),
+                K("", "(꼼지락 거리더니 고개를 획 돌려버린다.)", ExpressionId.Sly, StageAnimation.LookAway)),
+                requiresSeenIdleKey: "HAS:CLUE_GLIMPSE"),
+            // "A선택지 이후 선택 시" — 이후 위와 동일.
+            Alternation(1, CatBLabel, Seq("고양이 B (A 이후, 1번째 교차)",
+                Line(SpeakerId.Protagonist, "", ExpressionId.Neutral, SlamDirection),
+                K("에옹…", "(당신의 갑작스러운 행동에 놀란 듯 하다가 겁을 먹은 듯 울먹인다.)", ExpressionId.Fearful, StageAnimation.Shrink),
+                A("ㅅ,수사관님?, 아무리 그래도…", ExpressionId.Flustered),
+                I("겁을 먹으면 놀라서 도망갈 만도 한데… 계속 저 자리를 고수하는 군.")), CatIdleGrumble()),
+            // "B선택지 > A선택지 이후, B 선택지 재 선택 시" — [신뢰도 하락으로 인한 ‘검은 고양이‘ 심문 강제 종료]
+            Alternation(2, CatBSecondCross1 + " " + CatBSecondCross2, Seq("고양이 B (B>A 이후, 2번째 교차) — 신뢰를 잃는다",
+                P(CatBSecondCross1),
+                P(CatBSecondCross2),
+                K(",,,먀악", "(당신의 행동에, 한 숨을 쉬며 고개를 옆으로 휙 돌려버리며)", ExpressionId.Sly, StageAnimation.LookAway),
+                A("수사관님…? 고양이는 말을 못해요…", ExpressionId.Nervous),
+                P("…"),
+                I("…더 이상 이야기하다가는 이상한 눈초리를 받겠군."),
+                I("고양이도 흥미를 잃어버린 모양이고. 더 이상 심문을 이어가긴 어렵겠어.")), breaksTrust: true),
+        };
+
+        // ------------------------------------------------------------ C선택지 — 단서에 대해서(쏟아진 커피 잔)
+
+        public const string CatCLabel = "제대로 마셔보지도 못했는데, 아쉽군요.";
+
+        public static List<ChoicePass> CatCRounds() => new List<ChoicePass>
+        {
+            Round(CatCLabel, Seq("고양이 C 초회",
+                P(CatCLabel),
+                K("먀,먁…", "(당신의 눈치를 보듯 눈을 피하며)", ExpressionId.Nervous, StageAnimation.LookAway),
+                P("…뭐 됐습니다. 이건 당신이 들어오면서 그런거죠?"),
+                K("야,야옹…야옹…", "(딴청하는 듯 울어대며)", ExpressionId.Nervous),
+                P("깨지거나 누가 다치진 않았으니 다행입니다."),
+                I("일단 커피잔을 가르킬 때마다 시선을 피하는 것이 이 고양이가 쓰러뜨린 범인인 건 맞나보군."),
+                I("하지만 그렇다고 만년필의 행방을 알고 있다고는 생각하기 어려워."))),
+            // 원문의 화자는 '조수' 로 적혀 있으나 대사가 고양이 울음이라 고양이로 두었다 (보고서 참고).
+            Round("그래도 아쉽네요. 이 커피, 나름 비싸보였는데 말이죠.", Seq("고양이 C 2회",
+                P("그래도 아쉽네요. 이 커피, 나름 비싸보였는데 말이죠."),
+                K("먀,먀옹…", "(미안한 듯 눈치를 보며)", ExpressionId.Nervous))),
+            Round("야옹…", Seq("고양이 C 3회",
+                P("야옹…"),
+                K("…야옹…?", "(고개를 갸웃기울이며)", ExpressionId.Thinking))),
+            Round("…야옹", Seq("고양이 C 4회",
+                P("…야옹"),
+                K("그르릉…?", "(귀를 쫑긋, 주인공을 바라보며)", ExpressionId.Thinking))),
+            Round("먀,야옹…", Seq("고양이 C 5회",
+                P("먀,야옹…"),
+                K("…! 야옹!", "(놀랐다는 듯 동공이 수축되며 꼬리가 세워진다.)", ExpressionId.Surprised, StageAnimation.Startle),
+                A("…풉.. 아, 죄송해요. 의외의 모습이라…", ExpressionId.Smile),
+                P("크흠…"))),
+            Round("하아…이게 무슨 짓인지.", Seq("고양이 C 6회",
+                Line(SpeakerId.Protagonist, "하아…이게 무슨 짓인지.", ExpressionId.Neutral, PetDirection),
+                K("므응?", null, ExpressionId.Thinking),
+                A("하하…", ExpressionId.Nervous))),
+        };
+
+        /// <summary>심문 오브젝트 — 세피. (1회 선택 시 재선택 불가)</summary>
+        public static List<DialogueLine> InterrogationObjectSepi() => new List<DialogueLine>
+        {
+            P("그나저나 이 아이는 왜 계속 여기에 앉아있는거죠?"),
+            A("글쎄요… 이 기차에서 키우는 걸까요?", ExpressionId.Thinking),
+            P("음, 나중에 직원이 오면 한 번 물어보죠."),
+            K("…(하품)", "(하품하며)", ExpressionId.Exhausted),
+        };
+
+        /// <summary>[타임 토큰을 전부 소모하거나, 심문 종료 버튼을 통해 정상적인 심문 종료 시] — 고양이.</summary>
+        public static DialogueSequence CatEnding() => Seq("고양이 심문 마무리",
+            P("음, 이젠 알았습니다. 그리고 이제 정리를 한 번 해보죠. 누가 범인인지에 대해서."),
+            A("어? 범인이요…?", ExpressionId.Surprised));
+
+        /// <summary>[신뢰도 하락으로 인한 ‘검은 고양이‘ 심문 강제 종료 시].</summary>
+        public static DialogueSequence CatTrustBroken() => Seq("고양이 심문 강제 종료 — 신뢰도 하락",
+            P("아무래도 이야기를 더 나누기에는 무리가 있는 듯 하군요."),
+            A("어…아무래도 그렇죠?", ExpressionId.Nervous),
+            P("이제 정리를 한 번 해볼까요."),
+            A("아,네…", ExpressionId.Nervous));
 
         // ================================================================ [임시] 단서 조합 · 2차 심문
         // 노션에 단서 조합의 대사와 2차 심문 스크립트는 없다. 아래는 2026-09-23 기획(가설 조합 · 잉크 · 2차 심문 공용 토큰 ·
@@ -953,7 +1217,7 @@ namespace ItIsYou.EditorTools
                 "’추궁하거나 강압적으로 압박하며 심문하는 <강압 선택지>‘가 생성됩니다. \n\n" +
                 ">>앞서 [단서 수집 페이즈]에서 수집한 특정 단서의 유무에 따라서도 선택지가 추가되거나, 기본 메인 선택지의 텍스트가 변경될 수 있습니다.",
                 ">>특정한 대화 혹은 심문의 진행 및 시간의 흐름(타임 토큰의 잔여량) 등, 특정 트리거에 따라서 화면 좌측에 선택지에 별도의 선택지가 추가로 생성되기도 합니다. \n\n" +
-                ">> 기본적으로 주어지는 선택지와, 특정 트리거 및 진행에 따라 추가/변경되는 선택지를 포함하여, 용의자마다 최소 2가지에서 최대 5가지의 선택지가 생성/변경될 수 있습니다."),
+                ">> 기본적으로 주어지는 선택지와, 특정 트리거 및 진행에 따라 추가/변경되는 선택지를 포함하여, 용의자마다 최소 2가지 이상의 선택지가 생성/변경될 수 있습니다."),
 
             Popup("POPUP_2", "1차 심문 페이즈 — 튜토리얼 2", TutorialPopupTrigger.BeforeFirstCollectableLine,
                 "메인 선택지 선택 및 심문 오브젝트 선택 시, 해당 선택지 혹은 오브젝트에 대한 반응이 용의자에게서 나타나며, 주인공과 용의자 간의 심문 및 대화가 진행됩니다.\n\n" +
@@ -1018,6 +1282,18 @@ namespace ItIsYou.EditorTools
         private static DialogueLine P(string text) => Line(SpeakerId.Protagonist, text);
         private static DialogueLine I(string text) => Line(SpeakerId.Inner, text);
         private static DialogueLine C(string text) => Line(SpeakerId.Cat, text);
+
+        /// <summary>고양이 줄 — 대사 + 지문(원문 괄호) + 표정 + 연출.</summary>
+        private static DialogueLine K(string text, string direction = null, ExpressionId expression = ExpressionId.Neutral, string animation = null)
+            => Line(SpeakerId.Cat, text, expression, direction, animation);
+
+        /// <summary>한 번만 나오는 인물의 줄 — 화자 이름을 직접 적는다.</summary>
+        private static DialogueLine Who(string name, SpeakerId speaker, string text)
+        {
+            var line = Line(speaker, text);
+            line.Set("speakerName", name);
+            return line;
+        }
 
         private static DialogueLine A(string text, ExpressionId expression = ExpressionId.Neutral,
             string direction = null, string animation = null)
@@ -1091,6 +1367,13 @@ namespace ItIsYou.EditorTools
             seq.Set("note", note)
                .Set("lines", new List<DialogueLine>(lines));
             return seq;
+        }
+
+        private static GuideStep Guide(string id, GuideFocus focus, GuideAdvance advance, string targetId, string text)
+        {
+            var step = new GuideStep();
+            step.Set("id", id).Set("text", text).Set("focus", focus).Set("advance", advance).Set("targetId", targetId ?? string.Empty);
+            return step;
         }
 
         private static TutorialPopupDefinition Popup(string id, string title, TutorialPopupTrigger trigger,

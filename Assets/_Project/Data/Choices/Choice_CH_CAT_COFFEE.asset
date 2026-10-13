@@ -1,0 +1,450 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c134848bc83fa43a150ff7e4e0fbbd, type: 3}
+  m_Name: Choice_CH_CAT_COFFEE
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.ChoiceDefinition
+  id: CH_CAT_COFFEE
+  tone: 2
+  label: "\uC81C\uB300\uB85C \uB9C8\uC154\uBCF4\uC9C0\uB3C4 \uBABB\uD588\uB294\uB370,
+    \uC544\uC27D\uAD70\uC694."
+  labelWhenInformed: 
+  labelSwapClueIds: []
+  availableFromStart: 1
+  requiredClueIds:
+  - CLUE_COFFEE
+  requiredPromotedClueIds:
+  - CLUE_COFFEE
+  requiredChoiceIds: []
+  appearsWhenTokensAtOrBelow: 0
+  showLockedPlaceholder: 0
+  lockedLabel: ???
+  passes:
+  - note: "\uACE0\uC591\uC774 C \uCD08\uD68C"
+    labelOverride: "\uC81C\uB300\uB85C \uB9C8\uC154\uBCF4\uC9C0\uB3C4 \uBABB\uD588\uB294\uB370,
+      \uC544\uC27D\uAD70\uC694."
+    sequence:
+      note: "\uACE0\uC591\uC774 C \uCD08\uD68C"
+      lines:
+      - speaker: 1
+        speakerName: 
+        text: "\uC81C\uB300\uB85C \uB9C8\uC154\uBCF4\uC9C0\uB3C4 \uBABB\uD588\uB294\uB370,
+          \uC544\uC27D\uAD70\uC694."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 4
+        speakerName: 
+        text: "\uBA00,\uBA01\u2026"
+        expression: 2
+        stageDirection: "(\uB2F9\uC2E0\uC758 \uB208\uCE58\uB97C \uBCF4\uB4EF \uB208\uC744
+          \uD53C\uD558\uBA70)"
+        animationId: lookaway
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 1
+        speakerName: 
+        text: "\u2026\uBB50 \uB410\uC2B5\uB2C8\uB2E4. \uC774\uAC74 \uB2F9\uC2E0\uC774
+          \uB4E4\uC5B4\uC624\uBA74\uC11C \uADF8\uB7F0\uAC70\uC8E0?"
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 4
+        speakerName: 
+        text: "\uC57C,\uC57C\uC639\u2026\uC57C\uC639\u2026"
+        expression: 2
+        stageDirection: "(\uB534\uCCAD\uD558\uB294 \uB4EF \uC6B8\uC5B4\uB300\uBA70)"
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 1
+        speakerName: 
+        text: "\uAE68\uC9C0\uAC70\uB098 \uB204\uAC00 \uB2E4\uCE58\uC9C4 \uC54A\uC558\uC73C\uB2C8
+          \uB2E4\uD589\uC785\uB2C8\uB2E4."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 2
+        speakerName: 
+        text: "\uC77C\uB2E8 \uCEE4\uD53C\uC794\uC744 \uAC00\uB974\uD0AC \uB54C\uB9C8\uB2E4
+          \uC2DC\uC120\uC744 \uD53C\uD558\uB294 \uAC83\uC774 \uC774 \uACE0\uC591\uC774\uAC00
+          \uC4F0\uB7EC\uB728\uB9B0 \uBC94\uC778\uC778 \uAC74 \uB9DE\uB098\uBCF4\uAD70."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 2
+        speakerName: 
+        text: "\uD558\uC9C0\uB9CC \uADF8\uB807\uB2E4\uACE0 \uB9CC\uB144\uD544\uC758
+          \uD589\uBC29\uC744 \uC54C\uACE0 \uC788\uB2E4\uACE0\uB294 \uC0DD\uAC01\uD558\uAE30
+          \uC5B4\uB824\uC6CC."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUp:
+      note: 
+      lines: []
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUpKey: 
+    animationId: 
+    breaksTrust: 0
+    onAlternation: 0
+    variantOfRound: -1
+    requiresPriorChoiceIds: []
+    blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
+  - note: "\uACE0\uC591\uC774 C 2\uD68C"
+    labelOverride: "\uADF8\uB798\uB3C4 \uC544\uC27D\uB124\uC694. \uC774 \uCEE4\uD53C,
+      \uB098\uB984 \uBE44\uC2F8\uBCF4\uC600\uB294\uB370 \uB9D0\uC774\uC8E0."
+    sequence:
+      note: "\uACE0\uC591\uC774 C 2\uD68C"
+      lines:
+      - speaker: 1
+        speakerName: 
+        text: "\uADF8\uB798\uB3C4 \uC544\uC27D\uB124\uC694. \uC774 \uCEE4\uD53C,
+          \uB098\uB984 \uBE44\uC2F8\uBCF4\uC600\uB294\uB370 \uB9D0\uC774\uC8E0."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 4
+        speakerName: 
+        text: "\uBA00,\uBA00\uC639\u2026"
+        expression: 2
+        stageDirection: "(\uBBF8\uC548\uD55C \uB4EF \uB208\uCE58\uB97C \uBCF4\uBA70)"
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUp:
+      note: 
+      lines: []
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUpKey: 
+    animationId: 
+    breaksTrust: 0
+    onAlternation: 0
+    variantOfRound: -1
+    requiresPriorChoiceIds: []
+    blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
+  - note: "\uACE0\uC591\uC774 C 3\uD68C"
+    labelOverride: "\uC57C\uC639\u2026"
+    sequence:
+      note: "\uACE0\uC591\uC774 C 3\uD68C"
+      lines:
+      - speaker: 1
+        speakerName: 
+        text: "\uC57C\uC639\u2026"
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 4
+        speakerName: 
+        text: "\u2026\uC57C\uC639\u2026?"
+        expression: 8
+        stageDirection: "(\uACE0\uAC1C\uB97C \uAC38\uC6C3\uAE30\uC6B8\uC774\uBA70)"
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUp:
+      note: 
+      lines: []
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUpKey: 
+    animationId: 
+    breaksTrust: 0
+    onAlternation: 0
+    variantOfRound: -1
+    requiresPriorChoiceIds: []
+    blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
+  - note: "\uACE0\uC591\uC774 C 4\uD68C"
+    labelOverride: "\u2026\uC57C\uC639"
+    sequence:
+      note: "\uACE0\uC591\uC774 C 4\uD68C"
+      lines:
+      - speaker: 1
+        speakerName: 
+        text: "\u2026\uC57C\uC639"
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 4
+        speakerName: 
+        text: "\uADF8\uB974\uB989\u2026?"
+        expression: 8
+        stageDirection: "(\uADC0\uB97C \uCAD1\uAE0B, \uC8FC\uC778\uACF5\uC744 \uBC14\uB77C\uBCF4\uBA70)"
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUp:
+      note: 
+      lines: []
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUpKey: 
+    animationId: 
+    breaksTrust: 0
+    onAlternation: 0
+    variantOfRound: -1
+    requiresPriorChoiceIds: []
+    blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
+  - note: "\uACE0\uC591\uC774 C 5\uD68C"
+    labelOverride: "\uBA00,\uC57C\uC639\u2026"
+    sequence:
+      note: "\uACE0\uC591\uC774 C 5\uD68C"
+      lines:
+      - speaker: 1
+        speakerName: 
+        text: "\uBA00,\uC57C\uC639\u2026"
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 4
+        speakerName: 
+        text: "\u2026! \uC57C\uC639!"
+        expression: 6
+        stageDirection: "(\uB180\uB790\uB2E4\uB294 \uB4EF \uB3D9\uACF5\uC774 \uC218\uCD95\uB418\uBA70
+          \uAF2C\uB9AC\uAC00 \uC138\uC6CC\uC9C4\uB2E4.)"
+        animationId: startle
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        speakerName: 
+        text: "\u2026\uD489.. \uC544, \uC8C4\uC1A1\uD574\uC694. \uC758\uC678\uC758
+          \uBAA8\uC2B5\uC774\uB77C\u2026"
+        expression: 1
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 1
+        speakerName: 
+        text: "\uD06C\uD760\u2026"
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUp:
+      note: 
+      lines: []
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUpKey: 
+    animationId: 
+    breaksTrust: 0
+    onAlternation: 0
+    variantOfRound: -1
+    requiresPriorChoiceIds: []
+    blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
+  - note: "\uACE0\uC591\uC774 C 6\uD68C"
+    labelOverride: "\uD558\uC544\u2026\uC774\uAC8C \uBB34\uC2A8 \uC9D3\uC778\uC9C0."
+    sequence:
+      note: "\uACE0\uC591\uC774 C 6\uD68C"
+      lines:
+      - speaker: 1
+        speakerName: 
+        text: "\uD558\uC544\u2026\uC774\uAC8C \uBB34\uC2A8 \uC9D3\uC778\uC9C0."
+        expression: 0
+        stageDirection: "*\uC4F0\uB2E4\uB4EC\uC73C\uBA70*"
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 4
+        speakerName: 
+        text: "\uBBC0\uC751?"
+        expression: 8
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      - speaker: 3
+        speakerName: 
+        text: "\uD558\uD558\u2026"
+        expression: 2
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        autoGrantClueId: 
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUp:
+      note: 
+      lines: []
+      animationId: 
+      trustDelta: 0
+      endsInterrogation: 0
+    idleFollowUpKey: 
+    animationId: 
+    breaksTrust: 0
+    onAlternation: 0
+    variantOfRound: -1
+    requiresPriorChoiceIds: []
+    blockedByChoiceIds: []
+    requiresSeenIdleKeys: []
+    blockedBySeenIdleKeys: []
+  idleFollowUp:
+    note: 
+    lines: []
+    animationId: 
+    trustDelta: 0
+    endsInterrogation: 0
+  tokenCost: 1
+  consumeOnUse: 0
+  unlocksChoiceIds: []

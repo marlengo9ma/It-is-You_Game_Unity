@@ -129,12 +129,15 @@ namespace ItIsYou.EditorTools
                 TutorialScript.CoffeeInspect().ToArray());
             var objGlimpse = Obj("OBJ_GLIMPSE", InteractableKind.Special, "고양이 아래", glimpse,
                 TutorialScript.GlimpseInspect().ToArray());
+            // 2026-10-13 〈시스템 기획〉: 신문 · 객실 정보는 "수집 시 나레이션" 을 누를 때, 툴팁 뒤의 대사는 열람창을 처음 닫을 때.
             var objNewspaper = Obj("OBJ_NEWSPAPER", InteractableKind.Ordinary, "펼쳐진 신문", newspaper,
-                TutorialScript.NewspaperInspect().ToArray());
+                TutorialScript.NewspaperCollect().ToArray());
+            objNewspaper.Set("onAfterRead", TutorialScript.NewspaperInspect());
             var objTypewriter = Obj("OBJ_TYPEWRITER", InteractableKind.Ordinary, "휴대용 타자기", typewriter,
                 TutorialScript.TypewriterInspect().ToArray());
             var objRoomInfo = Obj("OBJ_ROOMINFO", InteractableKind.Ordinary, "객실 안내", roomInfo,
-                TutorialScript.RoomInfoInspect().ToArray());
+                TutorialScript.RoomInfoCollect().ToArray());
+            objRoomInfo.Set("onAfterRead", TutorialScript.RoomInfoInspect());
 
             // ====================================================== 심문 오브젝트
             // 심문 화면의 인물·배경 요소. 아무것도 수집하지 않고 대화만 이어진다. 한 번 고르면 끝(2026-10-11 노션).
@@ -142,6 +145,9 @@ namespace ItIsYou.EditorTools
                 TutorialScript.InterrogationObjectCat().ToArray());
             var intProfile = Obj("OBJ_INT_PROFILE", InteractableKind.InterrogationObject, "보조 수사관 프로필 서류", null,
                 TutorialScript.InterrogationObjectProfile().ToArray());
+            // 고양이 심문의 심문 오브젝트 — 화면 위의 세피 (2026-10-13 노션).
+            var intSepi = Obj("OBJ_INT_SEPI", InteractableKind.InterrogationObject, "세피", null,
+                TutorialScript.InterrogationObjectSepi().ToArray());
 
             // ========================================================== 선택지
 
@@ -165,6 +171,17 @@ namespace ItIsYou.EditorTools
                 passes: cRounds,
                 requiredClueIds: Ed.L("CLUE_RIBBON"),
                 requiredPromotedClueIds: Ed.L("CLUE_RIBBON"));
+
+            // ---- 고양이 — 2026-10-13 노션 신규 ----
+            var catFriendly = Choice("CH_CAT_FRIENDLY", ChoiceTone.Friendly,
+                label: TutorialScript.CatALabel, passes: TutorialScript.CatARounds());
+            var catAggressive = Choice("CH_CAT_AGGRESSIVE", ChoiceTone.Aggressive,
+                label: TutorialScript.CatBLabel, passes: TutorialScript.CatBRounds());
+            // C — 단서에 대해서(쏟아진 커피 잔). 세피의 C(리본)처럼 커피잔을 '단서'로 정리해 두어야 나타난다.
+            var catCoffee = Choice("CH_CAT_COFFEE", ChoiceTone.Evidence,
+                label: TutorialScript.CatCLabel, passes: TutorialScript.CatCRounds(),
+                requiredClueIds: Ed.L("CLUE_COFFEE"),
+                requiredPromotedClueIds: Ed.L("CLUE_COFFEE"));
 
             // ---- [임시] 2차 심문 선택지. 노션에 2차 스크립트가 없어 짧게 지어 넣었다. 토큰은 1차의 절반. ----
             var choice2Friendly = Choice("CH_SEPI2_FRIENDLY", ChoiceTone.Friendly,
@@ -297,16 +314,32 @@ namespace ItIsYou.EditorTools
                         "(침묵이 길어지자 눈치를 본다)")));
 
             // ---- 검은 고양이 ----
-            // 기획: 튜토리얼에서는 가이드가 조수를 먼저 고르게 유도하므로,
-            // 지금은 고를 수 없게 잠가 둔다. 심문 대사는 시나리오가 확정되면 채운다.
-            // (선택지 제목만 있음 — A 쓰다듬는다 / B 부자연스러운 앞발을 치워본다 / C 단서에 대해서(발바닥 모양의 커피자국))
+            // 2026-10-13 노션 신규 스크립트. 튜토리얼 가이드가 조수를 먼저 고르게 하므로 세피 심문 뒤에 열린다.
             var cat = Ed.CreateOrLoad<SuspectDefinition>(SuspectFolder, "Suspect_Cat");
             cat.Set("id", "CAT")
                .Set("displayName", "검은 고양이")
                .Set("speaker", SpeakerId.Cat)
                .Set("profile", "기차 안을 제집처럼 돌아다니던 녀석. 사건 당시 테이블 위에 있었다.")
-               .Set("timeTokens", 4)
-               .Set("selectable", false)
+               .Set("timeTokens", 6)
+               .Set("choices", Ed.L(catFriendly, catAggressive, catCoffee))
+               .Set("interrogationObjects", Ed.L(intSepi))
+               .Set("onEnterInterrogation", TutorialScript.CatOpening())
+               .Set("idleRounds", TutorialScript.CatIdleRounds())
+               // 회차 대사가 동나면 마지막 회차(3회차) 반응을 다시 쓴다 — 원문에 없는 문장을 짓지 않는다.
+               .Set("onIdle", TutorialScript.CatIdleRounds()[2])
+               .Set("onEndInterrogation", TutorialScript.CatEnding())
+               .Set("onTokensExhausted", TutorialScript.CatEnding())
+               .Set("onTrustBroken", TutorialScript.CatTrustBroken())
+               // 경고 · 거부 대사는 원문에 없다 — 회차 대사(B 4회 연속 · 교차 2번째)가 그 자리를 맡는다.
+               .Set("aggressionWarning", new DialogueSequence())
+               .Set("refusalByFear", new DialogueSequence())
+               .Set("toneAlternationWarning", new DialogueSequence())
+               .Set("toneAlternationGameOver", new DialogueSequence())
+               .Set("objectSpamWarning", new DialogueSequence())
+               .Set("refusalByAnger", new DialogueSequence())
+               // 노션 '조수 선택 (튜토리얼 중 가이드)' — 세피를 먼저. 세피 심문이 끝나면 고를 수 있다.
+               .Set("selectable", true)
+               .Set("unlockAfterSuspectIds", Ed.L("SEPI"))
                .Set("lockedReason", "…먼저 사람부터 상대하지.");
 
             // ============================================================ 챕터
@@ -322,6 +355,11 @@ namespace ItIsYou.EditorTools
                    .Set("cutsceneName", "일러스트 컷씬#1 — 주인공 독백")
                    .Set("cutscene", TutorialScript.Cutscene())
                    .Set("afterCutsceneTalk", TutorialScript.AfterCutsceneTalk())
+                   .Set("flashbacks", Flashbacks(chapter,
+                        ("회상씬 E#1", TutorialScript.FlashbackE1()),
+                        ("회상씬 E#2", TutorialScript.FlashbackE2())))
+                   .Set("afterFlashbackTalk", TutorialScript.AfterFlashbackTalk())
+                   .Set("collectionGuide", TutorialScript.CollectionGuide())
                    .Set("intro", TutorialScript.Incident())
                    .Set("sceneObjects", Ed.L(objRibbon, objCoffee, objGlimpse,
                                              objNewspaper, objTypewriter, objRoomInfo))
@@ -332,6 +370,8 @@ namespace ItIsYou.EditorTools
                    .Set("suspectSelectTalk", TutorialScript.SuspectSelectTalk())
                    .Set("suspectSelectPrompt", "누구부터 이야기를 들어볼까.")
                    .Set("firstRoundSuspects", Ed.L(sepi, cat))
+                   // 2차 심문 스크립트([임시])는 세피 것만 있다.
+                   .Set("secondRoundSuspects", Ed.L(sepi))
                    .Set("interrogationTitleFormat", "용의자 ‘{name}’ 심문 시작")
                    .Set("tutorialPopups", TutorialScript.TutorialPopups())
                    .Set("accusationTargets", Ed.L(sepi, cat))
@@ -365,13 +405,13 @@ namespace ItIsYou.EditorTools
             db.EditorSetAll(
                 Ed.L(chapter),
                 Ed.L(ribbon, coffee, glimpse, newspaper, typewriter, roomInfo, sawIt, catFlinch, penUnderCat, sepiHidesCat, spillMoment),
-                Ed.L(choiceFriendly, choiceAggressive, choiceRibbon, choice2Friendly, choice2Aggressive, choice2Deduced, choice2Cat),
-                Ed.L(objRibbon, objCoffee, objGlimpse, objNewspaper, objTypewriter, objRoomInfo, intCat, intProfile),
+                Ed.L(choiceFriendly, choiceAggressive, choiceRibbon, catFriendly, catAggressive, catCoffee, choice2Friendly, choice2Aggressive, choice2Deduced, choice2Cat),
+                Ed.L(objRibbon, objCoffee, objGlimpse, objNewspaper, objTypewriter, objRoomInfo, intCat, intProfile, intSepi),
                 Ed.L(sepi, cat));
 
             Ed.Save(ribbon, coffee, glimpse, newspaper, typewriter, roomInfo, sawIt, catFlinch, penUnderCat, sepiHidesCat, spillMoment,
-                    objRibbon, objCoffee, objGlimpse, objNewspaper, objTypewriter, objRoomInfo, intCat, intProfile,
-                    choiceFriendly, choiceAggressive, choiceRibbon, choice2Friendly, choice2Aggressive, choice2Deduced, choice2Cat,
+                    objRibbon, objCoffee, objGlimpse, objNewspaper, objTypewriter, objRoomInfo, intCat, intProfile, intSepi,
+                    choiceFriendly, choiceAggressive, choiceRibbon, catFriendly, catAggressive, catCoffee, choice2Friendly, choice2Aggressive, choice2Deduced, choice2Cat,
                     hypPen, hypHides, hypSpill, accPenSepi, accPenCat, accHidesSepi, accHidesCat, accSpillSepi, accSpillCat, accDefault,
                     sepi, cat, chapter, db);
             AssetDatabase.Refresh();
@@ -382,6 +422,21 @@ namespace ItIsYou.EditorTools
         }
 
         // ============================================================== 헬퍼
+
+        /// <summary>회상 장면 목록. 이미 끼워 둔 그림은 같은 자리(순서)에 남긴다 — 빌더는 글자만 다시 쓴다.</summary>
+        private static List<FlashbackScene> Flashbacks(ChapterDefinition chapter, params (string name, DialogueSequence seq)[] scenes)
+        {
+            var old = chapter.Flashbacks;
+            var list = new List<FlashbackScene>();
+            for (int i = 0; i < scenes.Length; i++)
+            {
+                var fb = new FlashbackScene();
+                fb.Set("name", scenes[i].name).Set("sequence", scenes[i].seq);
+                if (old != null && i < old.Count && old[i] != null && old[i].Image != null) fb.Set("image", old[i].Image);
+                list.Add(fb);
+            }
+            return list;
+        }
 
         private static void DeleteIfExists(string path)
         {
@@ -413,7 +468,8 @@ namespace ItIsYou.EditorTools
                .Set("grantedClue", grantedClue)
                .Set("onInspect", new List<DialogueLine>(onInspect))
                // 재조사 대사는 원문에 없다. 비워 두면 이미지 팝업만 다시 뜬다.
-               .Set("onReinspect", new List<DialogueLine>());
+               .Set("onReinspect", new List<DialogueLine>())
+               .Set("onAfterRead", new List<DialogueLine>());
             return obj;
         }
 

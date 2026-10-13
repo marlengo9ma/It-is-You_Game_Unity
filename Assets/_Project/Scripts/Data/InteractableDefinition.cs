@@ -33,6 +33,9 @@ namespace ItIsYou.Data
         [Tooltip("이미 조사한 뒤 다시 클릭했을 때의 대사. 비어 있으면 이미지 팝업만 다시 뜬다.")]
         [SerializeField] private List<DialogueLine> onReinspect = new List<DialogueLine>();
 
+        [Tooltip("수집품을 열람창에서 처음 읽고 닫은 뒤 나오는 대사 — 노션 '*수집품을 읽고 난 뒤, 대사 및 나레이션 재생'. 단서 수집 페이즈에서만.")]
+        [SerializeField] private List<DialogueLine> onAfterRead = new List<DialogueLine>();
+
         [Header("수집")]
         [Tooltip("클릭하면 우측 목록에 들어가는 수집품. 일반 오브젝트도 갖는다.")]
         [SerializeField] private ClueDefinition grantedClue;
@@ -47,6 +50,7 @@ namespace ItIsYou.Data
 
         /// <summary>재조사 대사. 비어 있으면 아무 대사도 없다 — 원문에 없는 문장을 지어 넣지 않는다.</summary>
         public IReadOnlyList<DialogueLine> OnReinspect => onReinspect;
+        public IReadOnlyList<DialogueLine> OnAfterRead => onAfterRead;
 
         public ClueDefinition GrantedClue => grantedClue;
         public Sprite CloseUpImage => closeUpImage != null ? closeUpImage

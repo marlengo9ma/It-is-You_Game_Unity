@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8863fa260cf69b46b089cb7342564d5, type: 3}
+  m_Name: Obj_OBJ_INT_SEPI
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.InteractableDefinition
+  id: OBJ_INT_SEPI
+  kind: 2
+  hoverLabel: "\uC138\uD53C"
+  onInspect:
+  - speaker: 1
+    speakerName: 
+    text: "\uADF8\uB098\uC800\uB098 \uC774 \uC544\uC774\uB294 \uC65C \uACC4\uC18D
+      \uC5EC\uAE30\uC5D0 \uC549\uC544\uC788\uB294\uAC70\uC8E0?"
+    expression: 0
+    stageDirection: 
+    animationId: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  - speaker: 3
+    speakerName: 
+    text: "\uAE00\uC384\uC694\u2026 \uC774 \uAE30\uCC28\uC5D0\uC11C \uD0A4\uC6B0\uB294
+      \uAC78\uAE4C\uC694?"
+    expression: 8
+    stageDirection: 
+    animationId: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  - speaker: 1
+    speakerName: 
+    text: "\uC74C, \uB098\uC911\uC5D0 \uC9C1\uC6D0\uC774 \uC624\uBA74 \uD55C \uBC88
+      \uBB3C\uC5B4\uBCF4\uC8E0."
+    expression: 0
+    stageDirection: 
+    animationId: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  - speaker: 4
+    speakerName: 
+    text: "\u2026(\uD558\uD488)"
+    expression: 10
+    stageDirection: "(\uD558\uD488\uD558\uBA70)"
+    animationId: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  onReinspect: []
+  onAfterRead: []
+  grantedClue: {fileID: 0}
+  closeUpImage: {fileID: 0}

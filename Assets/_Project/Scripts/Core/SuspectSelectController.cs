@@ -198,6 +198,7 @@ namespace ItIsYou.Core
 
                 var done = _finished != null && _finished.Contains(suspects[i].Id);
                 if (done) cards[i].Bind(suspects[i], false, "이미 이야기를 마쳤다.");
+                else if (!suspects[i].IsUnlockedBy(_finished)) cards[i].Bind(suspects[i], false);   // 먼저 다른 사람부터 (튜토리얼: 조수 선택 가이드)
                 else cards[i].Bind(suspects[i]);
             }
         }

@@ -188,6 +188,15 @@ namespace ItIsYou.Interrogation
             return false;
         }
 
+        private bool BelongsToSuspect(InteractableObject h)
+        {
+            if (h == null || h.Definition == null || _session == null || _session.Round != 1) return false;
+            var list = _session.Suspect.InterrogationObjects;
+            if (list == null) return false;
+            for (int i = 0; i < list.Count; i++) if (list[i] == h.Definition) return true;
+            return false;
+        }
+
         /// <summary>
         /// 핫스팟의 켜짐을 지금 상태에 맞춘다. 한 번 고른 것은 다시 켜지지 않는다 — 다른 선택지처럼
         /// 여러 번 고를 수 없다(2026-10-11). 대사가 흐르는 동안에는 잠시 꺼 둔다.
@@ -202,8 +211,10 @@ namespace ItIsYou.Interrogation
                 h.SetEnabled(live);
                 // 이미 고른 것은 흐리게 남긴다. 그림이 들어오면 핫스팟 판은 투명하므로 티가 나지 않는다.
                 var used = _session != null && h.Definition != null && _session.HasInspectedObject(h.Definition.Id);
+                // 지금 상대의 심문 오브젝트가 아니면 보이지 않는다 — 세피 심문 중의 '세피' 핫스팟, 고양이 심문 중의 '고양이 엉덩이' 등.
+                var mine = BelongsToSuspect(h);
                 var g = h.GetComponent<CanvasGroup>();
-                if (g != null) g.alpha = used ? 0.45f : 1f;
+                if (g != null) g.alpha = !mine ? 0f : used ? 0.45f : 1f;
             }
             if (cursor != null) cursor.SetHoveringInteractable(false);
         }

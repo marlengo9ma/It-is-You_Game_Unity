@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using ItIsYou.Data;
 using TMPro;
@@ -60,7 +60,7 @@ namespace ItIsYou.UI
             var text = DialogueMarkup.ToPlainText(line.Text);
             if (string.IsNullOrWhiteSpace(text)) return;
 
-            var speaker = dialogue != null ? dialogue.SpeakerLabelFor(line.Speaker) : string.Empty;
+            var speaker = dialogue != null ? dialogue.SpeakerLabelFor(line) : string.Empty;
             var entry = string.IsNullOrEmpty(speaker)
                 ? text
                 : $"<color={DialogueMarkup.HighlightColor}>{speaker}</color>\n{text}";

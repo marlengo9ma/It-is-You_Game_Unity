@@ -14,6 +14,9 @@ namespace ItIsYou.Data
     {
         [SerializeField] private SpeakerId speaker = SpeakerId.Narration;
 
+        [Tooltip("화자 이름을 직접 쓴다. 비우면 화자 종류의 기본 이름. 회상 속 '용의자', '이전 조수', '행인'처럼 한 번 나오는 인물용.")]
+        [SerializeField] private string speakerName;
+
         [TextArea(2, 6)]
         [SerializeField]
         private string text;
@@ -34,6 +37,8 @@ namespace ItIsYou.Data
         [SerializeField] private string autoGrantClueId;
 
         public SpeakerId Speaker => speaker;
+        public string SpeakerNameOverride => speakerName;
+        public bool HasSpeakerNameOverride => !string.IsNullOrEmpty(speakerName);
         public string Text => text;
         public ExpressionId Expression => expression;
         public string StageDirection => stageDirection;

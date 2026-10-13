@@ -16,7 +16,24 @@ MonoBehaviour:
   kind: 0
   hoverLabel: "\uAC1D\uC2E4 \uC548\uB0B4"
   onInspect:
+  - speaker: 0
+    speakerName: 
+    text: "\uBB38\uC758 \uBCBD\uBA74\uC5D0 \uACE0\uAE09\uC2A4\uB7EC\uC6B4 \uC7A5\uC2DD\uACFC
+      <noparse><3></noparse>\uC774\uB77C\uB294 \uC22B\uC790\uAC00 \uC801\uD600\uC788\uB2E4."
+    expression: 0
+    stageDirection: 
+    animationId: 
+    reaction:
+      clueId: 
+      openDelay: 0
+      window: 2.5
+      expression: 3
+      blurredFromRecallDepth: 2
+    autoGrantClueId: 
+  onReinspect: []
+  onAfterRead:
   - speaker: 2
+    speakerName: 
     text: "\uD558\uB9C8\uD130\uBA74 \uBABB \uD0C8\uBED4 \uD588\uC9C0\uB9CC \uB9D0\uC774\uC8E0."
     expression: 0
     stageDirection: 
@@ -29,6 +46,7 @@ MonoBehaviour:
       blurredFromRecallDepth: 2
     autoGrantClueId: 
   - speaker: 0
+    speakerName: 
     text: "\uB2F9\uC2E0\uC740 \uC606\uC5D0\uC11C \uAF3C\uC9C0\uB77D \uAC70\uB9AC\uBA70
       \uC815\uB3C8\uC744 \uD558\uACE0 \uC788\uB294 \uC870\uC218\uB97C \uC7A0\uC2DC
       \uBC14\uB77C\uBD24\uB2E4\uAC00 \uC2DC\uC120\uC744 \uAC70\uB454\uB2E4."
@@ -42,6 +60,5 @@ MonoBehaviour:
       expression: 3
       blurredFromRecallDepth: 2
     autoGrantClueId: 
-  onReinspect: []
   grantedClue: {fileID: 11400000, guid: e1e7dbab5b5a15d438502454493b539b, type: 2}
   closeUpImage: {fileID: 0}

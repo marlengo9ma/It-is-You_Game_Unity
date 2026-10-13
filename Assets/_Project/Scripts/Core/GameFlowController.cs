@@ -36,6 +36,8 @@ namespace ItIsYou.Core
         [SerializeField] private DialoguePresenter dialogue;
         [Tooltip("<화면 전환> 표기가 있는 자리에서 화면을 덮었다 걷는다.")]
         [SerializeField] private ScreenFader fader;
+        [Tooltip("컷씬 화면의 그림·이름판. 회상씬(E#1, E#2)이 같은 화면을 빌려 쓴다.")]
+        [SerializeField] private CutsceneScreenView cutsceneView;
         [SerializeField] private ClueTrayView clueTray;
         [SerializeField] private CursorController cursor;
         [Tooltip("게임오버 화면. 실패한 페이즈의 시작으로 되돌아가는 버튼이 있다.")]
@@ -122,6 +124,24 @@ namespace ItIsYou.Core
                 yield return dialogue.Play(chapter.AfterCutsceneTalk);
             }
 
+            // ---- <회상씬으로 전환 E#1> <E#2> → <게임플레이 배경_캐릭터 일반 대화 씬으로 전환> ----
+            var flashbacks = chapter.Flashbacks;
+            if (flashbacks != null && flashbacks.Count > 0)
+            {
+                for (int i = 0; i < flashbacks.Count; i++)
+                {
+                    var fb = flashbacks[i];
+                    if (fb == null || fb.IsEmpty) continue;
+                    yield return TransitionWith(GamePhase.Cutscene, () => cutsceneView?.Show(fb.Name, fb.Image));
+                    yield return dialogue.Play(fb.Sequence);
+                }
+                if (chapter.AfterFlashbackTalk != null && !chapter.AfterFlashbackTalk.IsEmpty)
+                {
+                    yield return Transition(GamePhase.PreIncidentTalk);
+                    yield return dialogue.Play(chapter.AfterFlashbackTalk);
+                }
+            }
+
             // ---- <화면 전환> 사건 진행 #1 ----
             yield return Transition(GamePhase.Intro);
             if (chapter.Intro != null && !chapter.Intro.IsEmpty)
@@ -187,7 +207,7 @@ namespace ItIsYou.Core
                             var noneLeft = deductionEntered && FirstLeftToInterrogate(interrogated) == null;
 
                             suspectSelect.BeginRound(chapter, chapter.FirstRoundSuspects, interrogated, noneLeft ? string.Empty : chapter.SuspectSelectPrompt,
-                                skipTalk: talkDone, allowDeduction: deductionEntered,
+                                skipTalk: talkDone, allowDeduction: deductionEntered || interrogated.Count > 0,
                                 opening: noneLeft ? chapter.NoSuspectsLeft : null);
                             talkDone = true;
 
@@ -210,6 +230,10 @@ namespace ItIsYou.Core
                         yield return ShowGameOver(allowRetry: false, retryText: null);
                         yield break;
                     }
+
+                    // 아직 심문할 사람이 남았다면 인물 선택으로 — 노션: 세피 심문 마무리 "아직 이야기를 나눠야 될 분이 남아계시니." → 용의자 ‘고양이’ 선택.
+                    // 바로 추론으로 가고 싶으면 인물 선택의 「추론 진행하기」.
+                    if (FirstLeftToInterrogate(interrogated) != null) continue;
                 }
                 toDeduction = false;
 
@@ -255,7 +279,7 @@ namespace ItIsYou.Core
             for (int i = 0; i < list.Count; i++)
             {
                 var s = list[i];
-                if (s != null && s.Selectable && !interrogated.Contains(s.Id)) return s;
+                if (s != null && s.Selectable && !interrogated.Contains(s.Id) && s.IsUnlockedBy(interrogated)) return s;
             }
             return null;
         }
@@ -474,6 +498,18 @@ namespace ItIsYou.Core
                 return characterBindings[i].view as ICharacterView;
             }
             return null;
+        }
+
+        /// <summary>화면을 덮은 동안 before 를 실행하고 페이즈를 갈아 끼운다. 같은 페이즈로 다시 들어갈 때(회상 두 컷)도 덮었다 걷는다.</summary>
+        private IEnumerator TransitionWith(GamePhase next, Action before)
+        {
+            if (fader == null)
+            {
+                before?.Invoke();
+                SetPhase(next);
+                yield break;
+            }
+            yield return fader.Transition(() => { before?.Invoke(); SetPhase(next); });
         }
 
         /// <summary>화면을 덮은 채로 페이즈를 갈아 끼우고 다시 걷는다.</summary>

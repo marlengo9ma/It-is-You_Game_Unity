@@ -94,6 +94,15 @@ namespace ItIsYou.UI
         /// <summary>고르기 모드에서 물품·정황 칸을 눌렀다. (단서 조합 페이즈)</summary>
         public event Action<ClueDefinition> ClueSelected;
 
+        /// <summary>열람창에 이 단서를 띄웠다.</summary>
+        public event Action<ClueDefinition> ReadingOpened;
+
+        /// <summary>이 단서를 읽던 열람창을 닫았다 (유예 시간과 상관없이 닫는 순간).</summary>
+        public event Action<ClueDefinition> ReadingClosed;
+
+        /// <summary>열람창에 떠 있는 단서. 닫혀 있으면 null.</summary>
+        public ClueDefinition Reading => _tooltipOpen ? _reading : null;
+
         public bool IsTooltipOpen => _tooltipOpen;
         public bool SelectionMode => _selectionMode;
 
@@ -200,6 +209,7 @@ namespace ItIsYou.UI
                 ClueRead?.Invoke(clue);
                 RebuildSlotsOnly();
             }
+            ReadingOpened?.Invoke(clue);
         }
 
         private void RenderTooltip()
@@ -250,7 +260,9 @@ namespace ItIsYou.UI
         public void CloseTooltip()
         {
             if (tooltipRoot != null) tooltipRoot.SetActive(false);
+            var closed = _tooltipOpen ? _reading : null;
             _reading = null;
+            if (closed != null) ReadingClosed?.Invoke(closed);
 
             if (!_tooltipOpen) return;
             _tooltipOpen = false;
@@ -298,6 +310,12 @@ namespace ItIsYou.UI
                 else grid.Add(clue);
             }
 
+            // 노션: "’단서‘로 갱신된 수집품/기록들은 수집 인벤토리 내에서 표시가 되며, 상단에 우선 정렬됩니다." — 수집 순서는 지킨 채로.
+            var promotedFirst = new List<ClueDefinition>();
+            for (int i = 0; i < grid.Count; i++) if (_inventory.IsPromoted(grid[i].Id)) promotedFirst.Add(grid[i]);
+            for (int i = 0; i < grid.Count; i++) if (!_inventory.IsPromoted(grid[i].Id)) promotedFirst.Add(grid[i]);
+            grid = promotedFirst;
+
             Fill(_pool, slotPrefab, container, grid);
             if (SplitLeads) Fill(_leadPool, leadPrefab, leadsContainer, leads);
             if (splitHyps)
@@ -305,6 +323,47 @@ namespace ItIsYou.UI
                 Fill(_hypothesisPool, hypothesisPrefab, hypothesesContainer, hyps);
                 if (hypothesesEmpty != null) hypothesesEmpty.SetActive(hyps.Count == 0);
             }
+        }
+
+        // ---------------------------------------------------------------- 튜토리얼 하이라이트용 위치
+
+        /// <summary>목록에서 이 단서가 있는 칸.</summary>
+        public RectTransform SlotRectFor(string clueId)
+        {
+            foreach (var pool in new[] { _pool, _leadPool, _hypothesisPool })
+                for (int i = 0; i < pool.Count; i++)
+                    if (pool[i] != null && pool[i].gameObject.activeInHierarchy && pool[i].Clue != null && pool[i].Clue.Id == clueId)
+                        return pool[i].transform as RectTransform;
+            return null;
+        }
+
+        /// <summary>열람창의 판 (그림 + 글).</summary>
+        public RectTransform TooltipPanelRect
+            => _tooltipOpen && tooltipTitle != null ? tooltipTitle.transform.parent as RectTransform : null;
+
+        /// <summary>열람창 글 속 강조된 구절(누르면 단서로 정리되는 곳)의 세계 좌표. 없으면 null.</summary>
+        public (Vector3 min, Vector3 max)? HighlightWorldRect()
+        {
+            if (!_tooltipOpen || tooltipBody == null) return null;
+            tooltipBody.ForceMeshUpdate();
+            var info = tooltipBody.textInfo;
+            for (int l = 0; l < info.linkCount; l++)
+            {
+                var link = info.linkInfo[l];
+                if (link.GetLinkID() != DialogueMarkup.PromoteLinkId) continue;
+                var min = new Vector3(float.MaxValue, float.MaxValue);
+                var max = new Vector3(float.MinValue, float.MinValue);
+                for (int c = link.linkTextfirstCharacterIndex; c < link.linkTextfirstCharacterIndex + link.linkTextLength && c < info.characterCount; c++)
+                {
+                    var ch = info.characterInfo[c];
+                    if (!ch.isVisible) continue;
+                    min = Vector3.Min(min, ch.bottomLeft); max = Vector3.Max(max, ch.topRight);
+                }
+                if (min.x == float.MaxValue) continue;
+                var t = tooltipBody.transform;
+                return (t.TransformPoint(min), t.TransformPoint(max));
+            }
+            return null;
         }
 
         private void Fill(List<ClueSlot> pool, ClueSlot prefab, RectTransform parent, List<ClueDefinition> clues)

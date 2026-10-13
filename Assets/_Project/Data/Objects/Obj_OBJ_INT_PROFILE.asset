@@ -17,6 +17,7 @@ MonoBehaviour:
   hoverLabel: "\uBCF4\uC870 \uC218\uC0AC\uAD00 \uD504\uB85C\uD544 \uC11C\uB958"
   onInspect:
   - speaker: 1
+    speakerName: 
     text: "\uD639\uC2DC \uC5EC\uAE30\uC788\uB294 \uBCF8\uC778 \uC11C\uB958\uB97C
       \uC77D\uC5B4\uBD24\uC2B5\uB2C8\uAE4C?"
     expression: 0
@@ -30,6 +31,7 @@ MonoBehaviour:
       blurredFromRecallDepth: 2
     autoGrantClueId: 
   - speaker: 3
+    speakerName: 
     text: "\uB124,\uC870\uAE08 \uAD81\uAE08\uD574\uC11C\uC694. \uBA4B\uB300\uB85C
       \uC77D\uC5B4\uBD10\uC11C \uC8C4\uC1A1\uD574\uC694."
     expression: 1
@@ -44,6 +46,7 @@ MonoBehaviour:
       blurredFromRecallDepth: 2
     autoGrantClueId: 
   - speaker: 1
+    speakerName: 
     text: "\u2026\uAC10\uC0C1\uC740 \uC5B4\uB5A4\uC9C0 \uAD81\uAE08\uD558\uAD70\uC694?"
     expression: 0
     stageDirection: 
@@ -56,6 +59,7 @@ MonoBehaviour:
       blurredFromRecallDepth: 2
     autoGrantClueId: 
   - speaker: 3
+    speakerName: 
     text: "\uB300\uBD80\uBD84 \uC54C\uACE0 \uC788\uB294 \uB0B4\uC6A9\uC774\uC600\uB294\uB370\uC694\u2026
       \uC9C0\uAC01\uC740 \uB2E4\uC2DC \uD55C \uBC88 \uC8C4\uC1A1\uD569\uB2C8\uB2E4!"
     expression: 3
@@ -69,6 +73,7 @@ MonoBehaviour:
       blurredFromRecallDepth: 2
     autoGrantClueId: 
   - speaker: 1
+    speakerName: 
     text: "\uBB50, \uB355\uBD84\uC5D0 \uC794\uC18C\uB9AC\uD558\uB294 \uC218\uACE0\uB294
       \uB35C\uC5C8\uAD70\uC694."
     expression: 0
@@ -82,5 +87,6 @@ MonoBehaviour:
       blurredFromRecallDepth: 2
     autoGrantClueId: 
   onReinspect: []
+  onAfterRead: []
   grantedClue: {fileID: 0}
   closeUpImage: {fileID: 0}
