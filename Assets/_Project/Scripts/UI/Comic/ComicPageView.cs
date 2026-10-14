@@ -84,13 +84,17 @@ namespace ItIsYou.UI
 
                 if (needClick)
                 {
+                    // 클릭으로 나오는 컷은 누르자마자 움직인다 — 기다리는 시간(Delay)은 자동으로 이어질 때만 쓴다.
                     d.SetAdvanceHint(true);
                     d.ClearClicks();
                     while (!d.ConsumeClick() && !d.Skipping) yield return null;
                     d.SetAdvanceHint(false);
                 }
+                else
+                {
+                    yield return Wait(d, delay, skippable: true);
+                }
 
-                yield return Wait(d, delay, skippable: true);
                 yield return Animate(d, cuts);
             }
 

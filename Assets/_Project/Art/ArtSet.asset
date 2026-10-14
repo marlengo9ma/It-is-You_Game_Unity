@@ -18,12 +18,12 @@ MonoBehaviour:
     scale: 1
     flipX: 0
     preserveAspect: 0
-  preludeBackground: {fileID: 0}
+  preludeBackground: {fileID: 21300000, guid: 802ad88c3e142144e97868db46c01830, type: 3}
   preludeBackgroundPlace:
     offset: {x: 0, y: 0}
-    scale: 1
+    scale: 1.075
     flipX: 0
-    preserveAspect: 0
+    preserveAspect: 1
   stageBackground: {fileID: 0}
   stageBackgroundPlace:
     offset: {x: 0, y: 0}

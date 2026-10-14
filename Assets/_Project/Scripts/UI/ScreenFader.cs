@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace ItIsYou.UI
@@ -48,6 +48,38 @@ namespace ItIsYou.UI
             if (holdSeconds > 0f) yield return new WaitForSecondsRealtime(holdSeconds);
             between?.Invoke();
             yield return To(0f);
+        }
+
+        /// <summary>바로 까맣게 덮는다. 씬이 시작되는 첫 프레임에 부르면 화면이 덮인 채로 뜬다.</summary>
+        public void Cover()
+        {
+            if (group == null) group = GetComponent<CanvasGroup>();
+            if (group == null) return;
+            group.alpha = 1f;
+            group.blocksRaycasts = true;
+        }
+
+        /// <summary>덮인 화면을 <paramref name="seconds"/> 초에 걸쳐 걷는다 (씬 첫 진입용 — 보통 전환보다 길게).</summary>
+        public IEnumerator FadeIn(float seconds)
+        {
+            if (group == null) group = GetComponent<CanvasGroup>();
+            if (group == null) yield break;
+            group.alpha = 1f;
+            group.blocksRaycasts = true;
+            // 씬을 막 불러온 직후의 첫 프레임은 로딩 시간이 통째로 delta 에 들어와 페이드가 한 번에 끝나 버린다.
+            // 한 프레임 쉬고, 한 프레임에 흐르는 시간도 1/30초로 묶는다.
+            yield return null;
+            var t = 0f;
+            while (t < seconds)
+            {
+                t += Mathf.Min(Time.unscaledDeltaTime, 1f / 30f);
+                // 시작과 끝을 부드럽게 (smoothstep)
+                var k = Mathf.Clamp01(t / seconds);
+                group.alpha = 1f - k * k * (3f - 2f * k);
+                yield return null;
+            }
+            group.alpha = 0f;
+            group.blocksRaycasts = false;
         }
 
         public IEnumerator To(float target)

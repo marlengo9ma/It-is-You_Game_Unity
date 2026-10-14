@@ -714,7 +714,7 @@ MonoBehaviour:
   ease: 3
   fade: 1
   popStartScale: 0.6
-  waitForClick: 0
+  waitForClick: 1
 --- !u!1 &3301949428730005100
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,7 +824,7 @@ MonoBehaviour:
   ease: 2
   fade: 1
   popStartScale: 0.6
-  waitForClick: 0
+  waitForClick: 1
 --- !u!1 &3612141052052905830
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,7 +1054,7 @@ MonoBehaviour:
   ease: 2
   fade: 1
   popStartScale: 0.6
-  waitForClick: 0
+  waitForClick: 1
 --- !u!1 &3903170448738849245
 GameObject:
   m_ObjectHideFlags: 0
@@ -1164,7 +1164,7 @@ MonoBehaviour:
   ease: 2
   fade: 1
   popStartScale: 0.6
-  waitForClick: 0
+  waitForClick: 1
 --- !u!1 &4855986257951938574
 GameObject:
   m_ObjectHideFlags: 0
@@ -1341,7 +1341,7 @@ MonoBehaviour:
   ease: 2
   fade: 1
   popStartScale: 0.6
-  waitForClick: 0
+  waitForClick: 1
 --- !u!1 &5362484338746120741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1773,7 +1773,7 @@ MonoBehaviour:
   ease: 2
   fade: 1
   popStartScale: 0.6
-  waitForClick: 0
+  waitForClick: 1
 --- !u!1 &6751817325150253171
 GameObject:
   m_ObjectHideFlags: 0
@@ -1883,7 +1883,7 @@ MonoBehaviour:
   ease: 2
   fade: 1
   popStartScale: 0.6
-  waitForClick: 0
+  waitForClick: 1
 --- !u!1 &7427314923999176172
 GameObject:
   m_ObjectHideFlags: 0
@@ -2373,7 +2373,7 @@ MonoBehaviour:
   ease: 2
   fade: 1
   popStartScale: 0.6
-  waitForClick: 0
+  waitForClick: 1
 --- !u!1 &8834991828820935190
 GameObject:
   m_ObjectHideFlags: 0
@@ -2483,7 +2483,7 @@ MonoBehaviour:
   ease: 2
   fade: 1
   popStartScale: 0.6
-  waitForClick: 0
+  waitForClick: 1
 --- !u!1 &8925174845307304189
 GameObject:
   m_ObjectHideFlags: 0

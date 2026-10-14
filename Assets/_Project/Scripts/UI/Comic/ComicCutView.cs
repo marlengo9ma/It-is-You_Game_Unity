@@ -32,7 +32,7 @@ namespace ItIsYou.UI
         [Tooltip("들어오는 데 걸리는 시간(초). 작을수록 빠르다.")]
         [SerializeField] private float duration = 0.55f;
 
-        [Tooltip("앞 순번의 컷이 다 나온 뒤, 이 컷이 출발하기 전까지 기다리는 시간(초).")]
+        [Tooltip("앞 순번의 컷이 다 나온 뒤, 이 컷이 저절로 출발하기 전까지 기다리는 시간(초). 클릭으로 나오는 컷(Wait For Click)에는 쓰이지 않는다.")]
         [SerializeField] private float delay = 0.25f;
 
         [Tooltip("감속 곡선.")]
@@ -45,7 +45,7 @@ namespace ItIsYou.UI
         [Range(0.1f, 1f)]
         [SerializeField] private float popStartScale = 0.6f;
 
-        [Tooltip("켜면 화면을 한 번 눌러야 이 컷이 나온다. 끄면 앞 컷에 이어 저절로 나온다.")]
+        [Tooltip("켜면 화면을 한 번 눌러야 이 컷이 나온다(기본). 끄면 앞 컷에 이어 Delay 만큼 쉬었다가 저절로 나온다.")]
         [SerializeField] private bool waitForClick;
 
         private RectTransform _rt;

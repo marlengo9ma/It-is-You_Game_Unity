@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ItIsYou.Core;
 using UnityEditor;
 using UnityEngine;
@@ -19,9 +19,17 @@ namespace ItIsYou.EditorTools
         public static void RebuildAll()
         {
             // 챕터 씬 빌더가 마지막에 열린 씬으로 남도록 순서를 잡는다.
-            TitleSceneBuilder.Build();
-            PrologueSceneBuilder.Build();
-            ChapterSceneBuilder.Build();
+            ArtSetChangeNotice.Rebuilding = true;
+            try
+            {
+                TitleSceneBuilder.Build();
+                PrologueSceneBuilder.Build();
+                ChapterSceneBuilder.Build();
+            }
+            finally
+            {
+                ArtSetChangeNotice.Rebuilding = false;
+            }
 
             RegisterScenes();
 

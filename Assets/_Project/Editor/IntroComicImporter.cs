@@ -184,7 +184,7 @@ namespace ItIsYou.EditorTools
                                 .Set("ease", d.Ease)
                                 .Set("fade", true)
                                 .Set("popStartScale", 0.6f)
-                                .Set("waitForClick", false);
+                                .Set("waitForClick", d.Order > FirstOrder(pageCuts));
                         }
                         if (isNew || resetLayout) t.SetAsLastSibling();
                     }
@@ -214,6 +214,9 @@ namespace ItIsYou.EditorTools
                       $"{(resetLayout ? "배치·애니메이션 초기화" : "배치 유지")} · {PrefabPath}");
             return PrefabPath;
         }
+
+        /// <summary>페이지의 첫 순번 — 이 컷들은 페이지가 열리면 저절로 나오고, 나머지는 한 번 누를 때마다 하나씩 나온다.</summary>
+        private static int FirstOrder(List<SourceCut> pageCuts) => pageCuts.Min(c => Defaults(c).Order);
 
         private static bool IsLetter(string s) => s.Length > 0 && char.IsLetter(s[0]);
 

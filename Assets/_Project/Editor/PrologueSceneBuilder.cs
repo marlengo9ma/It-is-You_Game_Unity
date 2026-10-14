@@ -143,7 +143,7 @@ namespace ItIsYou.EditorTools
                       .Set("popupCloseButton", popupClose.button)
                       .Set("skipButton", skip.button)
                       .Set("endFade", endGroup)
-                      .Set("endFadeSeconds", 0.45f);
+                      .Set("endFadeSeconds", 1.0f);
 
             popupRoot.SetActive(false);
             hint.SetActive(false);

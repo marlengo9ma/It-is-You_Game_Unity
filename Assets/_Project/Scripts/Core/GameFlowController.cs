@@ -36,6 +36,9 @@ namespace ItIsYou.Core
         [SerializeField] private DialoguePresenter dialogue;
         [Tooltip("<화면 전환> 표기가 있는 자리에서 화면을 덮었다 걷는다.")]
         [SerializeField] private ScreenFader fader;
+
+        [Tooltip("챕터 씬이 시작될 때(인트로 카툰 다음) 까만 화면에서 밝아지는 시간(초).")]
+        [SerializeField] private float openingFadeSeconds = 1.2f;
         [Tooltip("컷씬 화면의 그림·이름판. 회상씬(E#1, E#2)이 같은 화면을 빌려 쓴다.")]
         [SerializeField] private CutsceneScreenView cutsceneView;
         [SerializeField] private ClueTrayView clueTray;
@@ -103,9 +106,20 @@ namespace ItIsYou.Core
 
         private IEnumerator RunChapter()
         {
+            // 인트로 카툰에서 넘어오면 화면이 까만 채로 시작해 천천히 밝아진다 — 카툰 → 대화창이 툭 바뀌지 않게.
+            // 첫 화면(기차역 / 객실)을 먼저 켜 둔 뒤 걷어야 한다. 페이즈가 None 인 채로 걷으면 빈 화면이 밝아지고
+            // 배경은 다 밝아진 뒤에야 툭 나타난다(2026-10-14 확인).
+            var hasPrelude = chapter.PreludeTalk != null && !chapter.PreludeTalk.IsEmpty;
+            if (fader != null && openingFadeSeconds > 0f)
+            {
+                fader.Cover();
+                SetPhase(hasPrelude ? GamePhase.Prelude : GamePhase.PreIncidentTalk);
+                yield return fader.FadeIn(openingFadeSeconds);
+            }
+
             // ---- 인트로 대화: 기차역 (노션 <대화 씬으로 화면 전환> ~ 튜토리얼 챕터 시작점) ----
             // 인트로 카툰이 끝나면 이 씬으로 넘어온다. 대화가 끝나면 <화면 배경 전환> — 덮었다 걷으며 기차 안으로.
-            if (chapter.PreludeTalk != null && !chapter.PreludeTalk.IsEmpty)
+            if (hasPrelude)
             {
                 SetPhase(GamePhase.Prelude);
                 yield return dialogue.Play(chapter.PreludeTalk);

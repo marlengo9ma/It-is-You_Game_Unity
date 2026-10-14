@@ -45,7 +45,7 @@ namespace ItIsYou.Core
         [Header("끝")]
         [Tooltip("카툰이 끝나고 다음 씬으로 넘어가기 전에 화면을 덮는 검은 막.")]
         [SerializeField] private CanvasGroup endFade;
-        [SerializeField] private float endFadeSeconds = 0.45f;
+        [SerializeField] private float endFadeSeconds = 1.0f;
 
         private int _clicks;
         private bool _skipRequested;
@@ -112,7 +112,8 @@ namespace ItIsYou.Core
                 var page = pages[PageIndex];
                 page.Prepare();
                 yield return page.Play(this);
-                page.Hide();
+                // 건너뛰기면 페이지를 그대로 둔 채 검은 막으로 덮는다 — 툭 사라지지 않게.
+                if (!_skipRequested) page.Hide();
             }
 
             SetAdvanceHint(false);
@@ -126,10 +127,13 @@ namespace ItIsYou.Core
                 while (t < endFadeSeconds)
                 {
                     t += Time.unscaledDeltaTime;
-                    endFade.alpha = Mathf.Clamp01(t / endFadeSeconds);
+                    var k = Mathf.Clamp01(t / endFadeSeconds);
+                    endFade.alpha = k * k * (3f - 2f * k);
                     yield return null;
                 }
                 endFade.alpha = 1f;
+                // 까만 화면에서 한 박자 쉬고 넘어간다. 다음 씬(챕터)이 까만 화면에서 천천히 밝아진다.
+                yield return new WaitForSecondsRealtime(0.25f);
             }
 
             if (prologue != null && !string.IsNullOrEmpty(prologue.NextSceneName))
