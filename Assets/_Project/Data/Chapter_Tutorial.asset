@@ -15,6 +15,342 @@ MonoBehaviour:
   id: CH_TUTORIAL
   displayName: "\uD29C\uD1A0\uB9AC\uC5BC \u2014 \uB204\uAC00 \uADF8\uB7AC\uC9C0?"
   isTutorial: 1
+  preludeTalk:
+    note: "\uC778\uD2B8\uB85C \uB300\uD654 \u2014 \uAE30\uCC28\uC5ED"
+    lines:
+    - speaker: 0
+      speakerName: 
+      text: "\uB2F9\uC2E0\uC774 \uB204\uAD70\uAC00\uC758 \uC778\uC801\uC0AC\uD56D\uC774
+        \uC801\uD78C \uC11C\uB958\uC5D0 \uC9E7\uB9C9\uD55C \uBA54\uBAA8\uB97C \uB0A8\uAE30\uB294
+        \uC0AC\uC774,\n\uC11C\uB958\uC758 \uC99D\uBA85\uC0AC\uC9C4 \uC18D \uC5BC\uAD74\uACFC
+        \uBE44\uC2B7\uD558\uAC8C \uC0DD\uAE34 \uC18C\uB140\uAC00 \uC800 \uBA40\uB9AC\uC11C
+        \uB2F9\uC2E0\uC744 \uBC1C\uACAC\uD558\uACE0\uB294 \uBE60\uB978 \uAC78\uC74C\uC73C\uB85C
+        \uB2E4\uAC00\uC624\uACE0 \uC788\uB294 \uAC83\uC744 \uBC1C\uACAC\uD55C\uB2E4."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uB2E4\uAC00\uC624\uACE0 \uC788\uB294 \uC18C\uB140\uC758 \uC5BC\uAD74\uC5D0\uB294
+        \uC57D\uAC04\uC758 \uAE34\uC7A5\uAC10\uACFC \uBBF8\uC548\uD568\uC774 \uB290\uAEF4\uC9C0\uACE0
+        \uC788\uB2E4."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uB9C8\uCE58 \uC790\uC2E0\uC758 \uC798\uBABB\uC744 \uC544\uB294 \uB4EF\uD55C
+        \uBA38\uC4F1\uD568\uACFC \uC0C1\uC0AC\uC640\uC758 \uCCAB \uB300\uBA74\uC774\uB77C\uB294
+        \uC0C1\uD669\uC774 \uACB9\uCCD0\uC11C\uC778\uC9C0 \uD45C\uC815\uACFC \uD589\uB3D9\uC5D0\uB294
+        \uC870\uAE09\uD568\uC774 \uBB3B\uC5B4\uB098\uACE0 \uC788\uB2E4."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      speakerName: 
+      text: "\uC548\uB155\uD558\uC138\uC694 \uC870\uC0AC\uAD00\uB2D8, \uC800,\uC800\uB294
+        \uC800\uBC88 \uD30C\uD2B8\uB108\uBD84\uC758 \uBD80\uC0C1\uC73C\uB85C \uC778\uD574
+        \uC784\uC2DC \uBC30\uCE58\uB41C \uBCF4\uC870\uC870\uC0AC\uAD00 '\uC138\uD53C\u2019\uB77C\uACE0
+        \uD569\uB2C8\uB2E4!"
+      expression: 2
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 1
+      speakerName: 
+      text: "\u2026\uC74C."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uC790\uC2E0\uC744 \u2018\uC138\uD53C\u2019\uB77C\uACE0 \uC18C\uAC1C\uD55C
+        \uC18C\uB140\uB294 \uC778\uC0AC\uB97C \uB9C8\uCE58\uACE0, \uC790\uC2E0\uC774
+        \uB4E4\uACE0 \uC788\uB358 \uAC00\uBC29\uC5D0\uC11C \uC11C\uB958\uCCA0 \uD558\uB098\uB97C
+        \uC11C\uB458\uB7EC \uAEBC\uB0B4\uC5B4 \uB4E4\uACE0\uB294 \uB2F9\uC2E0\uC5D0\uAC8C
+        \uC870\uC2EC\uC2A4\uB7FD\uAC8C \uB0B4\uBBFC\uB2E4."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      speakerName: 
+      text: "\uC774\uBC88 \uC0AC\uAC74\uC5D0 \uB300\uD55C \uAC1C\uC694 \uD30C\uC77C\uC785\uB2C8\uB2E4!"
+      expression: 2
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uAC74\uB0B4\uBC1B\uC740 \uC11C\uB958\uCCA0 \uC18D\uC5D0\uB294 \uC774\uBC88\uC5D0
+        \uBC30\uC815\uBC1B\uC740 \uC0AC\uAC74\uC5D0 \uB300\uD55C \uBB38\uC11C\uC640
+        \uC774\uBC88 \uCD9C\uC7A5\uC758 \uD544\uC694\uC5D0 \uB530\uB77C \uC9C0\uC6D0\uB41C
+        \uAE30\uCC28\uD45C\uAC00 \uB4E4\uC5B4\uC788\uC5C8\uB2E4."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uB2F9\uC2E0\uC740 \uAE30\uCC28\uD45C\uB97C \uAEBC\uB0B4 \uC548\uC8FC\uBA38\uB2C8\uC5D0
+        \uC9D1\uC5B4\uB123\uACE0\uB294 \uB2E4\uB978 \uBB38\uC11C\uB97C \uAEBC\uB0B4\uB4E4\uC5B4
+        \uC0AC\uAC74\uC5D0 \uB300\uD55C \uAC1C\uC694\uC640 \uC815\uD669\uC744 \uAC04\uB2E8\uD788
+        \uC77D\uC5B4\uBCF4\uB294 \uB2F9\uC2E0."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uC2DC\uC120\uC744 \uC62C\uB824 \uC18C\uB140\uB97C \uCCD0\uB2E4\uBCF4\uC790
+        \uB2F9\uC2E0\uC5D0\uAC8C\uC11C \uB290\uAEF4\uC9C0\uB294 \uC5B4\uB518\uAC00
+        \uC5B8\uC9E2\uC740 \uBD84\uC704\uAE30\uC640 \uBB34\uAC8C\uAC10\uC744 \uB290\uB080
+        \uB4EF, \uB208\uCE58\uB97C \uBCF4\uACE0 \uC788\uB294 \uC18C\uB140\uAC00 \uBCF4\uC778\uB2E4."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uACE7\uC7A5 \uB2F9\uC2E0\uC758 \uC2DC\uC120\uC744 \uB208\uCE58 \uCC48
+        \uC18C\uB140\uB294 \uC870\uC2EC\uC2A4\uB7FD\uAC8C \uB2F9\uC2E0\uC5D0\uAC8C
+        \uBD80\uC5F0 \uC124\uBA85\uC744 \uB367\uBD99\uC774\uB824 \uD55C\uB2E4."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      speakerName: 
+      text: "\uAE09\uD788 \uBC30\uC815\uB41C \uAC15\uB825 \uC0AC\uAC74\uC774\uB2C8
+        \uB9CC\uD07C, \uBCF8\uBD80\uC5D0\uC11C\uB294 \uC870\uC0AC\uAD00\uB2D8\uAED8
+        \uD544\uC694\uD55C \uC778\uC218\uC778\uACC4\uB97C \uBC1B\uC558\uC73C\uB2C8
+        \uC5B8\uC81C\uB4E0 \uC758\u3148.."
+      expression: 2
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 1
+      speakerName: 
+      text: "\u2026\uCD9C\uBC1C\uD558\uC8E0."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      speakerName: 
+      text: "\uB124?..\uB135!"
+      expression: 3
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uC18C\uB140\uC5D0\uAC8C\uB294 \uD06C\uAC8C \uC2E0\uACBD\uC744 \uC4F0\uC9C0
+        \uC54A\uACE0 \uC788\uB2E4\uB294 \uB4EF, \uB2F9\uC2E0\uC740 \uC11C\uB958\uB97C
+        \uB300\uCDA9 \uD6D1\uC5B4\uBCF4\uACE0\uB294 \uC790\uB9AC\uB97C \uC815\uB9AC\uD558\uACE0
+        \uC77C\uC5B4\uB09C\uB2E4."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uC18C\uB140\uB294 \uADF8\uB7F0 \uB2F9\uC2E0\uC758 \uD589\uB3D9\uC5D0
+        \uC21C\uAC04 \uB2F9\uD669\uD588\uB2E4\uAC00 \uC815\uC2E0\uC744 \uCC28\uB9AC\uACE0
+        \uB2F9\uC2E0\uC744 \uB530\uB77C \uC774\uB3D9\uD558\uAE30 \uC704\uD574 \uAC78\uC74C\uC744
+        \uC62E\uAE34\uB2E4."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 1
+      speakerName: 
+      text: "\u2026\uC800 \uD0C0\uC790\uAE30\uB3C4 \uCC59\uACA8\uC694. \uB2F9\uC2E0\uAECD\uB2C8\uB2E4."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 3
+      speakerName: 
+      text: "..\uB124?"
+      expression: 6
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uC78A\uC5C8\uC5C8\uB2E4\uB294 \uB4EF, \uBB34\uC2EC\uD55C \uD55C \uB9C8\uB514\uB97C
+        \uD22D \uB358\uC9C0\uACE0 \uBA3C\uC800 \uAE30\uCC28 \uC548\uC73C\uB85C \uD5A5\uD558\uB294
+        \uB2F9\uC2E0."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uC7A0\uC2DC \uBA40\uB6B1\uD788 \uC11C\uC788\uB358 \uC18C\uB140\uB294
+        \uB2F9\uC2E0\uACFC \uD0C0\uC790\uAE30\uB97C \uBC88\uAC08\uC544 \uBC14\uB77C\uBCF8\uB2E4."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uC608\uC0C1\uCE58 \uBABB\uD55C \uC120\uBB3C\uC5D0 \uC870\uAE08\uC740
+        \uAE34\uC7A5\uC774 \uD480\uB9B0 \uAC78\uAE4C?"
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    - speaker: 0
+      speakerName: 
+      text: "\uC18C\uB140\uAC00 \uC0B4\uBA70\uC2DC \uBBF8\uC18C\uB97C \uC9D3\uACE0\uB294
+        \uD0C0\uC790\uAE30\uB97C \uCC59\uACA8 \uB2E4\uC18C \uAC00\uBCBC\uC6CC\uC9C4
+        \uBC1C\uAC78\uC74C\uC73C\uB85C \uB2F9\uC2E0\uC744 \uB530\uB77C \uAE30\uCC28\uC5D0
+        \uC62C\uB77C\uD0C4\uB2E4."
+      expression: 0
+      stageDirection: 
+      animationId: 
+      reaction:
+        clueId: 
+        openDelay: 0
+        window: 2.5
+        expression: 3
+        blurredFromRecallDepth: 2
+      autoGrantClueId: 
+    animationId: 
+    trustDelta: 0
+    endsInterrogation: 0
   preIncidentTalk:
     note: "\uC0AC\uAC74 \uC774\uC804 \u2014 \uAC1D\uC2E4"
     lines:

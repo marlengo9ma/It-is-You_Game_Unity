@@ -1,4 +1,5 @@
-using ItIsYou.Core;
+﻿using ItIsYou.Core;
+using ItIsYou.UI;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -14,16 +15,18 @@ namespace ItIsYou.EditorTools
     /// <summary>
     /// 인트로 카툰 씬을 조립한다.
     ///
-    /// 대사창이 없다. 카툰 파트는 텍스트를 읽는 구간이 아니라 그림이 넘어가는 구간이라,
-    /// 화면에는 컷 한 장과 "누르면 다음" 안내만 둔다.
+    /// 화면 가운데에 종이 한 장(1440×1080)이 놓이고, 그 위로 페이지마다 컷이 차례로 들어온다.
+    /// 컷 그림 · 자리 · 애니메이션은 IntroComic 프리팹에 있고, 씬에는 프리팹 <b>연결된 인스턴스</b>를 넣는다 —
+    /// 그래서 프리팹을 고치면 씬을 다시 만들지 않아도 바로 반영되고, 씬을 다시 만들어도 편집한 값이 지워지지 않는다.
     ///
-    /// 컷 안의 서류만 예외다. 그 자리에는 클릭 가능한 더미 오브젝트를 놓고,
-    /// 그림이 들어오면 스프라이트만 끼우면 되도록 위치를 컷 데이터가 정하게 했다.
+    /// 대사창은 없다. 카툰이 끝나면 챕터 씬의 기차역 대화로 넘어간다.
     /// </summary>
     public static class PrologueSceneBuilder
     {
         private const string SceneFolder = "Assets/_Project/Scenes";
         private const string ScenePath = SceneFolder + "/Prologue.unity";
+
+        private static readonly Color Backdrop = new Color32(0x12, 0x13, 0x15, 0xFF);
 
         [MenuItem("It is You/4. 인트로 카툰 씬 생성", priority = 11)]
         public static void Build()
@@ -33,83 +36,61 @@ namespace ItIsYou.EditorTools
 
             var prologue = PrologueDataBuilder.Build();
 
-            var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            var root = K.Boot(Color.black);
+            // 프리팹이 아직 없으면 ArtSource/Intro 에서 한 번 만들어 둔다. 있으면 손대지 않는다.
+            var comicPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(IntroComicImporter.PrefabPath);
+            if (comicPrefab == null)
+            {
+                IntroComicImporter.Import(resetLayout: false);
+                comicPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(IntroComicImporter.PrefabPath);
+            }
 
-            var bg = K.Img("Background", root, Color.black);
+            var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            var root = K.Boot(Backdrop);
+
+            var bg = K.Img("Background", root, Backdrop);
             K.Stretch(bg.rectTransform);
             bg.raycastTarget = false;
 
-            // ============================================================ 컷
-            var cut = K.UI("Cut", root);
-            var cutRt = cut.GetComponent<RectTransform>();
-            K.Stretch(cutRt);
-            var cutGroup = cut.AddComponent<CanvasGroup>();
-
-            var cutImage = K.Img("Image", cutRt, new Color32(0x1E, 0x22, 0x27, 0xFF));
-            K.Stretch(cutImage.rectTransform);
-            cutImage.raycastTarget = false;
-
-            // 그림이 없는 동안에는 컷 번호와 이름을 띄워, 어느 장면인지 알 수 있게 한다.
-            var cutLabel = K.Text("Label", cutRt, "", T.Display,
-                new Color32(0x5A, 0x61, 0x69, 0xFF), TextAlignmentOptions.Center);
-            cutLabel.textWrappingMode = TextWrappingModes.Normal;
-            cutLabel.lineSpacing = 22f;
-            K.Anchor(cutLabel.rectTransform, K.V(0.12f, 0.3f), K.V(0.88f, 0.7f), Vector2.zero, Vector2.zero);
-
-            // 컷 전체가 하나의 버튼이다. 클릭 = 다음 컷.
-            var advanceMade = K.Button("AdvanceArea", cutRt, "", T.Caption);
+            // 화면 전체가 '다음' 버튼이다. 컷 그림보다 뒤에 깔고, 컷 그림은 클릭을 받지 않게 해 두었으므로
+            // 어디를 눌러도 이 버튼이 받는다 — 봉투(클릭 영역)만 그 위에서 따로 받는다.
+            var advanceMade = K.Button("AdvanceArea", root, "", T.Caption);
             K.Stretch(advanceMade.rect);
             var advanceImg = advanceMade.rect.GetComponent<Image>();
-            advanceImg.color = new Color(0f, 0f, 0f, 0f);   // 보이지 않지만 눌린다
+            advanceImg.color = new Color(0f, 0f, 0f, 0f);
             advanceImg.sprite = null;
             advanceMade.label.gameObject.SetActive(false);
-            var advColors = advanceMade.button.colors;
-            advColors.highlightedColor = Color.white;
-            advColors.pressedColor = Color.white;
-            advanceMade.button.colors = advColors;
+            advanceMade.button.transition = Selectable.Transition.None;
 
-            // 컷 안의 더미 오브젝트. 자리와 크기는 컷 데이터가 정한다.
-            var propMade = K.Button("Prop", cutRt, "", T.Caption);
-            var propRt = propMade.rect;
-            var propImg = propRt.GetComponent<Image>();
-            // 둥근 버튼 스프라이트를 쓰면 그림 위에 버튼이 떠 있는 것처럼 보인다.
-            // 여기 놓이는 것은 버튼이 아니라 "컷 안의 물건"이라서 각진 판으로 둔다.
-            propImg.sprite = null;
-            propImg.color = new Color32(0x39, 0x3F, 0x47, 0xFF);
-            var propColors = propMade.button.colors;
-            propColors.highlightedColor = new Color(1.25f, 1.25f, 1.25f, 1f);
-            propColors.pressedColor = new Color(0.9f, 0.9f, 0.9f, 1f);
-            propMade.button.colors = propColors;
-            propMade.label.gameObject.SetActive(true);
-            propMade.label.alignment = TextAlignmentOptions.Center;
-            propMade.label.fontSize = T.Choice;
-
-            var propOutline = propRt.gameObject.AddComponent<Outline>();
-            propOutline.effectColor = P.Brass;
-            propOutline.effectDistance = new Vector2(2f, -2f);
-
-            var propHint = K.Text("Hint", propRt, "클릭", T.Caption, P.Brass, TextAlignmentOptions.Bottom);
-            K.Anchor(propHint.rectTransform, K.V(0, 0), K.V(1, 0), K.V(0, L.Unit), K.V(0, L.Unit * 4));
+            // ============================================================ 카툰
+            ComicBookView comic = null;
+            if (comicPrefab != null)
+            {
+                var inst = (GameObject)PrefabUtility.InstantiatePrefab(comicPrefab, root);
+                inst.name = "IntroComic";
+                K.Stretch((RectTransform)inst.transform);
+                comic = inst.GetComponent<ComicBookView>();
+            }
+            else
+            {
+                Debug.LogWarning("[It is You] IntroComic 프리팹을 만들지 못했습니다 — ArtSource/Intro 폴더를 확인하세요.");
+            }
 
             // ======================================================== 진행 안내
             var hint = K.UI("AdvanceHint", root);
             var hintRt = hint.GetComponent<RectTransform>();
             K.Anchor(hintRt, K.V(1, 0), K.V(1, 0),
-                K.V(-L.Gutter - 320f, L.Gutter), K.V(-L.Gutter, L.Gutter + 40f));
-
-            var hintLabel = K.Text("Label", hintRt, "화면을 누르면 다음 컷  ▼", T.Caption,
+                K.V(-L.Gutter - 200f, L.Gutter), K.V(-L.Pad, L.Gutter + 40f));
+            var hintLabel = K.Text("Label", hintRt, "다음  ▼", T.Caption,
                 new Color32(0x8A, 0x90, 0x98, 0xFF), TextAlignmentOptions.Right);
             K.Stretch(hintLabel.rectTransform);
 
             // ---------------------------------------------------- 건너뛰기
             var skip = K.Button("Skip", root, "건너뛰기  ▶▶", T.Caption);
             K.Anchor(skip.rect, K.V(1, 1), K.V(1, 1),
-                K.V(-L.Gutter - 184f, -L.Gutter - 56f), K.V(-L.Gutter, -L.Gutter));
+                K.V(-L.Pad - 184f, -L.Pad - 56f), K.V(-L.Pad, -L.Pad));
 
             // ========================================================== 팝업
-            // 스킵 버튼보다 뒤에 만들어 위로 오게 한다. 팝업이 떠 있는 동안에는
-            // 서류를 덮는 것이 아무것도 없어야 한다.
+            // 서류 봉투를 누르면 뜨는 서류. 스킵 버튼보다 뒤에 만들어 위로 오게 한다.
             var popupRoot = K.UI("Popup", root);
             var popupRootRt = popupRoot.GetComponent<RectTransform>();
             K.Stretch(popupRootRt);
@@ -119,9 +100,8 @@ namespace ItIsYou.EditorTools
 
             var popupPanel = K.Img("Panel", popupRootRt, P.Panel);
             K.Anchor(popupPanel.rectTransform, K.V(0.5f, 0.5f), K.V(0.5f, 0.5f),
-                K.V(-384f, -304f), K.V(384f, 304f));   // 768 x 608
-            // 서류 그림은 패널의 배경과 별개의 오브젝트여야 한다.
-            // 같은 Image 를 쓰면 그림이 없을 때 패널까지 같이 사라진다.
+                K.V(-384f, -340f), K.V(384f, 340f));   // 768 x 680
+            // 서류 그림은 패널의 배경과 별개의 오브젝트여야 한다 — 같은 Image 를 쓰면 그림이 없을 때 패널까지 사라진다.
             var popupArt = K.Img("Art", popupPanel.rectTransform, Color.white);
             K.Anchor(popupArt.rectTransform, K.V(0, 0), K.V(1, 1),
                 K.V(L.Pad, L.Unit * 11), K.V(-L.Pad, -L.Pad));
@@ -140,29 +120,31 @@ namespace ItIsYou.EditorTools
             K.Anchor(popupClose.rect, K.V(0.5f, 0), K.V(0.5f, 0),
                 K.V(-96f, L.Unit * 3), K.V(96f, L.Unit * 3 + 56f));
 
+            // ====================================================== 끝 막
+            var endFade = K.Img("EndFade", root, Color.black);
+            K.Stretch(endFade.rectTransform);
+            endFade.raycastTarget = true;
+            var endGroup = endFade.gameObject.AddComponent<CanvasGroup>();
+            endGroup.alpha = 0f;
+            endGroup.blocksRaycasts = false;
+
             // ====================================================== 컨트롤러
             var systems = new GameObject("Systems");
             var settingsMenu = SettingsUiBuilder.BuildSettings(root, systems);
             SettingsUiBuilder.BuildPause(root, systems, settingsMenu);
             var controller = systems.AddComponent<PrologueController>();
             controller.Set("prologue", prologue)
-                      .Set("cutImage", cutImage)
-                      .Set("cutLabel", cutLabel)
-                      .Set("cutGroup", cutGroup)
-                      .Set("crossFadeSeconds", 0.28f)
+                      .Set("comic", comic)
                       .Set("advanceArea", advanceMade.button)
                       .Set("advanceHint", hint)
-                      .Set("propRoot", propRt)
-                      .Set("propButton", propMade.button)
-                      .Set("propImage", propImg)
-                      .Set("propLabel", propMade.label)
                       .Set("popupRoot", popupRoot)
                       .Set("popupImage", popupArt)
                       .Set("popupPlaceholder", popupPlaceholder)
                       .Set("popupCloseButton", popupClose.button)
-                      .Set("skipButton", skip.button);
+                      .Set("skipButton", skip.button)
+                      .Set("endFade", endGroup)
+                      .Set("endFadeSeconds", 0.45f);
 
-            propRt.gameObject.SetActive(false);
             popupRoot.SetActive(false);
             hint.SetActive(false);
 
@@ -170,8 +152,9 @@ namespace ItIsYou.EditorTools
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.Refresh();
 
+            var pages = comic != null ? comic.Pages.Count : 0;
             Debug.Log($"[It is You] 인트로 카툰 씬 생성 완료 — {ScenePath}\n" +
-                      $"컷 {prologue.Cuts.Count}장 · 끝나면 {prologue.NextSceneName} 로 넘어감");
+                      $"페이지 {pages}장 (IntroComic 프리팹) · 끝나면 {prologue.NextSceneName} 로 넘어감");
         }
     }
 }

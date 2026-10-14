@@ -137,6 +137,7 @@ namespace ItIsYou.Core
 
             SetStatus(phase switch
             {
+                GamePhase.Prelude => "화면을 눌러 넘기세요",
                 GamePhase.Intro => "화면을 눌러 넘기세요",
                 GamePhase.ClueCollection => "살펴볼 곳을 눌러 수집하고, 우측 목록에서 읽어 보세요",
                 GamePhase.Interrogation1 => "좌측 선택지를 고르세요",

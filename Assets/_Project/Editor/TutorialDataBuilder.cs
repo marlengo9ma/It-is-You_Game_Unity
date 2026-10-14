@@ -351,6 +351,7 @@ namespace ItIsYou.EditorTools
                    // 무반응: 대사 종료 5초 뒤 타이머 시작 → 15초에 판정. 7초부터 초침 연출.
                    .Set("idleSeconds", 15f)
                    .Set("idleGraceAfterDialogueSeconds", 5f)
+                   .Set("preludeTalk", TutorialScript.PreludeTalk())
                    .Set("preIncidentTalk", TutorialScript.PreIncidentTalk())
                    .Set("cutsceneName", "일러스트 컷씬#1 — 주인공 독백")
                    .Set("cutscene", TutorialScript.Cutscene())

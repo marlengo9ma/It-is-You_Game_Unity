@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ItIsYou.Core;
 using ItIsYou.Data;
 using TMPro;
@@ -61,6 +61,7 @@ namespace ItIsYou.UI
         [SerializeField]
         private List<GamePhase> visiblePhases = new List<GamePhase>
         {
+            GamePhase.Prelude,
             GamePhase.PreIncidentTalk,
             GamePhase.Cutscene,
             GamePhase.Intro

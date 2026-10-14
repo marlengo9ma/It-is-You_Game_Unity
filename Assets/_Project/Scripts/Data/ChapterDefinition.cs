@@ -18,6 +18,10 @@ namespace ItIsYou.Data
                  "대신 관련 설명 팝업이 뜬다.")]
         [SerializeField] private bool isTutorial;
 
+        [Header("인트로 대화 (기차역)")]
+        [Tooltip("인트로 카툰이 끝난 뒤, 기차에 오르기 전까지의 대화 — 노션 <대화 씬으로 화면 전환> 부터 튜토리얼 챕터 시작점 전까지. 배경은 기차역.")]
+        [SerializeField] private DialogueSequence preludeTalk = new DialogueSequence();
+
         [Header("사건 이전")]
         [Tooltip("[게임플레이 배경_캐릭터 씬] — 기차에 오른 뒤의 평범한 대화.")]
         [SerializeField] private DialogueSequence preIncidentTalk = new DialogueSequence();
@@ -277,6 +281,7 @@ namespace ItIsYou.Data
             return null;
         }
 
+        public DialogueSequence PreludeTalk => preludeTalk;
         public DialogueSequence PreIncidentTalk => preIncidentTalk;
         public string CutsceneName => cutsceneName;
         public Sprite CutsceneImage => cutsceneImage;

@@ -1128,6 +1128,32 @@ namespace ItIsYou.EditorTools
             Stretch(talkCatTag.rectTransform);
             Art(talkCat, _art.CatOnTalk, _art.catTalkPlace, false, talkCatTag);
 
+            // ================================================== 인트로 대화 (기차역)
+            // 인트로 카툰이 끝난 뒤 기차에 오르기 전까지의 대화. 대사창은 위와 같고 배경만 기차역이다.
+            // 세피가 다가와 인사하는 장면이라 세피만 서 있다(고양이는 아직 없다).
+            var preludeScreen = UI("Screen_Prelude", root);
+            var preludeRt = preludeScreen.GetComponent<RectTransform>();
+            Stretch(preludeRt);
+
+            var preludeBg = Img("Backdrop", preludeRt, new Color32(0x22, 0x24, 0x22, 0xFF));
+            Stretch(preludeBg.rectTransform);
+            preludeBg.raycastTarget = false;
+            var preludeTag = Text("Tag", preludeBg.rectTransform, "기차역  —  인트로 대화 배경 (아트 대기)",
+                T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.Center);
+            Anchor(preludeTag.rectTransform, V(0, 1), V(1, 1), V(0, -L.Unit * 6), V(0, -L.Unit * 2));
+            if (_art.preludeBackground != null)
+                Art(preludeBg, _art.preludeBackground, _art.preludeBackgroundPlace, false, preludeTag);
+            else
+                Art(preludeBg, _art.titleBackground, _art.titleBackgroundPlace, false, preludeTag);
+
+            var preludeSepi = Img("Sepi_Placeholder", preludeRt, new Color32(0x33, 0x39, 0x41, 0xFF));
+            Anchor(preludeSepi.rectTransform, V(0.52f, 0f), V(0.82f, 0.92f), Vector2.zero, Vector2.zero);
+            preludeSepi.raycastTarget = false;
+            var preludeSepiTag = Text("Label", preludeSepi.rectTransform, "세피\n(아트 대기)", T.Caption,
+                P.InkSoft, TextAlignmentOptions.Center);
+            Stretch(preludeSepiTag.rectTransform);
+            Art(preludeSepi, _art.SepiOnTalk, _art.sepiTalkPlace, false, preludeSepiTag);
+
             // ---- [일러스트 컷씬#1] ----
             var cutsceneScreen = UI("Screen_Cutscene", root);
             var cutsceneRt = cutsceneScreen.GetComponent<RectTransform>();
@@ -1621,7 +1647,7 @@ namespace ItIsYou.EditorTools
 
             var binder = systems.AddComponent<PhaseScreenBinder>();
             binder.Set("flow", flow)
-                  .Set("groups", BuildScreenGroups(talkScreen, cutsceneScreen, selectScreen,
+                  .Set("groups", BuildScreenGroups(preludeScreen, talkScreen, cutsceneScreen, selectScreen,
                                                     collectScreen, interrogateScreen, deductScreen, accuseScreen,
                                                     gameOverScreen, endingScreen, cluePanel.gameObject,
                                                     topBar, titleLabel.gameObject))
@@ -1652,6 +1678,7 @@ namespace ItIsYou.EditorTools
                        .Set("restoreButton", catcher.Item2)
                        .Set("visiblePhases", new List<GamePhase>
                        {
+                           GamePhase.Prelude,
                            GamePhase.PreIncidentTalk,
                            GamePhase.Cutscene,
                            GamePhase.Intro
@@ -1718,7 +1745,7 @@ namespace ItIsYou.EditorTools
             return list;
         }
 
-        private static object BuildScreenGroups(GameObject talk, GameObject cutscene, GameObject select,
+        private static object BuildScreenGroups(GameObject prelude, GameObject talk, GameObject cutscene, GameObject select,
             GameObject collect, GameObject interrogate, GameObject deduct, GameObject accuse, GameObject gameOver, GameObject ending, GameObject cluePanel,
             GameObject topBar, GameObject chapterTitle)
         {
@@ -1730,8 +1757,13 @@ namespace ItIsYou.EditorTools
                 GamePhase.Accusation, GamePhase.Ending, GamePhase.GameOver
             };
 
+            // 기차역 대화(Prelude)는 튜토리얼 챕터가 시작되기 전이라 상단 바(시계 · 대륙 횡단 열차)와 챕터 제목을 띄우지 않는다.
             var list = new List<PhaseScreenBinder.ScreenGroup>
             {
+                new PhaseScreenBinder.ScreenGroup {
+                    root = prelude,
+                    phases = new List<GamePhase> { GamePhase.Prelude }
+                },
                 // 사건 이전의 대화와 사건 직후의 인트로는 같은 배경을 쓴다.
                 new PhaseScreenBinder.ScreenGroup {
                     root = talk,

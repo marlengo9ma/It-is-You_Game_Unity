@@ -25,7 +25,13 @@
         Cutscene = 10,
 
         /// <summary>누구부터 심문할지 플레이어가 고르는 화면. 심문과 같은 레이아웃을 쓴다.</summary>
-        SuspectSelect = 11
+        SuspectSelect = 11,
+
+        /// <summary>
+        /// 인트로 카툰 뒤, 튜토리얼 챕터가 시작되기 전의 기차역 대화 (노션 &lt;대화 씬으로 화면 전환&gt; ~ 튜토리얼 챕터 시작점).
+        /// 대사창은 평범한 대화와 같고, 배경만 기차역이다. 끝나면 화면 전환과 함께 기차 안(PreIncidentTalk)으로 바뀐다.
+        /// </summary>
+        Prelude = 12
     }
 
     /// <summary>단서의 출처. UI 표기와 조합 규칙이 종류별로 달라진다.</summary>

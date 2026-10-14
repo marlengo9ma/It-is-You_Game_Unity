@@ -103,6 +103,15 @@ namespace ItIsYou.Core
 
         private IEnumerator RunChapter()
         {
+            // ---- 인트로 대화: 기차역 (노션 <대화 씬으로 화면 전환> ~ 튜토리얼 챕터 시작점) ----
+            // 인트로 카툰이 끝나면 이 씬으로 넘어온다. 대화가 끝나면 <화면 배경 전환> — 덮었다 걷으며 기차 안으로.
+            if (chapter.PreludeTalk != null && !chapter.PreludeTalk.IsEmpty)
+            {
+                SetPhase(GamePhase.Prelude);
+                yield return dialogue.Play(chapter.PreludeTalk);
+                yield return Transition(GamePhase.PreIncidentTalk);
+            }
+
             // ---- 사건 이전: [게임플레이 배경_캐릭터 씬] ----
             SetPhase(GamePhase.PreIncidentTalk);
             if (chapter.PreIncidentTalk != null && !chapter.PreIncidentTalk.IsEmpty)
@@ -547,7 +556,7 @@ namespace ItIsYou.Core
 
             // 평범한 대화 구간은 화면 전체를 쓰는 시네마틱 대사창을, 나머지는 수첩형 대사창을 쓴다.
             // 추론도 시네마틱 — 서류철 위에 아래 그라데이션 + 이름표로 얹힌다(2026-10-11 스케치).
-            var cinematic = phase == GamePhase.PreIncidentTalk || phase == GamePhase.Cutscene || phase == GamePhase.Intro
+            var cinematic = phase == GamePhase.Prelude || phase == GamePhase.PreIncidentTalk || phase == GamePhase.Cutscene || phase == GamePhase.Intro
                          || phase == GamePhase.Deduction;
             dialogue?.SetCinematic(cinematic);
 

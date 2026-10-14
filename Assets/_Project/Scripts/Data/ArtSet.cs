@@ -71,6 +71,10 @@ namespace ItIsYou.Data
         public Sprite roomBackground;
         public Placement roomBackgroundPlace = Placement.Stretch;
 
+        [Tooltip("인트로 대화(기차역) 배경 — 화면 전체 1920×1080. 인트로 카툰 뒤 기차에 오르기 전까지의 대화. 비우면 타이틀 배경(titleBackground)을 쓴다.")]
+        public Sprite preludeBackground;
+        public Placement preludeBackgroundPlace = Placement.Stretch;
+
         [Tooltip("심문 · 조합 · 용의자 선택 · 지목 화면의 무대 배경 — 좌측 2/3 영역 1208×984. 비우면 roomBackground 를 쓴다.")]
         public Sprite stageBackground;
         public Placement stageBackgroundPlace = Placement.Stretch;
