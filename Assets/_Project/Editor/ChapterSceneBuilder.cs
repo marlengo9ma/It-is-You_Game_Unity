@@ -43,6 +43,7 @@ namespace ItIsYou.EditorTools
         [MenuItem("It is You/2. 튜토리얼 챕터 씬 생성", priority = 2)]
         public static void Build()
         {
+            UiLayout.RecordBeforeRebuild();
             _font = FontSetup.Ensure();
             _uiSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
             _art = LoadArtSet();
@@ -1716,8 +1717,8 @@ namespace ItIsYou.EditorTools
             popupRoot.SetActive(false);
             titleRoot.SetActive(false);
 
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene, ScenePath);
+            // UI 편집기에서 바꾼 자리 · 이미지 · 글자 모양을 입히고 저장한다(기준도 함께 적는다).
+            UiLayout.SaveBuiltScene(scene, ScenePath);
             AssetDatabase.Refresh();
 
             Debug.Log($"[It is You] 튜토리얼 챕터 씬 생성 완료 — {ScenePath}\n" +
@@ -1857,7 +1858,7 @@ namespace ItIsYou.EditorTools
                         .Set("unseenContentIcon", icon.gameObject)
                         .Set("usedDim", group);
 
-            var prefab = PrefabUtility.SaveAsPrefabAsset(go, PrefabFolder + "/ChoiceButton.prefab");
+            var prefab = UiLayout.SaveBuiltPrefab(go, PrefabFolder + "/ChoiceButton.prefab");
             Object.DestroyImmediate(go);
             return prefab.GetComponent<ChoiceButton>();
         }
@@ -1922,7 +1923,7 @@ namespace ItIsYou.EditorTools
                 .Set("selectedMark", selectedMark.gameObject);
             frame.gameObject.SetActive(false);
 
-            var prefab = PrefabUtility.SaveAsPrefabAsset(go, PrefabFolder + "/ClueSlot.prefab");
+            var prefab = UiLayout.SaveBuiltPrefab(go, PrefabFolder + "/ClueSlot.prefab");
             Object.DestroyImmediate(go);
             return prefab.GetComponent<ClueSlot>();
         }
@@ -1997,7 +1998,7 @@ namespace ItIsYou.EditorTools
                 .Set("alwaysShowLabel", true);
             frame.gameObject.SetActive(false);
 
-            var prefab = PrefabUtility.SaveAsPrefabAsset(go, PrefabFolder + "/" + name + ".prefab");
+            var prefab = UiLayout.SaveBuiltPrefab(go, PrefabFolder + "/" + name + ".prefab");
             Object.DestroyImmediate(go);
             return prefab.GetComponent<ClueSlot>();
         }
@@ -2017,7 +2018,7 @@ namespace ItIsYou.EditorTools
             var label = Text("Label", rt, "버튼", T.Choice, P.Ink, TextAlignmentOptions.Center);
             Stretch(label.rectTransform);
 
-            var prefab = PrefabUtility.SaveAsPrefabAsset(go, PrefabFolder + "/PlainButton.prefab");
+            var prefab = UiLayout.SaveBuiltPrefab(go, PrefabFolder + "/PlainButton.prefab");
             Object.DestroyImmediate(go);
             return prefab.GetComponent<Button>();
         }

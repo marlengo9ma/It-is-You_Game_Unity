@@ -39,6 +39,7 @@ namespace ItIsYou.EditorTools
         [MenuItem("It is You/3. 타이틀 씬 생성", priority = 10)]
         public static void Build()
         {
+            UiLayout.RecordBeforeRebuild();
             K.Prepare();
             Ed.EnsureFolder(SceneFolder);
 
@@ -165,8 +166,8 @@ namespace ItIsYou.EditorTools
                  .Set("baseDriftSeconds", 34f)
                  .Set("caretBlinkSeconds", 0.62f);
 
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene, ScenePath);
+            // UI 편집기에서 바꾼 자리 · 이미지 · 글자 모양을 입히고 저장한다(기준도 함께 적는다).
+            UiLayout.SaveBuiltScene(scene, ScenePath);
             AssetDatabase.Refresh();
 
             Debug.Log($"[It is You] 타이틀 씬 생성 완료 — {ScenePath}");

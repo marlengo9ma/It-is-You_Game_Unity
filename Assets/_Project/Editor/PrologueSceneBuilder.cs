@@ -31,6 +31,7 @@ namespace ItIsYou.EditorTools
         [MenuItem("It is You/4. 인트로 카툰 씬 생성", priority = 11)]
         public static void Build()
         {
+            UiLayout.RecordBeforeRebuild();
             K.Prepare();
             Ed.EnsureFolder(SceneFolder);
 
@@ -148,8 +149,8 @@ namespace ItIsYou.EditorTools
             popupRoot.SetActive(false);
             hint.SetActive(false);
 
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene, ScenePath);
+            // UI 편집기에서 바꾼 자리 · 이미지 · 글자 모양을 입히고 저장한다(기준도 함께 적는다).
+            UiLayout.SaveBuiltScene(scene, ScenePath);
             AssetDatabase.Refresh();
 
             var pages = comic != null ? comic.Pages.Count : 0;
