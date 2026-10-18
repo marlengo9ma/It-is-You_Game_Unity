@@ -39,6 +39,9 @@ namespace ItIsYou.Data
         [Tooltip("켜면 결과로 가지 않고 가설·용의자 선택으로 되돌아간다 (\"…아직 확신이 없다\").")]
         [SerializeField] private bool returnsToSelection;
 
+        [Tooltip("결과 뒤에 차례로 보여 줄 엔딩 분기 컷씬(클릭마다 한 장). 예: 엔딩 A = EA#1~#4. 그 뒤에 챕터의 엔딩 컷씬이 이어진다.")]
+        [SerializeField] private List<Sprite> endingCutscenes = new List<Sprite>();
+
         public string Label => label;
         public DialogueSequence Speech => speech;
         public DialogueSequence Plea => plea;
@@ -49,6 +52,7 @@ namespace ItIsYou.Data
         public string ResultTitle => resultTitle;
         public DialogueSequence Result => result;
         public bool ReturnsToSelection => returnsToSelection;
+        public IReadOnlyList<Sprite> EndingCutscenes => endingCutscenes;
 
         public bool Refutes(string clueId) => !string.IsNullOrEmpty(clueId) && refuteClueIds != null && refuteClueIds.Contains(clueId);
     }

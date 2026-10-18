@@ -404,6 +404,16 @@ namespace ItIsYou.Core
             if (accused != null) Session.Accuse(accused.Id);
 
             yield return Transition(GamePhase.Ending);
+
+            // 엔딩 분기 컷씬(지목 결과마다, 예: EA#1~#4) → 챕터의 엔딩 컷씬(#End) → 결과 표시.
+            var endingCuts = new List<Sprite>();
+            var resultOption = accusation != null ? accusation.ResultOption : null;
+            if (resultOption != null && resultOption.EndingCutscenes != null)
+                foreach (var s in resultOption.EndingCutscenes) if (s != null) endingCuts.Add(s);
+            if (chapter.EndingCutscene != null) endingCuts.Add(chapter.EndingCutscene);
+            if (ending != null && endingCuts.Count > 0)
+                yield return ending.PlayCutscenes(endingCuts);
+
             ending?.Show(resultTitle, accused != null ? accused.DisplayName : Session.AccusedSuspectId, Session.Clues.Count);
             ChapterCompleted?.Invoke(Session.AccusedSuspectId);
         }

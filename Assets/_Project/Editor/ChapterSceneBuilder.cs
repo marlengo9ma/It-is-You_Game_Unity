@@ -1081,19 +1081,50 @@ namespace ItIsYou.EditorTools
             Anchor(goTitleBtn.Item1, V(0.5f, 0), V(0.5f, 0), V(20f, L.Unit * 4), V(300f, L.Unit * 4 + 56f));
 
             // ======================================================= 엔딩 화면
-            // 엔딩 컷씬 · 이벤트 컷씬 자리 (아트 대기). 지목 결과 한 줄과 '타이틀로'.
+            // 엔딩 분기 컷씬(지목 결과마다) → 엔딩 컷씬(#End) — 화면 전체에 한 장씩, 누르면 다음 장.
+            // 다 보면 마지막 장 위에 지목 결과 한 줄과 '타이틀로'.
 
             var endingScreen = UI("Screen_Ending", root);
             Stretch(endingScreen.GetComponent<RectTransform>());
             var endBg = Img("Backdrop", endingScreen.transform, new Color32(0x0F, 0x11, 0x14, 0xFF));
             Stretch(endBg.rectTransform);
             Art(endBg, _art.endingBackground, _art.endingBackgroundPlace);
-            var endTitle = Text("Title", endingScreen.transform, "엔딩 컷씬 (아트 대기)", T.Display, P.Brass, TextAlignmentOptions.Center);
+
+            // 컷은 화면을 꽉 덮는다(비율이 조금 달라도 빈 띠 없이 가장자리만 살짝 잘림).
+            var endCutA = Img("CutA", endingScreen.transform, Color.white);
+            Stretch(endCutA.rectTransform);
+            endCutA.raycastTarget = false;
+            endCutA.gameObject.AddComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+            var endCutB = Img("CutB", endingScreen.transform, Color.white);
+            Stretch(endCutB.rectTransform);
+            endCutB.raycastTarget = false;
+            endCutB.gameObject.AddComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+
+            var endAdvance = PlainButton("AdvanceArea", endingScreen.transform, "", T.Caption);
+            Stretch(endAdvance.Item1);
+            var endAdvanceImg = endAdvance.Item1.GetComponent<Image>();
+            endAdvanceImg.color = new Color(0f, 0f, 0f, 0f);
+            endAdvanceImg.sprite = null;
+            endAdvance.Item2.transition = Selectable.Transition.None;
+            endAdvance.Item1.Find("Label").gameObject.SetActive(false);
+
+            var endHint = Text("AdvanceHint", endingScreen.transform, "다음  ▼", T.Caption,
+                new Color32(0xB8, 0xB4, 0xAA, 0xFF), TextAlignmentOptions.Right);
+            Anchor(endHint.rectTransform, V(1, 0), V(1, 0), V(-L.Gutter - 200f, L.Gutter), V(-L.Gutter, L.Gutter + 40f));
+            endHint.raycastTarget = false;
+
+            var endResult = UI("Result", endingScreen.transform);
+            Stretch(endResult.GetComponent<RectTransform>());
+            var endResultGroup = endResult.AddComponent<CanvasGroup>();
+            var endShade = Img("Shade", endResult.transform, new Color(0f, 0f, 0f, 0.62f));
+            Anchor(endShade.rectTransform, V(0, 0.5f), V(1, 0.5f), V(0, -L.Unit * 26), V(0, L.Unit * 26));
+            endShade.raycastTarget = false;
+            var endTitle = Text("Title", endResult.transform, "엔딩", T.Display, P.Brass, TextAlignmentOptions.Center);
             Anchor(endTitle.rectTransform, V(0, 0.5f), V(1, 0.5f), V(0, L.Unit * 8), V(0, L.Unit * 20));
-            var endBody = Text("Body", endingScreen.transform, "", T.Body, P.Ink, TextAlignmentOptions.Center);
+            var endBody = Text("Body", endResult.transform, "", T.Body, P.Ink, TextAlignmentOptions.Center);
             endBody.textWrappingMode = TextWrappingModes.Normal;
             Anchor(endBody.rectTransform, V(0.2f, 0.5f), V(0.8f, 0.5f), V(0, -L.Unit * 12), V(0, L.Unit * 6));
-            var endTitleBtn = PlainButton("ToTitle", endingScreen.transform, "타이틀로", T.Choice);
+            var endTitleBtn = PlainButton("ToTitle", endResult.transform, "타이틀로", T.Choice);
             Anchor(endTitleBtn.Item1, V(0.5f, 0), V(0.5f, 0), V(-140f, L.Unit * 12), V(140f, L.Unit * 12 + 56f));
 
             // =================================================== 사건 이전 화면
@@ -1266,6 +1297,28 @@ namespace ItIsYou.EditorTools
                        .Set("caption", closeUpCaption)
                        .Set("placeholder", closeUpPlaceholder)
                        .Set("continueHint", closeUpHint.gameObject);
+
+            // ================================================== 일러스트 팝업
+            // 대사 한 줄에 그림이 붙어 있으면 그 줄에서 떠오른다 — 예: 객실로 돌아왔을 때의 Scene#2.
+            // 대사창보다 아래에 둬서 글이 그림 위로 읽히게 한다. 자리는 UI 편집기로(Frame).
+            var illuRoot = UI("IllustrationPopup", root);
+            Stretch(illuRoot.GetComponent<RectTransform>());
+            var illuGroup = illuRoot.AddComponent<CanvasGroup>();
+            illuGroup.alpha = 0f; illuGroup.blocksRaycasts = false; illuGroup.interactable = false;
+            var illuScrim = Img("Scrim", illuRoot.transform, new Color(0f, 0f, 0f, 0.45f));
+            Stretch(illuScrim.rectTransform);
+            illuScrim.raycastTarget = false;
+            var illuFrame = Img("Frame", illuRoot.transform, new Color32(0x16, 0x13, 0x10, 0xFF));
+            // 1920×1080 기준 가운데에서 위로 112 — 아래 시네마틱 대사창(이름표 · 본문)을 가리지 않게.
+            Anchor(illuFrame.rectTransform, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-640f, -248f), V(640f, 472f));
+            illuFrame.raycastTarget = false;
+            var illuImg = Img("Image", illuFrame.rectTransform, Color.white);
+            Anchor(illuImg.rectTransform, V(0, 0), V(1, 1), V(8f, 8f), V(-8f, -8f));
+            illuImg.preserveAspect = true;
+            illuImg.raycastTarget = false;
+            var illuView = illuRoot.AddComponent<IllustrationPopupView>();
+            illuView.Set("dialogue", presenter).Set("group", illuGroup)
+                    .Set("frame", illuFrame.rectTransform).Set("image", illuImg);
 
             // 대사창은 새로 만든 전면 배경들보다 위에 있어야 한다.
             dialoguePanel.transform.SetAsLastSibling();
@@ -1643,8 +1696,14 @@ namespace ItIsYou.EditorTools
             endingView.Set("root", endingScreen)
                       .Set("title", endTitle)
                       .Set("body", endBody)
-                      .Set("titleButton", endTitleBtn.Item2);
+                      .Set("titleButton", endTitleBtn.Item2)
+                      .Set("cutA", endCutA)
+                      .Set("cutB", endCutB)
+                      .Set("advanceArea", endAdvance.Item2)
+                      .Set("advanceHint", endHint.gameObject)
+                      .Set("resultGroup", endResultGroup);
             flow.Set("accusation", accusation).Set("ending", endingView);
+            illuView.Set("flow", flow);
 
             var binder = systems.AddComponent<PhaseScreenBinder>();
             binder.Set("flow", flow)
@@ -1755,8 +1814,9 @@ namespace ItIsYou.EditorTools
             {
                 GamePhase.PreIncidentTalk, GamePhase.Cutscene, GamePhase.Intro, GamePhase.ClueCollection,
                 GamePhase.SuspectSelect, GamePhase.Interrogation1, GamePhase.Interrogation2,
-                GamePhase.Accusation, GamePhase.Ending, GamePhase.GameOver
+                GamePhase.Accusation, GamePhase.GameOver
             };
+            // 엔딩은 컷씬이 화면 전체를 쓴다 — 상단 바 · 챕터 제목도 숨긴다(2026-10-19).
 
             // 기차역 대화(Prelude)는 튜토리얼 챕터가 시작되기 전이라 상단 바(시계 · 대륙 횡단 열차)와 챕터 제목을 띄우지 않는다.
             var list = new List<PhaseScreenBinder.ScreenGroup>

@@ -32,6 +32,7 @@ MonoBehaviour:
           window: 2.5
           expression: 3
           blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
         autoGrantClueId: 
       animationId: 
       trustDelta: 0
@@ -72,11 +73,14 @@ MonoBehaviour:
           window: 2.5
           expression: 3
           blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
         autoGrantClueId: 
       animationId: 
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 0
+    endingCutscenes:
+    - {fileID: 21300000, guid: a2298c5b0d826d446b087de9c987507b, type: 3}
   - label: "\u2026\uC544\uC9C1 \uD655\uC2E0\uC774 \uC5C6\uB2E4."
     speech:
       note: "[\uC784\uC2DC] \uB418\uB3CC\uC544\uAC00\uAE30"
@@ -94,6 +98,7 @@ MonoBehaviour:
           window: 2.5
           expression: 3
           blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
         autoGrantClueId: 
       animationId: 
       trustDelta: 0
@@ -125,3 +130,4 @@ MonoBehaviour:
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 1
+    endingCutscenes: []

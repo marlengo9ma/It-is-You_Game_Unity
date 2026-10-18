@@ -30,8 +30,8 @@ MonoBehaviour:
     \uAC83</hl>\uC774 \uBCF4\uC778\uB2E4. \uC544\uBB34\uB798\uB3C4 \uCC98\uC74C \uAD6C\uB9E4\uD588\uC5C8\uB358
     \uC0C1\uD0DC\uC640\uB294 \uCEE8\uB514\uC158\uC774 \uB9CE\uC774 \uB2EC\uB77C\uC838
     \uC788\uB2E4."
-  icon: {fileID: 0}
-  closeUpImage: {fileID: 0}
+  icon: {fileID: 21300000, guid: d86dc223b8a354c4eaf1ceac3959207e, type: 3}
+  closeUpImage: {fileID: 21300000, guid: b659fcfa65c345a4fabe0b706b7e26c1, type: 3}
   sourceSuspectId: 
   isKeyClue: 1
   countsTowardCompletion: 1

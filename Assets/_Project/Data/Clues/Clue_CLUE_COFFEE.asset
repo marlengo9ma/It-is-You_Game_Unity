@@ -26,8 +26,8 @@ MonoBehaviour:
     \uAE09\uD558\uAC8C \uC6C0\uC9C1\uC774\uBA74\uC11C \uC2E4\uC218\uB97C \uD588\uAC70\uB098,
     <hl>\uC790\uC720\uBD84\uBC29\uD558\uACE0 \uBE60\uB974\uAC8C \uC6C0\uC9C1\uC774\uB294
     \uBB34\uC5B8\uAC00\uC5D0 \uC758\uD574 \uC3DF\uC544\uC84C\uC744 \uAC83\uC774\uB2E4.</hl>"
-  icon: {fileID: 0}
-  closeUpImage: {fileID: 0}
+  icon: {fileID: 21300000, guid: b5db50fa0dc59964fa4f0cd7776a6d36, type: 3}
+  closeUpImage: {fileID: 21300000, guid: 9b0649a429c011a4ea1af6a5ee15e18a, type: 3}
   sourceSuspectId: 
   isKeyClue: 0
   countsTowardCompletion: 1

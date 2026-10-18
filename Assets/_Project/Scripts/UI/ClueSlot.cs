@@ -74,6 +74,8 @@ namespace ItIsYou.UI
             {
                 icon.sprite = clue.Icon;
                 icon.enabled = clue.Icon != null;
+                // 프리팹의 아이콘 칸은 그림이 없을 때를 위해 투명으로 만들어 둔다 — 그림이 있으면 보이게.
+                if (clue.Icon != null) { var c = icon.color; c.a = 1f; icon.color = c; }
             }
 
             if (hoverLabel != null) hoverLabel.text = clue.DisplayName(hasBeenRead);

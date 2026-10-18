@@ -187,6 +187,9 @@ namespace ItIsYou.Data
         [Tooltip("맞는 쌍이 없을 때 쓰는 기본 갈래.")]
         [SerializeField] private AccusationBranch defaultAccusationBranch;
 
+        [Tooltip("엔딩 컷씬(#End) — 지목 결과의 엔딩 분기 컷씬들 뒤에 마지막으로 보이는 한 장. 비우면 생략.")]
+        [SerializeField] private Sprite endingCutscene;
+
         [Tooltip("조합 페이즈에 들어갈 때의 대사.")]
         [SerializeField] private DialogueSequence deductionIntro = new DialogueSequence();
 
@@ -289,6 +292,7 @@ namespace ItIsYou.Data
         public DialogueSequence AfterCutsceneTalk => afterCutsceneTalk;
         public IReadOnlyList<FlashbackScene> Flashbacks => flashbacks;
         public DialogueSequence AfterFlashbackTalk => afterFlashbackTalk;
+        public Sprite EndingCutscene => endingCutscene;
         public IReadOnlyList<GuideStep> CollectionGuide => collectionGuide;
         public string CollectionWarnQuestion => collectionWarnQuestion;
         public DialogueSequence Intro => intro;

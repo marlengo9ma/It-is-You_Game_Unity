@@ -33,6 +33,7 @@ MonoBehaviour:
         window: 2.5
         expression: 3
         blurredFromRecallDepth: 2
+      illustration: {fileID: 0}
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -46,6 +47,7 @@ MonoBehaviour:
         window: 2.5
         expression: 3
         blurredFromRecallDepth: 2
+      illustration: {fileID: 0}
       autoGrantClueId: 
     animationId: 
     trustDelta: 0

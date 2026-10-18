@@ -33,6 +33,9 @@ namespace ItIsYou.Data
         [Tooltip("이 줄이 출력되는 동안 캐릭터를 클릭해 수집할 수 있는 리액션. 비어 있으면 리액션 없음.")]
         [SerializeField] private ReactionCue reaction = new ReactionCue();
 
+        [Tooltip("이 줄이 나올 때 화면에 띄우는 일러스트 팝업(예: 객실로 돌아왔을 때의 Scene#2). 이 대사 묶음이 끝나거나 화면이 바뀔 때까지 떠 있다. 보통은 비워둔다.")]
+        [SerializeField] private Sprite illustration;
+
         [Tooltip("이 줄이 출력되면 조건 없이 바로 얻는 단서 id. 보통은 비워둔다.")]
         [SerializeField] private string autoGrantClueId;
 
@@ -45,6 +48,7 @@ namespace ItIsYou.Data
         public string AnimationId => animationId;
         public ReactionCue Reaction => reaction;
         public string AutoGrantClueId => autoGrantClueId;
+        public Sprite Illustration => illustration;
 
         public bool HasReaction => reaction != null && reaction.IsValid;
         public bool HasAutoGrant => !string.IsNullOrEmpty(autoGrantClueId);

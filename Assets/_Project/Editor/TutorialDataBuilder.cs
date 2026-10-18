@@ -67,6 +67,15 @@ namespace ItIsYou.EditorTools
                 unread: "객실 안내", read: "객실 정보", keyClue: false,
                 tooltip: TutorialScript.Tooltips.RoomInfo);
 
+            // 그림 — 정사각 = 목록 아이콘, 가로로 긴 그림 = 처음 수집할 때의 팝업 · 열람창 그림 (2026-10-19 제작자).
+            // 칸이 비어 있을 때만 채운다 — 인스펙터에서 바꾼 그림은 그대로 둔다.
+            FillArt(ribbon, "icon", "UI/Ribbon 1.png");    FillArt(ribbon, "closeUpImage", "UI/Ribbon.png");
+            FillArt(coffee, "icon", "UI/Cup 1.png");       FillArt(coffee, "closeUpImage", "UI/cup.png");
+            FillArt(glimpse, "icon", "UI/pen 1.png");      FillArt(glimpse, "closeUpImage", "UI/pen.png");
+            FillArt(newspaper, "icon", "UI/News 1.png");   FillArt(newspaper, "closeUpImage", "UI/News.png");
+            FillArt(typewriter, "icon", "UI/Key 1.png");   FillArt(typewriter, "closeUpImage", "UI/key.png");
+            FillArt(roomInfo, "icon", "UI/Door 1.png");    FillArt(roomInfo, "closeUpImage", "UI/Door.png");
+
             // 심문에서만 얻을 수 있는 단서 두 가지. 툴팁은 [임시] — 노션에 항목이 없다.
             var sawIt = Clue("TES_SAW_IT", ClueKind.Testimony,
                 unread: "조수의 말",
@@ -236,10 +245,18 @@ namespace ItIsYou.EditorTools
             AccusationBranch Branch(string fileName, string hypId, string suspectId, List<TutorialScript.Acc> opts)
             {
                 var b = Ed.CreateOrLoad<AccusationBranch>(AccusationFolder, fileName);
+                var oldOptions = b.Options;
                 var options = new List<AccusationOption>();
                 foreach (var o in opts)
                 {
                     var opt = new AccusationOption();
+                    // 엔딩 분기 컷씬 — 세피를 지목하면 엔딩 A(EA#1~#4), 고양이면 B(EB#1~#2), 짝이 맞지 않는 기본 갈래는 D(EADD#1).
+                    // 인스펙터에서 바꿔 둔 목록이 있으면 같은 자리(순서)에 남긴다.
+                    var idx = options.Count;
+                    var kept = oldOptions != null && idx < oldOptions.Count && oldOptions[idx] != null && oldOptions[idx].EndingCutscenes != null
+                               && oldOptions[idx].EndingCutscenes.Count > 0
+                        ? new List<Sprite>(oldOptions[idx].EndingCutscenes) : null;
+                    opt.Set("endingCutscenes", o.Returns ? new List<Sprite>() : kept ?? EndingCuts(suspectId));
                     opt.Set("label", o.Label)
                        .Set("speech", o.Speech ?? new DialogueSequence())
                        .Set("plea", o.Plea ?? new DialogueSequence())
@@ -361,7 +378,7 @@ namespace ItIsYou.EditorTools
                         ("회상씬 E#2", TutorialScript.FlashbackE2())))
                    .Set("afterFlashbackTalk", TutorialScript.AfterFlashbackTalk())
                    .Set("collectionGuide", TutorialScript.CollectionGuide())
-                   .Set("intro", TutorialScript.Incident())
+                   .Set("intro", WithIllustration(TutorialScript.Incident(), chapter.Intro, 0, "Cutscenes/Scene#2.png"))
                    .Set("sceneObjects", Ed.L(objRibbon, objCoffee, objGlimpse,
                                              objNewspaper, objTypewriter, objRoomInfo))
                    .Set("gatePass", TutorialScript.GatePass())
@@ -399,6 +416,8 @@ namespace ItIsYou.EditorTools
                    .Set("refutePrompt", "우측에서 반박할 단서를 고른다.")
                    .Set("accusationBranches", Ed.L(accPenSepi, accPenCat, accHidesSepi, accHidesCat, accSpillSepi, accSpillCat))
                    .Set("defaultAccusationBranch", accDefault);
+            // 엔딩 컷씬(#End) — 엔딩 분기 컷씬들 뒤의 마지막 한 장 (2026-10-19 제작자: Scene #6).
+            FillArt(chapter, "endingCutscene", "Cutscenes/Scene #6.png");
 
             // ============================================================ 색인
 
@@ -437,6 +456,48 @@ namespace ItIsYou.EditorTools
                 list.Add(fb);
             }
             return list;
+        }
+
+        private const string ArtRoot = "Assets/_Project/Art/";
+
+        private static Sprite Art(string file) => AssetDatabase.LoadAssetAtPath<Sprite>(ArtRoot + file);
+
+        /// <summary>그림 칸이 비어 있을 때만 채운다. 제작자가 인스펙터에서 바꾼 그림은 건드리지 않는다.</summary>
+        private static void FillArt(Object target, string field, string file)
+        {
+            var so = new SerializedObject(target);
+            var prop = so.FindProperty(field);
+            if (prop == null || prop.objectReferenceValue != null) return;
+            var sprite = Art(file);
+            if (sprite == null) { Debug.LogWarning($"[It is You] 그림을 찾지 못했습니다 — {ArtRoot}{file}"); return; }
+            prop.objectReferenceValue = sprite;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        /// <summary>지목한 용의자별 엔딩 분기 컷씬. 용의자가 비어 있으면(기본 갈래) 엔딩 D.</summary>
+        private static List<Sprite> EndingCuts(string suspectId)
+        {
+            string[] files;
+            if (suspectId == "SEPI") files = new[] { "Cutscenes/EA#1.png", "Cutscenes/EA#2.png", "Cutscenes/EA#3.png", "Cutscenes/EA#4.png" };
+            else if (suspectId == "CAT") files = new[] { "Cutscenes/EB#1.png", "Cutscenes/EB#2.png" };
+            else files = new[] { "Cutscenes/EADD#1.png" };
+            var list = new List<Sprite>();
+            foreach (var f in files) { var s = Art(f); if (s != null) list.Add(s); }
+            return list;
+        }
+
+        /// <summary>
+        /// 대사 묶음의 한 줄에 일러스트 팝업을 붙인다. 이전에 같은 자리에 끼워 둔 그림이 있으면 그것을 쓴다
+        /// (빌더는 글자를 매번 다시 쓰지만 그림은 남긴다).
+        /// </summary>
+        private static DialogueSequence WithIllustration(DialogueSequence fresh, DialogueSequence old, int lineIndex, string file)
+        {
+            for (int i = 0; old != null && i < old.Lines.Count && i < fresh.Lines.Count; i++)
+                if (old.Lines[i] != null && old.Lines[i].Illustration != null) fresh.Lines[i].Set("illustration", old.Lines[i].Illustration);
+            var has = false;
+            foreach (var l in fresh.Lines) if (l != null && l.Illustration != null) { has = true; break; }
+            if (!has && lineIndex < fresh.Lines.Count) fresh.Lines[lineIndex].Set("illustration", Art(file));
+            return fresh;
         }
 
         private static void DeleteIfExists(string path)

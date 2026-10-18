@@ -86,8 +86,8 @@ MonoBehaviour:
     \uADF8\uB4E4\uC774 \uB9D0\uD588\uB358 \u2018\uACFC\uD559\u2019\uC774\uB77C\uB294
     \uAC83\uC5D0 \uB354\uC6B1 \uAC00\uAE4C\uC6B4\uAC8C \uC544\uB2D0\uAE4C \uD544\uC790\uB294
     \uC0DD\uAC01\uD55C\uB2E4.\n(\uC774\uD558 \uC0DD\uB7B5)"
-  icon: {fileID: 0}
-  closeUpImage: {fileID: 0}
+  icon: {fileID: 21300000, guid: 69e2e1788918afe40815b7af4964635d, type: 3}
+  closeUpImage: {fileID: 21300000, guid: 69d145bea7ff3f7468735eff2a0f859f, type: 3}
   sourceSuspectId: 
   isKeyClue: 0
   countsTowardCompletion: 1

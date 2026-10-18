@@ -52,6 +52,9 @@ namespace ItIsYou.UI
 
         public SuspectDefinition Accused { get; private set; }
 
+        /// <summary>결과까지 간 추론 선택지. 엔딩 분기 컷씬을 여기서 꺼낸다.</summary>
+        public AccusationOption ResultOption { get; private set; }
+
         private void Awake()
         {
             for (int i = 0; i < cards.Count; i++)
@@ -148,6 +151,7 @@ namespace ItIsYou.UI
                 if (option.Result != null && !option.Result.IsEmpty)
                     yield return dialogue.Play(option.Result);
 
+                ResultOption = option;
                 Finished?.Invoke(Accused, option.ResultTitle);
                 yield break;
             }
