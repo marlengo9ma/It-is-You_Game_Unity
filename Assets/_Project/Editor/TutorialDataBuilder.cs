@@ -368,17 +368,18 @@ namespace ItIsYou.EditorTools
                    // 무반응: 대사 종료 5초 뒤 타이머 시작 → 15초에 판정. 7초부터 초침 연출.
                    .Set("idleSeconds", 15f)
                    .Set("idleGraceAfterDialogueSeconds", 5f)
-                   .Set("preludeTalk", TutorialScript.PreludeTalk())
-                   .Set("preIncidentTalk", TutorialScript.PreIncidentTalk())
+                   .Set("preludeTalk", KeepStand(TutorialScript.PreludeTalk(), chapter.PreludeTalk, DialogueStand.Default))
+                   .Set("preIncidentTalk", KeepStand(TutorialScript.PreIncidentTalk(), chapter.PreIncidentTalk, DialogueStand.Default))
                    .Set("cutsceneName", "일러스트 컷씬#1 — 주인공 독백")
                    .Set("cutscene", TutorialScript.Cutscene())
-                   .Set("afterCutsceneTalk", TutorialScript.AfterCutsceneTalk())
+                   // 컷씬#1 ~ Scene#2 사이 객실 대화는 스탠드 없이(제작자 2026-10-24)
+                   .Set("afterCutsceneTalk", KeepStand(TutorialScript.AfterCutsceneTalk(), chapter.AfterCutsceneTalk, DialogueStand.None))
                    .Set("flashbacks", Flashbacks(chapter,
                         ("회상씬 E#1", TutorialScript.FlashbackE1()),
                         ("회상씬 E#2", TutorialScript.FlashbackE2())))
-                   .Set("afterFlashbackTalk", TutorialScript.AfterFlashbackTalk())
+                   .Set("afterFlashbackTalk", KeepStand(TutorialScript.AfterFlashbackTalk(), chapter.AfterFlashbackTalk, DialogueStand.None))
                    .Set("collectionGuide", TutorialScript.CollectionGuide())
-                   .Set("intro", WithIllustration(TutorialScript.Incident(), chapter.Intro, 0, "Cutscenes/Scene#2.png"))
+                   .Set("intro", KeepStand(WithIllustration(TutorialScript.Incident(), chapter.Intro, 0, "Cutscenes/Scene#2.png"), chapter.Intro, DialogueStand.Default))
                    .Set("sceneObjects", Ed.L(objRibbon, objCoffee, objGlimpse,
                                              objNewspaper, objTypewriter, objRoomInfo))
                    .Set("gatePass", TutorialScript.GatePass())
@@ -490,6 +491,22 @@ namespace ItIsYou.EditorTools
         /// 대사 묶음의 한 줄에 일러스트 팝업을 붙인다. 이전에 같은 자리에 끼워 둔 그림이 있으면 그것을 쓴다
         /// (빌더는 글자를 매번 다시 쓰지만 그림은 남긴다).
         /// </summary>
+        /// <summary>
+        /// 대사 묶음의 '스탠드'(대화 화면에 서 있을 인물)를 정한다. 인스펙터에서 바꿔 둔 값(화면 기본값이 아닌 것)은 그대로 두고,
+        /// 없으면 fallback. 줄마다 바꿔 둔 스탠드도 같은 글의 줄이면 옮겨 준다 — 메뉴 5 로 다시 만들어도 남는다.
+        /// </summary>
+        private static DialogueSequence KeepStand(DialogueSequence fresh, DialogueSequence old, DialogueStand fallback)
+        {
+            if (fresh == null) return null;
+            fresh.Set("stand", old != null && old.Stand != DialogueStand.Default ? old.Stand : fallback);
+            for (int i = 0; old != null && i < old.Lines.Count && i < fresh.Lines.Count; i++)
+            {
+                var o = old.Lines[i]; var f = fresh.Lines[i];
+                if (o != null && f != null && o.Stand != DialogueStand.Default && o.Text == f.Text) f.Set("stand", o.Stand);
+            }
+            return fresh;
+        }
+
         private static DialogueSequence WithIllustration(DialogueSequence fresh, DialogueSequence old, int lineIndex, string file)
         {
             for (int i = 0; old != null && i < old.Lines.Count && i < fresh.Lines.Count; i++)

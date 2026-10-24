@@ -65,7 +65,7 @@ MonoBehaviour:
   sepiLive2D: {fileID: 8648706558504605094, guid: 3bb525a09fbbbb6429811c718ec5bc3b, type: 3}
   sepiLive2DMotions: {fileID: 11400000, guid: 9bfe55308cee1a14eb5d68205d65103a, type: 2}
   useSepiLive2D: 1
-  catTalk: {fileID: 0}
+  catTalk: {fileID: 21300000, guid: 5fc39e4f374dada4dba68b26bf52f4e1, type: 3}
   catTalkPlace:
     offset: {x: 0, y: 0}
     scale: 1

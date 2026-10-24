@@ -36,6 +36,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -52,6 +53,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -69,6 +71,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -86,6 +89,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -100,6 +104,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -118,6 +123,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -132,6 +138,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -149,6 +156,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -166,6 +174,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -183,6 +192,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -199,6 +209,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -216,6 +227,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -230,6 +242,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -244,6 +257,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -261,6 +275,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -278,6 +293,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -292,6 +308,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -306,6 +323,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -322,6 +340,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -337,6 +356,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -352,6 +372,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -369,8 +390,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   preIncidentTalk:
@@ -391,6 +414,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -411,6 +435,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -432,6 +457,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -446,6 +472,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -463,6 +490,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -481,6 +509,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -495,6 +524,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -509,6 +539,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -528,8 +559,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   cutsceneName: "\uC77C\uB7EC\uC2A4\uD2B8 \uCEF7\uC52C#1 \u2014 \uC8FC\uC778\uACF5
@@ -551,6 +584,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -573,6 +607,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -590,6 +625,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 2
       speakerName: 
@@ -605,6 +641,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -619,6 +656,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -638,6 +676,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -652,6 +691,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -668,6 +708,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -683,6 +724,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -700,6 +742,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -716,6 +759,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -730,6 +774,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -748,6 +793,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -768,6 +814,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -790,6 +837,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -808,6 +856,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -825,8 +874,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   afterCutsceneTalk:
@@ -845,6 +896,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -863,8 +915,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 1
     trustDelta: 0
     endsInterrogation: 0
   flashbacks:
@@ -888,6 +942,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 5
         speakerName: "\uC6A9\uC758\uC790"
@@ -904,6 +959,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 1
         speakerName: 
@@ -918,6 +974,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 6
         speakerName: "\uC774\uC804 \uC870\uC218"
@@ -932,6 +989,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 5
         speakerName: "\uC6A9\uC758\uC790"
@@ -948,8 +1006,10 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
   - name: "\uD68C\uC0C1\uC52C E#2"
@@ -970,6 +1030,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 5
         speakerName: "\uC6A9\uC758\uC790"
@@ -984,6 +1045,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 1
         speakerName: 
@@ -998,6 +1060,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 0
         speakerName: 
@@ -1012,6 +1075,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 7
         speakerName: "\uD589\uC778"
@@ -1026,6 +1090,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 0
         speakerName: 
@@ -1040,6 +1105,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 0
         speakerName: 
@@ -1057,6 +1123,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 0
         speakerName: 
@@ -1074,6 +1141,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 0
         speakerName: 
@@ -1091,8 +1159,10 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
   afterFlashbackTalk:
@@ -1114,6 +1184,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -1128,6 +1199,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1144,6 +1216,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1160,8 +1233,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 1
     trustDelta: 0
     endsInterrogation: 0
   collectionGuide:
@@ -1237,6 +1312,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 21300000, guid: 0468d3dbd5c7322468d1a587d8417602, type: 3}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1257,6 +1333,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -1272,6 +1349,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 4
       speakerName: 
@@ -1286,6 +1364,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1302,6 +1381,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1318,6 +1398,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 2
       speakerName: 
@@ -1333,6 +1414,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1351,6 +1433,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1368,6 +1451,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1386,6 +1470,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1402,6 +1487,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1418,6 +1504,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -1432,6 +1519,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 4
       speakerName: 
@@ -1446,6 +1534,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1461,8 +1550,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   sceneObjects:
@@ -1490,8 +1581,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   gateWarn:
@@ -1511,8 +1604,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   gateBlocked:
@@ -1532,8 +1627,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   beforeSuspectSelect:
@@ -1556,6 +1653,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -1571,6 +1669,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -1585,6 +1684,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1603,6 +1703,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1619,6 +1720,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1636,6 +1738,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -1650,6 +1753,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 4
       speakerName: 
@@ -1664,6 +1768,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -1678,6 +1783,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -1695,8 +1801,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   suspectSelectTalk:
@@ -1716,6 +1824,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -1731,6 +1840,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 4
       speakerName: 
@@ -1745,6 +1855,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -1761,6 +1872,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -1775,6 +1887,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 4
       speakerName: 
@@ -1789,8 +1902,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   suspectSelectPrompt: "\uB204\uAD6C\uBD80\uD130 \uC774\uC57C\uAE30\uB97C \uB4E4\uC5B4\uBCFC\uAE4C."
@@ -2040,6 +2155,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -2055,8 +2171,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   - note: "[\uC784\uC2DC] \uC2E4\uD328 2\uD68C\uCC28"
@@ -2075,6 +2193,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -2089,8 +2208,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   - note: "[\uC784\uC2DC] \uC2E4\uD328 3\uD68C\uCC28"
@@ -2109,6 +2230,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -2124,8 +2246,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   deductionDuplicate:
@@ -2144,8 +2268,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   deductionReplacePrompt:
@@ -2165,8 +2291,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   noSuspectsLeft:
@@ -2186,8 +2314,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   deductionInkOut:
@@ -2207,6 +2337,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -2222,8 +2353,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   secondRoundSelectPrompt: "\uAC00\uC124\uC744 \uB4E4\uACE0, \uB204\uAD6C\uC5D0\uAC8C
@@ -2244,6 +2377,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 2
       speakerName: 
@@ -2258,8 +2392,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   accusationPrompt: "\uB204\uAC00 \uAC00\uC838\uAC14\uB2E4\uACE0 \uBCF4\uC2ED\uB2C8\uAE4C?"
@@ -2294,6 +2430,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -2310,6 +2447,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 2
       speakerName: 
@@ -2325,8 +2463,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   deductionOutro:
@@ -2346,6 +2486,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 2
       speakerName: 
@@ -2360,8 +2501,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   selfLoathingEnding:
@@ -2381,6 +2524,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 2
       speakerName: 
@@ -2397,6 +2541,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 0
       speakerName: 
@@ -2412,8 +2557,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   recipes: []

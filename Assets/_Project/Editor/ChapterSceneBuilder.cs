@@ -1209,6 +1209,9 @@ namespace ItIsYou.EditorTools
                 new Color32(0x6E, 0x74, 0x7B, 0xFF), TextAlignmentOptions.Center);
             Stretch(talkCatTag.rectTransform);
             Art(talkCat, _art.CatOnTalk, _art.catTalkPlace, false, talkCatTag);
+            // 서 있는 인물은 대사 묶음마다 켜고 끈다(StandStageView) — 자리마다 CanvasGroup 으로 흐리고 감춘다.
+            var talkSepiGroup = talkSepi.gameObject.AddComponent<CanvasGroup>();
+            var talkCatGroup = talkCat.gameObject.AddComponent<CanvasGroup>();
 
             // ================================================== 인트로 대화 (기차역)
             // 인트로 카툰이 끝난 뒤 기차에 오르기 전까지의 대화. 대사창은 위와 같고 배경만 기차역이다.
@@ -1236,6 +1239,7 @@ namespace ItIsYou.EditorTools
             Stretch(preludeSepiTag.rectTransform);
             if (UseLive2D) { preludeSepi.color = new Color(1f, 1f, 1f, 0f); preludeSepiTag.gameObject.SetActive(false); Live2DOutput(preludeSepi.rectTransform, Live2DTalkZoom, Live2DTalkSink); }
             else Art(preludeSepi, _art.SepiOnTalk, _art.sepiTalkPlace, false, preludeSepiTag);
+            var preludeSepiGroup = preludeSepi.gameObject.AddComponent<CanvasGroup>();
 
             // ---- [일러스트 컷씬#1] ----
             var cutsceneScreen = UI("Screen_Cutscene", root);
@@ -1835,6 +1839,16 @@ namespace ItIsYou.EditorTools
             titleRoot.SetActive(false);
 
             // ---- 세피 Live2D 무대 (아트 세트에 모델이 있을 때) ----
+            // ---- 대화 화면의 스탠드(서 있는 인물) — 1인 · 2인 · 아무도 없음을 대사 묶음의 '스탠드' 칸으로 고른다 (2026-10-24) ----
+            // 화면은 꺼져 있는 동안이 많아 늘 켜져 있는 StandStages 에 둔다.
+            var standStages = new GameObject("StandStages");
+            standStages.AddComponent<StandStageView>()
+                .Set("dialogue", presenter).Set("sepi", talkSepiGroup).Set("cat", talkCatGroup)
+                .Set("defaultStand", DialogueStand.SepiAndCat);
+            standStages.AddComponent<StandStageView>()
+                .Set("dialogue", presenter).Set("sepi", preludeSepiGroup).Set("cat", null)
+                .Set("defaultStand", DialogueStand.Sepi);
+
             if (UseLive2D) BuildLive2DStage(presenter, cam);
 
             // UI 편집기에서 바꾼 자리 · 이미지 · 글자 모양을 입히고 저장한다(기준도 함께 적는다).

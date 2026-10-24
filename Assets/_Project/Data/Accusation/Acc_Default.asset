@@ -33,14 +33,17 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     plea:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     refuteClueIds: []
@@ -48,12 +51,14 @@ MonoBehaviour:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     refuteSuccess:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     resultTitle: "\uBBF8\uD574\uACB0 \u2014 \uADFC\uAC70 \uC5C6\uB294 \uC9C0\uBAA9"
@@ -74,8 +79,10 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 0
@@ -99,14 +106,17 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     plea:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     refuteClueIds: []
@@ -114,12 +124,14 @@ MonoBehaviour:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     refuteSuccess:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     resultTitle: 
@@ -127,6 +139,7 @@ MonoBehaviour:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 1

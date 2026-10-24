@@ -34,6 +34,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 1
         speakerName: 
@@ -49,6 +50,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 3
         speakerName: 
@@ -63,6 +65,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 4
         speakerName: 
@@ -77,14 +80,17 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     plea:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     refuteClueIds: []
@@ -92,12 +98,14 @@ MonoBehaviour:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     refuteSuccess:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     resultTitle: "\uACE0\uC591\uC774 \uC9C0\uBAA9 \u2014 \uBBF8\uC2EC\uCA4D\uC740
@@ -119,6 +127,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 2
         speakerName: 
@@ -134,8 +143,10 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 0
@@ -160,14 +171,17 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     plea:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     refuteClueIds: []
@@ -175,12 +189,14 @@ MonoBehaviour:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     refuteSuccess:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     resultTitle: 
@@ -188,6 +204,7 @@ MonoBehaviour:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 1

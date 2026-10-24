@@ -20049,7 +20049,7 @@
         {
             "path": "Canvas/Screen_Talk/Sepi_Placeholder",
             "active": true,
-            "hasGroup": false,
+            "hasGroup": true,
             "groupAlpha": 1.0,
             "groupInteractable": true,
             "groupBlocks": true,
@@ -20333,7 +20333,7 @@
         {
             "path": "Canvas/Screen_Talk/Cat_Placeholder",
             "active": true,
-            "hasGroup": false,
+            "hasGroup": true,
             "groupAlpha": 1.0,
             "groupInteractable": true,
             "groupBlocks": true,
@@ -20366,15 +20366,17 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "5fc39e4f374dada4dba68b26bf52f4e1",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.16470588743686677,
-                    "g": 0.18431372940540315,
-                    "b": 0.21176470816135407,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
-                "preserveAspect": false,
+                "preserveAspect": true,
                 "imageType": 0,
                 "hasText": false,
                 "font": {
@@ -20427,7 +20429,7 @@
         },
         {
             "path": "Canvas/Screen_Talk/Cat_Placeholder/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -20811,7 +20813,7 @@
         {
             "path": "Canvas/Screen_Prelude/Sepi_Placeholder",
             "active": true,
-            "hasGroup": false,
+            "hasGroup": true,
             "groupAlpha": 1.0,
             "groupInteractable": true,
             "groupBlocks": true,

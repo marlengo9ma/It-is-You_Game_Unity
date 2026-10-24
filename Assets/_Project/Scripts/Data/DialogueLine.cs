@@ -36,6 +36,9 @@ namespace ItIsYou.Data
         [Tooltip("이 줄이 나올 때 화면에 띄우는 일러스트 팝업(예: 객실로 돌아왔을 때의 Scene#2). 이 대사 묶음이 끝나거나 화면이 바뀔 때까지 떠 있다. 보통은 비워둔다.")]
         [SerializeField] private Sprite illustration;
 
+        [Tooltip("이 줄부터 대화 화면에 서 있을 인물을 바꾼다(묶음이 끝날 때까지 이어짐). '화면 기본값'이면 바꾸지 않는다 — 보통은 그대로 둔다.")]
+        [SerializeField] private DialogueStand stand = DialogueStand.Default;
+
         [Tooltip("이 줄이 출력되면 조건 없이 바로 얻는 단서 id. 보통은 비워둔다.")]
         [SerializeField] private string autoGrantClueId;
 
@@ -49,6 +52,7 @@ namespace ItIsYou.Data
         public ReactionCue Reaction => reaction;
         public string AutoGrantClueId => autoGrantClueId;
         public Sprite Illustration => illustration;
+        public DialogueStand Stand => stand;
 
         public bool HasReaction => reaction != null && reaction.IsValid;
         public bool HasAutoGrant => !string.IsNullOrEmpty(autoGrantClueId);

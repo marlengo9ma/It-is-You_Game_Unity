@@ -30,6 +30,7 @@ MonoBehaviour:
       expression: 3
       blurredFromRecallDepth: 2
     illustration: {fileID: 0}
+    stand: 0
     autoGrantClueId: 
   onReinspect: []
   onAfterRead:
@@ -46,6 +47,7 @@ MonoBehaviour:
       expression: 3
       blurredFromRecallDepth: 2
     illustration: {fileID: 0}
+    stand: 0
     autoGrantClueId: 
   - speaker: 0
     speakerName: 
@@ -62,6 +64,7 @@ MonoBehaviour:
       expression: 3
       blurredFromRecallDepth: 2
     illustration: {fileID: 0}
+    stand: 0
     autoGrantClueId: 
   grantedClue: {fileID: 11400000, guid: e1e7dbab5b5a15d438502454493b539b, type: 2}
   closeUpImage: {fileID: 0}

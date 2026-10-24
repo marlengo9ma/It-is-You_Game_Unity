@@ -113,6 +113,17 @@ namespace ItIsYou.UI
         /// <summary>대사 묶음의 재생이 시작됐다.</summary>
         public event Action<DialogueSequence> SequenceStarted;
 
+        /// <summary>
+        /// 대사 묶음을 곧 띄울 예정 — 화면 전환(덮었다 걷기) 전에 알려, 화면이 보이기 전에 서 있을 인물 등을 미리 맞추게 한다.
+        /// </summary>
+        public event Action<DialogueSequence> SequencePreparing;
+
+        /// <summary>곧 띄울 대사 묶음을 미리 알린다(<see cref="SequencePreparing"/>). 화면 전환 전에 부른다.</summary>
+        public void Prepare(DialogueSequence sequence)
+        {
+            if (sequence != null) SequencePreparing?.Invoke(sequence);
+        }
+
         /// <summary>한 줄의 출력이 모두 끝났다.</summary>
         public event Action<DialogueLine> LineCompleted;
 

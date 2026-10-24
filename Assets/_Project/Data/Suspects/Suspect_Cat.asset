@@ -29,6 +29,7 @@ MonoBehaviour:
     note: 
     lines: []
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   interrogationObjects:
@@ -37,36 +38,42 @@ MonoBehaviour:
     note: 
     lines: []
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   refusalByFear:
     note: 
     lines: []
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   objectSpamWarning:
     note: 
     lines: []
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   refusalByAnger:
     note: 
     lines: []
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   toneAlternationWarning:
     note: 
     lines: []
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   toneAlternationGameOver:
     note: 
     lines: []
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   onTokensExhausted:
@@ -87,6 +94,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -101,8 +109,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   onEnterInterrogation:
@@ -122,8 +132,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   onEndInterrogation:
@@ -144,6 +156,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -158,8 +171,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   onTrustBroken:
@@ -180,6 +195,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -194,6 +210,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 1
       speakerName: 
@@ -208,6 +225,7 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     - speaker: 3
       speakerName: 
@@ -222,8 +240,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   idleRounds:
@@ -243,8 +263,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   - note: "\uACE0\uC591\uC774 \uC2DC\uAC04 \uACBD\uACFC 2\uD68C\uCC28"
@@ -263,8 +285,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   - note: "\uACE0\uC591\uC774 \uC2DC\uAC04 \uACBD\uACFC 3\uD68C\uCC28"
@@ -283,8 +307,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   onIdle:
@@ -304,8 +330,10 @@ MonoBehaviour:
         expression: 3
         blurredFromRecallDepth: 2
       illustration: {fileID: 0}
+      stand: 0
       autoGrantClueId: 
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   selectable: 1

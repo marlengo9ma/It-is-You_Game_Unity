@@ -110,6 +110,8 @@ namespace ItIsYou.Core
             // 첫 화면(기차역 / 객실)을 먼저 켜 둔 뒤 걷어야 한다. 페이즈가 None 인 채로 걷으면 빈 화면이 밝아지고
             // 배경은 다 밝아진 뒤에야 툭 나타난다(2026-10-14 확인).
             var hasPrelude = chapter.PreludeTalk != null && !chapter.PreludeTalk.IsEmpty;
+            // 대화 화면에 서 있을 인물은 화면이 보이기 전에 맞춘다(DialogueSequence.Stand) — 전환 뒤에 바뀌면 툭 사라져 보인다.
+            dialogue?.Prepare(hasPrelude ? chapter.PreludeTalk : chapter.PreIncidentTalk);
             if (fader != null && openingFadeSeconds > 0f)
             {
                 fader.Cover();
@@ -123,6 +125,7 @@ namespace ItIsYou.Core
             {
                 SetPhase(GamePhase.Prelude);
                 yield return dialogue.Play(chapter.PreludeTalk);
+                dialogue?.Prepare(chapter.PreIncidentTalk);
                 yield return Transition(GamePhase.PreIncidentTalk);
             }
 
@@ -143,6 +146,7 @@ namespace ItIsYou.Core
             // ---- 컷씬에서 돌아온 뒤: 다시 [게임플레이 배경_캐릭터 씬] ----
             if (chapter.AfterCutsceneTalk != null && !chapter.AfterCutsceneTalk.IsEmpty)
             {
+                dialogue?.Prepare(chapter.AfterCutsceneTalk);
                 yield return Transition(GamePhase.PreIncidentTalk);
                 yield return dialogue.Play(chapter.AfterCutsceneTalk);
             }
@@ -160,12 +164,14 @@ namespace ItIsYou.Core
                 }
                 if (chapter.AfterFlashbackTalk != null && !chapter.AfterFlashbackTalk.IsEmpty)
                 {
+                    dialogue?.Prepare(chapter.AfterFlashbackTalk);
                     yield return Transition(GamePhase.PreIncidentTalk);
                     yield return dialogue.Play(chapter.AfterFlashbackTalk);
                 }
             }
 
             // ---- <화면 전환> 사건 진행 #1 ----
+            dialogue?.Prepare(chapter.Intro);
             yield return Transition(GamePhase.Intro);
             if (chapter.Intro != null && !chapter.Intro.IsEmpty)
                 yield return dialogue.Play(chapter.Intro);

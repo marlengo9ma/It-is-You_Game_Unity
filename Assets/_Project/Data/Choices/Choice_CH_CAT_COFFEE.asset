@@ -48,6 +48,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 4
         speakerName: 
@@ -63,6 +64,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 1
         speakerName: 
@@ -78,6 +80,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 4
         speakerName: 
@@ -92,6 +95,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 1
         speakerName: 
@@ -107,6 +111,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 2
         speakerName: 
@@ -123,6 +128,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 2
         speakerName: 
@@ -139,14 +145,17 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     idleFollowUp:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     idleFollowUpKey: 
@@ -178,6 +187,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 4
         speakerName: 
@@ -192,14 +202,17 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     idleFollowUp:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     idleFollowUpKey: 
@@ -229,6 +242,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 4
         speakerName: 
@@ -243,14 +257,17 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     idleFollowUp:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     idleFollowUpKey: 
@@ -280,6 +297,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 4
         speakerName: 
@@ -294,14 +312,17 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     idleFollowUp:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     idleFollowUpKey: 
@@ -331,6 +352,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 4
         speakerName: 
@@ -346,6 +368,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 3
         speakerName: 
@@ -361,6 +384,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 1
         speakerName: 
@@ -375,14 +399,17 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     idleFollowUp:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     idleFollowUpKey: 
@@ -412,6 +439,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 4
         speakerName: 
@@ -426,6 +454,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 3
         speakerName: 
@@ -440,14 +469,17 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     idleFollowUp:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     idleFollowUpKey: 
@@ -463,6 +495,7 @@ MonoBehaviour:
     note: 
     lines: []
     animationId: 
+    stand: 0
     trustDelta: 0
     endsInterrogation: 0
   tokenCost: 1

@@ -36,6 +36,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 3
         speakerName: 
@@ -50,8 +51,10 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     plea:
@@ -72,8 +75,10 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     refuteClueIds:
@@ -95,6 +100,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 2
         speakerName: 
@@ -109,8 +115,10 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     refuteSuccess:
@@ -131,6 +139,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 3
         speakerName: 
@@ -145,8 +154,10 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     resultTitle: "\uC138\uD53C\uC758 \uC790\uBC31 \u2014 \uCEE4\uD53C\uC640 \uACE0\uC591\uC774"
@@ -167,6 +178,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 2
         speakerName: 
@@ -181,8 +193,10 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 0
@@ -211,6 +225,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 3
         speakerName: 
@@ -225,14 +240,17 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     plea:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     refuteClueIds: []
@@ -240,12 +258,14 @@ MonoBehaviour:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     refuteSuccess:
       note: 
       lines: []
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     resultTitle: "\uB9CC\uB144\uD544 \uD68C\uC218 \u2014 \uC774\uC720\uB294 \uBB3B\uC9C0
@@ -268,6 +288,7 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       - speaker: 2
         speakerName: 
@@ -283,8 +304,10 @@ MonoBehaviour:
           expression: 3
           blurredFromRecallDepth: 2
         illustration: {fileID: 0}
+        stand: 0
         autoGrantClueId: 
       animationId: 
+      stand: 0
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 0
