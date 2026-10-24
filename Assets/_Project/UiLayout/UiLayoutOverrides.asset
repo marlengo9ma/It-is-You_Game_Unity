@@ -12,4 +12,264 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37a04931df63af45893cdfeaa770bfb, type: 3}
   m_Name: UiLayoutOverrides
   m_EditorClassIdentifier: ItIsYou.Editor::ItIsYou.EditorTools.UiLayoutOverrides
-  targets: []
+  targets:
+  - key: Assets/_Project/Scenes/Tutorial_Chapter.unity
+    entries:
+    - path: Canvas/Screen_Interrogation/Backdrop
+      props: 77
+      values:
+        anchorMin: {x: 0, y: 0}
+        anchorMax: {x: 0, y: 0}
+        pivot: {x: 0.5, y: 0.5}
+        anchoredPosition: {x: 985, y: 534.42}
+        sizeDelta: {x: 2071.385, y: 1156.122}
+        scale: {x: 1, y: 1, z: 1}
+        rotationZ: 0
+        hasImage: 1
+        sprite: {fileID: 21300000, guid: ded982a4aa4992a44bc339c31fde72f4, type: 3}
+        imageColor: {r: 1, g: 1, b: 1, a: 1}
+        preserveAspect: 0
+        imageType: 0
+        hasText: 0
+        font: {fileID: 0}
+        fontSize: 0
+        textColor: {r: 1, g: 1, b: 1, a: 1}
+        alignment: 0
+        fontStyle: 0
+        characterSpacing: 0
+        lineSpacing: 0
+        hasLayoutGroup: 0
+        padding: {x: 0, y: 0, z: 0, w: 0}
+        spacing: {x: 0, y: 0}
+        cellSize: {x: 0, y: 0}
+        childAlignment: 0
+        hasLayoutElement: 0
+        minSize: {x: 0, y: 0}
+        preferredSize: {x: 0, y: 0}
+        flexibleSize: {x: 0, y: 0}
+    - path: Canvas/Screen_Accusation/Backdrop
+      props: 76
+      values:
+        anchorMin: {x: 0, y: 0}
+        anchorMax: {x: 1, y: 1}
+        pivot: {x: 0.5, y: 0.5}
+        anchoredPosition: {x: 278, y: -54}
+        sizeDelta: {x: 771.741, y: 431.081}
+        scale: {x: 1, y: 1, z: 1}
+        rotationZ: 0
+        hasImage: 1
+        sprite: {fileID: 21300000, guid: f1b6ca4fb46be0145b099573bb20b39d, type: 3}
+        imageColor: {r: 1, g: 1, b: 1, a: 1}
+        preserveAspect: 0
+        imageType: 0
+        hasText: 0
+        font: {fileID: 0}
+        fontSize: 0
+        textColor: {r: 1, g: 1, b: 1, a: 1}
+        alignment: 0
+        fontStyle: 0
+        characterSpacing: 0
+        lineSpacing: 0
+        hasLayoutGroup: 0
+        padding: {x: 0, y: 0, z: 0, w: 0}
+        spacing: {x: 0, y: 0}
+        cellSize: {x: 0, y: 0}
+        childAlignment: 0
+        hasLayoutElement: 0
+        minSize: {x: 0, y: 0}
+        preferredSize: {x: 0, y: 0}
+        flexibleSize: {x: 0, y: 0}
+    - path: Canvas/Screen_Talk/Backdrop
+      props: 64
+      values:
+        anchorMin: {x: 0, y: 0}
+        anchorMax: {x: 1, y: 1}
+        pivot: {x: 0.5, y: 0.5}
+        anchoredPosition: {x: 0, y: 0}
+        sizeDelta: {x: 0, y: 0}
+        scale: {x: 1, y: 1, z: 1}
+        rotationZ: 0
+        hasImage: 1
+        sprite: {fileID: 21300000, guid: f1b6ca4fb46be0145b099573bb20b39d, type: 3}
+        imageColor: {r: 1, g: 1, b: 1, a: 1}
+        preserveAspect: 0
+        imageType: 0
+        hasText: 0
+        font: {fileID: 0}
+        fontSize: 0
+        textColor: {r: 1, g: 1, b: 1, a: 1}
+        alignment: 0
+        fontStyle: 0
+        characterSpacing: 0
+        lineSpacing: 0
+        hasLayoutGroup: 0
+        padding: {x: 0, y: 0, z: 0, w: 0}
+        spacing: {x: 0, y: 0}
+        cellSize: {x: 0, y: 0}
+        childAlignment: 0
+        hasLayoutElement: 0
+        minSize: {x: 0, y: 0}
+        preferredSize: {x: 0, y: 0}
+        flexibleSize: {x: 0, y: 0}
+    - path: Canvas/Screen_Cutscene/Image
+      props: 64
+      values:
+        anchorMin: {x: 0, y: 0}
+        anchorMax: {x: 1, y: 1}
+        pivot: {x: 0.5, y: 0.5}
+        anchoredPosition: {x: 0, y: 0}
+        sizeDelta: {x: 0, y: 0}
+        scale: {x: 1, y: 1, z: 1}
+        rotationZ: 0
+        hasImage: 1
+        sprite: {fileID: 21300000, guid: b1bb6fcf57795724ba272a9fceeaab07, type: 3}
+        imageColor: {r: 1, g: 1, b: 1, a: 1}
+        preserveAspect: 1
+        imageType: 0
+        hasText: 0
+        font: {fileID: 0}
+        fontSize: 0
+        textColor: {r: 1, g: 1, b: 1, a: 1}
+        alignment: 0
+        fontStyle: 0
+        characterSpacing: 0
+        lineSpacing: 0
+        hasLayoutGroup: 0
+        padding: {x: 0, y: 0, z: 0, w: 0}
+        spacing: {x: 0, y: 0}
+        cellSize: {x: 0, y: 0}
+        childAlignment: 0
+        hasLayoutElement: 0
+        minSize: {x: 0, y: 0}
+        preferredSize: {x: 0, y: 0}
+        flexibleSize: {x: 0, y: 0}
+    - path: Canvas/Screen_SuspectSelect/Backdrop
+      props: 204
+      values:
+        anchorMin: {x: 0, y: 0}
+        anchorMax: {x: 1, y: 1}
+        pivot: {x: 0.5, y: 0.5}
+        anchoredPosition: {x: 276.797, y: -61.339}
+        sizeDelta: {x: 656.39, y: 425.26}
+        scale: {x: 1, y: 1, z: 1}
+        rotationZ: 0
+        hasImage: 1
+        sprite: {fileID: 21300000, guid: f1b6ca4fb46be0145b099573bb20b39d, type: 3}
+        imageColor: {r: 0.7132075, g: 0.7132075, b: 0.7132075, a: 1}
+        preserveAspect: 0
+        imageType: 0
+        hasText: 0
+        font: {fileID: 0}
+        fontSize: 0
+        textColor: {r: 1, g: 1, b: 1, a: 1}
+        alignment: 0
+        fontStyle: 0
+        characterSpacing: 0
+        lineSpacing: 0
+        hasLayoutGroup: 0
+        padding: {x: 0, y: 0, z: 0, w: 0}
+        spacing: {x: 0, y: 0}
+        cellSize: {x: 0, y: 0}
+        childAlignment: 0
+        hasLayoutElement: 0
+        minSize: {x: 0, y: 0}
+        preferredSize: {x: 0, y: 0}
+        flexibleSize: {x: 0, y: 0}
+    - path: Canvas/SidePanel
+      props: 128
+      values:
+        anchorMin: {x: 1, y: 0}
+        anchorMax: {x: 1, y: 1}
+        pivot: {x: 0.5, y: 0.5}
+        anchoredPosition: {x: -288, y: 0}
+        sizeDelta: {x: 576, y: 0}
+        scale: {x: 1, y: 1, z: 1}
+        rotationZ: 0
+        hasImage: 1
+        sprite: {fileID: 0}
+        imageColor: {r: 0.10980392, g: 0.1254902, b: 0.14509805, a: 0.9647059}
+        preserveAspect: 0
+        imageType: 0
+        hasText: 0
+        font: {fileID: 0}
+        fontSize: 0
+        textColor: {r: 1, g: 1, b: 1, a: 1}
+        alignment: 0
+        fontStyle: 0
+        characterSpacing: 0
+        lineSpacing: 0
+        hasLayoutGroup: 0
+        padding: {x: 0, y: 0, z: 0, w: 0}
+        spacing: {x: 0, y: 0}
+        cellSize: {x: 0, y: 0}
+        childAlignment: 0
+        hasLayoutElement: 0
+        minSize: {x: 0, y: 0}
+        preferredSize: {x: 0, y: 0}
+        flexibleSize: {x: 0, y: 0}
+    - path: Canvas/SpeechBubble
+      props: 4
+      values:
+        anchorMin: {x: 0, y: 1}
+        anchorMax: {x: 0, y: 1}
+        pivot: {x: 0.5, y: 0.5}
+        anchoredPosition: {x: 852, y: -147.99997}
+        sizeDelta: {x: 648, y: 200}
+        scale: {x: 1, y: 1, z: 1}
+        rotationZ: 0
+        hasImage: 0
+        sprite: {fileID: 0}
+        imageColor: {r: 1, g: 1, b: 1, a: 1}
+        preserveAspect: 0
+        imageType: 0
+        hasText: 0
+        font: {fileID: 0}
+        fontSize: 0
+        textColor: {r: 1, g: 1, b: 1, a: 1}
+        alignment: 0
+        fontStyle: 0
+        characterSpacing: 0
+        lineSpacing: 0
+        hasLayoutGroup: 0
+        padding: {x: 0, y: 0, z: 0, w: 0}
+        spacing: {x: 0, y: 0}
+        cellSize: {x: 0, y: 0}
+        childAlignment: 0
+        hasLayoutElement: 0
+        minSize: {x: 0, y: 0}
+        preferredSize: {x: 0, y: 0}
+        flexibleSize: {x: 0, y: 0}
+    orders:
+    - parentPath: Canvas
+      children:
+      - Background
+      - StatusLabel
+      - Screen_Collection
+      - Screen_Interrogation
+      - Screen_Accusation
+      - Screen_Deduction
+      - Screen_GameOver
+      - Screen_Ending
+      - Screen_Talk
+      - Screen_Prelude
+      - Screen_Cutscene
+      - Screen_SuspectSelect
+      - SidePanel
+      - CloseUpPopup
+      - IllustrationPopup
+      - DialoguePanel
+      - SpeechBubble
+      - CinematicDialogue
+      - TopBar
+      - ChapterTitle
+      - DialogueToolbar
+      - DialogueLog
+      - RestoreCatcher
+      - ClueReadingWindow
+      - TutorialPopup
+      - TitleCard
+      - CoachMark
+      - ConfirmPopup
+      - SettingsMenu
+      - PauseMenu
+      - ScreenFader

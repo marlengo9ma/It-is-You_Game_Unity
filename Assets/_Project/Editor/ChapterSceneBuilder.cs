@@ -470,7 +470,6 @@ namespace ItIsYou.EditorTools
             var interrogateScreen = UI("Screen_Interrogation", root);
             var interRt = interrogateScreen.GetComponent<RectTransform>();
             Anchor(interRt, V(0, 0), V(1, 1), V(L.Gutter, L.Gutter), V(L.MainRight, -L.Gutter));
-            if (UseLive2D) interrogateScreen.AddComponent<RectMask2D>();   // 크게 띄운 Live2D 가 화면 판 밖(아래 여백)으로 넘치지 않게
 
             var interBg = Img("Backdrop", interRt, new Color32(0x1E, 0x22, 0x27, 0xFF));
             Stretch(interBg.rectTransform);
