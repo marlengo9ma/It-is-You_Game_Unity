@@ -372,14 +372,14 @@ namespace ItIsYou.EditorTools
                    .Set("preIncidentTalk", KeepStand(TutorialScript.PreIncidentTalk(), chapter.PreIncidentTalk, DialogueStand.Default))
                    .Set("cutsceneName", "일러스트 컷씬#1 — 주인공 독백")
                    .Set("cutscene", TutorialScript.Cutscene())
-                   // 컷씬#1 ~ Scene#2 사이 객실 대화는 스탠드 없이(제작자 2026-10-24)
+                   // 컷씬#1 ~ 수집 페이즈 전까지(컷씬 뒤 · 회상 뒤 · 사건 진행 #1) 객실 대화는 스탠드 없이 — 혼잣말 느낌(제작자 2026-10-24)
                    .Set("afterCutsceneTalk", KeepStand(TutorialScript.AfterCutsceneTalk(), chapter.AfterCutsceneTalk, DialogueStand.None))
                    .Set("flashbacks", Flashbacks(chapter,
                         ("회상씬 E#1", TutorialScript.FlashbackE1()),
                         ("회상씬 E#2", TutorialScript.FlashbackE2())))
                    .Set("afterFlashbackTalk", KeepStand(TutorialScript.AfterFlashbackTalk(), chapter.AfterFlashbackTalk, DialogueStand.None))
                    .Set("collectionGuide", TutorialScript.CollectionGuide())
-                   .Set("intro", KeepStand(WithIllustration(TutorialScript.Incident(), chapter.Intro, 0, "Cutscenes/Scene#2.png"), chapter.Intro, DialogueStand.Default))
+                   .Set("intro", KeepStand(WithIllustration(TutorialScript.Incident(), chapter.Intro, 0, "Cutscenes/Scene#2.png"), chapter.Intro, DialogueStand.None))
                    .Set("sceneObjects", Ed.L(objRibbon, objCoffee, objGlimpse,
                                              objNewspaper, objTypewriter, objRoomInfo))
                    .Set("gatePass", TutorialScript.GatePass())

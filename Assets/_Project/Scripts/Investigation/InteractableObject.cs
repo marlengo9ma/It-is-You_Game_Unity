@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using ItIsYou.Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -29,6 +29,15 @@ namespace ItIsYou.Investigation
 
         [SerializeField] private Graphic hitArea;
 
+        [Header("예비 표시 (2026-10-24)")]
+        [Tooltip("물건 자리를 늘 보여 주는 테두리 · 색 판. 나중에 물건 일러스트에 스트로크를 넣으면 비우거나 끈다. 일반/특수 모두 같은 모양.")]
+        [SerializeField] private Graphic marker;
+        [SerializeField] private Color markerColor = new Color(1f, 0.82f, 0.45f, 0.85f);
+        [Tooltip("마우스를 올렸을 때")]
+        [SerializeField] private Color markerHoverColor = new Color(1f, 0.9f, 0.62f, 1f);
+        [Tooltip("이미 살펴본 뒤")]
+        [SerializeField] private Color markerInspectedColor = new Color(0.75f, 0.72f, 0.66f, 0.45f);
+
         [Tooltip("아웃라인 강조 세기. 기획상 '약한 강조'라 기본값을 낮게 둔다.")]
         [SerializeField] private Color outlineColor = new Color(1f, 0.97f, 0.88f, 0.55f);
 
@@ -55,12 +64,21 @@ namespace ItIsYou.Investigation
 
             // 투명한 히트박스도 레이캐스트를 받아야 한다.
             if (hitArea != null) hitArea.raycastTarget = true;
+            if (marker != null) marker.raycastTarget = false;
+            RefreshMarker();
+        }
+
+        private void RefreshMarker()
+        {
+            if (marker == null) return;
+            marker.color = _hovering ? markerHoverColor : _inspected ? markerInspectedColor : markerColor;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             _hovering = true;
             if (outline != null) outline.enabled = true;
+            RefreshMarker();
             HoverChanged?.Invoke(this, true);
         }
 
@@ -68,6 +86,7 @@ namespace ItIsYou.Investigation
         {
             _hovering = false;
             if (outline != null) outline.enabled = false;
+            RefreshMarker();
             HoverChanged?.Invoke(this, false);
         }
 
@@ -77,7 +96,11 @@ namespace ItIsYou.Investigation
         }
 
         /// <summary>조사 완료로 표시한다. 재조사 대사를 쓸지 판단하는 데 쓴다.</summary>
-        public void MarkInspected() => _inspected = true;
+        public void MarkInspected()
+        {
+            _inspected = true;
+            RefreshMarker();
+        }
 
         public void SetEnabled(bool value)
         {

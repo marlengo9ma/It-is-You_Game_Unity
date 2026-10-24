@@ -32,6 +32,9 @@ namespace ItIsYou.Data
             [Tooltip("재생 속도.")]
             public float speed = 1f;
 
+            [Tooltip("켜 두면 이 칸은 재생하지 않는다(표정 · 리액션 · 연출 이름 모두). 모션을 잠시 빼 둘 때.")]
+            public bool disabled;
+
             [Tooltip("다른 이름으로도 부를 수 있게. 예: shock 칸에 startle 을 적으면 'startle' 연출에서도 이 모션이 나온다.")]
             public List<string> aliases = new List<string>();
 
@@ -72,7 +75,7 @@ namespace ItIsYou.Data
         public MotionSlot FindSlot(string name)
         {
             if (string.IsNullOrEmpty(name)) return null;
-            foreach (var s in slots) if (s != null && s.Matches(name)) return s;
+            foreach (var s in slots) if (s != null && !s.disabled && s.Matches(name)) return s;
             return null;
         }
 

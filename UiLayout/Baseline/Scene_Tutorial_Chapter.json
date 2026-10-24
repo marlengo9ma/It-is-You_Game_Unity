@@ -3276,7 +3276,8 @@
                 }
             },
             "children": [
-                "Label"
+                "Label",
+                "Marker"
             ]
         },
         {
@@ -3339,6 +3340,101 @@
                     "a": 1.0
                 },
                 "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_TYPEWRITER/Marker",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 12.0,
+                    "y": 12.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 21300000,
+                    "guid": "fc4c97e7c3b2bbe4196d9b4bda6baa31",
+                    "type": 3
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 0.8199999928474426,
+                    "b": 0.44999998807907107,
+                    "a": 0.8500000238418579
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -3468,7 +3564,8 @@
                 }
             },
             "children": [
-                "Label"
+                "Label",
+                "Marker"
             ]
         },
         {
@@ -3531,6 +3628,101 @@
                     "a": 1.0
                 },
                 "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_COFFEE/Marker",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 12.0,
+                    "y": 12.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 21300000,
+                    "guid": "fc4c97e7c3b2bbe4196d9b4bda6baa31",
+                    "type": 3
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 0.8199999928474426,
+                    "b": 0.44999998807907107,
+                    "a": 0.8500000238418579
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -3660,7 +3852,8 @@
                 }
             },
             "children": [
-                "Label"
+                "Label",
+                "Marker"
             ]
         },
         {
@@ -3723,6 +3916,101 @@
                     "a": 1.0
                 },
                 "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_NEWSPAPER/Marker",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 12.0,
+                    "y": 12.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 21300000,
+                    "guid": "fc4c97e7c3b2bbe4196d9b4bda6baa31",
+                    "type": 3
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 0.8199999928474426,
+                    "b": 0.44999998807907107,
+                    "a": 0.8500000238418579
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -3852,7 +4140,8 @@
                 }
             },
             "children": [
-                "Label"
+                "Label",
+                "Marker"
             ]
         },
         {
@@ -3915,6 +4204,101 @@
                     "a": 1.0
                 },
                 "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_GLIMPSE/Marker",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 12.0,
+                    "y": 12.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 21300000,
+                    "guid": "fc4c97e7c3b2bbe4196d9b4bda6baa31",
+                    "type": 3
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 0.8199999928474426,
+                    "b": 0.44999998807907107,
+                    "a": 0.8500000238418579
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -4044,7 +4428,8 @@
                 }
             },
             "children": [
-                "Label"
+                "Label",
+                "Marker"
             ]
         },
         {
@@ -4107,6 +4492,101 @@
                     "a": 1.0
                 },
                 "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_RIBBON/Marker",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 12.0,
+                    "y": 12.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 21300000,
+                    "guid": "fc4c97e7c3b2bbe4196d9b4bda6baa31",
+                    "type": 3
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 0.8199999928474426,
+                    "b": 0.44999998807907107,
+                    "a": 0.8500000238418579
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -4236,7 +4716,8 @@
                 }
             },
             "children": [
-                "Label"
+                "Label",
+                "Marker"
             ]
         },
         {
@@ -4299,6 +4780,101 @@
                     "a": 1.0
                 },
                 "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_ROOMINFO/Marker",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 12.0,
+                    "y": 12.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 21300000,
+                    "guid": "fc4c97e7c3b2bbe4196d9b4bda6baa31",
+                    "type": 3
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 0.8199999928474426,
+                    "b": 0.44999998807907107,
+                    "a": 0.8500000238418579
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,

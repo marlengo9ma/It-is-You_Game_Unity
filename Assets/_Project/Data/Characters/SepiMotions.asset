@@ -21,67 +21,80 @@ MonoBehaviour:
       \uC21C\uAC04 \xB7 \uB180\uB780 \uD45C\uC815\uC758 \uC904"
     clip: {fileID: 7400000, guid: 5fa2162a804fafd4a8f7596d73d34e60, type: 2}
     speed: 1
+    disabled: 1
     aliases:
     - startle
   - id: tremble
     note: "\uB3D9\uACF5\uC774 \uB5A8\uB9BC \xB7 \uC794\uB5A8\uB9BC"
     clip: {fileID: 0}
     speed: 1
+    disabled: 0
     aliases: []
   - id: lookaway
     note: "\uC2DC\uC120\uC744 \uD53C\uD568"
     clip: {fileID: 0}
     speed: 1
+    disabled: 0
     aliases: []
   - id: glance_cat
     note: "\uACE0\uC591\uC774 \uCABD\uC744 \uD790\uB054"
     clip: {fileID: 0}
     speed: 1
+    disabled: 0
     aliases: []
   - id: sigh
     note: "\uC791\uC740 \uD55C\uC228"
     clip: {fileID: 0}
     speed: 1
+    disabled: 0
     aliases: []
   - id: glare
     note: "\uC9F8\uB824\uBD04"
     clip: {fileID: 0}
     speed: 1
+    disabled: 0
     aliases: []
   - id: fume
     note: "\uD654\uAC00 \uB098 \uBD80\uB4E4\uAC70\uB9BC"
     clip: {fileID: 0}
     speed: 1
+    disabled: 0
     aliases: []
   - id: shrink
     note: "\uC5B4\uAE68\uAC00 \uC6C0\uCE20\uB7EC\uB4E6"
     clip: {fileID: 0}
     speed: 1
+    disabled: 0
     aliases: []
   - id: pale
     note: "\uC5BC\uAD74\uC774 \uD558\uC597\uAC8C \uC9C8\uB9BC"
     clip: {fileID: 0}
     speed: 1
+    disabled: 0
     aliases: []
   - id: bow
     note: "\uACE0\uAC1C\uB97C \uC219\uC784"
     clip: {fileID: 0}
     speed: 1
+    disabled: 0
     aliases: []
   - id: ponder
     note: "\uB208\uC744 \uAC10\uACE0 \uC0DD\uAC01"
     clip: {fileID: 0}
     speed: 1
+    disabled: 0
     aliases: []
   - id: special_1
     note: "\uC608\uBE44 \uCE78 \u2014 \uC0C8 \uBAA8\uC158\uC6A9"
     clip: {fileID: 0}
     speed: 1
+    disabled: 0
     aliases: []
   - id: special_2
     note: "\uC608\uBE44 \uCE78 \u2014 \uC0C8 \uBAA8\uC158\uC6A9"
     clip: {fileID: 0}
     speed: 1
+    disabled: 0
     aliases: []
   reactionSlot: shock
   expressionMotions:

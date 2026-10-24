@@ -451,10 +451,19 @@ namespace ItIsYou.EditorTools
                 outline.effectDistance = new Vector2(3f, -3f);
                 outline.enabled = false;
 
+                // 예비 표시(2026-10-24 제작자): 물건 자리를 늘 보이게 하는 테두리 + 옅은 색 판.
+                // 나중에 물건 일러스트를 따로 올려 스트로크로 강조하면 Marker 를 끄거나 지운다. 일반/특수 모두 같은 모양.
+                var marker = Img("Marker", spot.rectTransform, new Color(1f, 0.82f, 0.45f, 0.85f));
+                Anchor(marker.rectTransform, V(0, 0), V(1, 1), V(-HotspotMarkerPad, -HotspotMarkerPad), V(HotspotMarkerPad, HotspotMarkerPad));
+                marker.sprite = EnsureGeneratedSprite("HotspotFrame.png", 32, 32, HotspotFrameAlpha, new Vector4(10, 10, 10, 10));
+                marker.type = Image.Type.Sliced;
+                marker.raycastTarget = false;
+
                 var interactable = spot.gameObject.AddComponent<InteractableObject>();
                 interactable.Set("definition", def)
                             .Set("outline", outline)
-                            .Set("hitArea", spot);
+                            .Set("hitArea", spot)
+                            .Set("marker", marker);
                 sceneObjects.Add(interactable);
             }
 
@@ -1872,7 +1881,7 @@ namespace ItIsYou.EditorTools
         // Live2D 세피 놓는 법 — 모델이 허벅지에서 잘려 있어 잘린 선이 화면 아래로 빠지게 키우고 내린다 (2026-10-24 2차).
         // 플레이 중에는 그림(Live2D) 의 Live2D Fit 컴포넌트로 바로 맞춰 볼 수 있다. 정한 값은 여기에 적는다.
         private const float Live2DTalkZoom = 1.06f, Live2DTalkSink = 0.07f;                 // 대화 · 기차역
-        private const float Live2DInterrogationZoom = 1.32f, Live2DInterrogationSink = 0.2f;  // 심문
+        private const float Live2DInterrogationZoom = 1.6f, Live2DInterrogationSink = 0.27f;  // 심문 (2차: 더 크고 위로)
 
         private const string PremultipliedMaterialPath = "Assets/_Project/Art/Generated/UI_Premultiplied.mat";
 
@@ -2444,6 +2453,22 @@ namespace ItIsYou.EditorTools
         // ---------------------------------------------------------------- 만들어 두는 그림 (아트가 오면 아트 세트가 덮는다)
 
         /// <summary>흰 그림을 코드로 그려 PNG 스프라이트로 저장한다. 이미 있으면 그것을 쓴다(지우면 다시 그린다).</summary>
+        private const float HotspotMarkerPad = 6f;
+
+        /// <summary>수집 물건 표시 판: 둥근 모서리 테두리(불투명) + 안쪽은 옅게(16%). 32×32, 가장자리 10px 9-slice.</summary>
+        private static float HotspotFrameAlpha(int x, int y)
+        {
+            const float size = 32f, radius = 7f, stroke = 2.5f, fill = 0.16f;
+            var px = Mathf.Abs(x + 0.5f - size * 0.5f) - (size * 0.5f - radius);
+            var py = Mathf.Abs(y + 0.5f - size * 0.5f) - (size * 0.5f - radius);
+            var outside = new Vector2(Mathf.Max(px, 0f), Mathf.Max(py, 0f)).magnitude;
+            var dist = outside + Mathf.Min(Mathf.Max(px, py), 0f) - radius;   // 안쪽이 음수
+            if (dist > 0.5f) return 0f;
+            var edge = -dist;
+            if (edge < stroke) return Mathf.Clamp01(0.5f - dist);
+            return Mathf.Lerp(1f, fill, Mathf.Clamp01(edge - stroke));
+        }
+
         private static Sprite EnsureGeneratedSprite(string file, int w, int h, System.Func<int, int, float> alpha, Vector4 border)
         {
             const string folder = "Assets/_Project/Art/Generated";

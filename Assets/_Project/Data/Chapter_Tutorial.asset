@@ -1553,7 +1553,7 @@ MonoBehaviour:
       stand: 0
       autoGrantClueId: 
     animationId: 
-    stand: 0
+    stand: 1
     trustDelta: 0
     endsInterrogation: 0
   sceneObjects:
