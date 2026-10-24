@@ -161,6 +161,14 @@ namespace ItIsYou.Data
         [Tooltip("타이틀 애니메이션 배경(영상, .mp4 등). 넣으면 위 그림 대신 영상이 반복 재생된다.")]
         public UnityEngine.Video.VideoClip titleBackgroundVideo;
 
+        [Tooltip("타이틀 로고(투명 배경 PNG). 화면 왼쪽 위 하늘 자리에 놓이고, 약한 빛이 비스듬히 지나간다. 자리 · 크기는 아래 offset · scale 로.")]
+        public Sprite titleLogo;
+        [Tooltip("로고 자리 — offset 은 기본 자리(왼쪽 위)에서 옮기는 양(1920×1080 기준 px), scale 은 배율.")]
+        public Placement titleLogoPlace = Placement.Fit;
+
+        [Tooltip("타이틀 날씨 효과(비 · 눈 · 안개 등)를 담은 프리팹. UI(Image/RawImage 등)로 만들면 배경과 로고 사이에 깔린다. 비우면 없음.")]
+        public GameObject titleWeather;
+
         [Tooltip("타이틀 화면의 레트로 타자기. 약 608×384, 가로 2/3 지점의 지평선 위.")]
         public Sprite titleTypewriter;
         public Placement titleTypewriterPlace = Placement.Fit;

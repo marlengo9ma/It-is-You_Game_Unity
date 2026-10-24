@@ -30,7 +30,6 @@ namespace ItIsYou.Characters
 
         private int _idleIndex = -1;
         private float _retryAt;
-        private bool _special;
         private string _lastName;
         private float _lastTime = -10f;
 
@@ -65,7 +64,6 @@ namespace ItIsYou.Characters
             _retryAt = Time.unscaledTime + 0.5f;   // 시작이 막혀 있으면(모션 목록 없음 등) 매 프레임 다시 시도하지 않는다
 
             // 특수 모션이 끝났거나 기본 모션 한 바퀴가 끝났다 — 다음 기본 모션.
-            _special = false;
             CurrentSpecial = null;
             PlayNextIdle();
         }
@@ -91,7 +89,6 @@ namespace ItIsYou.Characters
             if (_controller == null || slot == null || slot.clip == null) return false;
             _controller.PlayAnimation(slot.clip, 0, Live2D.Cubism.Framework.Motion.CubismMotionPriority.PriorityForce,
                 isLoop: false, speed: slot.speed <= 0f ? 1f : slot.speed);
-            _special = true;
             CurrentSpecial = slot.id;
             return true;
         }

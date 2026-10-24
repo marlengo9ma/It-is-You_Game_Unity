@@ -303,7 +303,7 @@ namespace ItIsYou.EditorTools
             cineCatcher.gameObject.AddComponent<DialogueClickRelay>();
 
             var cineGradient = Img("Gradient", cineRt, Color.white);
-            Anchor(cineGradient.rectTransform, V(0, 0), V(1, 0), V(0, 0), V(0, 440f));
+            Anchor(cineGradient.rectTransform, V(0, 0), V(1, 0), V(0, 0), V(0, CineGradientHeight));
             cineGradient.sprite = _art.bottomGradient != null ? _art.bottomGradient : EnsureGradientSprite();
             cineGradient.type = Image.Type.Simple;
             cineGradient.raycastTarget = false;
@@ -470,6 +470,7 @@ namespace ItIsYou.EditorTools
             var interrogateScreen = UI("Screen_Interrogation", root);
             var interRt = interrogateScreen.GetComponent<RectTransform>();
             Anchor(interRt, V(0, 0), V(1, 1), V(L.Gutter, L.Gutter), V(L.MainRight, -L.Gutter));
+            if (UseLive2D) interrogateScreen.AddComponent<RectMask2D>();   // 크게 띄운 Live2D 가 화면 판 밖(아래 여백)으로 넘치지 않게
 
             var interBg = Img("Backdrop", interRt, new Color32(0x1E, 0x22, 0x27, 0xFF));
             Stretch(interBg.rectTransform);
@@ -503,7 +504,8 @@ namespace ItIsYou.EditorTools
                 charImg.color = new Color(1f, 1f, 1f, 0f);
                 charLabel.gameObject.SetActive(false);
                 charOutline.enabled = false;
-                var raw = Live2DOutput(charRt);
+                var raw = Live2DOutput(charRt, Live2DInterrogationZoom, Live2DInterrogationSink);
+                raw.raycastTarget = true;   // 보이는 몸 전체가 리액션 클릭 자리 — 눌림은 부모(Character_Sepi)의 클릭 판정으로 올라간다
                 var rawOutline = raw.gameObject.AddComponent<Outline>();
                 rawOutline.effectColor = P.Brass;
                 rawOutline.effectDistance = new Vector2(4f, -4f);
@@ -1198,7 +1200,7 @@ namespace ItIsYou.EditorTools
             var talkSepiTag = Text("Label", talkSepi.rectTransform, "세피\n(아트 대기)", T.Caption,
                 P.InkSoft, TextAlignmentOptions.Center);
             Stretch(talkSepiTag.rectTransform);
-            if (UseLive2D) { talkSepi.color = new Color(1f, 1f, 1f, 0f); talkSepiTag.gameObject.SetActive(false); Live2DOutput(talkSepi.rectTransform); }
+            if (UseLive2D) { talkSepi.color = new Color(1f, 1f, 1f, 0f); talkSepiTag.gameObject.SetActive(false); Live2DOutput(talkSepi.rectTransform, Live2DTalkZoom, Live2DTalkSink); }
             else Art(talkSepi, _art.SepiOnTalk, _art.sepiTalkPlace, false, talkSepiTag);
 
             var talkCat = Img("Cat_Placeholder", talkRt, new Color32(0x2A, 0x2F, 0x36, 0xFF));
@@ -1233,7 +1235,7 @@ namespace ItIsYou.EditorTools
             var preludeSepiTag = Text("Label", preludeSepi.rectTransform, "세피\n(아트 대기)", T.Caption,
                 P.InkSoft, TextAlignmentOptions.Center);
             Stretch(preludeSepiTag.rectTransform);
-            if (UseLive2D) { preludeSepi.color = new Color(1f, 1f, 1f, 0f); preludeSepiTag.gameObject.SetActive(false); Live2DOutput(preludeSepi.rectTransform); }
+            if (UseLive2D) { preludeSepi.color = new Color(1f, 1f, 1f, 0f); preludeSepiTag.gameObject.SetActive(false); Live2DOutput(preludeSepi.rectTransform, Live2DTalkZoom, Live2DTalkSink); }
             else Art(preludeSepi, _art.SepiOnTalk, _art.sepiTalkPlace, false, preludeSepiTag);
 
             // ---- [일러스트 컷씬#1] ----
@@ -1355,20 +1357,27 @@ namespace ItIsYou.EditorTools
             Stretch(illuRoot.GetComponent<RectTransform>());
             var illuGroup = illuRoot.AddComponent<CanvasGroup>();
             illuGroup.alpha = 0f; illuGroup.blocksRaycasts = false; illuGroup.interactable = false;
-            var illuScrim = Img("Scrim", illuRoot.transform, new Color(0f, 0f, 0f, 0.45f));
+            // 2026-10-24 2차(제작자): 앞의 컷씬(#1)처럼 화면 전체에 띄운다 — 어두운 바탕 위에 그림을 꽉 채우고, 글은 아래 대사창으로 읽힌다.
+            var illuScrim = Img("Scrim", illuRoot.transform, new Color32(0x15, 0x18, 0x1C, 0xFF));
             Stretch(illuScrim.rectTransform);
             illuScrim.raycastTarget = false;
-            var illuFrame = Img("Frame", illuRoot.transform, new Color32(0x16, 0x13, 0x10, 0xFF));
-            // 1920×1080 기준 가운데에서 위로 112 — 아래 시네마틱 대사창(이름표 · 본문)을 가리지 않게.
-            Anchor(illuFrame.rectTransform, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-640f, -248f), V(640f, 472f));
+            var illuFrame = Img("Frame", illuRoot.transform, new Color(0f, 0f, 0f, 0f));
+            Stretch(illuFrame.rectTransform);
             illuFrame.raycastTarget = false;
-            var illuImg = Img("Image", illuFrame.rectTransform, Color.white);
-            Anchor(illuImg.rectTransform, V(0, 0), V(1, 1), V(8f, 8f), V(-8f, -8f));
-            illuImg.preserveAspect = true;
+            illuFrame.gameObject.AddComponent<RectMask2D>();
+            var illuFit = UI("Fit", illuFrame.rectTransform);
+            Stretch(illuFit.GetComponent<RectTransform>());
+            var illuFitter = illuFit.AddComponent<AspectRatioFitter>();
+            illuFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+            illuFitter.aspectRatio = 16f / 9f;
+            var illuImg = Img("Image", illuFit.transform, Color.white);
+            Stretch(illuImg.rectTransform);
+            illuImg.preserveAspect = false;
             illuImg.raycastTarget = false;
             var illuView = illuRoot.AddComponent<IllustrationPopupView>();
             illuView.Set("dialogue", presenter).Set("group", illuGroup)
-                    .Set("frame", illuFrame.rectTransform).Set("image", illuImg);
+                    .Set("frame", illuFrame.rectTransform).Set("image", illuImg)
+                    .Set("fitter", illuFitter).Set("startScale", 1f);
 
             // 대사창은 새로 만든 전면 배경들보다 위에 있어야 한다.
             dialoguePanel.transform.SetAsLastSibling();
@@ -1847,12 +1856,34 @@ namespace ItIsYou.EditorTools
         private static bool UseLive2D => _art != null && _art.HasSepiLive2D && Live2DSetup.HasCubism && Live2DSetup.LayerIndex >= 0;
 
         /// <summary>인물 자리 안에 Live2D 그림을 보여 줄 RawImage. 크기는 실행 중에 Live2DStage 가 맞춘다.</summary>
-        private static RawImage Live2DOutput(RectTransform slot)
+        // Live2D 세피 놓는 법 — 모델이 허벅지에서 잘려 있어 잘린 선이 화면 아래로 빠지게 키우고 내린다 (2026-10-24 2차).
+        // 플레이 중에는 그림(Live2D) 의 Live2D Fit 컴포넌트로 바로 맞춰 볼 수 있다. 정한 값은 여기에 적는다.
+        private const float Live2DTalkZoom = 1.06f, Live2DTalkSink = 0.07f;                 // 대화 · 기차역
+        private const float Live2DInterrogationZoom = 1.32f, Live2DInterrogationSink = 0.2f;  // 심문
+
+        private const string PremultipliedMaterialPath = "Assets/_Project/Art/Generated/UI_Premultiplied.mat";
+
+        /// <summary>Live2D 그림은 '색 × 알파'로 그려진다 — 그대로 섞는 재질(없으면 만든다).</summary>
+        private static Material EnsurePremultipliedMaterial()
+        {
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(PremultipliedMaterialPath);
+            if (mat != null) return mat;
+            var shader = Shader.Find("ItIsYou/UI/Premultiplied");
+            if (shader == null) { Debug.LogWarning("[It is You] ItIsYou/UI/Premultiplied 셰이더가 없습니다 — Live2D 가장자리가 어둡게 보일 수 있습니다."); return null; }
+            Ed.EnsureFolder("Assets/_Project/Art/Generated");
+            mat = new Material(shader) { name = "UI_Premultiplied" };
+            AssetDatabase.CreateAsset(mat, PremultipliedMaterialPath);
+            return mat;
+        }
+
+        private static RawImage Live2DOutput(RectTransform slot, float zoom, float sink)
         {
             var go = UI("Live2D", slot);
             var rt = go.GetComponent<RectTransform>();
             Stretch(rt);
             var raw = go.AddComponent<RawImage>();
+            raw.material = EnsurePremultipliedMaterial();
+            go.AddComponent<Live2DFit>().Set("zoom", zoom).Set("sink", sink);
             raw.raycastTarget = false;
             raw.color = Color.white;
             raw.enabled = false;   // 그림이 준비되면 켜진다 — 그 전에 흰 판이 보이지 않게
@@ -2355,11 +2386,15 @@ namespace ItIsYou.EditorTools
             }
         }
 
-        /// <summary>아래로 갈수록 어두워지는 세로 그라데이션 스프라이트. 없으면 PNG 로 만들어 둔다.</summary>
+        /// <summary>일반 대화 대사창(아래 그라데이션)의 진하기 — 글 자리의 불투명도와, 그 진한 띠가 차지하는 높이 비율.</summary>
+        private const float CineGradientAlpha = 0.9f, CineGradientSolid = 0.5f;
+        private const float CineGradientHeight = 520f;
+
+        /// <summary>아래로 갈수록 어두워지는 세로 그라데이션 스프라이트. 없으면 PNG 로 만들어 둔다(값을 바꾸면 파일 이름도 바꿀 것).</summary>
         private static Sprite EnsureGradientSprite()
         {
             const string folder = "Assets/_Project/Art/Generated";
-            const string path = folder + "/BottomGradient.png";
+            const string path = folder + "/BottomGradient_v2.png";
             var existing = AssetDatabase.LoadAssetAtPath<Sprite>(path);
             if (existing != null) return existing;
 
@@ -2369,7 +2404,9 @@ namespace ItIsYou.EditorTools
             for (var y = 0; y < h; y++)
             {
                 var t = y / (float)(h - 1);              // 0 = 아래, 1 = 위
-                var a = Mathf.Lerp(0.92f, 0f, Mathf.SmoothStep(0f, 1f, t));
+                // 2026-10-24 2차: 글이 놓이는 아래 절반은 거의 막고(뒤가 조금만 비친다), 위 절반에서 부드럽게 사라진다.
+                var a = t < CineGradientSolid ? CineGradientAlpha
+                    : Mathf.Lerp(CineGradientAlpha, 0f, Mathf.SmoothStep(0f, 1f, (t - CineGradientSolid) / (1f - CineGradientSolid)));
                 for (var x = 0; x < 4; x++) tex.SetPixel(x, y, new Color(0.04f, 0.035f, 0.03f, a));
             }
             tex.Apply();

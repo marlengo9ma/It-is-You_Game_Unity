@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29d174ad3daf17a4596fbe364b580cc2, type: 3}
   m_Name: ArtSet
   m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.ArtSet
-  roomBackground: {fileID: 0}
+  roomBackground: {fileID: 21300000, guid: a08b19a5fe08bd9498cdb7a2bc5a30a7, type: 3}
   roomBackgroundPlace:
     offset: {x: 0, y: 0}
     scale: 1
@@ -36,7 +36,7 @@ MonoBehaviour:
     scale: 1
     flipX: 0
     preserveAspect: 0
-  endingBackground: {fileID: 21300000, guid: cfeb0c957d3b4e04c83814273f8e4559, type: 3}
+  endingBackground: {fileID: 21300000, guid: 65aee89b8fef78246896bc26ac8e27fe, type: 3}
   endingBackgroundPlace:
     offset: {x: 0, y: 0}
     scale: 1
@@ -93,6 +93,13 @@ MonoBehaviour:
     flipX: 0
     preserveAspect: 1
   titleBackgroundVideo: {fileID: 0}
+  titleLogo: {fileID: 21300000, guid: c9c505e4f85179145ac3dfeb8bc429e9, type: 3}
+  titleLogoPlace:
+    offset: {x: 0, y: 0}
+    scale: 1
+    flipX: 0
+    preserveAspect: 1
+  titleWeather: {fileID: 0}
   titleTypewriter: {fileID: 0}
   titleTypewriterPlace:
     offset: {x: 0, y: 0}

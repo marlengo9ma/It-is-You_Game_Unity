@@ -4757,12 +4757,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "a08b19a5fe08bd9498cdb7a2bc5a30a7",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.11764705926179886,
-                    "g": 0.13333334028720857,
-                    "b": 0.15294118225574494,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -4818,7 +4820,7 @@
         },
         {
             "path": "Canvas/Screen_Interrogation/Backdrop/Tag",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -5390,7 +5392,7 @@
         },
         {
             "path": "Canvas/Screen_Interrogation/Cat_Placeholder",
-            "active": true,
+            "active": false,
             "hasGroup": true,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -5619,10 +5621,10 @@
                     "type": 0
                 },
                 "imageColor": {
-                    "r": 0.18039216101169587,
-                    "g": 0.20392157137393952,
-                    "b": 0.23137255012989045,
-                    "a": 0.7843137383460999
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
                 },
                 "preserveAspect": false,
                 "imageType": 1,
@@ -5677,7 +5679,7 @@
         },
         {
             "path": "Canvas/Screen_Interrogation/Hotspot_OBJ_INT_CAT/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -5811,10 +5813,10 @@
                     "type": 0
                 },
                 "imageColor": {
-                    "r": 0.18039216101169587,
-                    "g": 0.20392157137393952,
-                    "b": 0.23137255012989045,
-                    "a": 0.7843137383460999
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
                 },
                 "preserveAspect": false,
                 "imageType": 1,
@@ -5869,7 +5871,7 @@
         },
         {
             "path": "Canvas/Screen_Interrogation/Hotspot_OBJ_INT_PROFILE/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -6574,12 +6576,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "a08b19a5fe08bd9498cdb7a2bc5a30a7",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.11764705926179886,
-                    "g": 0.13333334028720857,
-                    "b": 0.15294118225574494,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -6635,7 +6639,7 @@
         },
         {
             "path": "Canvas/Screen_Accusation/Backdrop/Tag",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -18651,7 +18655,7 @@
                 "hasImage": true,
                 "sprite": {
                     "fileID": 21300000,
-                    "guid": "cfeb0c957d3b4e04c83814273f8e4559",
+                    "guid": "65aee89b8fef78246896bc26ac8e27fe",
                     "type": 3
                 },
                 "imageColor": {
@@ -19886,12 +19890,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "a08b19a5fe08bd9498cdb7a2bc5a30a7",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.11764705926179886,
-                    "g": 0.13333334028720857,
-                    "b": 0.15294118225574494,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -19947,7 +19953,7 @@
         },
         {
             "path": "Canvas/Screen_Talk/Backdrop/Tag",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -21219,7 +21225,7 @@
                 "hasImage": true,
                 "sprite": {
                     "fileID": 21300000,
-                    "guid": "c84105da763069d4290e77ebfe3baff3",
+                    "guid": "8d6ee9297daee3f43b6078061494adc5",
                     "type": 3
                 },
                 "imageColor": {
@@ -21508,12 +21514,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "a08b19a5fe08bd9498cdb7a2bc5a30a7",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.11764705926179886,
-                    "g": 0.13333334028720857,
-                    "b": 0.15294118225574494,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -21569,7 +21577,7 @@
         },
         {
             "path": "Canvas/Screen_SuspectSelect/Backdrop/Tag",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -23987,10 +23995,10 @@
                     "instanceID": 0
                 },
                 "imageColor": {
-                    "r": 0.0,
-                    "g": 0.0,
-                    "b": 0.0,
-                    "a": 0.44999998807907107
+                    "r": 0.08235294371843338,
+                    "g": 0.0941176488995552,
+                    "b": 0.10980392247438431,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
                 "imageType": 0,
@@ -24050,12 +24058,12 @@
             "groupBlocks": true,
             "values": {
                 "anchorMin": {
-                    "x": 0.5,
-                    "y": 0.5
+                    "x": 0.0,
+                    "y": 0.0
                 },
                 "anchorMax": {
-                    "x": 0.5,
-                    "y": 0.5
+                    "x": 1.0,
+                    "y": 1.0
                 },
                 "pivot": {
                     "x": 0.5,
@@ -24063,11 +24071,11 @@
                 },
                 "anchoredPosition": {
                     "x": 0.0,
-                    "y": 112.0
+                    "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 1280.0,
-                    "y": 720.0
+                    "x": 0.0,
+                    "y": 0.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -24080,9 +24088,104 @@
                     "instanceID": 0
                 },
                 "imageColor": {
-                    "r": 0.08627451211214066,
-                    "g": 0.07450980693101883,
-                    "b": 0.062745101749897,
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Fit"
+            ]
+        },
+        {
+            "path": "Canvas/IllustrationPopup/Frame/Fit",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 290.68798828125,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -24137,7 +24240,7 @@
             ]
         },
         {
-            "path": "Canvas/IllustrationPopup/Frame/Image",
+            "path": "Canvas/IllustrationPopup/Frame/Fit/Image",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -24161,8 +24264,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": -16.0,
-                    "y": -16.0
+                    "x": 0.0,
+                    "y": 0.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -24180,7 +24283,7 @@
                     "b": 1.0,
                     "a": 1.0
                 },
-                "preserveAspect": true,
+                "preserveAspect": false,
                 "imageType": 0,
                 "hasText": false,
                 "font": {
@@ -25780,11 +25883,11 @@
                 },
                 "anchoredPosition": {
                     "x": 0.0,
-                    "y": 220.0
+                    "y": 260.0
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 440.0
+                    "y": 520.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -25795,7 +25898,7 @@
                 "hasImage": true,
                 "sprite": {
                     "fileID": 21300000,
-                    "guid": "ee1959c1cbeb7f84fa546ce5836e039f",
+                    "guid": "0b87f8ecad5244649a8745361bb370b9",
                     "type": 3
                 },
                 "imageColor": {

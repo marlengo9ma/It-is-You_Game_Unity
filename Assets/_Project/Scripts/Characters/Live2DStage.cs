@@ -42,10 +42,16 @@ namespace ItIsYou.Characters
 
             var bounds = ModelBounds();
             var aspect = bounds.size.y > 0.0001f ? bounds.size.x / bounds.size.y : 0.6f;
+            Debug.Log($"[Live2DStage] 찍을 범위 {bounds.center} 크기 {bounds.size}");
             var h = Mathf.Max(64, textureHeight);
             var w = Mathf.Max(64, Mathf.RoundToInt(h * aspect));
 
-            _rt = new RenderTexture(w, h, 24, RenderTextureFormat.ARGB32) { name = "Live2DStage", antiAliasing = 1 };
+            // 화면에서는 보통 그림보다 작게 보인다 — 밉맵을 만들어 줄여 보일 때 거칠어지지 않게 한다.
+            _rt = new RenderTexture(w, h, 24, RenderTextureFormat.ARGB32)
+            {
+                name = "Live2DStage", antiAliasing = 1,
+                useMipMap = true, autoGenerateMips = true, filterMode = FilterMode.Trilinear
+            };
             _rt.Create();
 
             stageCamera.orthographic = true;
@@ -70,7 +76,7 @@ namespace ItIsYou.Characters
         }
 
         private float _aspect = -1f;
-        private readonly Dictionary<RawImage, Vector2> _fittedFor = new Dictionary<RawImage, Vector2>();
+        private readonly Dictionary<RawImage, Vector4> _fittedFor = new Dictionary<RawImage, Vector4>();
 
         private void LateUpdate()
         {
@@ -78,7 +84,9 @@ namespace ItIsYou.Characters
         }
 
         /// <summary>
-        /// 그림을 인물 자리(부모 판) 안에 비율을 지켜 넣는다 — 가로 가운데, 발은 바닥에. 자리 크기가 바뀌면 다시 맞춘다.
+        /// 그림을 인물 자리(부모 판) 안에 비율을 지켜 넣는다 — 가로 가운데, 아래는 바닥에. 자리 크기가 바뀌면 다시 맞춘다.
+        /// 그림(RawImage)에 <see cref="Live2DFit"/> 가 있으면 그 값만큼 키우고(zoom) 아래로 내린다(sink) —
+        /// 모델이 허벅지에서 잘려 있으므로, 잘린 선이 화면 아래로 빠지게 할 때 쓴다.
         /// 자리 · 크기는 부모 판(Sepi_Placeholder / Character_Sepi)을 UI 편집기로 옮기면 된다.
         /// </summary>
         private void FitOutputs()
@@ -89,20 +97,52 @@ namespace ItIsYou.Characters
                 var parent = raw.rectTransform.parent as RectTransform;
                 if (parent == null) continue;
                 var size = parent.rect.size;
-                if (_fittedFor.TryGetValue(raw, out var last) && last == size) continue;
-                _fittedFor[raw] = size;
+                var fit = raw.GetComponent<Live2DFit>();
+                var zoom = fit != null ? Mathf.Max(0.1f, fit.Zoom) : 1f;
+                var sink = fit != null ? fit.Sink : 0f;
+                var key = new Vector4(size.x, size.y, zoom, sink + (fit != null ? fit.OffsetX * 1000f : 0f));
+                if (_fittedFor.TryGetValue(raw, out var last) && last == key) continue;
+                _fittedFor[raw] = key;
 
                 var w = size.x; var h = w / _aspect;
                 if (h > size.y) { h = size.y; w = h * _aspect; }
+                w *= zoom; h *= zoom;
                 var rt = raw.rectTransform;
                 rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0f);
                 rt.pivot = new Vector2(0.5f, 0f);
                 rt.sizeDelta = new Vector2(w, h);
-                rt.anchoredPosition = Vector2.zero;
+                rt.anchoredPosition = new Vector2(fit != null ? fit.OffsetX : 0f, -sink * h);
             }
         }
 
+        /// <summary>
+        /// 찍을 범위. 모델의 캔버스(Cubism 에디터에서 정한 그림판 크기)를 먼저 쓰고, 없으면 메시 크기를 잰다.
+        /// 빌드에서는 시작 직후 메시 크기가 0 으로 잡혀 카메라가 빈 곳을 찍는 일이 있어 캔버스를 기준으로 삼는다(2026-10-24 2차).
+        /// </summary>
         private Bounds ModelBounds()
+        {
+#if LIVE2D_CUBISM
+            var cubism = (model != null ? model : transform).GetComponentInChildren<Live2D.Cubism.Core.CubismModel>(true);
+            var info = cubism != null ? cubism.CanvasInformation : null;
+            if (info != null && info.PixelsPerUnit > 0f && info.CanvasWidth > 0f && info.CanvasHeight > 0f)
+            {
+                var ppu = info.PixelsPerUnit;
+                var w = info.CanvasWidth / ppu;
+                var h = info.CanvasHeight / ppu;
+                // 원점(캔버스 왼쪽 위에서 잰 px)이 모델 위치다. 위가 +y.
+                var left = -info.CanvasOriginX / ppu;
+                var top = info.CanvasOriginY / ppu;
+                var t = cubism.transform;
+                var localCenter = new Vector3(left + w * 0.5f, top - h * 0.5f, 0f);
+                var center = t.TransformPoint(localCenter);
+                var scale = t.lossyScale;
+                return new Bounds(center, new Vector3(w * Mathf.Abs(scale.x), h * Mathf.Abs(scale.y), 0.01f));
+            }
+#endif
+            return RendererBounds();
+        }
+
+        private Bounds RendererBounds()
         {
             var root = model != null ? model : transform;
             var renderers = root.GetComponentsInChildren<Renderer>(true);
