@@ -1,10 +1,11 @@
-using System.Collections.Generic;
 using ItIsYou.Core;
+using ItIsYou.UI;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 using L = ItIsYou.EditorTools.Layout;
 using P = ItIsYou.EditorTools.Layout.Palette;
 using T = ItIsYou.EditorTools.Layout.Type;
@@ -13,28 +14,26 @@ using K = ItIsYou.EditorTools.UiKit;
 namespace ItIsYou.EditorTools
 {
     /// <summary>
-    /// 스타트 화면을 조립한다.
+    /// 스타트 화면을 조립한다 (2026-10-24 개편).
     ///
-    /// 기획서: "레트로 타자기를 2/3 지점에 배치 / 배경의 움직이는 요소".
-    /// 아트가 들어오기 전이라 타자기 자리에는 같은 크기의 빈 판을 세워 둔다.
-    /// 자리를 미리 잡아 두면, 나중에 그림만 끼워 넣어도 구도가 흔들리지 않는다.
-    ///
-    /// 움직이는 요소는 증기 층이다. 타이틀 화면이 완전히 멈춰 있으면
-    /// 로딩이 걸린 것처럼 보이기 때문에, 아트가 없는 지금도 뭔가는 흘러야 한다.
-    /// 다만 증기는 배경이지 요소가 아니므로, 배경색과의 차이를 아주 좁게 둔다.
+    /// 화면 전체가 배경 그림 한 장(나중에 애니메이션)이고, 그 위에는 메뉴 버튼만 있다.
+    /// · 배경: 아트 세트의 titleBackgroundVideo(영상)가 있으면 영상을, 없으면 titleBackground(그림)를 화면에 꽉 차게 깐다
+    ///   (비율이 달라도 빈 띠 없이 — 가장자리만 잘린다). 위아래 위치는 titleBackgroundPlace 의 offset 으로 맞춘다.
+    /// · 메뉴: 마우스를 올리면 살짝 떠오르며 밝아진다(<see cref="HoverLift"/>). 자리는 UI 편집기로 옮긴다.
     /// </summary>
     public static class TitleSceneBuilder
     {
         private const string SceneFolder = "Assets/_Project/Scenes";
         private const string ScenePath = SceneFolder + "/Title.unity";
 
-        /// <summary>플랫폼의 지평. 타자기가 이 선 위에 선다.</summary>
-        private const float HorizonY = 0.28f;
-
         // ---- 메뉴 ----
-        private const float MenuWidth = 480f;    // 60u
+        private const float MenuWidth = 400f;    // 50u
         private const float MenuButton = 72f;    // 9u
         private const float MenuGap = 16f;       // 2u
+
+        private static readonly Color ButtonColor = new Color(0.08f, 0.09f, 0.11f, 0.78f);
+        private static readonly Color ButtonHighlight = new Color(0.30f, 0.24f, 0.12f, 0.92f);
+        private static readonly Color LabelHighlight = new Color32(0xF2, 0xD7, 0x8C, 0xFF);
 
         [MenuItem("It is You/3. 타이틀 씬 생성", priority = 10)]
         public static void Build()
@@ -43,113 +42,70 @@ namespace ItIsYou.EditorTools
             K.Prepare();
             Ed.EnsureFolder(SceneFolder);
 
-            // 둥근 사각형(UISprite)은 어떤 크기로 늘려도 '버튼'처럼 보인다.
-            // 증기에는 원형 스프라이트를 쓴다.
-            var puff = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
-
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            var root = K.Boot(P.Bg);
+            var root = K.Boot(Color.black);
 
-            var bg = K.Img("Background", root, P.Bg);
-            K.Stretch(bg.rectTransform);
-            bg.raycastTarget = false;
-
-            // 아트 세트 (Assets/_Project/Art/ArtSet.asset) — 배경과 타자기 그림이 있으면 끼운다.
             var art = AssetDatabase.LoadAssetAtPath<ItIsYou.Data.ArtSet>("Assets/_Project/Art/ArtSet.asset");
-            if (art != null && art.titleBackground != null)
+
+            // ---------------------------------------------------- 배경
+            // 화면 전체를 덮는 판. 안의 그림(또는 영상)은 비율을 지킨 채 꽉 채운다.
+            var bgFrame = K.UI("Background", root);
+            var bgFrameRt = (RectTransform)bgFrame.transform;
+            K.Stretch(bgFrameRt);
+            bgFrame.AddComponent<RectMask2D>();
+
+            var video = art != null ? art.titleBackgroundVideo : null;
+            var sprite = art != null ? art.titleBackground : null;
+            var place = art != null ? art.titleBackgroundPlace : ItIsYou.Data.ArtSet.Placement.Stretch;
+
+            // Fit = 그림 비율로 화면을 꽉 덮는 판(AspectRatioFitter). 그 안의 그림을 offset · scale 로 옮긴다 —
+            // AspectRatioFitter 는 자기 자리를 매번 가운데로 되돌리므로 옮기는 값은 자식에 둔다.
+            var fit = K.UI("Fit", bgFrameRt);
+            var fitRt = (RectTransform)fit.transform;
+            K.Stretch(fitRt);
+            var fitter = fit.AddComponent<AspectRatioFitter>();
+            fitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+
+            if (video != null)
             {
-                bg.sprite = art.titleBackground;
-                bg.color = Color.white;
-                bg.preserveAspect = art.titleBackgroundPlace.preserveAspect;
-                Place(bg.rectTransform, art.titleBackgroundPlace);
+                fitter.aspectRatio = video.height > 0 ? (float)video.width / video.height : 16f / 9f;
+                var raw = K.UI("Video", fitRt).AddComponent<RawImage>();
+                raw.raycastTarget = false;
+                K.Stretch(raw.rectTransform);
+                var player = raw.gameObject.AddComponent<VideoPlayer>();
+                player.clip = video;
+                player.isLooping = true;
+                player.playOnAwake = true;
+                player.audioOutputMode = VideoAudioOutputMode.None;
+                player.renderMode = VideoRenderMode.RenderTexture;
+                raw.gameObject.AddComponent<VideoBackground>();
+                Place(raw.rectTransform, place);
             }
-
-            // ---------------------------------------------------- 움직이는 배경
-            var backdrop = K.UI("Backdrop", root);
-            var backdropRt = backdrop.GetComponent<RectTransform>();
-            K.Stretch(backdropRt);
-
-            var drifting = new List<RectTransform>
+            else
             {
-                DriftLayer("Steam_Far",  backdropRt, puff, 0.44f, 340f, new Color32(0x20, 0x25, 0x2B, 0x26)),
-                DriftLayer("Steam_Mid",  backdropRt, puff, 0.32f, 240f, new Color32(0x23, 0x28, 0x2F, 0x2E)),
-                DriftLayer("Steam_Near", backdropRt, puff, 0.14f, 180f, new Color32(0x17, 0x1A, 0x1F, 0x59)),
-            };
-
-            // 지평선. 메뉴를 가로지르지 않도록 오른쪽 절반에만 긋는다.
-            var horizon = K.Img("Horizon", backdropRt, P.Rule);
-            K.Anchor(horizon.rectTransform, K.V(0.42f, HorizonY), K.V(1, HorizonY), K.V(0, 0f), K.V(0, 2f));
-            horizon.raycastTarget = false;
-
-            // ------------------------------------------------- 타자기 (2/3 지점)
-            // 가로 2/3 지점을 중심으로 지평선 위에 세운다.
-            // 실제 아트가 오면 이 판만 교체하면 된다.
-            var typewriter = K.Img("Typewriter_Placeholder", root, new Color32(0x2A, 0x2F, 0x36, 0xFF));
-            K.Anchor(typewriter.rectTransform,
-                K.V(0.666f, HorizonY), K.V(0.666f, HorizonY),
-                K.V(-304f, 0f), K.V(304f, 384f));   // 608 x 384 (76u x 48u)
-            typewriter.raycastTarget = false;
-
-            var typewriterTag = K.Text("Tag", typewriter.rectTransform,
-                "레트로 타자기\n(아트 대기)", T.Caption, new Color32(0x55, 0x5B, 0x63, 0xFF),
-                TextAlignmentOptions.Center);
-            K.Stretch(typewriterTag.rectTransform);
-            if (art != null && art.titleTypewriter != null)
-            {
-                typewriter.sprite = art.titleTypewriter;
-                typewriter.color = Color.white;
-                typewriter.preserveAspect = art.titleTypewriterPlace.preserveAspect;
-                Place(typewriter.rectTransform, art.titleTypewriterPlace);
-                typewriterTag.gameObject.SetActive(false);
+                fitter.aspectRatio = sprite != null && sprite.rect.height > 0 ? sprite.rect.width / sprite.rect.height : 16f / 9f;
+                var img = K.Img("Image", fitRt, sprite != null ? Color.white : P.Bg);
+                img.raycastTarget = false;
+                K.Stretch(img.rectTransform);
+                if (sprite != null)
+                {
+                    img.sprite = sprite;
+                    Place(img.rectTransform, place);
+                }
             }
-
-            // -------------------------------------------------------- 제목
-            var titleBlock = K.UI("Title", root);
-            var titleRt = titleBlock.GetComponent<RectTransform>();
-            K.Anchor(titleRt, K.V(0, 1), K.V(0, 1),
-                K.V(L.Gutter * 2, -L.Unit * 54), K.V(L.Gutter * 2 + 720f, -L.Unit * 24));
-
-            var mainTitle = K.Text("Main", titleRt, "It is You", 96f, P.Ink, TextAlignmentOptions.TopLeft);
-            mainTitle.characterSpacing = 6f;
-            K.Anchor(mainTitle.rectTransform, K.V(0, 1), K.V(1, 1), K.V(0, -120f), K.V(0, 0f));
-
-            var subTitle = K.Text("Sub", titleRt, "바 로   너", 40f, P.Brass, TextAlignmentOptions.TopLeft);
-            subTitle.characterSpacing = 18f;
-            K.Anchor(subTitle.rectTransform, K.V(0, 1), K.V(1, 1), K.V(0, -184f), K.V(0, -128f));
-
-            // 깜빡이는 커서. 타자기 앞에 앉은 화면이라는 신호다.
-            var caret = K.Text("Caret", titleRt, "▌", 40f, P.Brass, TextAlignmentOptions.TopLeft);
-            K.Anchor(caret.rectTransform, K.V(0, 1), K.V(0, 1), K.V(352f, -184f), K.V(392f, -128f));
 
             // -------------------------------------------------------- 메뉴
+            // 버튼마다 자리를 직접 잡는다(자동 정렬 없음) — UI 편집기에서 하나씩 옮길 수 있게.
             var menu = K.UI("Menu", root);
             var menuRt = menu.GetComponent<RectTransform>();
             var menuHeight = MenuButton * 4 + MenuGap * 3;   // 336
             K.Anchor(menuRt, K.V(0, 0), K.V(0, 0),
-                K.V(L.Gutter * 2, L.Unit * 26), K.V(L.Gutter * 2 + MenuWidth, L.Unit * 26 + menuHeight));
+                K.V(L.Gutter * 2, L.Unit * 16), K.V(L.Gutter * 2 + MenuWidth, L.Unit * 16 + menuHeight));
 
-            var vlg = menu.AddComponent<VerticalLayoutGroup>();
-            vlg.spacing = MenuGap;
-            vlg.childControlWidth = true;
-            vlg.childControlHeight = false;
-            vlg.childForceExpandWidth = true;
-            vlg.childForceExpandHeight = false;
-            vlg.childAlignment = TextAnchor.UpperLeft;
-
-            var newGame = MenuItem(menuRt, "NewGame", "새 게임");
-            var continueGame = MenuItem(menuRt, "Continue", "이어하기");
-            var settings = MenuItem(menuRt, "Settings", "설정");
-            var quit = MenuItem(menuRt, "Quit", "종료");
-
-            // -------------------------------------------------------- 하단
-            var version = K.Text("Version", root, "", T.Caption, P.InkSoft, TextAlignmentOptions.BottomRight);
-            K.Anchor(version.rectTransform, K.V(0.5f, 0), K.V(1, 0),
-                K.V(0, L.Gutter), K.V(-L.Gutter, L.Gutter + 32f));
-
-            var note = K.Text("Note", root, "졸업작품 개발 빌드  ·  내용은 확정본이 아닙니다",
-                T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.BottomLeft);
-            K.Anchor(note.rectTransform, K.V(0, 0), K.V(0.5f, 0),
-                K.V(L.Gutter, L.Gutter), K.V(0, L.Gutter + 32f));
+            var newGame = MenuItem(menuRt, "NewGame", "새 게임", 0);
+            var continueGame = MenuItem(menuRt, "Continue", "이어하기", 1);
+            var settings = MenuItem(menuRt, "Settings", "설정", 2);
+            var quit = MenuItem(menuRt, "Quit", "종료", 3);
 
             // -------------------------------------------------------- 컨트롤러
             var systems = new GameObject("Systems");
@@ -159,44 +115,60 @@ namespace ItIsYou.EditorTools
                  .Set("continueButton", continueGame)
                  .Set("settingsButton", settings)
                  .Set("settings", settingsMenu)
-                 .Set("quitButton", quit)
-                 .Set("versionLabel", version)
-                 .Set("caret", caret)
-                 .Set("driftingLayers", drifting)
-                 .Set("baseDriftSeconds", 34f)
-                 .Set("caretBlinkSeconds", 0.62f);
+                 .Set("quitButton", quit);
 
             // UI 편집기에서 바꾼 자리 · 이미지 · 글자 모양을 입히고 저장한다(기준도 함께 적는다).
             UiLayout.SaveBuiltScene(scene, ScenePath);
             AssetDatabase.Refresh();
 
-            Debug.Log($"[It is You] 타이틀 씬 생성 완료 — {ScenePath}");
+            Debug.Log($"[It is You] 타이틀 씬 생성 완료 — {ScenePath}" +
+                      (video != null ? " (배경 영상)" : sprite != null ? $" (배경 {sprite.name})" : " (배경 없음)"));
         }
 
         // ============================================================== 헬퍼
 
-        private static Button MenuItem(Transform parent, string name, string label)
+        /// <summary>
+        /// 메뉴 버튼 하나. 눌리는 판(투명) 안에 보이는 판(Visual)이 있고, 마우스를 올리면 Visual 만 떠오른다 —
+        /// 눌리는 자리는 그대로라 버튼 가장자리에서 떨리지 않는다.
+        /// </summary>
+        private static Button MenuItem(RectTransform parent, string name, string label, int index)
         {
-            var made = K.Button(name, parent, label, T.Body);
-            made.rect.sizeDelta = new Vector2(0f, MenuButton);
-            made.label.alignment = TextAlignmentOptions.Left;
-            made.label.margin = new Vector4(L.Pad, 0f, 0f, 0f);
+            var go = K.UI(name, parent);
+            var rt = (RectTransform)go.transform;
+            var top = -(MenuButton + MenuGap) * index;
+            K.Anchor(rt, K.V(0, 1), K.V(1, 1), K.V(0, top - MenuButton), K.V(0, top));
+
+            var hit = go.AddComponent<Image>();
+            hit.color = new Color(0f, 0f, 0f, 0f);
+            var button = go.AddComponent<Button>();
+            button.transition = Selectable.Transition.None;
+            button.targetGraphic = hit;
+
+            var visual = K.Img("Visual", rt, ButtonColor);
+            K.Stretch(visual.rectTransform);
+            visual.sprite = K.UiSprite; visual.type = Image.Type.Sliced;
+            visual.raycastTarget = false;
 
             // 왼쪽에 놋쇠 선 한 줄. 선택지 버튼과 같은 어휘를 쓴다.
-            var strip = K.Img("Strip", made.rect, P.Brass);
+            var strip = K.Img("Strip", visual.rectTransform, P.Brass);
             K.Anchor(strip.rectTransform, K.V(0, 0), K.V(0, 1), Vector2.zero, K.V(L.Unit * 0.5f, 0));
             strip.raycastTarget = false;
 
-            return made.button;
+            var text = K.Text("Label", visual.rectTransform, label, T.Body, P.Ink, TextAlignmentOptions.Left);
+            K.Stretch(text.rectTransform);
+            text.margin = new Vector4(L.Pad, 0f, 0f, 0f);
+
+            go.AddComponent<HoverLift>()
+              .Set("button", button)
+              .Set("visual", visual.rectTransform)
+              .Set("background", visual)
+              .Set("label", text)
+              .Set("liftPixels", 8f)
+              .Set("highlightColor", ButtonHighlight)
+              .Set("labelHighlightColor", LabelHighlight);
+            return button;
         }
 
-        /// <summary>
-        /// 옆으로 흐르는 증기 층 하나.
-        ///
-        /// 폭은 화면 하나(1920)로 잡고, 그 안에 같은 무늬를 두 벌 넣는다.
-        /// 컨트롤러가 폭만큼 왼쪽으로 밀면 두 번째 벌이 정확히 첫 번째 자리에 와서,
-        /// 이음매 없이 계속 흐른다.
-        /// </summary>
         /// <summary>아트 세트의 자리 값(offset · scale · 좌우 반전)을 적용한다.</summary>
         private static void Place(RectTransform rt, ItIsYou.Data.ArtSet.Placement place)
         {
@@ -204,49 +176,6 @@ namespace ItIsYou.EditorTools
             rt.anchoredPosition += place.offset;
             var scale = place.Scale;
             rt.localScale = new Vector3(place.flipX ? -scale : scale, scale, 1f);
-        }
-
-        private static RectTransform DriftLayer(string name, Transform parent, Sprite puff,
-            float centerY, float height, Color color)
-        {
-            var go = K.UI(name, parent);
-            var rt = go.GetComponent<RectTransform>();
-            rt.anchorMin = new Vector2(0f, centerY);
-            rt.anchorMax = new Vector2(0f, centerY);
-            rt.pivot = new Vector2(0f, 0.5f);
-            rt.sizeDelta = new Vector2(L.Reference.x, height);
-            rt.anchoredPosition = Vector2.zero;
-
-            // 한 벌 안의 덩어리 배치. 고정값이라 매번 같은 그림이 나온다.
-            // 가로로 길고 납작한 타원이라야 뭉게구름이 아니라 흘러가는 증기로 보인다.
-            var blobs = new (float x, float w, float h, float y)[]
-            {
-                (  20f, 520f, 0.86f,  0.06f),
-                ( 360f, 300f, 0.52f, -0.20f),
-                ( 760f, 620f, 1.00f,  0.02f),
-                (1240f, 380f, 0.62f,  0.18f),
-                (1560f, 460f, 0.78f, -0.08f),
-            };
-
-            for (int tile = 0; tile < 2; tile++)
-            {
-                var offset = tile * L.Reference.x;
-                for (int i = 0; i < blobs.Length; i++)
-                {
-                    var b = blobs[i];
-                    var blob = K.Img($"Puff_{tile}_{i}", rt, color);
-                    var brt = blob.rectTransform;
-                    brt.anchorMin = new Vector2(0f, 0.5f);
-                    brt.anchorMax = new Vector2(0f, 0.5f);
-                    brt.pivot = new Vector2(0f, 0.5f);
-                    brt.sizeDelta = new Vector2(b.w, height * b.h);
-                    brt.anchoredPosition = new Vector2(offset + b.x, height * b.y);
-                    blob.sprite = puff;
-                    blob.raycastTarget = false;
-                }
-            }
-
-            return rt;
         }
     }
 }

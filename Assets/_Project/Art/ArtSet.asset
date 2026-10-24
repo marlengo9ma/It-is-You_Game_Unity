@@ -30,7 +30,7 @@ MonoBehaviour:
     scale: 1
     flipX: 0
     preserveAspect: 0
-  collectionStage: {fileID: 0}
+  collectionStage: {fileID: 21300000, guid: a08b19a5fe08bd9498cdb7a2bc5a30a7, type: 3}
   collectionStagePlace:
     offset: {x: 0, y: 0}
     scale: 1
@@ -62,6 +62,9 @@ MonoBehaviour:
     flipX: 0
     preserveAspect: 1
   sepiExpressions: []
+  sepiLive2D: {fileID: 8648706558504605094, guid: 3bb525a09fbbbb6429811c718ec5bc3b, type: 3}
+  sepiLive2DMotions: {fileID: 11400000, guid: 9bfe55308cee1a14eb5d68205d65103a, type: 2}
+  useSepiLive2D: 1
   catTalk: {fileID: 0}
   catTalkPlace:
     offset: {x: 0, y: 0}
@@ -83,12 +86,13 @@ MonoBehaviour:
   iconSettings: {fileID: 0}
   iconLog: {fileID: 0}
   inkDrop: {fileID: 0}
-  titleBackground: {fileID: 21300000, guid: 1848e02b852a3b249bed9265e4c1e4f7, type: 3}
+  titleBackground: {fileID: 21300000, guid: 2a06acc9f22f9d5489cf7bce8f869487, type: 3}
   titleBackgroundPlace:
     offset: {x: 0, y: 0}
     scale: 1
     flipX: 0
     preserveAspect: 1
+  titleBackgroundVideo: {fileID: 0}
   titleTypewriter: {fileID: 0}
   titleTypewriterPlace:
     offset: {x: 0, y: 0}

@@ -32,6 +32,9 @@ namespace ItIsYou.EditorTools
     /// </summary>
     public static class ChapterSceneBuilder
     {
+        /// <summary>아래 대사창(수첩) 판의 불투명도 (2026-10-24 제작자: 80%).</summary>
+        private const float DialogueBoxAlpha = 0.8f;
+
         private const string SceneFolder = "Assets/_Project/Scenes";
         private const string PrefabFolder = "Assets/_Project/Prefabs";
         private const string ScenePath = SceneFolder + "/Tutorial_Chapter.unity";
@@ -47,6 +50,8 @@ namespace ItIsYou.EditorTools
             _font = FontSetup.Ensure();
             _uiSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
             _art = LoadArtSet();
+            _live2DOutputs.Clear();
+            _live2DViews.Clear();
 
             var chapter = TutorialDataBuilder.Build();
             var db = AssetDatabase.LoadAssetAtPath<GameDatabase>(DataRoot + "/GameDatabase.asset");
@@ -228,6 +233,8 @@ namespace ItIsYou.EditorTools
             var notebookTag = Text("Tag", dlgRt, "수첩 (아트 대기)", T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF), TextAlignmentOptions.TopRight);
             Anchor(notebookTag.rectTransform, V(1, 1), V(1, 1), V(-200f, -28f), V(-L.Unit * 2, -L.Unit));
             Art(dialoguePanel, _art.notebook, false, false, notebookTag, notebookEdge);
+            // 2026-10-24 제작자: 아래 대사창은 불투명도 80% — 뒤 배경이 살짝 비친다.
+            { var c = dialoguePanel.color; c.a = DialogueBoxAlpha; dialoguePanel.color = c; }
 
             var speaker = Text("Speaker", dlgRt, "", T.Choice, P.Brass, TextAlignmentOptions.Left);
             Anchor(speaker.rectTransform, V(0, 1), V(0.5f, 1), V(L.Unit * 6, -L.Unit * 7), V(0, -L.Unit * 3));
@@ -374,6 +381,15 @@ namespace ItIsYou.EditorTools
             Stretch(stage.rectTransform);
             stage.raycastTarget = false;
             var stageHasArt = Art(stage, _art.collectionStage, _art.collectionStagePlace);
+            if (stageHasArt)
+            {
+                // 무대 그림은 비율을 지킨 채 영역을 꽉 덮는다(넘치는 위아래는 잘림). 핫스팟은 그림 위의 비율 자리라 그림과 함께 움직인다.
+                collectScreen.AddComponent<RectMask2D>();
+                var stageFit = stage.gameObject.AddComponent<AspectRatioFitter>();
+                stageFit.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+                var sr = _art.collectionStage.rect;
+                stageFit.aspectRatio = sr.height > 0f ? sr.width / sr.height : 16f / 9f;
+            }
 
             var stageHint = Text("Hint", stage.rectTransform,
                 "객실 테이블  —  살펴볼 곳을 눌러 보세요", T.Caption, new Color32(0x4A, 0x50, 0x57, 0xFF),
@@ -392,7 +408,16 @@ namespace ItIsYou.EditorTools
 
             // 핫스팟 여섯 개. 일반/특수의 겉모습은 완전히 같아야 한다.
             // 〈시스템 기획〉: 리본 · 커피잔 · 언듯 보이는 무언가(특수) / 신문 · 타자기 · 객실 정보(일반)
-            var hotspotRects = new (string id, float x0, float y0, float x1, float y1)[]
+            // 무대 그림(Backgrounds/수집.png, 2026-10-24)이 있으면 그 그림 속 물건 자리. 비율 = 그림 폭 · 높이 기준, 아래가 0.
+            var hotspotRects = stageHasArt ? new (string id, float x0, float y0, float x1, float y1)[]
+            {
+                ("OBJ_TYPEWRITER", 0.152f, 0.270f, 0.220f, 0.395f),   // 테이블 왼쪽 검은 타자기 가방
+                ("OBJ_COFFEE",     0.222f, 0.274f, 0.276f, 0.334f),   // 쓰러진 잔과 받침
+                ("OBJ_NEWSPAPER",  0.280f, 0.250f, 0.370f, 0.316f),   // 잔 옆 신문 · 서류
+                ("OBJ_GLIMPSE",    0.396f, 0.268f, 0.472f, 0.302f),   // 고양이 아래로 비죽 나온 것
+                ("OBJ_RIBBON",     0.484f, 0.244f, 0.540f, 0.306f),   // 테이블 오른쪽 붉은 리본
+                ("OBJ_ROOMINFO",   0.596f, 0.616f, 0.676f, 0.690f)    // 문 위 객실 번호판 <3>
+            } : new (string id, float x0, float y0, float x1, float y1)[]
             {
                 ("OBJ_NEWSPAPER",  0.05f, 0.14f, 0.34f, 0.44f),
                 ("OBJ_COFFEE",     0.38f, 0.26f, 0.53f, 0.52f),
@@ -470,15 +495,38 @@ namespace ItIsYou.EditorTools
             var charLabel = Text("Label", charRt, "세피\n(플레이스홀더)", T.Caption, P.InkSoft, TextAlignmentOptions.Center);
             Stretch(charLabel.rectTransform);
 
-            var sepiHasArt = Art(charImg, _art.SepiOnStage, _art.sepiStagePlace, false, charLabel);
-            var characterView = characterGo.AddComponent<PlaceholderCharacterView>();
-            characterView.Set("characterId", "SEPI")
-                         .Set("body", charImg)
-                         .Set("reactionOutline", charOutline)
-                         .Set("canvasGroup", charGroup)
-                         .Set("hasArt", sepiHasArt)
-                         .Set("defaultSprite", _art.SepiOnStage);
-            if (sepiHasArt) characterView.Set("expressions", BuildExpressionList(_art.sepiExpressions));
+            MonoBehaviour characterView;
+            if (UseLive2D)
+            {
+                // Live2D — 판은 투명하게 두고(클릭은 그대로 받는다) 그 위에 Live2D 그림을 띄운다.
+                charImg.sprite = null;
+                charImg.color = new Color(1f, 1f, 1f, 0f);
+                charLabel.gameObject.SetActive(false);
+                charOutline.enabled = false;
+                var raw = Live2DOutput(charRt);
+                var rawOutline = raw.gameObject.AddComponent<Outline>();
+                rawOutline.effectColor = P.Brass;
+                rawOutline.effectDistance = new Vector2(4f, -4f);
+                rawOutline.enabled = false;
+                var cv = characterGo.AddComponent<CubismCharacterView>();
+                cv.Set("characterId", "SEPI").Set("reactionOutline", rawOutline).Set("canvasGroup", charGroup);
+                _live2DViews.Add(cv);
+                characterView = cv;
+            }
+            else
+            {
+                var sepiHasArtStage = Art(charImg, _art.SepiOnStage, _art.sepiStagePlace, false, charLabel);
+                var pv = characterGo.AddComponent<PlaceholderCharacterView>();
+                pv.Set("characterId", "SEPI")
+                  .Set("body", charImg)
+                  .Set("reactionOutline", charOutline)
+                  .Set("canvasGroup", charGroup)
+                  .Set("hasArt", sepiHasArtStage)
+                  .Set("defaultSprite", _art.SepiOnStage);
+                if (sepiHasArtStage) pv.Set("expressions", BuildExpressionList(_art.sepiExpressions));
+                characterView = pv;
+            }
+            var sepiHasArt = UseLive2D || _art.SepiOnStage != null;
 
             var clickTarget = characterGo.AddComponent<CharacterClickTarget>();
 
@@ -1150,7 +1198,8 @@ namespace ItIsYou.EditorTools
             var talkSepiTag = Text("Label", talkSepi.rectTransform, "세피\n(아트 대기)", T.Caption,
                 P.InkSoft, TextAlignmentOptions.Center);
             Stretch(talkSepiTag.rectTransform);
-            Art(talkSepi, _art.SepiOnTalk, _art.sepiTalkPlace, false, talkSepiTag);
+            if (UseLive2D) { talkSepi.color = new Color(1f, 1f, 1f, 0f); talkSepiTag.gameObject.SetActive(false); Live2DOutput(talkSepi.rectTransform); }
+            else Art(talkSepi, _art.SepiOnTalk, _art.sepiTalkPlace, false, talkSepiTag);
 
             var talkCat = Img("Cat_Placeholder", talkRt, new Color32(0x2A, 0x2F, 0x36, 0xFF));
             Anchor(talkCat.rectTransform, V(0.18f, 0.08f), V(0.34f, 0.34f), Vector2.zero, Vector2.zero);
@@ -1184,7 +1233,8 @@ namespace ItIsYou.EditorTools
             var preludeSepiTag = Text("Label", preludeSepi.rectTransform, "세피\n(아트 대기)", T.Caption,
                 P.InkSoft, TextAlignmentOptions.Center);
             Stretch(preludeSepiTag.rectTransform);
-            Art(preludeSepi, _art.SepiOnTalk, _art.sepiTalkPlace, false, preludeSepiTag);
+            if (UseLive2D) { preludeSepi.color = new Color(1f, 1f, 1f, 0f); preludeSepiTag.gameObject.SetActive(false); Live2DOutput(preludeSepi.rectTransform); }
+            else Art(preludeSepi, _art.SepiOnTalk, _art.sepiTalkPlace, false, preludeSepiTag);
 
             // ---- [일러스트 컷씬#1] ----
             var cutsceneScreen = UI("Screen_Cutscene", root);
@@ -1776,12 +1826,82 @@ namespace ItIsYou.EditorTools
             popupRoot.SetActive(false);
             titleRoot.SetActive(false);
 
+            // ---- 세피 Live2D 무대 (아트 세트에 모델이 있을 때) ----
+            if (UseLive2D) BuildLive2DStage(presenter, cam);
+
             // UI 편집기에서 바꾼 자리 · 이미지 · 글자 모양을 입히고 저장한다(기준도 함께 적는다).
             UiLayout.SaveBuiltScene(scene, ScenePath);
             AssetDatabase.Refresh();
 
             Debug.Log($"[It is You] 튜토리얼 챕터 씬 생성 완료 — {ScenePath}\n" +
                       "Play → 인트로 대사 → 단서 수집(핫스팟 6 · 클로즈업 · 열람창) → 심문(제목 · 튜토리얼 팝업) → 지목");
+        }
+
+
+        // ============================================================ Live2D
+
+        private static readonly List<RawImage> _live2DOutputs = new List<RawImage>();
+        private static readonly List<CubismCharacterView> _live2DViews = new List<CubismCharacterView>();
+
+        /// <summary>아트 세트에 세피 Live2D 모델이 있고, SDK · 레이어가 준비됐는가 (메뉴 10).</summary>
+        private static bool UseLive2D => _art != null && _art.HasSepiLive2D && Live2DSetup.HasCubism && Live2DSetup.LayerIndex >= 0;
+
+        /// <summary>인물 자리 안에 Live2D 그림을 보여 줄 RawImage. 크기는 실행 중에 Live2DStage 가 맞춘다.</summary>
+        private static RawImage Live2DOutput(RectTransform slot)
+        {
+            var go = UI("Live2D", slot);
+            var rt = go.GetComponent<RectTransform>();
+            Stretch(rt);
+            var raw = go.AddComponent<RawImage>();
+            raw.raycastTarget = false;
+            raw.color = Color.white;
+            raw.enabled = false;   // 그림이 준비되면 켜진다 — 그 전에 흰 판이 보이지 않게
+            _live2DOutputs.Add(raw);
+            return raw;
+        }
+
+        /// <summary>
+        /// 화면 밖에 세피 모델과 전용 카메라를 세운다. 카메라는 Live2D 레이어만 찍어 투명 배경 그림으로 만들고,
+        /// 인물 자리의 RawImage 들이 그 그림을 보여 준다. 기본 카메라는 Live2D 레이어를 찍지 않는다.
+        /// </summary>
+        private static void BuildLive2DStage(DialoguePresenter presenter, Camera mainCamera)
+        {
+            var layer = Live2DSetup.LayerIndex;
+            var stageGo = new GameObject("Live2D_Sepi");
+            stageGo.transform.position = new Vector3(1000f, 0f, 0f);
+
+            var model = (GameObject)PrefabUtility.InstantiatePrefab(_art.sepiLive2D);
+            model.transform.SetParent(stageGo.transform, false);
+            model.transform.localPosition = Vector3.zero;
+            SetLayer(model.transform, layer);
+
+            var actor = model.GetComponent<Live2DActor>() ?? model.AddComponent<Live2DActor>();
+            actor.Set("characterId", "SEPI").Set("speaker", SpeakerId.Assistant)
+                 .Set("motions", _art.sepiLive2DMotions).Set("dialogue", presenter);
+
+            var camGo = new GameObject("Live2DCamera", typeof(Camera));
+            camGo.transform.SetParent(stageGo.transform, false);
+            camGo.layer = layer;
+            var cam = camGo.GetComponent<Camera>();
+            cam.orthographic = true;
+            cam.cullingMask = 1 << layer;
+            cam.clearFlags = CameraClearFlags.SolidColor;
+            cam.backgroundColor = new Color(0f, 0f, 0f, 0f);
+            cam.depth = -10f;
+            cam.enabled = false;   // 그림을 만든 뒤 Live2DStage 가 켠다
+            Live2DSetup.SetCameraRenderer(cam, Live2DSetup.EnsureCubismRenderer());
+
+            if (mainCamera != null) mainCamera.cullingMask &= ~(1 << layer);
+
+            var stage = stageGo.AddComponent<Live2DStage>();
+            stage.Set("stageCamera", cam).Set("model", model.transform).Set("outputs", new List<RawImage>(_live2DOutputs));
+            foreach (var v in _live2DViews) v.Set("actor", actor);
+        }
+
+        private static void SetLayer(Transform t, int layer)
+        {
+            t.gameObject.layer = layer;
+            for (int i = 0; i < t.childCount; i++) SetLayer(t.GetChild(i), layer);
         }
 
         // ====================================================== 리플렉션 보조

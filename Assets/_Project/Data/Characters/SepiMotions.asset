@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67ba629d742d341449f5af4d5d62b67b, type: 3}
+  m_Name: SepiMotions
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.Live2DMotionSet
+  idleSequence:
+  - {fileID: 7400000, guid: de64868acfc7957449815f7ac00b278a, type: 2}
+  - {fileID: 7400000, guid: 8d22a236896117043a74662bc38ee1e5, type: 2}
+  slots:
+  - id: shock
+    note: "\uCDA9\uACA9 \u2014 \uAE5C\uC9DD \uB180\uB78C. \uC2EC\uBB38 \uB9AC\uC561\uC158
+      \uC21C\uAC04 \xB7 \uB180\uB780 \uD45C\uC815\uC758 \uC904"
+    clip: {fileID: 7400000, guid: 5fa2162a804fafd4a8f7596d73d34e60, type: 2}
+    speed: 1
+    aliases:
+    - startle
+  - id: tremble
+    note: "\uB3D9\uACF5\uC774 \uB5A8\uB9BC \xB7 \uC794\uB5A8\uB9BC"
+    clip: {fileID: 0}
+    speed: 1
+    aliases: []
+  - id: lookaway
+    note: "\uC2DC\uC120\uC744 \uD53C\uD568"
+    clip: {fileID: 0}
+    speed: 1
+    aliases: []
+  - id: glance_cat
+    note: "\uACE0\uC591\uC774 \uCABD\uC744 \uD790\uB054"
+    clip: {fileID: 0}
+    speed: 1
+    aliases: []
+  - id: sigh
+    note: "\uC791\uC740 \uD55C\uC228"
+    clip: {fileID: 0}
+    speed: 1
+    aliases: []
+  - id: glare
+    note: "\uC9F8\uB824\uBD04"
+    clip: {fileID: 0}
+    speed: 1
+    aliases: []
+  - id: fume
+    note: "\uD654\uAC00 \uB098 \uBD80\uB4E4\uAC70\uB9BC"
+    clip: {fileID: 0}
+    speed: 1
+    aliases: []
+  - id: shrink
+    note: "\uC5B4\uAE68\uAC00 \uC6C0\uCE20\uB7EC\uB4E6"
+    clip: {fileID: 0}
+    speed: 1
+    aliases: []
+  - id: pale
+    note: "\uC5BC\uAD74\uC774 \uD558\uC597\uAC8C \uC9C8\uB9BC"
+    clip: {fileID: 0}
+    speed: 1
+    aliases: []
+  - id: bow
+    note: "\uACE0\uAC1C\uB97C \uC219\uC784"
+    clip: {fileID: 0}
+    speed: 1
+    aliases: []
+  - id: ponder
+    note: "\uB208\uC744 \uAC10\uACE0 \uC0DD\uAC01"
+    clip: {fileID: 0}
+    speed: 1
+    aliases: []
+  - id: special_1
+    note: "\uC608\uBE44 \uCE78 \u2014 \uC0C8 \uBAA8\uC158\uC6A9"
+    clip: {fileID: 0}
+    speed: 1
+    aliases: []
+  - id: special_2
+    note: "\uC608\uBE44 \uCE78 \u2014 \uC0C8 \uBAA8\uC158\uC6A9"
+    clip: {fileID: 0}
+    speed: 1
+    aliases: []
+  reactionSlot: shock
+  expressionMotions:
+  - expression: 6
+    slot: shock

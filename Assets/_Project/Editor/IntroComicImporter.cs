@@ -24,6 +24,9 @@ namespace ItIsYou.EditorTools
     /// · C2_A : 그 페이지의 완성 모습(참고용). 게임에는 쓰지 않는다.
     /// · C4_B / C4_M / C4_F : 글자로 된 레이어(뒤판·가운데·앞판). 이런 레이어가 있는 페이지는
     ///   숫자 파일(C4_1, C4_2)을 "상태 참고 그림"으로 보고 쓰지 않는다. 레이어는 한꺼번에 나온다.
+    /// · C1_1a, C6_2a … : 번호 뒤에 소문자가 붙은 것은 그 컷 위에 얹히는 말풍선 · 효과음(2026-10-24).
+    ///   컷이 나온 바로 뒤에 '톡' 하고 저절로 뜬다(누르지 않아도 됨).
+    /// · base.png : 페이지 종이 바탕. 모든 페이지 뒤에 깔린다.
     ///
     /// 메뉴 9 는 그림만 바꾸고 이미 잡아 둔 자리 · 크기 · 애니메이션은 그대로 둔다.
     /// 메뉴 9-b 는 모든 컷을 원본 캔버스의 자리와 기본 애니메이션으로 되돌린다.
@@ -45,7 +48,11 @@ namespace ItIsYou.EditorTools
 
         private static readonly Color PaperColor = new Color32(0xFB, 0xFA, 0xF7, 0xFF);
 
-        private static readonly Regex NamePattern = new Regex(@"^C(\d+)_([0-9]+|[A-Za-z]+)$", RegexOptions.Compiled);
+        private static readonly Regex NamePattern = new Regex(@"^C(\d+)_([0-9]+[A-Za-z]?|[A-Za-z]+)$", RegexOptions.Compiled);
+
+        /// <summary>페이지 종이 바탕 원본 이름(ArtSource/Intro/base.png)과 스프라이트 자리.</summary>
+        private const string PaperSourceName = "base";
+        public const string PaperSpritePath = SpriteFolder + "/base.png";
 
         // ================================================================= 메뉴
 
@@ -108,6 +115,7 @@ namespace ItIsYou.EditorTools
             foreach (var file in Directory.GetFiles(sourceDir, "*.png").OrderBy(f => f, StringComparer.Ordinal))
             {
                 var name = Path.GetFileNameWithoutExtension(file);
+                if (string.Equals(name, PaperSourceName, StringComparison.OrdinalIgnoreCase)) continue;   // 종이 바탕은 따로
                 var m = NamePattern.Match(name);
                 if (!m.Success) { Debug.LogWarning($"[It is You] 이름 규칙(Cx_y)에 맞지 않아 건너뜀: {name}"); continue; }
                 all.Add(new SourceCut { Name = name.ToUpperInvariant(), Page = int.Parse(m.Groups[1].Value), Suffix = m.Groups[2].Value.ToUpperInvariant(), SourcePath = file });
@@ -141,17 +149,28 @@ namespace ItIsYou.EditorTools
                 AssetDatabase.StopAssetEditing();
                 EditorUtility.ClearProgressBar();
             }
+            // 종이 바탕 — 자르지 않고 절반 크기로만 줄인다.
+            var paperSource = Path.Combine(sourceDir, PaperSourceName + ".png");
+            var hasPaperArt = File.Exists(paperSource);
+            if (hasPaperArt) ScaleToSprite(paperSource, PaperSpritePath);
+
             AssetDatabase.Refresh();
             foreach (var c in cuts) EnsureSpriteImport(c.SpritePath);
+            if (hasPaperArt) EnsureSpriteImport(PaperSpritePath);
 
             // ---- 2. 프리팹 ----
             var existing = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
             var root = existing != null ? PrefabUtility.LoadPrefabContents(PrefabPath) : CreateRoot();
             var created = 0;
+            var removed = new List<string>();
             try
             {
                 var book = root.GetComponent<ComicBookView>();
                 var paper = book.Paper;
+
+                var paperImg = paper.GetComponent<Image>();
+                var paperSprite = hasPaperArt ? AssetDatabase.LoadAssetAtPath<Sprite>(PaperSpritePath) : null;
+                if (paperImg != null && paperSprite != null) { paperImg.sprite = paperSprite; paperImg.color = Color.white; paperImg.preserveAspect = false; }
 
                 foreach (var page in cuts.GroupBy(c => c.Page).OrderBy(g => g.Key))
                 {
@@ -184,15 +203,25 @@ namespace ItIsYou.EditorTools
                                 .Set("ease", d.Ease)
                                 .Set("fade", true)
                                 .Set("popStartScale", 0.6f)
-                                .Set("waitForClick", d.Order > FirstOrder(pageCuts));
+                                .Set("waitForClick", !IsOverlay(c) && d.Order > FirstOrder(pageCuts));
                         }
                         if (isNew || resetLayout) t.SetAsLastSibling();
                     }
 
                     if (page.Key == 4) SetupEnvelope(pageGo, pageCuts, resetLayout || pageIsNew);
+
+                    // 원본에서 빠진 컷은 프리팹에서도 지운다 (예: 2026-10-24 C5_3~5 → C6 으로 옮겨감).
+                    var keep = new HashSet<string>(pageCuts.Select(c => c.Name));
+                    foreach (var stale in pageGo.GetComponentsInChildren<ComicCutView>(true)
+                                 .Where(v => v.transform.parent == pageGo.transform && !keep.Contains(v.name)
+                                             && NamePattern.IsMatch(v.name)).ToList())
+                    {
+                        removed.Add(stale.name);
+                        UnityEngine.Object.DestroyImmediate(stale.gameObject);
+                    }
                 }
 
-                // 페이지 순서: C1 → C5. 편집하기 쉽게 첫 페이지만 켜 둔다.
+                // 페이지 순서: C1 → C6. 편집하기 쉽게 첫 페이지만 켜 둔다.
                 var pages = book.Pages.OrderBy(p => PageNumber(p.name)).ToList();
                 for (int i = 0; i < pages.Count; i++)
                 {
@@ -209,7 +238,8 @@ namespace ItIsYou.EditorTools
             }
 
             AssetDatabase.SaveAssets();
-            Debug.Log($"[It is You] 인트로 컷 가져오기 완료 — 컷 {cuts.Count}장 (새로 만든 컷 {created}), " +
+            Debug.Log($"[It is You] 인트로 컷 가져오기 완료 — 컷 {cuts.Count}장 (새로 만든 컷 {created}" +
+                      (removed.Count > 0 ? $", 원본에서 빠져 지운 컷 {string.Join(", ", removed)}" : "") + "), " +
                       $"참고 그림 {references.Count}장은 쓰지 않음 ({string.Join(", ", references)}) · " +
                       $"{(resetLayout ? "배치·애니메이션 초기화" : "배치 유지")} · {PrefabPath}");
             return PrefabPath;
@@ -219,6 +249,16 @@ namespace ItIsYou.EditorTools
         private static int FirstOrder(List<SourceCut> pageCuts) => pageCuts.Min(c => Defaults(c).Order);
 
         private static bool IsLetter(string s) => s.Length > 0 && char.IsLetter(s[0]);
+
+        /// <summary>번호 뒤에 글자가 붙은 것(1A) — 그 컷 위에 얹히는 말풍선 · 효과음.</summary>
+        private static bool IsOverlay(SourceCut c) => c.Suffix.Length > 1 && char.IsDigit(c.Suffix[0]) && char.IsLetter(c.Suffix[c.Suffix.Length - 1]);
+
+        /// <summary>앞의 숫자. "1A" → 1, "12" → 12, 글자만이면 1.</summary>
+        private static int LeadingNumber(string suffix)
+        {
+            var digits = new string(suffix.TakeWhile(char.IsDigit).ToArray());
+            return int.TryParse(digits, out var n) ? n : 1;
+        }
 
         private static int PageNumber(string pageName)
         {
@@ -244,14 +284,23 @@ namespace ItIsYou.EditorTools
         /// </summary>
         private static CutDefaults Defaults(SourceCut c)
         {
+            // 순번 = 컷 번호 × 10. 말풍선(1a)은 그 컷 바로 뒤(+5)에 저절로 뜨고, 앞뒤로는 모든 컷보다 앞.
+            var number = LeadingNumber(c.Suffix);
             var d = new CutDefaults
             {
-                Order = int.TryParse(c.Suffix, out var n) ? n : 1,
-                Depth = int.TryParse(c.Suffix, out var n2) ? n2 : 1,
+                Order = number * 10,
+                Depth = number,
                 Motion = CutMotion.FromTop,
                 Distance = 90f, Duration = 0.55f, Delay = 0.25f,
                 Ease = CutEase.EaseOutStrong
             };
+            if (IsOverlay(c))
+            {
+                d.Order = number * 10 + 5;
+                d.Depth = 100 + number;
+                d.Motion = CutMotion.Pop; d.Distance = 0f; d.Duration = 0.4f; d.Ease = CutEase.Back; d.Delay = 0.3f;
+                return d;
+            }
 
             switch (c.Name)
             {
@@ -269,17 +318,18 @@ namespace ItIsYou.EditorTools
                 case "C3_2": d.Depth = 0; d.Motion = CutMotion.FromBottom; d.Distance = 120f; d.Duration = 0.7f; break;
 
                 // C4 — 봉투 세 겹은 한꺼번에 나타난다. 앞에서부터 F > M > B.
-                case "C4_B": d.Order = 1; d.Depth = 0; d.Motion = CutMotion.Fade; d.Distance = 0f; d.Delay = 0.3f; break;
-                case "C4_M": d.Order = 1; d.Depth = 1; d.Motion = CutMotion.Fade; d.Distance = 0f; d.Delay = 0.3f;
-                             d.SourceShift = new Vector2Int(0, -56); break;   // 꺼낸 뒤 자리를 C4_2 에 맞춘다
-                case "C4_F": d.Order = 1; d.Depth = 2; d.Motion = CutMotion.Fade; d.Distance = 0f; d.Delay = 0.3f; break;
+                // 2026-10-24 새 C4_M(손 + 서류)은 꺼낸 뒤 자리에 그려져 있어 원본 자리 그대로 쓴다.
+                case "C4_B": d.Order = 10; d.Depth = 0; d.Motion = CutMotion.Fade; d.Distance = 0f; d.Delay = 0.3f; break;
+                case "C4_M": d.Order = 10; d.Depth = 1; d.Motion = CutMotion.Fade; d.Distance = 0f; d.Delay = 0.3f; break;
+                case "C4_F": d.Order = 10; d.Depth = 2; d.Motion = CutMotion.Fade; d.Distance = 0f; d.Delay = 0.3f; break;
 
-                // C5 — 시계 → 흰 띠 → 작은 컷 → 세피 → 말풍선
+                // C5 — 시계(+ 말풍선) → 손글씨 띠 (2026-10-24)
                 case "C5_1": d.Depth = 2; d.Motion = CutMotion.FromLeft; d.Delay = 0.3f; break;
                 case "C5_2": d.Depth = 1; d.Motion = CutMotion.FromRight; break;
-                case "C5_3": d.Depth = 3; d.Motion = CutMotion.FromBottom; break;
-                case "C5_4": d.Depth = 0; d.Motion = CutMotion.FromBottom; d.Distance = 120f; d.Duration = 0.7f; break;
-                case "C5_5": d.Depth = 4; d.Motion = CutMotion.Pop; d.Distance = 0f; d.Duration = 0.4f; d.Ease = CutEase.Back; d.Delay = 0.35f; break;
+
+                // C6 — 작은 컷(+ 말풍선) → 세피(아래에서, 뒤에 깔림, + 말풍선) — 예전 C5_3~5 자리
+                case "C6_1": d.Depth = 1; d.Motion = CutMotion.FromBottom; d.Delay = 0.3f; break;
+                case "C6_2": d.Depth = 0; d.Motion = CutMotion.FromBottom; d.Distance = 120f; d.Duration = 0.7f; break;
             }
             return d;
         }
@@ -491,6 +541,28 @@ namespace ItIsYou.EditorTools
             {
                 UnityEngine.Object.DestroyImmediate(src);
             }
+        }
+
+        /// <summary>자르지 않고 1/Downscale 로만 줄여 저장한다 (종이 바탕).</summary>
+        private static void ScaleToSprite(string sourcePath, string assetPath)
+        {
+            var src = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            try
+            {
+                if (!src.LoadImage(File.ReadAllBytes(sourcePath))) throw new Exception($"PNG 를 읽지 못했습니다: {sourcePath}");
+                var rt = RenderTexture.GetTemporary(src.width / Downscale, src.height / Downscale, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
+                var prev = RenderTexture.active;
+                Graphics.Blit(src, rt);
+                RenderTexture.active = rt;
+                var dst = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
+                dst.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+                dst.Apply();
+                RenderTexture.active = prev;
+                RenderTexture.ReleaseTemporary(rt);
+                File.WriteAllBytes(assetPath, dst.EncodeToPNG());
+                UnityEngine.Object.DestroyImmediate(dst);
+            }
+            finally { UnityEngine.Object.DestroyImmediate(src); }
         }
 
         private static void EnsureSpriteImport(string assetPath)

@@ -106,6 +106,15 @@ namespace ItIsYou.Data
         [Tooltip("심문 표정 차분. 표정마다 sepiInterrogation 과 같은 크기의 그림. 없는 표정은 기본 그림으로 남는다. Live2D 가 오면 통째로 대체.")]
         public List<ExpressionSprite> sepiExpressions = new List<ExpressionSprite>();
 
+        [Tooltip("세피 Live2D 모델 프리팹(Sepi 1.prefab). 넣으면 대화 · 심문 화면의 세피가 그림 대신 Live2D 로 나온다. 메뉴 It is You › 10 이 채운다.")]
+        public GameObject sepiLive2D;
+
+        [Tooltip("세피 Live2D 의 모션 표 — 기본(idle) 순서와 특수 모션 칸. 메뉴 It is You › 10 이 만든다.")]
+        public Live2DMotionSet sepiLive2DMotions;
+
+        [Tooltip("끄면 Live2D 모델이 있어도 그림(sepiTalk · sepiInterrogation)을 쓴다.")]
+        public bool useSepiLive2D = true;
+
         [Header("인물 — 검은 고양이")]
         [Tooltip("사건 이전 대화 화면의 고양이. 약 307×281.")]
         public Sprite catTalk;
@@ -145,9 +154,12 @@ namespace ItIsYou.Data
         public Sprite inkDrop;
 
         [Header("타이틀 화면")]
-        [Tooltip("타이틀 화면 배경 1920×1080.")]
+        [Tooltip("타이틀 화면 배경. 화면을 꽉 채우도록 깔린다(비율이 달라도 빈 띠 없이 가장자리만 잘림). 위아래 자리는 아래 offset 으로.")]
         public Sprite titleBackground;
         public Placement titleBackgroundPlace = Placement.Stretch;
+
+        [Tooltip("타이틀 애니메이션 배경(영상, .mp4 등). 넣으면 위 그림 대신 영상이 반복 재생된다.")]
+        public UnityEngine.Video.VideoClip titleBackgroundVideo;
 
         [Tooltip("타이틀 화면의 레트로 타자기. 약 608×384, 가로 2/3 지점의 지평선 위.")]
         public Sprite titleTypewriter;
@@ -168,5 +180,6 @@ namespace ItIsYou.Data
         public Sprite SepiOnStage => sepiInterrogation != null ? sepiInterrogation : sepiTalk;
         public Sprite CatOnTalk => catTalk != null ? catTalk : catStage;
         public Sprite SepiOnTalk => sepiTalk != null ? sepiTalk : sepiInterrogation;
+        public bool HasSepiLive2D => useSepiLive2D && sepiLive2D != null;
     }
 }

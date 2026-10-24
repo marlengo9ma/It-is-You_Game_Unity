@@ -2818,7 +2818,7 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 0.0,
+                    "x": 34.66581726074219,
                     "y": 0.0
                 },
                 "scale": {
@@ -2829,12 +2829,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "a08b19a5fe08bd9498cdb7a2bc5a30a7",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.11764705926179886,
-                    "g": 0.13333334028720857,
-                    "b": 0.15294118225574494,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -2887,17 +2889,17 @@
             "children": [
                 "Hint",
                 "Cat_Placeholder",
-                "Hotspot_OBJ_NEWSPAPER",
-                "Hotspot_OBJ_COFFEE",
                 "Hotspot_OBJ_TYPEWRITER",
+                "Hotspot_OBJ_COFFEE",
+                "Hotspot_OBJ_NEWSPAPER",
+                "Hotspot_OBJ_GLIMPSE",
                 "Hotspot_OBJ_RIBBON",
-                "Hotspot_OBJ_ROOMINFO",
-                "Hotspot_OBJ_GLIMPSE"
+                "Hotspot_OBJ_ROOMINFO"
             ]
         },
         {
             "path": "Canvas/Screen_Collection/Stage/Hint",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -2992,7 +2994,7 @@
         },
         {
             "path": "Canvas/Screen_Collection/Stage/Cat_Placeholder",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -3181,7 +3183,7 @@
             "children": []
         },
         {
-            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_NEWSPAPER",
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_TYPEWRITER",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -3189,12 +3191,12 @@
             "groupBlocks": true,
             "values": {
                 "anchorMin": {
-                    "x": 0.05000000074505806,
-                    "y": 0.14000000059604646
+                    "x": 0.15199999511241914,
+                    "y": 0.27000001072883608
                 },
                 "anchorMax": {
-                    "x": 0.3400000035762787,
-                    "y": 0.4399999976158142
+                    "x": 0.2199999988079071,
+                    "y": 0.39500001072883608
                 },
                 "pivot": {
                     "x": 0.5,
@@ -3221,10 +3223,10 @@
                     "type": 0
                 },
                 "imageColor": {
-                    "r": 0.18039216101169587,
-                    "g": 0.20392157137393952,
-                    "b": 0.23137255012989045,
-                    "a": 1.0
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
                 },
                 "preserveAspect": false,
                 "imageType": 1,
@@ -3278,8 +3280,8 @@
             ]
         },
         {
-            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_NEWSPAPER/Label",
-            "active": true,
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_TYPEWRITER/Label",
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -3381,12 +3383,12 @@
             "groupBlocks": true,
             "values": {
                 "anchorMin": {
-                    "x": 0.3799999952316284,
-                    "y": 0.25999999046325686
+                    "x": 0.22200000286102296,
+                    "y": 0.27399998903274538
                 },
                 "anchorMax": {
-                    "x": 0.5299999713897705,
-                    "y": 0.5199999809265137
+                    "x": 0.2759999930858612,
+                    "y": 0.33399999141693118
                 },
                 "pivot": {
                     "x": 0.5,
@@ -3413,10 +3415,10 @@
                     "type": 0
                 },
                 "imageColor": {
-                    "r": 0.18039216101169587,
-                    "g": 0.20392157137393952,
-                    "b": 0.23137255012989045,
-                    "a": 1.0
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
                 },
                 "preserveAspect": false,
                 "imageType": 1,
@@ -3471,7 +3473,7 @@
         },
         {
             "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_COFFEE/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -3565,7 +3567,7 @@
             "children": []
         },
         {
-            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_TYPEWRITER",
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_NEWSPAPER",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -3573,12 +3575,12 @@
             "groupBlocks": true,
             "values": {
                 "anchorMin": {
-                    "x": 0.5799999833106995,
-                    "y": 0.10000000149011612
+                    "x": 0.2800000011920929,
+                    "y": 0.25
                 },
                 "anchorMax": {
-                    "x": 0.8799999952316284,
-                    "y": 0.4000000059604645
+                    "x": 0.3700000047683716,
+                    "y": 0.3160000145435333
                 },
                 "pivot": {
                     "x": 0.5,
@@ -3605,10 +3607,10 @@
                     "type": 0
                 },
                 "imageColor": {
-                    "r": 0.18039216101169587,
-                    "g": 0.20392157137393952,
-                    "b": 0.23137255012989045,
-                    "a": 1.0
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
                 },
                 "preserveAspect": false,
                 "imageType": 1,
@@ -3662,392 +3664,8 @@
             ]
         },
         {
-            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_TYPEWRITER/Label",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": true,
-                "font": {
-                    "fileID": 11400000,
-                    "guid": "7929d8be7326d934d8d818eb95e1b918",
-                    "type": 2
-                },
-                "fontSize": 14.0,
-                "textColor": {
-                    "r": 0.4313725531101227,
-                    "g": 0.45490196347236636,
-                    "b": 0.48235294222831728,
-                    "a": 1.0
-                },
-                "alignment": 514,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_RIBBON",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.20000000298023225,
-                    "y": 0.5199999809265137
-                },
-                "anchorMax": {
-                    "x": 0.4000000059604645,
-                    "y": 0.6800000071525574
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.18039216101169587,
-                    "g": 0.20392157137393952,
-                    "b": 0.23137255012989045,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 1,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": [
-                "Label"
-            ]
-        },
-        {
-            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_RIBBON/Label",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": true,
-                "font": {
-                    "fileID": 11400000,
-                    "guid": "7929d8be7326d934d8d818eb95e1b918",
-                    "type": 2
-                },
-                "fontSize": 14.0,
-                "textColor": {
-                    "r": 0.4313725531101227,
-                    "g": 0.45490196347236636,
-                    "b": 0.48235294222831728,
-                    "a": 1.0
-                },
-                "alignment": 514,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_ROOMINFO",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.8999999761581421,
-                    "y": 0.5600000023841858
-                },
-                "anchorMax": {
-                    "x": 0.9900000095367432,
-                    "y": 0.8600000143051148
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.18039216101169587,
-                    "g": 0.20392157137393952,
-                    "b": 0.23137255012989045,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 1,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": [
-                "Label"
-            ]
-        },
-        {
-            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_ROOMINFO/Label",
-            "active": true,
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_NEWSPAPER/Label",
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -4149,12 +3767,12 @@
             "groupBlocks": true,
             "values": {
                 "anchorMin": {
-                    "x": 0.5,
-                    "y": 0.46000000834465029
+                    "x": 0.3959999978542328,
+                    "y": 0.2680000066757202
                 },
                 "anchorMax": {
-                    "x": 0.6000000238418579,
-                    "y": 0.5600000023841858
+                    "x": 0.47200000286102297,
+                    "y": 0.3019999861717224
                 },
                 "pivot": {
                     "x": 0.5,
@@ -4181,10 +3799,10 @@
                     "type": 0
                 },
                 "imageColor": {
-                    "r": 0.18039216101169587,
-                    "g": 0.20392157137393952,
-                    "b": 0.23137255012989045,
-                    "a": 1.0
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
                 },
                 "preserveAspect": false,
                 "imageType": 1,
@@ -4239,7 +3857,391 @@
         },
         {
             "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_GLIMPSE/Label",
+            "active": false,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": true,
+                "font": {
+                    "fileID": 11400000,
+                    "guid": "7929d8be7326d934d8d818eb95e1b918",
+                    "type": 2
+                },
+                "fontSize": 14.0,
+                "textColor": {
+                    "r": 0.4313725531101227,
+                    "g": 0.45490196347236636,
+                    "b": 0.48235294222831728,
+                    "a": 1.0
+                },
+                "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_RIBBON",
             "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.48399999737739565,
+                    "y": 0.24400000274181367
+                },
+                "anchorMax": {
+                    "x": 0.5400000214576721,
+                    "y": 0.3059999942779541
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 10905,
+                    "guid": "0000000000000000f000000000000000",
+                    "type": 0
+                },
+                "imageColor": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Label"
+            ]
+        },
+        {
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_RIBBON/Label",
+            "active": false,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": true,
+                "font": {
+                    "fileID": 11400000,
+                    "guid": "7929d8be7326d934d8d818eb95e1b918",
+                    "type": 2
+                },
+                "fontSize": 14.0,
+                "textColor": {
+                    "r": 0.4313725531101227,
+                    "g": 0.45490196347236636,
+                    "b": 0.48235294222831728,
+                    "a": 1.0
+                },
+                "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_ROOMINFO",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.5960000157356262,
+                    "y": 0.6159999966621399
+                },
+                "anchorMax": {
+                    "x": 0.6759999990463257,
+                    "y": 0.6899999976158142
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 10905,
+                    "guid": "0000000000000000f000000000000000",
+                    "type": 0
+                },
+                "imageColor": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Label"
+            ]
+        },
+        {
+            "path": "Canvas/Screen_Collection/Stage/Hotspot_OBJ_ROOMINFO/Label",
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -4945,17 +4947,15 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 21300000,
-                    "guid": "08b21a8f29ff1e048a776bba4d3014f8",
-                    "type": 3
+                    "instanceID": 0
                 },
                 "imageColor": {
                     "r": 1.0,
                     "g": 1.0,
                     "b": 1.0,
-                    "a": 1.0
+                    "a": 0.0
                 },
-                "preserveAspect": true,
+                "preserveAspect": false,
                 "imageType": 0,
                 "hasText": false,
                 "font": {
@@ -5004,6 +5004,7 @@
             },
             "children": [
                 "Label",
+                "Live2D",
                 "Hotspot_OBJ_INT_SEPI"
             ]
         },
@@ -5067,6 +5068,99 @@
                     "a": 1.0
                 },
                 "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Screen_Interrogation/Character_Sepi/Live2D",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -19982,17 +20076,15 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 21300000,
-                    "guid": "08b21a8f29ff1e048a776bba4d3014f8",
-                    "type": 3
+                    "instanceID": 0
                 },
                 "imageColor": {
                     "r": 1.0,
                     "g": 1.0,
                     "b": 1.0,
-                    "a": 1.0
+                    "a": 0.0
                 },
-                "preserveAspect": true,
+                "preserveAspect": false,
                 "imageType": 0,
                 "hasText": false,
                 "font": {
@@ -20040,7 +20132,8 @@
                 }
             },
             "children": [
-                "Label"
+                "Label",
+                "Live2D"
             ]
         },
         {
@@ -20103,6 +20196,99 @@
                     "a": 1.0
                 },
                 "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Screen_Talk/Sepi_Placeholder/Live2D",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -20652,17 +20838,15 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 21300000,
-                    "guid": "08b21a8f29ff1e048a776bba4d3014f8",
-                    "type": 3
+                    "instanceID": 0
                 },
                 "imageColor": {
                     "r": 1.0,
                     "g": 1.0,
                     "b": 1.0,
-                    "a": 1.0
+                    "a": 0.0
                 },
-                "preserveAspect": true,
+                "preserveAspect": false,
                 "imageType": 0,
                 "hasText": false,
                 "font": {
@@ -20710,7 +20894,8 @@
                 }
             },
             "children": [
-                "Label"
+                "Label",
+                "Live2D"
             ]
         },
         {
@@ -20773,6 +20958,99 @@
                     "a": 1.0
                 },
                 "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Screen_Prelude/Sepi_Placeholder/Live2D",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -23993,7 +24271,7 @@
                     "r": 0.06666667014360428,
                     "g": 0.07450980693101883,
                     "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "a": 0.800000011920929
                 },
                 "preserveAspect": false,
                 "imageType": 0,

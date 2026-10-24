@@ -118,3 +118,8 @@ Thumbs.db
 # 개인 작업 파일
 unity-skills.zip
 _git-setup.*
+
+# 100MB 넘는 원본 그림 (GitHub 업로드 한도) — 게임에는 Assets 안의 줄인 사본을 씀
+/ArtSource/_대용량원본/
+# 교체 전 인트로 원본 보관(이전 판은 git 기록에도 있음)
+/ArtSource/Intro/_이전*/

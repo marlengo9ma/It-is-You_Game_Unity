@@ -94,12 +94,7 @@
             },
             "children": [
                 "Background",
-                "Backdrop",
-                "Typewriter_Placeholder",
-                "Title",
                 "Menu",
-                "Version",
-                "Note",
                 "SettingsMenu"
             ]
         },
@@ -137,10 +132,200 @@
                     "z": 1.0
                 },
                 "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Fit"
+            ]
+        },
+        {
+            "path": "Canvas/Background/Fit",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 387.1348876953125
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Image"
+            ]
+        },
+        {
+            "path": "Canvas/Background/Fit/Image",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
                     "fileID": 21300000,
-                    "guid": "1848e02b852a3b249bed9265e4c1e4f7",
+                    "guid": "2a06acc9f22f9d5489cf7bce8f869487",
                     "type": 3
                 },
                 "imageColor": {
@@ -149,99 +334,6 @@
                     "b": 1.0,
                     "a": 1.0
                 },
-                "preserveAspect": true,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
                 "preserveAspect": false,
                 "imageType": 0,
                 "hasText": false,
@@ -287,3933 +379,6 @@
                 "flexibleSize": {
                     "x": 0.0,
                     "y": 0.0
-                }
-            },
-            "children": [
-                "Steam_Far",
-                "Steam_Mid",
-                "Steam_Near",
-                "Horizon"
-            ]
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Far",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.4399999976158142
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.4399999976158142
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 1920.0,
-                    "y": 340.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": [
-                "Puff_0_0",
-                "Puff_0_1",
-                "Puff_0_2",
-                "Puff_0_3",
-                "Puff_0_4",
-                "Puff_1_0",
-                "Puff_1_1",
-                "Puff_1_2",
-                "Puff_1_3",
-                "Puff_1_4"
-            ]
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Far/Puff_0_0",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 20.0,
-                    "y": 20.399999618530275
-                },
-                "sizeDelta": {
-                    "x": 520.0,
-                    "y": 292.3999938964844
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.125490203499794,
-                    "g": 0.14509804546833039,
-                    "b": 0.16862745583057404,
-                    "a": 0.14901961386203767
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Far/Puff_0_1",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 360.0,
-                    "y": -68.0
-                },
-                "sizeDelta": {
-                    "x": 300.0,
-                    "y": 176.79998779296876
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.125490203499794,
-                    "g": 0.14509804546833039,
-                    "b": 0.16862745583057404,
-                    "a": 0.14901961386203767
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Far/Puff_0_2",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 760.0,
-                    "y": 6.799999713897705
-                },
-                "sizeDelta": {
-                    "x": 620.0,
-                    "y": 340.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.125490203499794,
-                    "g": 0.14509804546833039,
-                    "b": 0.16862745583057404,
-                    "a": 0.14901961386203767
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Far/Puff_0_3",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 1240.0,
-                    "y": 61.20000076293945
-                },
-                "sizeDelta": {
-                    "x": 380.0,
-                    "y": 210.8000030517578
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.125490203499794,
-                    "g": 0.14509804546833039,
-                    "b": 0.16862745583057404,
-                    "a": 0.14901961386203767
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Far/Puff_0_4",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 1560.0,
-                    "y": -27.19999885559082
-                },
-                "sizeDelta": {
-                    "x": 460.0,
-                    "y": 265.1999816894531
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.125490203499794,
-                    "g": 0.14509804546833039,
-                    "b": 0.16862745583057404,
-                    "a": 0.14901961386203767
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Far/Puff_1_0",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 1940.0,
-                    "y": 20.399999618530275
-                },
-                "sizeDelta": {
-                    "x": 520.0,
-                    "y": 292.3999938964844
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.125490203499794,
-                    "g": 0.14509804546833039,
-                    "b": 0.16862745583057404,
-                    "a": 0.14901961386203767
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Far/Puff_1_1",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 2280.0,
-                    "y": -68.0
-                },
-                "sizeDelta": {
-                    "x": 300.0,
-                    "y": 176.79998779296876
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.125490203499794,
-                    "g": 0.14509804546833039,
-                    "b": 0.16862745583057404,
-                    "a": 0.14901961386203767
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Far/Puff_1_2",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 2680.0,
-                    "y": 6.799999713897705
-                },
-                "sizeDelta": {
-                    "x": 620.0,
-                    "y": 340.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.125490203499794,
-                    "g": 0.14509804546833039,
-                    "b": 0.16862745583057404,
-                    "a": 0.14901961386203767
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Far/Puff_1_3",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 3160.0,
-                    "y": 61.20000076293945
-                },
-                "sizeDelta": {
-                    "x": 380.0,
-                    "y": 210.8000030517578
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.125490203499794,
-                    "g": 0.14509804546833039,
-                    "b": 0.16862745583057404,
-                    "a": 0.14901961386203767
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Far/Puff_1_4",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 3480.0,
-                    "y": -27.19999885559082
-                },
-                "sizeDelta": {
-                    "x": 460.0,
-                    "y": 265.1999816894531
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.125490203499794,
-                    "g": 0.14509804546833039,
-                    "b": 0.16862745583057404,
-                    "a": 0.14901961386203767
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Mid",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.3199999928474426
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.3199999928474426
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 1920.0,
-                    "y": 240.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": [
-                "Puff_0_0",
-                "Puff_0_1",
-                "Puff_0_2",
-                "Puff_0_3",
-                "Puff_0_4",
-                "Puff_1_0",
-                "Puff_1_1",
-                "Puff_1_2",
-                "Puff_1_3",
-                "Puff_1_4"
-            ]
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Mid/Puff_0_0",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 20.0,
-                    "y": 14.399999618530274
-                },
-                "sizeDelta": {
-                    "x": 520.0,
-                    "y": 206.40000915527345
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.13725490868091584,
-                    "g": 0.1568627506494522,
-                    "b": 0.18431372940540315,
-                    "a": 0.18039216101169587
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Mid/Puff_0_1",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 360.0,
-                    "y": -48.0
-                },
-                "sizeDelta": {
-                    "x": 300.0,
-                    "y": 124.79999542236328
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.13725490868091584,
-                    "g": 0.1568627506494522,
-                    "b": 0.18431372940540315,
-                    "a": 0.18039216101169587
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Mid/Puff_0_2",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 760.0,
-                    "y": 4.799999713897705
-                },
-                "sizeDelta": {
-                    "x": 620.0,
-                    "y": 240.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.13725490868091584,
-                    "g": 0.1568627506494522,
-                    "b": 0.18431372940540315,
-                    "a": 0.18039216101169587
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Mid/Puff_0_3",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 1240.0,
-                    "y": 43.20000076293945
-                },
-                "sizeDelta": {
-                    "x": 380.0,
-                    "y": 148.8000030517578
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.13725490868091584,
-                    "g": 0.1568627506494522,
-                    "b": 0.18431372940540315,
-                    "a": 0.18039216101169587
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Mid/Puff_0_4",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 1560.0,
-                    "y": -19.19999885559082
-                },
-                "sizeDelta": {
-                    "x": 460.0,
-                    "y": 187.1999969482422
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.13725490868091584,
-                    "g": 0.1568627506494522,
-                    "b": 0.18431372940540315,
-                    "a": 0.18039216101169587
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Mid/Puff_1_0",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 1940.0,
-                    "y": 14.399999618530274
-                },
-                "sizeDelta": {
-                    "x": 520.0,
-                    "y": 206.40000915527345
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.13725490868091584,
-                    "g": 0.1568627506494522,
-                    "b": 0.18431372940540315,
-                    "a": 0.18039216101169587
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Mid/Puff_1_1",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 2280.0,
-                    "y": -48.0
-                },
-                "sizeDelta": {
-                    "x": 300.0,
-                    "y": 124.79999542236328
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.13725490868091584,
-                    "g": 0.1568627506494522,
-                    "b": 0.18431372940540315,
-                    "a": 0.18039216101169587
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Mid/Puff_1_2",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 2680.0,
-                    "y": 4.799999713897705
-                },
-                "sizeDelta": {
-                    "x": 620.0,
-                    "y": 240.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.13725490868091584,
-                    "g": 0.1568627506494522,
-                    "b": 0.18431372940540315,
-                    "a": 0.18039216101169587
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Mid/Puff_1_3",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 3160.0,
-                    "y": 43.20000076293945
-                },
-                "sizeDelta": {
-                    "x": 380.0,
-                    "y": 148.8000030517578
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.13725490868091584,
-                    "g": 0.1568627506494522,
-                    "b": 0.18431372940540315,
-                    "a": 0.18039216101169587
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Mid/Puff_1_4",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 3480.0,
-                    "y": -19.19999885559082
-                },
-                "sizeDelta": {
-                    "x": 460.0,
-                    "y": 187.1999969482422
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.13725490868091584,
-                    "g": 0.1568627506494522,
-                    "b": 0.18431372940540315,
-                    "a": 0.18039216101169587
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Near",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.14000000059604646
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.14000000059604646
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 1920.0,
-                    "y": 180.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": [
-                "Puff_0_0",
-                "Puff_0_1",
-                "Puff_0_2",
-                "Puff_0_3",
-                "Puff_0_4",
-                "Puff_1_0",
-                "Puff_1_1",
-                "Puff_1_2",
-                "Puff_1_3",
-                "Puff_1_4"
-            ]
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Near/Puff_0_0",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 20.0,
-                    "y": 10.800000190734864
-                },
-                "sizeDelta": {
-                    "x": 520.0,
-                    "y": 154.8000030517578
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.09019608050584793,
-                    "g": 0.10196078568696976,
-                    "b": 0.12156862765550614,
-                    "a": 0.3490196168422699
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Near/Puff_0_1",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 360.0,
-                    "y": -36.0
-                },
-                "sizeDelta": {
-                    "x": 300.0,
-                    "y": 93.5999984741211
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.09019608050584793,
-                    "g": 0.10196078568696976,
-                    "b": 0.12156862765550614,
-                    "a": 0.3490196168422699
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Near/Puff_0_2",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 760.0,
-                    "y": 3.5999999046325685
-                },
-                "sizeDelta": {
-                    "x": 620.0,
-                    "y": 180.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.09019608050584793,
-                    "g": 0.10196078568696976,
-                    "b": 0.12156862765550614,
-                    "a": 0.3490196168422699
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Near/Puff_0_3",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 1240.0,
-                    "y": 32.400001525878909
-                },
-                "sizeDelta": {
-                    "x": 380.0,
-                    "y": 111.5999984741211
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.09019608050584793,
-                    "g": 0.10196078568696976,
-                    "b": 0.12156862765550614,
-                    "a": 0.3490196168422699
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Near/Puff_0_4",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 1560.0,
-                    "y": -14.399999618530274
-                },
-                "sizeDelta": {
-                    "x": 460.0,
-                    "y": 140.39999389648438
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.09019608050584793,
-                    "g": 0.10196078568696976,
-                    "b": 0.12156862765550614,
-                    "a": 0.3490196168422699
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Near/Puff_1_0",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 1940.0,
-                    "y": 10.800000190734864
-                },
-                "sizeDelta": {
-                    "x": 520.0,
-                    "y": 154.8000030517578
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.09019608050584793,
-                    "g": 0.10196078568696976,
-                    "b": 0.12156862765550614,
-                    "a": 0.3490196168422699
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Near/Puff_1_1",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 2280.0,
-                    "y": -36.0
-                },
-                "sizeDelta": {
-                    "x": 300.0,
-                    "y": 93.5999984741211
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.09019608050584793,
-                    "g": 0.10196078568696976,
-                    "b": 0.12156862765550614,
-                    "a": 0.3490196168422699
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Near/Puff_1_2",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 2680.0,
-                    "y": 3.5999999046325685
-                },
-                "sizeDelta": {
-                    "x": 620.0,
-                    "y": 180.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.09019608050584793,
-                    "g": 0.10196078568696976,
-                    "b": 0.12156862765550614,
-                    "a": 0.3490196168422699
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Near/Puff_1_3",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 3160.0,
-                    "y": 32.400001525878909
-                },
-                "sizeDelta": {
-                    "x": 380.0,
-                    "y": 111.5999984741211
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.09019608050584793,
-                    "g": 0.10196078568696976,
-                    "b": 0.12156862765550614,
-                    "a": 0.3490196168422699
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Steam_Near/Puff_1_4",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.0,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 3480.0,
-                    "y": -14.399999618530274
-                },
-                "sizeDelta": {
-                    "x": 460.0,
-                    "y": 140.39999389648438
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10913,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.09019608050584793,
-                    "g": 0.10196078568696976,
-                    "b": 0.12156862765550614,
-                    "a": 0.3490196168422699
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Backdrop/Horizon",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.41999998688697817,
-                    "y": 0.2800000011920929
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 0.2800000011920929
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 2.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 0.20000000298023225,
-                    "g": 0.21960784494876862,
-                    "b": 0.239215686917305,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Typewriter_Placeholder",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.6660000085830689,
-                    "y": 0.2800000011920929
-                },
-                "anchorMax": {
-                    "x": 0.6660000085830689,
-                    "y": 0.2800000011920929
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 192.0
-                },
-                "sizeDelta": {
-                    "x": 608.0,
-                    "y": 384.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 0.16470588743686677,
-                    "g": 0.18431372940540315,
-                    "b": 0.21176470816135407,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": [
-                "Tag"
-            ]
-        },
-        {
-            "path": "Canvas/Typewriter_Placeholder/Tag",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": true,
-                "font": {
-                    "fileID": 11400000,
-                    "guid": "7929d8be7326d934d8d818eb95e1b918",
-                    "type": 2
-                },
-                "fontSize": 14.0,
-                "textColor": {
-                    "r": 0.3333333432674408,
-                    "g": 0.35686275362968447,
-                    "b": 0.38823530077934267,
-                    "a": 1.0
-                },
-                "alignment": 514,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Title",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 456.0,
-                    "y": -312.0
-                },
-                "sizeDelta": {
-                    "x": 720.0,
-                    "y": 240.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": [
-                "Main",
-                "Sub",
-                "Caret"
-            ]
-        },
-        {
-            "path": "Canvas/Title/Main",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": -60.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 120.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": true,
-                "font": {
-                    "fileID": 11400000,
-                    "guid": "7929d8be7326d934d8d818eb95e1b918",
-                    "type": 2
-                },
-                "fontSize": 96.0,
-                "textColor": {
-                    "r": 0.8705882430076599,
-                    "g": 0.8509804010391235,
-                    "b": 0.8117647171020508,
-                    "a": 1.0
-                },
-                "alignment": 257,
-                "fontStyle": 0,
-                "characterSpacing": 6.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Title/Sub",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": -156.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 56.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": true,
-                "font": {
-                    "fileID": 11400000,
-                    "guid": "7929d8be7326d934d8d818eb95e1b918",
-                    "type": 2
-                },
-                "fontSize": 40.0,
-                "textColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
-                    "a": 1.0
-                },
-                "alignment": 257,
-                "fontStyle": 0,
-                "characterSpacing": 18.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Title/Caret",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 372.0,
-                    "y": -156.0
-                },
-                "sizeDelta": {
-                    "x": 40.0,
-                    "y": 56.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": true,
-                "font": {
-                    "fileID": 11400000,
-                    "guid": "7929d8be7326d934d8d818eb95e1b918",
-                    "type": 2
-                },
-                "fontSize": 40.0,
-                "textColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
-                    "a": 1.0
-                },
-                "alignment": 257,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": [
-                "TMP SubMeshUI [ItIsYou_KR SDF Material + LiberationSans SDF Atlas]"
-            ]
-        },
-        {
-            "path": "Canvas/Title/Caret/TMP SubMeshUI [ItIsYou_KR SDF Material + LiberationSans SDF Atlas]",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": true,
-                "minSize": {
-                    "x": -1.0,
-                    "y": -1.0
-                },
-                "preferredSize": {
-                    "x": -1.0,
-                    "y": -1.0
-                },
-                "flexibleSize": {
-                    "x": -1.0,
-                    "y": -1.0
                 }
             },
             "children": []
@@ -4239,11 +404,11 @@
                     "y": 0.5
                 },
                 "anchoredPosition": {
-                    "x": 336.0,
-                    "y": 376.0
+                    "x": 296.0,
+                    "y": 296.0
                 },
                 "sizeDelta": {
-                    "x": 480.0,
+                    "x": 400.0,
                     "y": 336.0
                 },
                 "scale": {
@@ -4279,7 +444,7 @@
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
-                "hasLayoutGroup": true,
+                "hasLayoutGroup": false,
                 "padding": {
                     "x": 0.0,
                     "y": 0.0,
@@ -4287,7 +452,7 @@
                     "w": 0.0
                 },
                 "spacing": {
-                    "x": 16.0,
+                    "x": 0.0,
                     "y": 0.0
                 },
                 "cellSize": {
@@ -4329,7 +494,7 @@
                     "y": 1.0
                 },
                 "anchorMax": {
-                    "x": 0.0,
+                    "x": 1.0,
                     "y": 1.0
                 },
                 "pivot": {
@@ -4337,12 +502,107 @@
                     "y": 0.5
                 },
                 "anchoredPosition": {
-                    "x": 240.0,
+                    "x": 0.0,
                     "y": -36.0
                 },
                 "sizeDelta": {
-                    "x": 480.0,
+                    "x": 0.0,
                     "y": 72.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Visual"
+            ]
+        },
+        {
+            "path": "Canvas/Menu/NewGame/Visual",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -4357,10 +617,10 @@
                     "type": 0
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
-                    "a": 1.0
+                    "r": 0.07999999821186066,
+                    "g": 0.09000000357627869,
+                    "b": 0.10999999940395355,
+                    "a": 0.7799999713897705
                 },
                 "preserveAspect": false,
                 "imageType": 1,
@@ -4410,12 +670,105 @@
                 }
             },
             "children": [
-                "Label",
-                "Strip"
+                "Strip",
+                "Label"
             ]
         },
         {
-            "path": "Canvas/Menu/NewGame/Label",
+            "path": "Canvas/Menu/NewGame/Visual/Strip",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 0.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 2.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 4.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Menu/NewGame/Visual/Label",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -4474,99 +827,6 @@
                     "a": 1.0
                 },
                 "alignment": 513,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Menu/NewGame/Strip",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 2.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 4.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -4615,7 +875,7 @@
                     "y": 1.0
                 },
                 "anchorMax": {
-                    "x": 0.0,
+                    "x": 1.0,
                     "y": 1.0
                 },
                 "pivot": {
@@ -4623,12 +883,107 @@
                     "y": 0.5
                 },
                 "anchoredPosition": {
-                    "x": 240.0,
+                    "x": 0.0,
                     "y": -124.0
                 },
                 "sizeDelta": {
-                    "x": 480.0,
+                    "x": 0.0,
                     "y": 72.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Visual"
+            ]
+        },
+        {
+            "path": "Canvas/Menu/Continue/Visual",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -4643,10 +998,10 @@
                     "type": 0
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
-                    "a": 1.0
+                    "r": 0.07999999821186066,
+                    "g": 0.09000000357627869,
+                    "b": 0.10999999940395355,
+                    "a": 0.7799999713897705
                 },
                 "preserveAspect": false,
                 "imageType": 1,
@@ -4696,12 +1051,105 @@
                 }
             },
             "children": [
-                "Label",
-                "Strip"
+                "Strip",
+                "Label"
             ]
         },
         {
-            "path": "Canvas/Menu/Continue/Label",
+            "path": "Canvas/Menu/Continue/Visual/Strip",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 0.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 2.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 4.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Menu/Continue/Visual/Label",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -4760,99 +1208,6 @@
                     "a": 1.0
                 },
                 "alignment": 513,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Menu/Continue/Strip",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 2.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 4.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -4901,7 +1256,7 @@
                     "y": 1.0
                 },
                 "anchorMax": {
-                    "x": 0.0,
+                    "x": 1.0,
                     "y": 1.0
                 },
                 "pivot": {
@@ -4909,12 +1264,107 @@
                     "y": 0.5
                 },
                 "anchoredPosition": {
-                    "x": 240.0,
+                    "x": 0.0,
                     "y": -212.0
                 },
                 "sizeDelta": {
-                    "x": 480.0,
+                    "x": 0.0,
                     "y": 72.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Visual"
+            ]
+        },
+        {
+            "path": "Canvas/Menu/Settings/Visual",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -4929,10 +1379,10 @@
                     "type": 0
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
-                    "a": 1.0
+                    "r": 0.07999999821186066,
+                    "g": 0.09000000357627869,
+                    "b": 0.10999999940395355,
+                    "a": 0.7799999713897705
                 },
                 "preserveAspect": false,
                 "imageType": 1,
@@ -4982,12 +1432,105 @@
                 }
             },
             "children": [
-                "Label",
-                "Strip"
+                "Strip",
+                "Label"
             ]
         },
         {
-            "path": "Canvas/Menu/Settings/Label",
+            "path": "Canvas/Menu/Settings/Visual/Strip",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 0.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 2.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 4.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/Menu/Settings/Visual/Label",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -5046,99 +1589,6 @@
                     "a": 1.0
                 },
                 "alignment": 513,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Menu/Settings/Strip",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 2.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 4.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -5187,7 +1637,7 @@
                     "y": 1.0
                 },
                 "anchorMax": {
-                    "x": 0.0,
+                    "x": 1.0,
                     "y": 1.0
                 },
                 "pivot": {
@@ -5195,12 +1645,107 @@
                     "y": 0.5
                 },
                 "anchoredPosition": {
-                    "x": 240.0,
+                    "x": 0.0,
                     "y": -300.0
                 },
                 "sizeDelta": {
-                    "x": 480.0,
+                    "x": 0.0,
                     "y": 72.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Visual"
+            ]
+        },
+        {
+            "path": "Canvas/Menu/Quit/Visual",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -5215,10 +1760,10 @@
                     "type": 0
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
-                    "a": 1.0
+                    "r": 0.07999999821186066,
+                    "g": 0.09000000357627869,
+                    "b": 0.10999999940395355,
+                    "a": 0.7799999713897705
                 },
                 "preserveAspect": false,
                 "imageType": 1,
@@ -5268,107 +1813,12 @@
                 }
             },
             "children": [
-                "Label",
-                "Strip"
+                "Strip",
+                "Label"
             ]
         },
         {
-            "path": "Canvas/Menu/Quit/Label",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": true,
-                "font": {
-                    "fileID": 11400000,
-                    "guid": "7929d8be7326d934d8d818eb95e1b918",
-                    "type": 2
-                },
-                "fontSize": 24.0,
-                "textColor": {
-                    "r": 0.8705882430076599,
-                    "g": 0.8509804010391235,
-                    "b": 0.8117647171020508,
-                    "a": 1.0
-                },
-                "alignment": 513,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Menu/Quit/Strip",
+            "path": "Canvas/Menu/Quit/Visual/Strip",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -5461,7 +1911,7 @@
             "children": []
         },
         {
-            "path": "Canvas/Version",
+            "path": "Canvas/Menu/Quit/Visual/Label",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -5469,24 +1919,24 @@
             "groupBlocks": true,
             "values": {
                 "anchorMin": {
-                    "x": 0.5,
+                    "x": 0.0,
                     "y": 0.0
                 },
                 "anchorMax": {
                     "x": 1.0,
-                    "y": 0.0
+                    "y": 1.0
                 },
                 "pivot": {
                     "x": 0.5,
                     "y": 0.5
                 },
                 "anchoredPosition": {
-                    "x": -24.0,
-                    "y": 64.0
+                    "x": 0.0,
+                    "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": -48.0,
-                    "y": 32.0
+                    "x": 0.0,
+                    "y": 0.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -5512,109 +1962,14 @@
                     "guid": "7929d8be7326d934d8d818eb95e1b918",
                     "type": 2
                 },
-                "fontSize": 14.0,
+                "fontSize": 24.0,
                 "textColor": {
-                    "r": 0.6039215922355652,
-                    "g": 0.5882353186607361,
-                    "b": 0.5529412031173706,
+                    "r": 0.8705882430076599,
+                    "g": 0.8509804010391235,
+                    "b": 0.8117647171020508,
                     "a": 1.0
                 },
-                "alignment": 1028,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/Note",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 0.5,
-                    "y": 0.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 24.0,
-                    "y": 64.0
-                },
-                "sizeDelta": {
-                    "x": -48.0,
-                    "y": 32.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": true,
-                "font": {
-                    "fileID": 11400000,
-                    "guid": "7929d8be7326d934d8d818eb95e1b918",
-                    "type": 2
-                },
-                "fontSize": 14.0,
-                "textColor": {
-                    "r": 0.29019609093666079,
-                    "g": 0.3137255012989044,
-                    "b": 0.34117648005485537,
-                    "a": 1.0
-                },
-                "alignment": 1025,
+                "alignment": 513,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,

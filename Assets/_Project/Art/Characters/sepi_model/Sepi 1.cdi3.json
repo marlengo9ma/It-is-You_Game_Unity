@@ -1,0 +1,408 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "Star",
+			"GroupId": "ParamGroup",
+			"Name": "Star"
+		},
+		{
+			"Id": "Exp_Stand",
+			"GroupId": "ParamGroup",
+			"Name": "Stand"
+		},
+		{
+			"Id": "Exp_Shy",
+			"GroupId": "ParamGroup",
+			"Name": "Shy"
+		},
+		{
+			"Id": "Exp_Pail",
+			"GroupId": "ParamGroup",
+			"Name": "Pail"
+		},
+		{
+			"Id": "Exp_Shock",
+			"GroupId": "ParamGroup",
+			"Name": "Shock"
+		},
+		{
+			"Id": "Exp_Smile",
+			"GroupId": "ParamGroup",
+			"Name": "Smile"
+		},
+		{
+			"Id": "Exp_Um",
+			"GroupId": "ParamGroup",
+			"Name": "Mad"
+		},
+		{
+			"Id": "Exp_cry",
+			"GroupId": "ParamGroup",
+			"Name": "Cry"
+		},
+		{
+			"Id": "Exp_Sweat",
+			"GroupId": "ParamGroup",
+			"Name": "Sweat"
+		},
+		{
+			"Id": "Exp_Sweat2",
+			"GroupId": "ParamGroup",
+			"Name": "Sweatonoff"
+		},
+		{
+			"Id": "PailEft1",
+			"GroupId": "ParamGroup",
+			"Name": "Pail Eft"
+		},
+		{
+			"Id": "PailEft2",
+			"GroupId": "ParamGroup",
+			"Name": "Pail Eft2"
+		},
+		{
+			"Id": "PailEft3",
+			"GroupId": "ParamGroup",
+			"Name": "Pail Eft3"
+		},
+		{
+			"Id": "LashesL1",
+			"GroupId": "ParamGroup2",
+			"Name": "Lashes L1"
+		},
+		{
+			"Id": "LashesL2",
+			"GroupId": "ParamGroup2",
+			"Name": "Lashes L2"
+		},
+		{
+			"Id": "LashesR1",
+			"GroupId": "ParamGroup2",
+			"Name": "Lashes R1"
+		},
+		{
+			"Id": "LashesR2",
+			"GroupId": "ParamGroup2",
+			"Name": "Lashes R2"
+		},
+		{
+			"Id": "line1",
+			"GroupId": "ParamGroup2",
+			"Name": "-------"
+		},
+		{
+			"Id": "PupilL1",
+			"GroupId": "ParamGroup2",
+			"Name": "Pupil L1"
+		},
+		{
+			"Id": "PupilL2",
+			"GroupId": "ParamGroup2",
+			"Name": "Pupil L2"
+		},
+		{
+			"Id": "PupilInL1",
+			"GroupId": "ParamGroup2",
+			"Name": "Pupil In L1"
+		},
+		{
+			"Id": "PupilInL2",
+			"GroupId": "ParamGroup2",
+			"Name": "Pupil In L2"
+		},
+		{
+			"Id": "PupilR1",
+			"GroupId": "ParamGroup2",
+			"Name": "Pupil R1"
+		},
+		{
+			"Id": "PupilR2",
+			"GroupId": "ParamGroup2",
+			"Name": "Pupil R2"
+		},
+		{
+			"Id": "PupilInR1",
+			"GroupId": "ParamGroup2",
+			"Name": "Pupil In R1"
+		},
+		{
+			"Id": "PupilInR2",
+			"GroupId": "ParamGroup2",
+			"Name": "Pupil In R2"
+		},
+		{
+			"Id": "line2",
+			"GroupId": "ParamGroup2",
+			"Name": "-------2"
+		},
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "",
+			"Name": "각도 X"
+		},
+		{
+			"Id": "ParamAngleY",
+			"GroupId": "",
+			"Name": "각도 Y"
+		},
+		{
+			"Id": "ParamAngleX2",
+			"GroupId": "",
+			"Name": "각도 X2"
+		},
+		{
+			"Id": "ParamAngleY2",
+			"GroupId": "",
+			"Name": "각도 Y2"
+		},
+		{
+			"Id": "ParamAngleZ",
+			"GroupId": "",
+			"Name": "각도 Z"
+		},
+		{
+			"Id": "Exp_Um2",
+			"GroupId": "",
+			"Name": "Mad2"
+		},
+		{
+			"Id": "ParamEyeLOpen",
+			"GroupId": "",
+			"Name": "왼쪽 눈 깜빡임"
+		},
+		{
+			"Id": "ParamEyeLSmile",
+			"GroupId": "",
+			"Name": "왼쪽 눈 미소"
+		},
+		{
+			"Id": "ParamEyeROpen",
+			"GroupId": "",
+			"Name": "오른쪽 눈 깜빡임"
+		},
+		{
+			"Id": "ParamBrowLY",
+			"GroupId": "",
+			"Name": "BrowLY"
+		},
+		{
+			"Id": "BrowLForm",
+			"GroupId": "",
+			"Name": "BrowL Form"
+		},
+		{
+			"Id": "ParamBrowRY",
+			"GroupId": "",
+			"Name": "BrowRY"
+		},
+		{
+			"Id": "BrowRForm",
+			"GroupId": "",
+			"Name": "BrowR Form"
+		},
+		{
+			"Id": "ParamEyeBallX",
+			"GroupId": "",
+			"Name": "눈 X"
+		},
+		{
+			"Id": "ParamEyeBallY",
+			"GroupId": "",
+			"Name": "눈 Y"
+		},
+		{
+			"Id": "ParamMouthForm",
+			"GroupId": "",
+			"Name": "입 변형"
+		},
+		{
+			"Id": "ParamMouthForm2",
+			"GroupId": "",
+			"Name": "X"
+		},
+		{
+			"Id": "ParamMouthOpenY",
+			"GroupId": "",
+			"Name": "입 여닫기"
+		},
+		{
+			"Id": "ParamBreath",
+			"GroupId": "",
+			"Name": "호흡"
+		},
+		{
+			"Id": "Param",
+			"GroupId": "ParamGroup3",
+			"Name": "Hair"
+		},
+		{
+			"Id": "Param2",
+			"GroupId": "ParamGroup3",
+			"Name": "Hair2"
+		},
+		{
+			"Id": "RHair1",
+			"GroupId": "ParamGroup3",
+			"Name": "R Hair 1"
+		},
+		{
+			"Id": "RHair2",
+			"GroupId": "ParamGroup3",
+			"Name": "R Hair 2"
+		},
+		{
+			"Id": "RHair3",
+			"GroupId": "ParamGroup3",
+			"Name": "R Hair 3"
+		},
+		{
+			"Id": "RHairy1",
+			"GroupId": "ParamGroup3",
+			"Name": "R Hair y1"
+		},
+		{
+			"Id": "RHairy2",
+			"GroupId": "ParamGroup3",
+			"Name": "R Hair y2"
+		},
+		{
+			"Id": "LHair1",
+			"GroupId": "ParamGroup3",
+			"Name": "L Hair 1"
+		},
+		{
+			"Id": "LHair2",
+			"GroupId": "ParamGroup3",
+			"Name": "L Hair 2"
+		},
+		{
+			"Id": "LHair3",
+			"GroupId": "ParamGroup3",
+			"Name": "L Hair 3"
+		},
+		{
+			"Id": "LHairy1",
+			"GroupId": "ParamGroup3",
+			"Name": "L Hair y1"
+		},
+		{
+			"Id": "LHairy2",
+			"GroupId": "ParamGroup3",
+			"Name": "L Hair y2"
+		}
+	],
+	"ParameterGroups": [
+		{
+			"Id": "ParamGroup",
+			"GroupId": "",
+			"Name": "Exp"
+		},
+		{
+			"Id": "ParamGroup2",
+			"GroupId": "",
+			"Name": "Eyes"
+		},
+		{
+			"Id": "ParamGroup3",
+			"GroupId": "",
+			"Name": "Hair"
+		}
+	],
+	"Parts": [
+		{
+			"Id": "Part11",
+			"Name": "Sepi_semi.psd(레이어를 찾을 수 없음)"
+		},
+		{
+			"Id": "Part6",
+			"Name": "Sepi_semi.psd"
+		},
+		{
+			"Id": "Part7",
+			"Name": "세피"
+		},
+		{
+			"Id": "Part2",
+			"Name": "세피"
+		},
+		{
+			"Id": "Headd2",
+			"Name": "Headd"
+		},
+		{
+			"Id": "Headd",
+			"Name": "Headd"
+		},
+		{
+			"Id": "Part5",
+			"Name": "리본"
+		},
+		{
+			"Id": "Body",
+			"Name": "Body"
+		},
+		{
+			"Id": "Part3",
+			"Name": "모자"
+		},
+		{
+			"Id": "Hair",
+			"Name": "Hair"
+		},
+		{
+			"Id": "Eft",
+			"Name": "Eft"
+		},
+		{
+			"Id": "Head",
+			"Name": "Head"
+		},
+		{
+			"Id": "Part4",
+			"Name": "모자B"
+		},
+		{
+			"Id": "Eyes",
+			"Name": "Eyes"
+		},
+		{
+			"Id": "Mouth",
+			"Name": "Mouth"
+		},
+		{
+			"Id": "L",
+			"Name": "L"
+		},
+		{
+			"Id": "R",
+			"Name": "R"
+		},
+		{
+			"Id": "in",
+			"Name": "in"
+		},
+		{
+			"Id": "Lashes",
+			"Name": "Lashes"
+		},
+		{
+			"Id": "eyes",
+			"Name": "eyes"
+		},
+		{
+			"Id": "Lashes2",
+			"Name": "Lashes"
+		},
+		{
+			"Id": "eyes2",
+			"Name": "eyes"
+		}
+	],
+	"CombinedParameters": [
+		[
+			"ParamEyeBallX",
+			"ParamEyeBallY"
+		]
+	]
+}
