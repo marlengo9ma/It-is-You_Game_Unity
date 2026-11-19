@@ -270,6 +270,7 @@ MonoBehaviour:
       - TitleCard
       - CoachMark
       - ConfirmPopup
-      - SettingsMenu
       - PauseMenu
+      - SettingsMenu
+      - TitleConfirmPopup
       - ScreenFader

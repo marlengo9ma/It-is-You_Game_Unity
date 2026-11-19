@@ -4,6 +4,7 @@ using ItIsYou.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace ItIsYou.UI
@@ -14,6 +15,10 @@ namespace ItIsYou.UI
     /// 그래픽은 '적용'을 눌러야 화면에 반영된다 — 해상도가 바뀌는 순간 창이 흔들리므로
     /// 슬라이더처럼 즉시 반영하면 사고가 난다. 사운드와 게임은 만지는 즉시 반영되고,
     /// 창을 닫을 때 저장된다.
+    ///
+    /// 게임 중(타이틀 씬이 아닐 때)에는 '타이틀로 돌아가기' 버튼이 보인다. 누르면 확인 팝업을 띄우고,
+    /// '타이틀로'를 고르면 타이틀 씬으로 돌아간다. 진행 내용은 저장되지 않는다.
+    /// 일시 정지 메뉴의 '타이틀로'도 같은 팝업을 쓴다(<see cref="AskReturnToTitle"/>).
     /// </summary>
     [AddComponentMenu("It is You/Settings Menu")]
     public class SettingsMenu : MonoBehaviour
@@ -24,6 +29,18 @@ namespace ItIsYou.UI
         [Tooltip("창 밖에서 설정을 여는 버튼(우측 패널의 톱니). 비워 둬도 된다.")]
         [SerializeField] private List<Button> openButtons = new List<Button>();
         [SerializeField] private Button defaultsButton;
+        [Tooltip("오른쪽 위 닫기(X) 아이콘. 비워 둬도 된다.")]
+        [SerializeField] private Button closeIconButton;
+
+        [Header("타이틀로 돌아가기")]
+        [Tooltip("게임 중에만 보이는 '타이틀로 돌아가기' 버튼. 타이틀 씬에서는 저절로 숨는다.")]
+        [SerializeField] private Button titleButton;
+        [Tooltip("타이틀로 돌아가기 전에 묻는 확인 팝업.")]
+        [SerializeField] private ConfirmPopupView titleConfirm;
+        [TextArea(2, 4)]
+        [SerializeField] private string titleConfirmMessage = "현재까지의 내용은 저장되지 않습니다.\n타이틀로 돌아가시겠습니까?";
+        [SerializeField] private string titleConfirmYes = "타이틀로";
+        [SerializeField] private string titleConfirmNo = "취소";
 
         [Header("탭")]
         [SerializeField] private Button graphicsTab;
@@ -70,11 +87,18 @@ namespace ItIsYou.UI
         private bool _wired;
         private bool _open;
         private bool _suppress;
+        private bool _leaving;
 
         /// <summary>창이 열렸다 / 닫혔다.</summary>
         public event Action<bool> OpenChanged;
 
         public bool IsOpen => _open;
+
+        /// <summary>'타이틀로 돌아가기' 확인 팝업이 떠 있다.</summary>
+        public bool IsTitleConfirmOpen => titleConfirm != null && titleConfirm.IsOpen;
+
+        /// <summary>이 씬에서 확인 팝업으로 타이틀에 돌아갈 수 있다.</summary>
+        public bool CanAskReturnToTitle => titleConfirm != null;
 
         private void Awake()
         {
@@ -84,9 +108,13 @@ namespace ItIsYou.UI
 
         private void Update()
         {
-            if (!_open) return;
             var kb = Keyboard.current;
-            if (kb != null && kb.escapeKey.wasPressedThisFrame) Close();
+            if (kb == null || !kb.escapeKey.wasPressedThisFrame) return;
+
+            // 확인 팝업이 떠 있으면 ESC 는 '취소'다(일시 정지 메뉴에서 연 경우도 포함).
+            if (IsTitleConfirmOpen) { titleConfirm.Answer(false); return; }
+            if (!_open || _leaving) return;
+            Close();
         }
 
         private void Wire()
@@ -95,8 +123,10 @@ namespace ItIsYou.UI
             _wired = true;
 
             if (closeButton != null) closeButton.onClick.AddListener(Close);
+            if (closeIconButton != null) closeIconButton.onClick.AddListener(Close);
             for (int i = 0; i < openButtons.Count; i++) if (openButtons[i] != null) openButtons[i].onClick.AddListener(Open);
             if (defaultsButton != null) defaultsButton.onClick.AddListener(OnDefaults);
+            if (titleButton != null) titleButton.onClick.AddListener(OnTitleButton);
             if (graphicsTab != null) graphicsTab.onClick.AddListener(() => ShowTab(0));
             if (soundTab != null) soundTab.onClick.AddListener(() => ShowTab(1));
             if (gameTab != null) gameTab.onClick.AddListener(() => ShowTab(2));
@@ -131,6 +161,7 @@ namespace ItIsYou.UI
 
             _open = true;
             if (root != null) root.SetActive(true);
+            if (titleButton != null) titleButton.gameObject.SetActive(!InTitleScene());
             Populate();
             ShowTab(0);
             OpenChanged?.Invoke(true);
@@ -138,7 +169,7 @@ namespace ItIsYou.UI
 
         public void Close()
         {
-            if (!_open) return;
+            if (!_open || _leaving) return;
             _open = false;
             GameSettings.Save();
             if (root != null) root.SetActive(false);
@@ -160,6 +191,33 @@ namespace ItIsYou.UI
             if (tab == null) return;
             var label = tab.GetComponentInChildren<TMP_Text>();
             if (label != null) label.color = active ? tabActive : tabIdle;
+        }
+
+        // ---------------------------------------------------------------- 타이틀로 돌아가기
+
+        private static bool InTitleScene() => SceneManager.GetActiveScene().name == SceneRoutes.Title;
+
+        private void OnTitleButton() => AskReturnToTitle();
+
+        /// <summary>확인 팝업을 띄우고, '타이틀로'를 고르면 타이틀로 돌아간다. 팝업이 없으면 바로 돌아간다.</summary>
+        public void AskReturnToTitle()
+        {
+            if (_leaving) return;
+            if (titleConfirm == null) { GoToTitle(); return; }
+            if (titleConfirm.IsOpen) return;
+            StartCoroutine(titleConfirm.Ask(titleConfirmMessage, titleConfirmYes, titleConfirmNo, yes =>
+            {
+                if (yes) GoToTitle();
+            }));
+        }
+
+        private void GoToTitle()
+        {
+            if (_leaving) return;
+            _leaving = true;
+            GameSettings.Save();   // 설정 값은 남긴다(게임 진행은 저장하지 않는다).
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(SceneRoutes.Title);
         }
 
         // ---------------------------------------------------------------- 값 채우기

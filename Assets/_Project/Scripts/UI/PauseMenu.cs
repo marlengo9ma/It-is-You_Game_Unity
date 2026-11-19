@@ -12,6 +12,8 @@ namespace ItIsYou.UI
     ///
     /// 기획: "게임 일시 정지 - 타이머 일시 정지". 열려 있는 동안 <see cref="IsPaused"/> 가 참이고,
     /// 무반응 타이머와 대사 출력은 이 값을 보고 멈춘다.
+    ///
+    /// '타이틀로'는 설정 창과 같은 확인 팝업("현재까지의 내용은 저장되지 않습니다…")을 거친다.
     /// </summary>
     [AddComponentMenu("It is You/Pause Menu")]
     public class PauseMenu : MonoBehaviour
@@ -59,8 +61,8 @@ namespace ItIsYou.UI
             var kb = Keyboard.current;
             if (kb == null || !kb.escapeKey.wasPressedThisFrame) return;
 
-            // 설정 창이 떠 있으면 그쪽이 먼저 닫힌다.
-            if (settings != null && settings.IsOpen) return;
+            // 설정 창이나 타이틀 확인 팝업이 떠 있으면 그쪽이 먼저 닫힌다.
+            if (settings != null && (settings.IsOpen || settings.IsTitleConfirmOpen)) return;
 
             if (_open) Close();
             else Open();
@@ -92,6 +94,11 @@ namespace ItIsYou.UI
 
         private void ToTitle()
         {
+            if (settings != null && settings.CanAskReturnToTitle)
+            {
+                settings.AskReturnToTitle();
+                return;
+            }
             IsPaused = false;
             SceneManager.LoadScene(SceneRoutes.Title);
         }

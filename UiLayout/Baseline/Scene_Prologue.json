@@ -23,16 +23,16 @@
                 },
                 "anchoredPosition": {
                     "x": 424.9999694824219,
-                    "y": 278.1000061035156
+                    "y": 257.29998779296877
                 },
                 "sizeDelta": {
-                    "x": 1780.1494140625,
-                    "y": 1164.8460693359375
+                    "x": 1850.704345703125,
+                    "y": 1120.438232421875
                 },
                 "scale": {
-                    "x": 0.4774879813194275,
-                    "y": 0.4774879813194275,
-                    "z": 0.4774879813194275
+                    "x": 0.45928457379341128,
+                    "y": 0.45928457379341128,
+                    "z": 0.45928457379341128
                 },
                 "rotationZ": 0.0,
                 "hasImage": false,
@@ -100,8 +100,9 @@
                 "Skip",
                 "Popup",
                 "EndFade",
+                "PauseMenu",
                 "SettingsMenu",
-                "PauseMenu"
+                "TitleConfirmPopup"
             ]
         },
         {
@@ -613,14 +614,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -1279,14 +1280,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -1493,6 +1494,1439 @@
                     "a": 1.0
                 },
                 "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/PauseMenu",
+            "active": false,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Scrim",
+                "Panel"
+            ]
+        },
+        {
+            "path": "Canvas/PauseMenu/Scrim",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.6600000262260437
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchorMax": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 480.0,
+                    "y": 384.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 21300000,
+                    "guid": "30151ac961a2a57459fbbc06a3e62d71",
+                    "type": 3
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Title",
+                "List",
+                "Hint"
+            ]
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel/Title",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 1.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": -52.0
+                },
+                "sizeDelta": {
+                    "x": -48.0,
+                    "y": 40.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": true,
+                "font": {
+                    "fileID": 11400000,
+                    "guid": "7929d8be7326d934d8d818eb95e1b918",
+                    "type": 2
+                },
+                "fontSize": 16.0,
+                "textColor": {
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
+                    "a": 1.0
+                },
+                "alignment": 514,
+                "fontStyle": 16,
+                "characterSpacing": 10.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel/List",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": -24.0
+                },
+                "sizeDelta": {
+                    "x": -96.0,
+                    "y": -144.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": true,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 16.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 1,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Resume",
+                "Settings",
+                "Title"
+            ]
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel/List/Resume",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchorMax": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 64.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Label",
+                "Strip"
+            ]
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel/List/Resume/Label",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": true,
+                "font": {
+                    "fileID": 11400000,
+                    "guid": "7929d8be7326d934d8d818eb95e1b918",
+                    "type": 2
+                },
+                "fontSize": 24.0,
+                "textColor": {
+                    "r": 0.8705882430076599,
+                    "g": 0.8509804010391235,
+                    "b": 0.8117647171020508,
+                    "a": 1.0
+                },
+                "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel/List/Resume/Strip",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 0.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 2.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 4.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel/List/Settings",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchorMax": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 64.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Label",
+                "Strip"
+            ]
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel/List/Settings/Label",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": true,
+                "font": {
+                    "fileID": 11400000,
+                    "guid": "7929d8be7326d934d8d818eb95e1b918",
+                    "type": 2
+                },
+                "fontSize": 24.0,
+                "textColor": {
+                    "r": 0.8705882430076599,
+                    "g": 0.8509804010391235,
+                    "b": 0.8117647171020508,
+                    "a": 1.0
+                },
+                "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel/List/Settings/Strip",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 0.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 2.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 4.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel/List/Title",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchorMax": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 64.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Label",
+                "Strip"
+            ]
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel/List/Title/Label",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": true,
+                "font": {
+                    "fileID": 11400000,
+                    "guid": "7929d8be7326d934d8d818eb95e1b918",
+                    "type": 2
+                },
+                "fontSize": 24.0,
+                "textColor": {
+                    "r": 0.8705882430076599,
+                    "g": 0.8509804010391235,
+                    "b": 0.8117647171020508,
+                    "a": 1.0
+                },
+                "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel/List/Title/Strip",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 0.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 2.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 4.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/PauseMenu/Panel/Hint",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 0.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 20.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 24.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": true,
+                "font": {
+                    "fileID": 11400000,
+                    "guid": "7929d8be7326d934d8d818eb95e1b918",
+                    "type": 2
+                },
+                "fontSize": 14.0,
+                "textColor": {
+                    "r": 0.6039215922355652,
+                    "g": 0.5882353186607361,
+                    "b": 0.5529412031173706,
+                    "a": 1.0
+                },
+                "alignment": 514,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -1753,16 +3187,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "fd4155f994a816b47991b4319ac6109b",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.08627451211214066,
-                    "g": 0.09803921729326248,
-                    "b": 0.11372549086809159,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -1811,10 +3247,12 @@
             "children": [
                 "Title",
                 "Rule",
+                "CloseIcon",
                 "Tabs",
                 "Content",
                 "Defaults",
-                "Close"
+                "Close",
+                "TitleButton"
             ]
         },
         {
@@ -1938,7 +3376,7 @@
                 },
                 "sizeDelta": {
                     "x": -96.0,
-                    "y": 2.0
+                    "y": 20.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -1948,15 +3386,112 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "98c8f63dbd4be9d4a98029f5a9d0f804",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.20000000298023225,
-                    "g": 0.21960784494876862,
-                    "b": 0.239215686917305,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/SettingsMenu/Panel/CloseIcon",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": -66.0,
+                    "y": -60.0
+                },
+                "sizeDelta": {
+                    "x": 36.0,
+                    "y": 36.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 21300000,
+                    "guid": "9fbd68c39cd7d504eab57320b180e2e8",
+                    "type": 3
+                },
+                "imageColor": {
+                    "r": 0.8705882430076599,
+                    "g": 0.8509804010391235,
+                    "b": 0.8117647171020508,
+                    "a": 1.0
+                },
+                "preserveAspect": true,
                 "imageType": 0,
                 "hasText": false,
                 "font": {
@@ -1970,6 +3505,103 @@
                     "a": 1.0
                 },
                 "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Label"
+            ]
+        },
+        {
+            "path": "Canvas/SettingsMenu/Panel/CloseIcon/Label",
+            "active": false,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": true,
+                "font": {
+                    "fileID": 11400000,
+                    "guid": "7929d8be7326d934d8d818eb95e1b918",
+                    "type": 2
+                },
+                "fontSize": 20.0,
+                "textColor": {
+                    "r": 0.8705882430076599,
+                    "g": 0.8509804010391235,
+                    "b": 0.8117647171020508,
+                    "a": 1.0
+                },
+                "alignment": 514,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
                 "lineSpacing": 0.0,
@@ -2138,14 +3770,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -2424,14 +4056,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -2710,14 +4342,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -3454,11 +5086,11 @@
             "values": {
                 "anchorMin": {
                     "x": 0.0,
-                    "y": 0.0
+                    "y": 0.5
                 },
                 "anchorMax": {
                     "x": 0.0,
-                    "y": 1.0
+                    "y": 0.5
                 },
                 "pivot": {
                     "x": 0.5,
@@ -3469,8 +5101,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 56.0,
-                    "y": 0.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -3480,18 +5112,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "7bf9a2f345405a74b890fb7df983c42e",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
                     "a": 1.0
                 },
-                "preserveAspect": false,
-                "imageType": 1,
+                "preserveAspect": true,
+                "imageType": 0,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -3543,7 +5175,7 @@
         },
         {
             "path": "Canvas/SettingsMenu/Panel/Content/Page_Graphics/Row_화면 모드/Cycler/Prev/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -3646,11 +5278,11 @@
             "values": {
                 "anchorMin": {
                     "x": 1.0,
-                    "y": 0.0
+                    "y": 0.5
                 },
                 "anchorMax": {
                     "x": 1.0,
-                    "y": 1.0
+                    "y": 0.5
                 },
                 "pivot": {
                     "x": 0.5,
@@ -3661,8 +5293,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 56.0,
-                    "y": 0.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -3672,18 +5304,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "c599d051d5d49aa4883d8c21494e2b91",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
                     "a": 1.0
                 },
-                "preserveAspect": false,
-                "imageType": 1,
+                "preserveAspect": true,
+                "imageType": 0,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -3735,7 +5367,7 @@
         },
         {
             "path": "Canvas/SettingsMenu/Panel/Content/Page_Graphics/Row_화면 모드/Cycler/Next/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -3864,16 +5496,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "40e311453c0c99d48a45efa67276a603",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.06666667014360428,
-                    "g": 0.07450980693101883,
-                    "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -4316,11 +5950,11 @@
             "values": {
                 "anchorMin": {
                     "x": 0.0,
-                    "y": 0.0
+                    "y": 0.5
                 },
                 "anchorMax": {
                     "x": 0.0,
-                    "y": 1.0
+                    "y": 0.5
                 },
                 "pivot": {
                     "x": 0.5,
@@ -4331,8 +5965,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 56.0,
-                    "y": 0.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -4342,18 +5976,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "7bf9a2f345405a74b890fb7df983c42e",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
                     "a": 1.0
                 },
-                "preserveAspect": false,
-                "imageType": 1,
+                "preserveAspect": true,
+                "imageType": 0,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -4405,7 +6039,7 @@
         },
         {
             "path": "Canvas/SettingsMenu/Panel/Content/Page_Graphics/Row_화면 비율/Cycler/Prev/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -4508,11 +6142,11 @@
             "values": {
                 "anchorMin": {
                     "x": 1.0,
-                    "y": 0.0
+                    "y": 0.5
                 },
                 "anchorMax": {
                     "x": 1.0,
-                    "y": 1.0
+                    "y": 0.5
                 },
                 "pivot": {
                     "x": 0.5,
@@ -4523,8 +6157,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 56.0,
-                    "y": 0.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -4534,18 +6168,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "c599d051d5d49aa4883d8c21494e2b91",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
                     "a": 1.0
                 },
-                "preserveAspect": false,
-                "imageType": 1,
+                "preserveAspect": true,
+                "imageType": 0,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -4597,7 +6231,7 @@
         },
         {
             "path": "Canvas/SettingsMenu/Panel/Content/Page_Graphics/Row_화면 비율/Cycler/Next/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -4726,16 +6360,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "40e311453c0c99d48a45efa67276a603",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.06666667014360428,
-                    "g": 0.07450980693101883,
-                    "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -5178,11 +6814,11 @@
             "values": {
                 "anchorMin": {
                     "x": 0.0,
-                    "y": 0.0
+                    "y": 0.5
                 },
                 "anchorMax": {
                     "x": 0.0,
-                    "y": 1.0
+                    "y": 0.5
                 },
                 "pivot": {
                     "x": 0.5,
@@ -5193,8 +6829,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 56.0,
-                    "y": 0.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -5204,18 +6840,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "7bf9a2f345405a74b890fb7df983c42e",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
                     "a": 1.0
                 },
-                "preserveAspect": false,
-                "imageType": 1,
+                "preserveAspect": true,
+                "imageType": 0,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -5267,7 +6903,7 @@
         },
         {
             "path": "Canvas/SettingsMenu/Panel/Content/Page_Graphics/Row_해상도/Cycler/Prev/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -5370,11 +7006,11 @@
             "values": {
                 "anchorMin": {
                     "x": 1.0,
-                    "y": 0.0
+                    "y": 0.5
                 },
                 "anchorMax": {
                     "x": 1.0,
-                    "y": 1.0
+                    "y": 0.5
                 },
                 "pivot": {
                     "x": 0.5,
@@ -5385,8 +7021,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 56.0,
-                    "y": 0.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -5396,18 +7032,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "c599d051d5d49aa4883d8c21494e2b91",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
                     "a": 1.0
                 },
-                "preserveAspect": false,
-                "imageType": 1,
+                "preserveAspect": true,
+                "imageType": 0,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -5459,7 +7095,7 @@
         },
         {
             "path": "Canvas/SettingsMenu/Panel/Content/Page_Graphics/Row_해상도/Cycler/Next/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -5588,16 +7224,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "40e311453c0c99d48a45efa67276a603",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.06666667014360428,
-                    "g": 0.07450980693101883,
-                    "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -5968,14 +7606,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -6538,7 +8176,7 @@
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 8.0
+                    "y": 16.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -6548,18 +8186,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "8af608afb8ec42b42acedc77f70fb6b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.06666667014360428,
-                    "g": 0.07450980693101883,
-                    "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -6633,7 +8271,7 @@
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 8.0
+                    "y": 16.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -6738,18 +8376,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "23f6bd5b49cff464f9d98412a77010a4",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -6917,8 +8555,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 24.0,
-                    "y": 24.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -6928,17 +8566,17 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "7fc7979b47a39f44da98e1c24ab33f07",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.8705882430076599,
-                    "g": 0.8509804010391235,
-                    "b": 0.8117647171020508,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
-                "preserveAspect": false,
+                "preserveAspect": true,
                 "imageType": 0,
                 "hasText": false,
                 "font": {
@@ -7397,7 +9035,7 @@
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 8.0
+                    "y": 16.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -7407,18 +9045,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "8af608afb8ec42b42acedc77f70fb6b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.06666667014360428,
-                    "g": 0.07450980693101883,
-                    "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -7492,7 +9130,7 @@
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 8.0
+                    "y": 16.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -7597,18 +9235,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "23f6bd5b49cff464f9d98412a77010a4",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -7776,8 +9414,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 24.0,
-                    "y": 24.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -7787,17 +9425,17 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "7fc7979b47a39f44da98e1c24ab33f07",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.8705882430076599,
-                    "g": 0.8509804010391235,
-                    "b": 0.8117647171020508,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
-                "preserveAspect": false,
+                "preserveAspect": true,
                 "imageType": 0,
                 "hasText": false,
                 "font": {
@@ -8256,7 +9894,7 @@
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 8.0
+                    "y": 16.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -8266,18 +9904,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "8af608afb8ec42b42acedc77f70fb6b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.06666667014360428,
-                    "g": 0.07450980693101883,
-                    "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -8351,7 +9989,7 @@
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 8.0
+                    "y": 16.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -8456,18 +10094,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "23f6bd5b49cff464f9d98412a77010a4",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -8635,8 +10273,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 24.0,
-                    "y": 24.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -8646,17 +10284,17 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "7fc7979b47a39f44da98e1c24ab33f07",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.8705882430076599,
-                    "g": 0.8509804010391235,
-                    "b": 0.8117647171020508,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
-                "preserveAspect": false,
+                "preserveAspect": true,
                 "imageType": 0,
                 "hasText": false,
                 "font": {
@@ -9115,7 +10753,7 @@
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 8.0
+                    "y": 16.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -9125,18 +10763,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "8af608afb8ec42b42acedc77f70fb6b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.06666667014360428,
-                    "g": 0.07450980693101883,
-                    "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -9210,7 +10848,7 @@
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 8.0
+                    "y": 16.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -9315,18 +10953,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "23f6bd5b49cff464f9d98412a77010a4",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -9494,8 +11132,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 24.0,
-                    "y": 24.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -9505,17 +11143,17 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "7fc7979b47a39f44da98e1c24ab33f07",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.8705882430076599,
-                    "g": 0.8509804010391235,
-                    "b": 0.8117647171020508,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
-                "preserveAspect": false,
+                "preserveAspect": true,
                 "imageType": 0,
                 "hasText": false,
                 "font": {
@@ -9957,11 +11595,11 @@
             "values": {
                 "anchorMin": {
                     "x": 0.0,
-                    "y": 0.0
+                    "y": 0.5
                 },
                 "anchorMax": {
                     "x": 0.0,
-                    "y": 1.0
+                    "y": 0.5
                 },
                 "pivot": {
                     "x": 0.5,
@@ -9972,8 +11610,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 56.0,
-                    "y": 0.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -9983,18 +11621,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "7bf9a2f345405a74b890fb7df983c42e",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
                     "a": 1.0
                 },
-                "preserveAspect": false,
-                "imageType": 1,
+                "preserveAspect": true,
+                "imageType": 0,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -10046,7 +11684,7 @@
         },
         {
             "path": "Canvas/SettingsMenu/Panel/Content/Page_Sound/Row_음소거/Cycler/Prev/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -10149,11 +11787,11 @@
             "values": {
                 "anchorMin": {
                     "x": 1.0,
-                    "y": 0.0
+                    "y": 0.5
                 },
                 "anchorMax": {
                     "x": 1.0,
-                    "y": 1.0
+                    "y": 0.5
                 },
                 "pivot": {
                     "x": 0.5,
@@ -10164,8 +11802,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 56.0,
-                    "y": 0.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -10175,18 +11813,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "c599d051d5d49aa4883d8c21494e2b91",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
                     "a": 1.0
                 },
-                "preserveAspect": false,
-                "imageType": 1,
+                "preserveAspect": true,
+                "imageType": 0,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -10238,7 +11876,7 @@
         },
         {
             "path": "Canvas/SettingsMenu/Panel/Content/Page_Sound/Row_음소거/Cycler/Next/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -10367,16 +12005,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "40e311453c0c99d48a45efa67276a603",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.06666667014360428,
-                    "g": 0.07450980693101883,
-                    "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -10934,7 +12574,7 @@
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 8.0
+                    "y": 16.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -10944,18 +12584,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "8af608afb8ec42b42acedc77f70fb6b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.06666667014360428,
-                    "g": 0.07450980693101883,
-                    "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -11029,7 +12669,7 @@
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 8.0
+                    "y": 16.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -11134,18 +12774,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "23f6bd5b49cff464f9d98412a77010a4",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -11313,8 +12953,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 24.0,
-                    "y": 24.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -11324,17 +12964,17 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "7fc7979b47a39f44da98e1c24ab33f07",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.8705882430076599,
-                    "g": 0.8509804010391235,
-                    "b": 0.8117647171020508,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
-                "preserveAspect": false,
+                "preserveAspect": true,
                 "imageType": 0,
                 "hasText": false,
                 "font": {
@@ -11793,7 +13433,7 @@
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 8.0
+                    "y": 16.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -11803,18 +13443,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "8af608afb8ec42b42acedc77f70fb6b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.06666667014360428,
-                    "g": 0.07450980693101883,
-                    "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -11888,7 +13528,7 @@
                 },
                 "sizeDelta": {
                     "x": 0.0,
-                    "y": 8.0
+                    "y": 16.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -11993,18 +13633,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "23f6bd5b49cff464f9d98412a77010a4",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -12172,8 +13812,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 24.0,
-                    "y": 24.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -12183,17 +13823,17 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "7fc7979b47a39f44da98e1c24ab33f07",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.8705882430076599,
-                    "g": 0.8509804010391235,
-                    "b": 0.8117647171020508,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
-                "preserveAspect": false,
+                "preserveAspect": true,
                 "imageType": 0,
                 "hasText": false,
                 "font": {
@@ -12635,11 +14275,11 @@
             "values": {
                 "anchorMin": {
                     "x": 0.0,
-                    "y": 0.0
+                    "y": 0.5
                 },
                 "anchorMax": {
                     "x": 0.0,
-                    "y": 1.0
+                    "y": 0.5
                 },
                 "pivot": {
                     "x": 0.5,
@@ -12650,8 +14290,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 56.0,
-                    "y": 0.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -12661,18 +14301,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "7bf9a2f345405a74b890fb7df983c42e",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
                     "a": 1.0
                 },
-                "preserveAspect": false,
-                "imageType": 1,
+                "preserveAspect": true,
+                "imageType": 0,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -12724,7 +14364,7 @@
         },
         {
             "path": "Canvas/SettingsMenu/Panel/Content/Page_Game/Row_가이드 모드 (준비 중)/Cycler/Prev/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -12827,11 +14467,11 @@
             "values": {
                 "anchorMin": {
                     "x": 1.0,
-                    "y": 0.0
+                    "y": 0.5
                 },
                 "anchorMax": {
                     "x": 1.0,
-                    "y": 1.0
+                    "y": 0.5
                 },
                 "pivot": {
                     "x": 0.5,
@@ -12842,8 +14482,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 56.0,
-                    "y": 0.0
+                    "x": 28.0,
+                    "y": 28.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -12853,18 +14493,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "c599d051d5d49aa4883d8c21494e2b91",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 0.7686274647712708,
+                    "g": 0.6549019813537598,
+                    "b": 0.3607843220233917,
                     "a": 1.0
                 },
-                "preserveAspect": false,
-                "imageType": 1,
+                "preserveAspect": true,
+                "imageType": 0,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -12916,7 +14556,7 @@
         },
         {
             "path": "Canvas/SettingsMenu/Panel/Content/Page_Game/Row_가이드 모드 (준비 중)/Cycler/Next/Label",
-            "active": true,
+            "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
             "groupInteractable": true,
@@ -13045,16 +14685,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "40e311453c0c99d48a45efa67276a603",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.06666667014360428,
-                    "g": 0.07450980693101883,
-                    "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -13330,14 +14972,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -13522,14 +15164,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -13679,7 +15321,199 @@
             "children": []
         },
         {
-            "path": "Canvas/PauseMenu",
+            "path": "Canvas/SettingsMenu/Panel/TitleButton",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 1.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 0.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": -392.0,
+                    "y": 60.0
+                },
+                "sizeDelta": {
+                    "x": 256.0,
+                    "y": 56.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": true,
+                "sprite": {
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 1,
+                "hasText": false,
+                "font": {
+                    "instanceID": 0
+                },
+                "fontSize": 0.0,
+                "textColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "alignment": 0,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": [
+                "Label"
+            ]
+        },
+        {
+            "path": "Canvas/SettingsMenu/Panel/TitleButton/Label",
+            "active": true,
+            "hasGroup": false,
+            "groupAlpha": 1.0,
+            "groupInteractable": true,
+            "groupBlocks": true,
+            "values": {
+                "anchorMin": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "anchorMax": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "pivot": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "anchoredPosition": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "sizeDelta": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "rotationZ": 0.0,
+                "hasImage": false,
+                "sprite": {
+                    "instanceID": 0
+                },
+                "imageColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "preserveAspect": false,
+                "imageType": 0,
+                "hasText": true,
+                "font": {
+                    "fileID": 11400000,
+                    "guid": "7929d8be7326d934d8d818eb95e1b918",
+                    "type": 2
+                },
+                "fontSize": 20.0,
+                "textColor": {
+                    "r": 0.8705882430076599,
+                    "g": 0.8509804010391235,
+                    "b": 0.8117647171020508,
+                    "a": 1.0
+                },
+                "alignment": 514,
+                "fontStyle": 0,
+                "characterSpacing": 0.0,
+                "lineSpacing": 0.0,
+                "hasLayoutGroup": false,
+                "padding": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 0.0
+                },
+                "spacing": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "cellSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "childAlignment": 0,
+                "hasLayoutElement": false,
+                "minSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "preferredSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "flexibleSize": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "children": []
+        },
+        {
+            "path": "Canvas/TitleConfirmPopup",
             "active": false,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -13775,7 +15609,7 @@
             ]
         },
         {
-            "path": "Canvas/PauseMenu/Scrim",
+            "path": "Canvas/TitleConfirmPopup/Scrim",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -13816,7 +15650,7 @@
                     "r": 0.0,
                     "g": 0.0,
                     "b": 0.0,
-                    "a": 0.6600000262260437
+                    "a": 0.6200000047683716
                 },
                 "preserveAspect": false,
                 "imageType": 0,
@@ -13868,7 +15702,7 @@
             "children": []
         },
         {
-            "path": "Canvas/PauseMenu/Panel",
+            "path": "Canvas/TitleConfirmPopup/Panel",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -13892,8 +15726,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 480.0,
-                    "y": 384.0
+                    "x": 800.0,
+                    "y": 340.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -13903,16 +15737,18 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "30151ac961a2a57459fbbc06a3e62d71",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.08627451211214066,
-                    "g": 0.09803921729326248,
-                    "b": 0.11372549086809159,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
-                "imageType": 0,
+                "imageType": 1,
                 "hasText": false,
                 "font": {
                     "instanceID": 0
@@ -13959,108 +15795,13 @@
                 }
             },
             "children": [
-                "Title",
-                "List",
-                "Hint"
+                "Message",
+                "Yes",
+                "No"
             ]
         },
         {
-            "path": "Canvas/PauseMenu/Panel/Title",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": -52.0
-                },
-                "sizeDelta": {
-                    "x": -48.0,
-                    "y": 40.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": true,
-                "font": {
-                    "fileID": 11400000,
-                    "guid": "7929d8be7326d934d8d818eb95e1b918",
-                    "type": 2
-                },
-                "fontSize": 16.0,
-                "textColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
-                    "a": 1.0
-                },
-                "alignment": 514,
-                "fontStyle": 16,
-                "characterSpacing": 10.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/PauseMenu/Panel/List",
+            "path": "Canvas/TitleConfirmPopup/Panel/Message",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -14081,11 +15822,11 @@
                 },
                 "anchoredPosition": {
                     "x": 0.0,
-                    "y": -24.0
+                    "y": 36.0
                 },
                 "sizeDelta": {
                     "x": -96.0,
-                    "y": -144.0
+                    "y": -152.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -14105,22 +15846,24 @@
                 },
                 "preserveAspect": false,
                 "imageType": 0,
-                "hasText": false,
+                "hasText": true,
                 "font": {
-                    "instanceID": 0
+                    "fileID": 11400000,
+                    "guid": "7929d8be7326d934d8d818eb95e1b918",
+                    "type": 2
                 },
-                "fontSize": 0.0,
+                "fontSize": 24.0,
                 "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
+                    "r": 0.8705882430076599,
+                    "g": 0.8509804010391235,
+                    "b": 0.8117647171020508,
                     "a": 1.0
                 },
-                "alignment": 0,
+                "alignment": 514,
                 "fontStyle": 0,
                 "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": true,
+                "lineSpacing": 10.0,
+                "hasLayoutGroup": false,
                 "padding": {
                     "x": 0.0,
                     "y": 0.0,
@@ -14128,14 +15871,14 @@
                     "w": 0.0
                 },
                 "spacing": {
-                    "x": 16.0,
+                    "x": 0.0,
                     "y": 0.0
                 },
                 "cellSize": {
                     "x": 0.0,
                     "y": 0.0
                 },
-                "childAlignment": 1,
+                "childAlignment": 0,
                 "hasLayoutElement": false,
                 "minSize": {
                     "x": 0.0,
@@ -14150,14 +15893,10 @@
                     "y": 0.0
                 }
             },
-            "children": [
-                "Resume",
-                "Settings",
-                "Title"
-            ]
+            "children": []
         },
         {
-            "path": "Canvas/PauseMenu/Panel/List/Resume",
+            "path": "Canvas/TitleConfirmPopup/Panel/Yes",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -14166,23 +15905,23 @@
             "values": {
                 "anchorMin": {
                     "x": 0.5,
-                    "y": 0.5
+                    "y": 0.0
                 },
                 "anchorMax": {
                     "x": 0.5,
-                    "y": 0.5
+                    "y": 0.0
                 },
                 "pivot": {
                     "x": 0.5,
                     "y": 0.5
                 },
                 "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
+                    "x": -126.0,
+                    "y": 66.0
                 },
                 "sizeDelta": {
-                    "x": 0.0,
-                    "y": 64.0
+                    "x": 220.0,
+                    "y": 60.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -14192,14 +15931,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -14250,12 +15989,11 @@
                 }
             },
             "children": [
-                "Label",
-                "Strip"
+                "Label"
             ]
         },
         {
-            "path": "Canvas/PauseMenu/Panel/List/Resume/Label",
+            "path": "Canvas/TitleConfirmPopup/Panel/Yes/Label",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -14306,7 +16044,7 @@
                     "guid": "7929d8be7326d934d8d818eb95e1b918",
                     "type": 2
                 },
-                "fontSize": 24.0,
+                "fontSize": 20.0,
                 "textColor": {
                     "r": 0.8705882430076599,
                     "g": 0.8509804010391235,
@@ -14350,7 +16088,7 @@
             "children": []
         },
         {
-            "path": "Canvas/PauseMenu/Panel/List/Resume/Strip",
+            "path": "Canvas/TitleConfirmPopup/Panel/No",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -14358,24 +16096,24 @@
             "groupBlocks": true,
             "values": {
                 "anchorMin": {
-                    "x": 0.0,
+                    "x": 0.5,
                     "y": 0.0
                 },
                 "anchorMax": {
-                    "x": 0.0,
-                    "y": 1.0
+                    "x": 0.5,
+                    "y": 0.0
                 },
                 "pivot": {
                     "x": 0.5,
                     "y": 0.5
                 },
                 "anchoredPosition": {
-                    "x": 2.0,
-                    "y": 0.0
+                    "x": 126.0,
+                    "y": 66.0
                 },
                 "sizeDelta": {
-                    "x": 4.0,
-                    "y": 0.0
+                    "x": 220.0,
+                    "y": 60.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -14385,107 +16123,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "instanceID": 0
+                    "fileID": 21300000,
+                    "guid": "50c70e280ec7c214198c79dd98be00b5",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
                     "r": 1.0,
                     "g": 1.0,
                     "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/PauseMenu/Panel/List/Settings",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 64.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -14536,12 +16181,11 @@
                 }
             },
             "children": [
-                "Label",
-                "Strip"
+                "Label"
             ]
         },
         {
-            "path": "Canvas/PauseMenu/Panel/List/Settings/Label",
+            "path": "Canvas/TitleConfirmPopup/Panel/No/Label",
             "active": true,
             "hasGroup": false,
             "groupAlpha": 1.0,
@@ -14592,485 +16236,11 @@
                     "guid": "7929d8be7326d934d8d818eb95e1b918",
                     "type": 2
                 },
-                "fontSize": 24.0,
+                "fontSize": 20.0,
                 "textColor": {
                     "r": 0.8705882430076599,
                     "g": 0.8509804010391235,
                     "b": 0.8117647171020508,
-                    "a": 1.0
-                },
-                "alignment": 514,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/PauseMenu/Panel/List/Settings/Strip",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 2.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 4.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/PauseMenu/Panel/List/Title",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchorMax": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 64.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 1,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": [
-                "Label",
-                "Strip"
-            ]
-        },
-        {
-            "path": "Canvas/PauseMenu/Panel/List/Title/Label",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": true,
-                "font": {
-                    "fileID": 11400000,
-                    "guid": "7929d8be7326d934d8d818eb95e1b918",
-                    "type": 2
-                },
-                "fontSize": 24.0,
-                "textColor": {
-                    "r": 0.8705882430076599,
-                    "g": 0.8509804010391235,
-                    "b": 0.8117647171020508,
-                    "a": 1.0
-                },
-                "alignment": 514,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/PauseMenu/Panel/List/Title/Strip",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 0.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 2.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": 4.0,
-                    "y": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 0.7686274647712708,
-                    "g": 0.6549019813537598,
-                    "b": 0.3607843220233917,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": []
-        },
-        {
-            "path": "Canvas/PauseMenu/Panel/Hint",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 0.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 20.0
-                },
-                "sizeDelta": {
-                    "x": 0.0,
-                    "y": 24.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": false,
-                "sprite": {
-                    "instanceID": 0
-                },
-                "imageColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 0,
-                "hasText": true,
-                "font": {
-                    "fileID": 11400000,
-                    "guid": "7929d8be7326d934d8d818eb95e1b918",
-                    "type": 2
-                },
-                "fontSize": 14.0,
-                "textColor": {
-                    "r": 0.6039215922355652,
-                    "g": 0.5882353186607361,
-                    "b": 0.5529412031173706,
                     "a": 1.0
                 },
                 "alignment": 514,

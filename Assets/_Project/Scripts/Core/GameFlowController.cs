@@ -39,7 +39,7 @@ namespace ItIsYou.Core
 
         [Tooltip("챕터 씬이 시작될 때(인트로 카툰 다음) 까만 화면에서 밝아지는 시간(초).")]
         [SerializeField] private float openingFadeSeconds = 1.2f;
-        [Tooltip("컷씬 화면의 그림·이름판. 회상씬(E#1, E#2)이 같은 화면을 빌려 쓴다.")]
+        [Tooltip("컷씬 화면의 그림·이름판. 회상씬(E#1 ~ E#3)이 같은 화면을 빌려 쓴다.")]
         [SerializeField] private CutsceneScreenView cutsceneView;
         [SerializeField] private ClueTrayView clueTray;
         [SerializeField] private CursorController cursor;
@@ -151,7 +151,7 @@ namespace ItIsYou.Core
                 yield return dialogue.Play(chapter.AfterCutsceneTalk);
             }
 
-            // ---- <회상씬으로 전환 E#1> <E#2> → <게임플레이 배경_캐릭터 일반 대화 씬으로 전환> ----
+            // ---- <회상씬으로 전환 E#1 ~ E#3> → <게임플레이 배경_캐릭터 일반 대화 씬으로 전환> ----
             var flashbacks = chapter.Flashbacks;
             if (flashbacks != null && flashbacks.Count > 0)
             {
@@ -159,7 +159,7 @@ namespace ItIsYou.Core
                 {
                     var fb = flashbacks[i];
                     if (fb == null || fb.IsEmpty) continue;
-                    yield return TransitionWith(GamePhase.Cutscene, () => cutsceneView?.Show(fb.Name, fb.Image));
+                    yield return TransitionWith(GamePhase.Cutscene, () => cutsceneView?.Show(fb.Name, fb.Image, recall: true));
                     yield return dialogue.Play(fb.Sequence);
                 }
                 if (chapter.AfterFlashbackTalk != null && !chapter.AfterFlashbackTalk.IsEmpty)
@@ -539,7 +539,7 @@ namespace ItIsYou.Core
             return null;
         }
 
-        /// <summary>화면을 덮은 동안 before 를 실행하고 페이즈를 갈아 끼운다. 같은 페이즈로 다시 들어갈 때(회상 두 컷)도 덮었다 걷는다.</summary>
+        /// <summary>화면을 덮은 동안 before 를 실행하고 페이즈를 갈아 끼운다. 같은 페이즈로 다시 들어갈 때(회상 여러 컷)도 덮었다 걷는다.</summary>
         private IEnumerator TransitionWith(GamePhase next, Action before)
         {
             if (fader == null)

@@ -32,8 +32,16 @@ namespace ItIsYou.UI
         [Tooltip("눌리지 않는 버튼의 흐림 정도(0~1).")]
         [SerializeField] private float disabledAlpha = 0.45f;
 
+        [Header("그림 (UI 스킨)")]
+        [Tooltip("마우스를 올렸을 때 서서히 나타나는 판(빛이 번진 메뉴 판). 비워도 된다.")]
+        [SerializeField] private Graphic hoverOverlay;
+        [Tooltip("마우스를 올렸을 때 버튼 왼쪽에 나타나는 표식(펜촉). 비워도 된다.")]
+        [SerializeField] private Graphic marker;
+        [Tooltip("표식이 나타나며 오른쪽으로 들어오는 거리(픽셀).")]
+        [SerializeField] private float markerSlide = 12f;
+
         private Color _baseColor, _baseLabel;
-        private Vector2 _basePos;
+        private Vector2 _basePos, _markerPos;
         private bool _captured;
         private bool _hover;
         private float _k;   // 0 = 평소, 1 = 떠오름
@@ -47,6 +55,7 @@ namespace ItIsYou.UI
             if (background != null) _baseColor = background.color;
             if (label != null) _baseLabel = label.color;
             if (visual != null) _basePos = visual.anchoredPosition;
+            if (marker != null) _markerPos = marker.rectTransform.anchoredPosition;
         }
 
         private void OnDisable()
@@ -98,6 +107,15 @@ namespace ItIsYou.UI
                 var c = Color.Lerp(_baseLabel, labelHighlightColor, e);
                 c.a *= dim;
                 label.color = c;
+            }
+            if (hoverOverlay != null)
+            {
+                var c = hoverOverlay.color; c.a = e * dim; hoverOverlay.color = c;
+            }
+            if (marker != null)
+            {
+                var c = marker.color; c.a = e; marker.color = c;
+                marker.rectTransform.anchoredPosition = _markerPos + new Vector2(-markerSlide * (1f - e), 0f);
             }
         }
 

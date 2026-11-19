@@ -77,15 +77,79 @@ MonoBehaviour:
     scale: 1
     flipX: 0
     preserveAspect: 1
-  notebook: {fileID: 0}
-  speechBubble: {fileID: 0}
-  bubbleTail: {fileID: 0}
-  nameTagBrush: {fileID: 0}
-  bottomGradient: {fileID: 0}
-  iconRecord: {fileID: 0}
-  iconSettings: {fileID: 0}
-  iconLog: {fileID: 0}
+  notebook: {fileID: 21300000, guid: 78ff80d3aba42b04382ae8b236345a53, type: 3}
+  speechBubble: {fileID: 21300000, guid: d80f5e79c2b17cf4a9113d01e976db7d, type: 3}
+  bubbleTail: {fileID: 21300000, guid: a29322831bcac7c4ba7cdca14ba17c17, type: 3}
+  nameTagBrush: {fileID: 21300000, guid: 7d0c3dcc7b7d22f41a7567bf1605ae1b, type: 3}
+  bottomGradient: {fileID: 21300000, guid: 1ae45a0a18fd5ef4fb6ece1749a9b999, type: 3}
+  iconRecord: {fileID: 21300000, guid: b497b2bd5dd246a439b9868d729cdf5a, type: 3}
+  iconSettings: {fileID: 21300000, guid: 0a1844358ea007440ac733a0ab897e91, type: 3}
+  iconLog: {fileID: 21300000, guid: 26cc8280b225c7a46b355e8198146efd, type: 3}
   inkDrop: {fileID: 0}
+  buttonNormal: {fileID: 21300000, guid: 50c70e280ec7c214198c79dd98be00b5, type: 3}
+  buttonHover: {fileID: 21300000, guid: a7387761e071ad04bb7bcfbdf9760a3a, type: 3}
+  buttonPressed: {fileID: 21300000, guid: 3a61fa29200aa234ba172aea5896ff1c, type: 3}
+  buttonDisabled: {fileID: 21300000, guid: 133f33f2da8be2243836c090e55e0998, type: 3}
+  accentNormal: {fileID: 21300000, guid: 0128b32ff1fb64748a5044cdc62a30b9, type: 3}
+  accentHover: {fileID: 21300000, guid: 7410769b3786b1542888aeab6a66fe6b, type: 3}
+  accentPressed: {fileID: 21300000, guid: ea7075b26588a2a4d95fe87520af8bb7, type: 3}
+  accentDisabled: {fileID: 21300000, guid: a0d91b3b79a4e2e4a84a5fa36238dedd, type: 3}
+  windowPanel: {fileID: 21300000, guid: fd4155f994a816b47991b4319ac6109b, type: 3}
+  smallPanel: {fileID: 21300000, guid: 30151ac961a2a57459fbbc06a3e62d71, type: 3}
+  divider: {fileID: 21300000, guid: 98c8f63dbd4be9d4a98029f5a9d0f804, type: 3}
+  sliderTrack: {fileID: 21300000, guid: 8af608afb8ec42b42acedc77f70fb6b5, type: 3}
+  sliderFill: {fileID: 21300000, guid: 23f6bd5b49cff464f9d98412a77010a4, type: 3}
+  sliderKnob: {fileID: 21300000, guid: 7fc7979b47a39f44da98e1c24ab33f07, type: 3}
+  scrollTrack: {fileID: 21300000, guid: 66e7de19b569d8f4e9b5382ca41509f1, type: 3}
+  scrollHandle: {fileID: 21300000, guid: 34f3cdca6e8554149a8184fd0da1f51f, type: 3}
+  optionPlate: {fileID: 21300000, guid: 40e311453c0c99d48a45efa67276a603, type: 3}
+  iconClose: {fileID: 21300000, guid: 9fbd68c39cd7d504eab57320b180e2e8, type: 3}
+  iconPrev: {fileID: 21300000, guid: 7bf9a2f345405a74b890fb7df983c42e, type: 3}
+  iconNext: {fileID: 21300000, guid: c599d051d5d49aa4883d8c21494e2b91, type: 3}
+  advanceArrow: {fileID: 21300000, guid: 489ff9922980e834fa428d7effe15105, type: 3}
+  topBar: {fileID: 21300000, guid: 09eac7ffbb3d218409f4c885ee28640e, type: 3}
+  clockOrnament: {fileID: 21300000, guid: 6adc714ae0b9a784f80771db88113d25, type: 3}
+  chapterPlate: {fileID: 21300000, guid: 59bd0c41879d17f4688bf00d21a96f08, type: 3}
+  recallOverlay: {fileID: 21300000, guid: 1b05f5c60b56f254fa9c3c9efc14dd76, type: 3}
+  autoTrackOff: {fileID: 21300000, guid: 7c0c5f61148427040aa44cae798b0ac0, type: 3}
+  autoTrackOn: {fileID: 21300000, guid: 14a3522e7b4898e4596ff36ff3e98931, type: 3}
+  autoKnobOff: {fileID: 21300000, guid: a10642d8b1c966740b826e2edd4133f6, type: 3}
+  autoKnobOn: {fileID: 21300000, guid: 5358f1b89c9e68840953687d7e7ea858, type: 3}
+  skipIconOn: {fileID: 21300000, guid: 7a66785a257827a419a662f98d72dcb7, type: 3}
+  skipIconOff: {fileID: 21300000, guid: 1eaf26a00e647e84293066a6feef97b0, type: 3}
+  hotspotFrame: {fileID: 21300000, guid: 1a8f9d6d6c3cc94488ed703eebc06c1c, type: 3}
+  namePlate: {fileID: 21300000, guid: 63cbd7a9b040e33488474271daf00cad, type: 3}
+  progressPlate: {fileID: 21300000, guid: 615e827808444684b9bd408224d72868, type: 3}
+  closeupFrame: {fileID: 21300000, guid: e94aa6dd060c890478c35b66cd4ff2c4, type: 3}
+  sidePanel: {fileID: 21300000, guid: 998d49cff8795f84d8582333007c21b9, type: 3}
+  listIconEvidence: {fileID: 21300000, guid: 30dceaabb146fe54592590dc5daa49e1, type: 3}
+  listIconLeads: {fileID: 21300000, guid: a25553686ac35e647a79ad89bbc56130, type: 3}
+  listIconHypotheses: {fileID: 21300000, guid: ffc5cf64c8004834b9e27c0b9f139176, type: 3}
+  clueSlotEmpty: {fileID: 21300000, guid: ddbe9f15b70a4804b966990f6c986a2e, type: 3}
+  clueSlotFilled: {fileID: 21300000, guid: 5015c23b7cfc56f4caccf6eeae740b61, type: 3}
+  clueSlotHover: {fileID: 21300000, guid: f3c3992ecfdb0cc4bba06497c27e6347, type: 3}
+  clueSlotPromoted: {fileID: 21300000, guid: 3db51103748f0534abddc2e23f8c1910, type: 3}
+  leadPlate: {fileID: 21300000, guid: dcdb5129d74064d4191543daca7bc042, type: 3}
+  readingWindow: {fileID: 21300000, guid: 7edf8bd6bd69d6f4d80c397a7000a25f, type: 3}
+  speechBubbleAngry: {fileID: 21300000, guid: d3e3955344f98c24eb306d86aa82361d, type: 3}
+  speechBubbleAnxious: {fileID: 21300000, guid: 6f2ffcc42d7d88c4985e355e8e75b919, type: 3}
+  speechBubbleJoy: {fileID: 21300000, guid: 5c01470983e79ed4a8ab600db3915502, type: 3}
+  bubbleTailAngry: {fileID: 21300000, guid: 04b485e0412fad84ebc19e5c49d496db, type: 3}
+  bubbleTailAnxious: {fileID: 21300000, guid: d5947dae09918714ca743e1a7208d095, type: 3}
+  bubbleTailJoy: {fileID: 21300000, guid: c018f85f1bd6d0c418662e40401d0b36, type: 3}
+  choiceNormal: {fileID: 21300000, guid: 24e67dc80fdcdf44db05001dd5fc152a, type: 3}
+  choiceHover: {fileID: 21300000, guid: e92c6cba702ae2f4d9d9860ad48f107e, type: 3}
+  choicePressed: {fileID: 21300000, guid: 12f22402dc8cf064e9b6c533009b7930, type: 3}
+  choiceLocked: {fileID: 21300000, guid: a05f11fa02c5000429a19615b0d08242, type: 3}
+  choicePlate: {fileID: 21300000, guid: b1c9643d6ab16d54cac4bf9bf6398360, type: 3}
+  tokenFull: {fileID: 21300000, guid: 94ffb2f47ad9e5540bb936a3fa8e0599, type: 3}
+  tokenUsed: {fileID: 21300000, guid: 513da869e93fb8d44ba2efe0287a5114, type: 3}
+  gaugeTrack: {fileID: 21300000, guid: de01dda3987a72942a62c0a35d6c2030, type: 3}
+  gaugeFill: {fileID: 21300000, guid: 4cdc6576b8e721b4aa7d720265139a39, type: 3}
+  interrogationBand: {fileID: 21300000, guid: 285f0e299563b7049b28e7cf9c7d96f8, type: 3}
+  titleMenuNormal: {fileID: 21300000, guid: 5198be365e2ef3b49a6e73a7b7609821, type: 3}
+  titleMenuHover: {fileID: 21300000, guid: ef63dc9065f98c440a4aff4775aa8d4b, type: 3}
+  titleMarker: {fileID: 21300000, guid: e15af42eac7f7c1469c8133cd486d903, type: 3}
   titleBackground: {fileID: 21300000, guid: 2a06acc9f22f9d5489cf7bce8f869487, type: 3}
   titleBackgroundPlace:
     offset: {x: 0, y: 0}

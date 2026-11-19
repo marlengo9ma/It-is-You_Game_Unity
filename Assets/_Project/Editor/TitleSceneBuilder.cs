@@ -55,6 +55,7 @@ namespace ItIsYou.EditorTools
             var root = K.Boot(Color.black);
 
             var art = AssetDatabase.LoadAssetAtPath<ItIsYou.Data.ArtSet>("Assets/_Project/Art/ArtSet.asset");
+            UiSkin.Reload();
 
             // ---------------------------------------------------- 배경
             // 화면 전체를 덮는 판. 안의 그림(또는 영상)은 비율을 지킨 채 꽉 채운다.
@@ -130,13 +131,16 @@ namespace ItIsYou.EditorTools
 
             // -------------------------------------------------------- 컨트롤러
             var systems = new GameObject("Systems");
-            var settingsMenu = SettingsUiBuilder.BuildSettings(root, systems);
+            var settingsMenu = SettingsUiBuilder.BuildSettings(root, systems, withTitleButton: false);
             var title = systems.AddComponent<TitleController>();
             title.Set("newGameButton", newGame)
                  .Set("continueButton", continueGame)
                  .Set("settingsButton", settings)
                  .Set("settings", settingsMenu)
                  .Set("quitButton", quit);
+
+            // UI 스킨(아트 세트의 버튼 · 창 그림)을 입힌다.
+            UiSkin.ApplyButtons(root);
 
             // UI 편집기에서 바꾼 자리 · 이미지 · 글자 모양을 입히고 저장한다(기준도 함께 적는다).
             UiLayout.SaveBuiltScene(scene, ScenePath);
@@ -170,10 +174,39 @@ namespace ItIsYou.EditorTools
             visual.sprite = K.UiSprite; visual.type = Image.Type.Sliced;
             visual.raycastTarget = false;
 
-            // 왼쪽에 놋쇠 선 한 줄. 선택지 버튼과 같은 어휘를 쓴다.
-            var strip = K.Img("Strip", visual.rectTransform, P.Brass);
-            K.Anchor(strip.rectTransform, K.V(0, 0), K.V(0, 1), Vector2.zero, K.V(L.Unit * 0.5f, 0));
-            strip.raycastTarget = false;
+            // UI 스킨(아트 세트 titleMenuNormal/Hover/Marker)이 있으면 그림 판 + 빛 번진 판 + 펜촉 표식.
+            var art = UiSkin.Art;
+            var skinned = art != null && art.titleMenuNormal != null;
+            Image hoverOverlay = null, marker = null;
+            if (skinned)
+            {
+                visual.sprite = art.titleMenuNormal; visual.type = Image.Type.Sliced; visual.color = Color.white;
+                if (art.titleMenuHover != null)
+                {
+                    hoverOverlay = K.Img("Hover", visual.rectTransform, new Color(1f, 1f, 1f, 0f));
+                    K.Stretch(hoverOverlay.rectTransform);
+                    hoverOverlay.sprite = art.titleMenuHover; hoverOverlay.type = Image.Type.Sliced;
+                    hoverOverlay.raycastTarget = false;
+                }
+                if (art.titleMarker != null)
+                {
+                    marker = K.Img("Marker", rt, new Color(1f, 1f, 1f, 0f));
+                    var mrt = marker.rectTransform;
+                    mrt.anchorMin = mrt.anchorMax = K.V(0f, 0.5f);
+                    mrt.pivot = K.V(1f, 0.5f);
+                    mrt.sizeDelta = K.V(64f, 26f);
+                    mrt.anchoredPosition = K.V(-L.Unit, 0f);
+                    marker.sprite = art.titleMarker; marker.preserveAspect = true;
+                    marker.raycastTarget = false;
+                }
+            }
+            else
+            {
+                // 왼쪽에 놋쇠 선 한 줄. 선택지 버튼과 같은 어휘를 쓴다.
+                var strip = K.Img("Strip", visual.rectTransform, P.Brass);
+                K.Anchor(strip.rectTransform, K.V(0, 0), K.V(0, 1), Vector2.zero, K.V(L.Unit * 0.5f, 0));
+                strip.raycastTarget = false;
+            }
 
             var text = K.Text("Label", visual.rectTransform, label, T.Body, P.Ink, TextAlignmentOptions.Left);
             K.Stretch(text.rectTransform);
@@ -185,8 +218,10 @@ namespace ItIsYou.EditorTools
               .Set("background", visual)
               .Set("label", text)
               .Set("liftPixels", 8f)
-              .Set("highlightColor", ButtonHighlight)
-              .Set("labelHighlightColor", LabelHighlight);
+              .Set("highlightColor", skinned ? Color.white : ButtonHighlight)
+              .Set("labelHighlightColor", LabelHighlight)
+              .Set("hoverOverlay", hoverOverlay)
+              .Set("marker", marker);
             return button;
         }
 

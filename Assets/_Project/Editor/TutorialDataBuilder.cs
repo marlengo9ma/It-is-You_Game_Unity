@@ -27,6 +27,8 @@ namespace ItIsYou.EditorTools
         [MenuItem("It is You/1. 튜토리얼 데이터 생성", priority = 1)]
         public static ChapterDefinition Build()
         {
+            // 줄마다 골라 둔 말풍선 모양을 적어 둔다 — 다 만든 뒤 같은 글의 줄에 돌려 넣는다.
+            var bubbles = BubbleKeeper.Capture();
             Ed.EnsureFolder(ClueFolder);
             Ed.EnsureFolder(ChoiceFolder);
             Ed.EnsureFolder(SuspectFolder);
@@ -375,8 +377,9 @@ namespace ItIsYou.EditorTools
                    // 컷씬#1 ~ 수집 페이즈 전까지(컷씬 뒤 · 회상 뒤 · 사건 진행 #1) 객실 대화는 스탠드 없이 — 혼잣말 느낌(제작자 2026-10-24)
                    .Set("afterCutsceneTalk", KeepStand(TutorialScript.AfterCutsceneTalk(), chapter.AfterCutsceneTalk, DialogueStand.None))
                    .Set("flashbacks", Flashbacks(chapter,
-                        ("회상씬 E#1", TutorialScript.FlashbackE1()),
-                        ("회상씬 E#2", TutorialScript.FlashbackE2())))
+                        ("회상씬 E#1", TutorialScript.FlashbackE1(), "Cutscenes/회상E1.png"),
+                        ("회상씬 E#2", TutorialScript.FlashbackE2(), "Cutscenes/회상E2.png"),
+                        ("회상씬 E#3", TutorialScript.FlashbackE3(), "Cutscenes/회상E3.png")))
                    .Set("afterFlashbackTalk", KeepStand(TutorialScript.AfterFlashbackTalk(), chapter.AfterFlashbackTalk, DialogueStand.None))
                    .Set("collectionGuide", TutorialScript.CollectionGuide())
                    .Set("intro", KeepStand(WithIllustration(TutorialScript.Incident(), chapter.Intro, 0, "Cutscenes/Scene#2.png"), chapter.Intro, DialogueStand.None))
@@ -435,6 +438,7 @@ namespace ItIsYou.EditorTools
                     choiceFriendly, choiceAggressive, choiceRibbon, catFriendly, catAggressive, catCoffee, choice2Friendly, choice2Aggressive, choice2Deduced, choice2Cat,
                     hypPen, hypHides, hypSpill, accPenSepi, accPenCat, accHidesSepi, accHidesCat, accSpillSepi, accSpillCat, accDefault,
                     sepi, cat, chapter, db);
+            BubbleKeeper.Restore(bubbles);
             AssetDatabase.Refresh();
 
             Debug.Log("[It is You] 튜토리얼 데이터 생성 완료 — " +
@@ -444,8 +448,11 @@ namespace ItIsYou.EditorTools
 
         // ============================================================== 헬퍼
 
-        /// <summary>회상 장면 목록. 이미 끼워 둔 그림은 같은 자리(순서)에 남긴다 — 빌더는 글자만 다시 쓴다.</summary>
-        private static List<FlashbackScene> Flashbacks(ChapterDefinition chapter, params (string name, DialogueSequence seq)[] scenes)
+        /// <summary>
+        /// 회상 장면 목록. 이미 끼워 둔 그림은 같은 자리(순서)에 남긴다 — 빌더는 글자만 다시 쓴다.
+        /// 그림 칸이 비어 있으면 art(Art/ 아래 경로)의 기본 그림을 넣는다.
+        /// </summary>
+        private static List<FlashbackScene> Flashbacks(ChapterDefinition chapter, params (string name, DialogueSequence seq, string art)[] scenes)
         {
             var old = chapter.Flashbacks;
             var list = new List<FlashbackScene>();
@@ -454,6 +461,7 @@ namespace ItIsYou.EditorTools
                 var fb = new FlashbackScene();
                 fb.Set("name", scenes[i].name).Set("sequence", scenes[i].seq);
                 if (old != null && i < old.Count && old[i] != null && old[i].Image != null) fb.Set("image", old[i].Image);
+                else if (!string.IsNullOrEmpty(scenes[i].art) && Art(scenes[i].art) != null) fb.Set("image", Art(scenes[i].art));
                 list.Add(fb);
             }
             return list;

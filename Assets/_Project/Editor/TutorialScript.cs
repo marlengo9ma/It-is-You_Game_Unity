@@ -109,15 +109,22 @@ namespace ItIsYou.EditorTools
         /// <summary>
         /// &lt;회상씬으로 전환 E#1&gt; · &lt;E#2&gt; — 2026-10-13 노션 추가. 회상 속 인물(용의자 · 이전 조수 · 행인)은
         /// 한 번만 나오므로 화자 종류 대신 이름을 직접 적는다.
+        ///
+        /// 회상 그림이 세 장(회상E1~E3)이 되어 대사를 세 컷으로 나눴다(제작자 2026-11-20). 글은 그대로, 나눈 자리만 바뀌었다.
+        /// · E#1 대치 — 노션 E#1 의 앞 세 줄
+        /// · E#2 추격 — 노션 E#1 의 뒤 두 줄
+        /// · E#3 사고 — 노션 E#2 전체
         /// </summary>
         public static DialogueSequence FlashbackE1() => Seq("회상씬 E#1",
             P("뭐, 어떻게 봐도 당신이 범인임을 모든 정황과 단서들이 말해주는 듯 하군요."),
             Who("용의자", SpeakerId.SuspectA, "에잇, 이젠 됐습니다! 이야기도 제대로 듣지도 않고, 나라고 그러고 싶어서 그런 건 줄 알아!"),
-            P("?! 어딜 도망가는 겁니까!!"),
+            P("?! 어딜 도망가는 겁니까!!"));
+
+        public static DialogueSequence FlashbackE2() => Seq("회상씬 E#2",
             Who("이전 조수", SpeakerId.SuspectB, "…제가 가겠습니다!"),
             Who("용의자", SpeakerId.SuspectA, "하하!! 내가 그 동안의 소매치기 짬빠가 얼마인데! 쉽게 잡혀줄 것 같아?"));
 
-        public static DialogueSequence FlashbackE2() => Seq("회상씬 E#2",
+        public static DialogueSequence FlashbackE3() => Seq("회상씬 E#3",
             Who("이전 조수", SpeakerId.SuspectB, "붙잡았ㅅ..!"),
             Who("용의자", SpeakerId.SuspectA, "으앗! 자,잠깐! 여기는 위험ㅎ…!"),
             P("…!  조심하십시오! 그 방향은..!"),

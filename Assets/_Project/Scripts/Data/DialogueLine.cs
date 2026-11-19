@@ -36,6 +36,9 @@ namespace ItIsYou.Data
         [Tooltip("이 줄이 나올 때 화면에 띄우는 일러스트 팝업(예: 객실로 돌아왔을 때의 Scene#2). 이 대사 묶음이 끝나거나 화면이 바뀔 때까지 떠 있다. 보통은 비워둔다.")]
         [SerializeField] private Sprite illustration;
 
+        [Tooltip("심문 말풍선 모양 — 일반 / 짜증·분노 / 불안·당황 / 기쁨. '자동'이면 위 '표정'을 보고 고른다. 말풍선에 나오는 줄(조수 · 고양이 · 용의자)에만 쓰인다. 메뉴 5 로 다시 만들어도 글이 같은 줄이면 남는다.")]
+        [SerializeField] private BubbleStyle bubble = BubbleStyle.Auto;
+
         [Tooltip("이 줄부터 대화 화면에 서 있을 인물을 바꾼다(묶음이 끝날 때까지 이어짐). '화면 기본값'이면 바꾸지 않는다 — 보통은 그대로 둔다.")]
         [SerializeField] private DialogueStand stand = DialogueStand.Default;
 
@@ -53,6 +56,9 @@ namespace ItIsYou.Data
         public string AutoGrantClueId => autoGrantClueId;
         public Sprite Illustration => illustration;
         public DialogueStand Stand => stand;
+        public BubbleStyle Bubble => bubble;
+        /// <summary>'자동'을 표정으로 푼 실제 말풍선 모양.</summary>
+        public BubbleStyle ResolvedBubble => BubbleStyles.Resolve(bubble, expression);
 
         public bool HasReaction => reaction != null && reaction.IsValid;
         public bool HasAutoGrant => !string.IsNullOrEmpty(autoGrantClueId);

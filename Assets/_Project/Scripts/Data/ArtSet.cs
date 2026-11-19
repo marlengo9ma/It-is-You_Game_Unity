@@ -153,6 +153,129 @@ namespace ItIsYou.Data
         [Tooltip("잉크 방울 32×32. 남은 것은 놋쇠색, 마른 것은 어두운 색으로 물든다 — 흰색으로 그린다.")]
         public Sprite inkDrop;
 
+        [Header("UI 스킨 — 버튼 (Art/UI/UI_A/Cut)")]
+        [Tooltip("기본 버튼 판 — 보통. 비우면 예전처럼 단색 판. 9-slice.")]
+        public Sprite buttonNormal;
+        [Tooltip("기본 버튼 판 — 마우스를 올렸을 때.")]
+        public Sprite buttonHover;
+        [Tooltip("기본 버튼 판 — 눌렀을 때.")]
+        public Sprite buttonPressed;
+        [Tooltip("기본 버튼 판 — 누를 수 없을 때.")]
+        public Sprite buttonDisabled;
+        [Tooltip("강조 버튼(와인색: 돌아가기 · 추리를 마친다 · 추론 진행하기 · 교체 취소) — 보통.")]
+        public Sprite accentNormal;
+        public Sprite accentHover;
+        public Sprite accentPressed;
+        public Sprite accentDisabled;
+
+        [Header("UI 스킨 — 창 · 부품")]
+        [Tooltip("큰 창 판(설정 · 대화 기록 · 튜토리얼 팝업). 9-slice.")]
+        public Sprite windowPanel;
+        [Tooltip("작은 창 판(확인 팝업 · 일시 정지). 9-slice.")]
+        public Sprite smallPanel;
+        [Tooltip("창 제목 아래 구분선(양 끝 장식, 가로 9-slice).")]
+        public Sprite divider;
+        [Tooltip("설정 창 슬라이더 — 홈 / 채움 / 손잡이.")]
+        public Sprite sliderTrack;
+        public Sprite sliderFill;
+        public Sprite sliderKnob;
+        [Tooltip("스크롤바 — 홈 / 손잡이 (대화 기록).")]
+        public Sprite scrollTrack;
+        public Sprite scrollHandle;
+        [Tooltip("설정 창의 값 고르기 판(‹ 값 › 가운데 판).")]
+        public Sprite optionPlate;
+
+        [Header("UI 스킨 — 아이콘")]
+        [Tooltip("닫기(X) 아이콘 — 설정 창 오른쪽 위.")]
+        public Sprite iconClose;
+        [Tooltip("이전 / 다음 쪽 아이콘 — 추론 화면 쪽 넘김 · 설정 창 값 고르기.")]
+        public Sprite iconPrev;
+        public Sprite iconNext;
+        [Tooltip("대사가 끝났을 때 본문 오른쪽 아래의 ▼ 표시. 흰색 — 대사창마다 색이 입혀진다.")]
+        public Sprite advanceArrow;
+
+        [Header("UI 스킨 — 대화 화면 · 상단")]
+        [Tooltip("좌상단 시계 · 날짜 뒤 띠(오른쪽으로 사라짐).")]
+        public Sprite topBar;
+        [Tooltip("시계 글자 왼쪽의 회중시계 그림.")]
+        public Sprite clockOrnament;
+        [Tooltip("상단 챕터 제목 명판(9-slice).")]
+        public Sprite chapterPlate;
+        [Tooltip("회상씬(E#1 ~ E#3) 위에 덮는 빛바랜 질감.")]
+        public Sprite recallOverlay;
+
+        [Header("UI 스킨 — SKIP · AUTO")]
+        [Tooltip("AUTO 꺼짐 — 어두운 알약 판.")]
+        public Sprite autoTrackOff;
+        [Tooltip("AUTO 켜짐 — 밝은 알약 판.")]
+        public Sprite autoTrackOn;
+        [Tooltip("AUTO 꺼짐 — 구슬(왼쪽).")]
+        public Sprite autoKnobOff;
+        [Tooltip("AUTO 켜짐 — 구슬(오른쪽으로 미끄러짐).")]
+        public Sprite autoKnobOn;
+        [Tooltip("SKIP 아이콘 — 켜졌을 때(밝음).")]
+        public Sprite skipIconOn;
+        [Tooltip("SKIP 아이콘 — 평소(어두움).")]
+        public Sprite skipIconOff;
+
+        [Header("UI 스킨 — 단서 수집")]
+        [Tooltip("조사할 수 있는 물건 둘레 표시(흰색 — 상태에 따라 색이 입혀진다, 9-slice).")]
+        public Sprite hotspotFrame;
+        [Tooltip("단서 칸 아래 이름표 판.")]
+        public Sprite namePlate;
+        [Tooltip("왼쪽 아래 '살펴본 곳' 진행도 판(왼쪽에 작은 사각 자리).")]
+        public Sprite progressPlate;
+        [Tooltip("물건을 눌렀을 때 뜨는 클로즈업 창의 액자 틀(가운데 비어 있음).")]
+        public Sprite closeupFrame;
+        [Tooltip("오른쪽 단서 목록 패널 판.")]
+        public Sprite sidePanel;
+        [Tooltip("목록 제목 옆 아이콘 — Evidence(봉투) / Leads(눈) / Hypotheses(만년필).")]
+        public Sprite listIconEvidence;
+        public Sprite listIconLeads;
+        public Sprite listIconHypotheses;
+        [Tooltip("단서 칸 — 빈 칸 / 채운 칸 / 마우스를 올린 칸.")]
+        public Sprite clueSlotEmpty;
+        public Sprite clueSlotFilled;
+        public Sprite clueSlotHover;
+        [Tooltip("단서로 승격된 칸의 테두리(흰색 — 놋쇠색이 입혀진다).")]
+        public Sprite clueSlotPromoted;
+        [Tooltip("정황(Leads) · 가설 한 줄 판.")]
+        public Sprite leadPlate;
+        [Tooltip("단서 열람창(왼쪽 그림 구멍 + 오른쪽 글 판). 그림은 구멍 자리에 맞춰 놓인다.")]
+        public Sprite readingWindow;
+
+        [Header("UI 스킨 — 심문")]
+        [Tooltip("말풍선 — 짜증(분노) / 불안(당황) / 기쁨. 일반은 위 '대사창'의 speechBubble.")]
+        public Sprite speechBubbleAngry;
+        public Sprite speechBubbleAnxious;
+        public Sprite speechBubbleJoy;
+        [Tooltip("말풍선 꼬리 — 짜증 / 불안 / 기쁨. 일반은 bubbleTail.")]
+        public Sprite bubbleTailAngry;
+        public Sprite bubbleTailAnxious;
+        public Sprite bubbleTailJoy;
+        [Tooltip("선택지 버튼 — 보통 / 올림 / 누름 / 잠김.")]
+        public Sprite choiceNormal;
+        public Sprite choiceHover;
+        public Sprite choicePressed;
+        public Sprite choiceLocked;
+        [Tooltip("선택지 목록 위 'Choice' 명판.")]
+        public Sprite choicePlate;
+        [Tooltip("남은 시간 토큰 — 남음 / 씀.")]
+        public Sprite tokenFull;
+        public Sprite tokenUsed;
+        [Tooltip("무반응 게이지 — 홈 / 채움.")]
+        public Sprite gaugeTrack;
+        public Sprite gaugeFill;
+        [Tooltip("'용의자 ○○ 심문 시작' 제목 띠.")]
+        public Sprite interrogationBand;
+
+        [Header("UI 스킨 — 타이틀 메뉴")]
+        [Tooltip("타이틀 메뉴 버튼 — 보통 / 마우스를 올렸을 때(9-slice).")]
+        public Sprite titleMenuNormal;
+        public Sprite titleMenuHover;
+        [Tooltip("마우스를 올린 메뉴 버튼 왼쪽에 나타나는 펜촉 표식.")]
+        public Sprite titleMarker;
+
         [Header("타이틀 화면")]
         [Tooltip("타이틀 화면 배경. 화면을 꽉 채우도록 깔린다(비율이 달라도 빈 띠 없이 가장자리만 잘림). 위아래 자리는 아래 offset 으로.")]
         public Sprite titleBackground;

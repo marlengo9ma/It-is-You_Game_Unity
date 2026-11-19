@@ -38,7 +38,7 @@ namespace ItIsYou.Data
         [Tooltip("컷씬에서 돌아온 뒤의 대화. 다시 [게임플레이 배경_캐릭터 씬].")]
         [SerializeField] private DialogueSequence afterCutsceneTalk = new DialogueSequence();
 
-        [Tooltip("컷씬 뒤 대화 중간의 회상 장면들 — 노션 <회상씬으로 전환 E#1> <E#2>. 차례로 화면을 덮었다 걷는다.")]
+        [Tooltip("컷씬 뒤 대화 중간의 회상 장면들 — 노션 <회상씬으로 전환 E#1> <E#2> — 그림 세 장(E#1 ~ E#3)으로 나눴다. 차례로 화면을 덮었다 걷는다.")]
         [SerializeField] private List<FlashbackScene> flashbacks = new List<FlashbackScene>();
 
         [Tooltip("회상에서 돌아온 뒤의 대화 — <게임플레이 배경_캐릭터 일반 대화 씬으로 전환>.")]

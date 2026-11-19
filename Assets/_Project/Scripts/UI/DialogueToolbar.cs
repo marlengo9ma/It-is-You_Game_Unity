@@ -43,6 +43,18 @@ namespace ItIsYou.UI
         [SerializeField] private Graphic autoGraphic;
         [SerializeField] private TMP_Text autoLabel;
 
+        [Header("새 모양 (UI 스킨) — 있으면 위의 색 판 대신 쓴다")]
+        [Tooltip("AUTO 토글 모양(구슬이 미끄러지는 알약). 있으면 autoGraphic 색 바꾸기 대신 이걸 움직인다.")]
+        [SerializeField] private AutoToggleView autoToggle;
+        [Tooltip("SKIP 아이콘(▶▶). 켜지면 밝은 그림, 평소엔 어두운 그림.")]
+        [SerializeField] private Image skipIcon;
+        [SerializeField] private Sprite skipIconOn;
+        [SerializeField] private Sprite skipIconOff;
+        [Tooltip("SKIP 글자 — 평소(어둡게) / 켜졌을 때(밝게).")]
+        [SerializeField] private Color skipLabelOff = new Color32(0xB9, 0x9A, 0x5A, 0xFF);
+        [SerializeField] private Color skipLabelOn = new Color32(0xF4, 0xEC, 0xDC, 0xFF);
+
+        [Header("예전 모양(색 판)")]
         [SerializeField] private Color idleColor = new Color(0.16f, 0.14f, 0.12f, 0.85f);
         [SerializeField] private Color activeColor = new Color(0.78f, 0.62f, 0.32f, 1f);
         [SerializeField] private Color idleLabelColor = new Color(0.93f, 0.90f, 0.84f, 1f);
@@ -82,6 +94,7 @@ namespace ItIsYou.UI
                 dialogue.SkipChanged += PaintSkip;
             }
             PaintAuto(dialogue != null && dialogue.AutoEnabled);
+            if (autoToggle != null) autoToggle.SetOn(dialogue != null && dialogue.AutoEnabled, instant: true);
             PaintSkip(dialogue != null && dialogue.IsSkipping);
 
             if (restoreCatcher != null) restoreCatcher.SetActive(false);
@@ -147,12 +160,20 @@ namespace ItIsYou.UI
 
         private void PaintAuto(bool on)
         {
+            if (autoToggle != null) { autoToggle.SetOn(on); return; }
             if (autoGraphic != null) autoGraphic.color = on ? activeColor : idleColor;
             if (autoLabel != null) autoLabel.color = on ? activeLabelColor : idleLabelColor;
         }
 
         private void PaintSkip(bool on)
         {
+            if (skipIcon != null)
+            {
+                var s = on ? skipIconOn : skipIconOff;
+                if (s != null) skipIcon.sprite = s;
+                if (skipLabel != null) skipLabel.color = on ? skipLabelOn : skipLabelOff;
+                return;
+            }
             if (skipGraphic != null) skipGraphic.color = on ? activeColor : idleColor;
             if (skipLabel != null) skipLabel.color = on ? activeLabelColor : idleLabelColor;
         }

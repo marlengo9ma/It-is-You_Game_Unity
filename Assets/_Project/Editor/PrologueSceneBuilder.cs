@@ -33,6 +33,7 @@ namespace ItIsYou.EditorTools
         {
             UiLayout.RecordBeforeRebuild();
             K.Prepare();
+            UiSkin.Reload();
             Ed.EnsureFolder(SceneFolder);
 
             var prologue = PrologueDataBuilder.Build();
@@ -148,6 +149,9 @@ namespace ItIsYou.EditorTools
 
             popupRoot.SetActive(false);
             hint.SetActive(false);
+
+            // UI 스킨(아트 세트의 버튼 · 창 그림)을 입힌다.
+            UiSkin.ApplyButtons(root);
 
             // UI 편집기에서 바꾼 자리 · 이미지 · 글자 모양을 입히고 저장한다(기준도 함께 적는다).
             UiLayout.SaveBuiltScene(scene, ScenePath);

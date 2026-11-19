@@ -26,7 +26,8 @@ namespace ItIsYou.EditorTools
 
         // ------------------------------------------------------------ 설정 창
 
-        public static SettingsMenu BuildSettings(RectTransform canvasRoot, GameObject host)
+        /// <param name="withTitleButton">게임 중 씬이면 참 — '타이틀로 돌아가기' 버튼과 확인 팝업을 만든다. 타이틀 씬은 거짓.</param>
+        public static SettingsMenu BuildSettings(RectTransform canvasRoot, GameObject host, bool withTitleButton = true)
         {
             var root = K.UI("SettingsMenu", canvasRoot);
             K.Stretch(root.GetComponent<RectTransform>());
@@ -38,6 +39,7 @@ namespace ItIsYou.EditorTools
             var panelRt = panel.rectTransform;
             K.Anchor(panelRt, K.V(0.5f, 0.5f), K.V(0.5f, 0.5f),
                 K.V(-PanelW / 2f, -PanelH / 2f), K.V(PanelW / 2f, PanelH / 2f));
+            UiSkin.Panel(panel, small: false);
 
             // 제목
             var title = K.Text("Title", panelRt, "설정", T.Display, P.Ink, TextAlignmentOptions.Left);
@@ -46,6 +48,19 @@ namespace ItIsYou.EditorTools
             var rule = K.Img("Rule", panelRt, P.Rule);
             K.Anchor(rule.rectTransform, K.V(0, 1), K.V(1, 1), K.V(L.Pad * 2, -L.Unit * 12), K.V(-L.Pad * 2, -L.Unit * 12 + 2f));
             rule.raycastTarget = false;
+            UiSkin.Divider(rule);
+
+            // 오른쪽 위 닫기(X) — 아트 세트에 아이콘이 있을 때만.
+            Button closeIcon = null;
+            if (UiSkin.Art != null && UiSkin.Art.iconClose != null)
+            {
+                var x = K.Button("CloseIcon", panelRt, "", T.Choice);
+                K.Anchor(x.rect, K.V(1, 1), K.V(1, 1), K.V(-L.Pad * 2 - 36f, -L.Pad * 2 - 30f), K.V(-L.Pad * 2, -L.Pad * 2 + 6f));
+                var xi = x.button.targetGraphic as Image;
+                xi.sprite = UiSkin.Art.iconClose; xi.type = Image.Type.Simple; xi.preserveAspect = true; xi.color = P.Ink;
+                x.label.gameObject.SetActive(false);
+                closeIcon = x.button;
+            }
 
             // 탭 열
             var tabs = K.UI("Tabs", panelRt);
@@ -113,6 +128,19 @@ namespace ItIsYou.EditorTools
             var close = K.Button("Close", panelRt, "닫기", T.Choice);
             K.Anchor(close.rect, K.V(1, 0), K.V(1, 0), K.V(-L.Pad * 2 - 192f, L.Unit * 4), K.V(-L.Pad * 2, L.Unit * 4 + 56f));
 
+            // 타이틀로 돌아가기 (게임 중에만) — 닫기 왼쪽. 누르면 확인 팝업이 뜬다.
+            // 팝업은 일시 정지 메뉴에서도 쓰므로 설정 창 밖(캔버스 바로 아래, 설정 창 다음)에 둔다.
+            Button titleButton = null;
+            ConfirmPopupView titleConfirm = null;
+            if (withTitleButton)
+            {
+                var toTitle = K.Button("TitleButton", panelRt, "타이틀로 돌아가기", T.Choice);
+                K.Anchor(toTitle.rect, K.V(1, 0), K.V(1, 0),
+                    K.V(-L.Pad * 2 - 192f - L.Gap - 256f, L.Unit * 4), K.V(-L.Pad * 2 - 192f - L.Gap, L.Unit * 4 + 56f));
+                titleButton = toTitle.button;
+                titleConfirm = BuildTitleConfirm(canvasRoot);
+            }
+
             var menu = host.AddComponent<SettingsMenu>();
             menu.Set("root", root)
                 .Set("closeButton", close.button)
@@ -135,7 +163,10 @@ namespace ItIsYou.EditorTools
                 .Set("mute", mute)
                 .Set("textSpeedSlider", textSpeed.slider).Set("textSpeedValue", textSpeed.value)
                 .Set("autoAdvanceSlider", autoSpeed.slider).Set("autoAdvanceValue", autoSpeed.value)
-                .Set("guideMode", guide);
+                .Set("guideMode", guide)
+                .Set("titleButton", titleButton)
+                .Set("titleConfirm", titleConfirm)
+                .Set("closeIconButton", closeIcon);
 
             sPage.gameObject.SetActive(false);
             gmPage.gameObject.SetActive(false);
@@ -149,6 +180,9 @@ namespace ItIsYou.EditorTools
         {
             var root = K.UI("PauseMenu", canvasRoot);
             K.Stretch(root.GetComponent<RectTransform>());
+            // 일시 정지에서 '설정'을 열면 설정 창이 위에 와야 한다 — 설정 창 바로 앞(아래)에 끼운다.
+            var settingsRoot = canvasRoot.Find("SettingsMenu");
+            if (settingsRoot != null) root.transform.SetSiblingIndex(settingsRoot.GetSiblingIndex());
 
             var scrim = K.Img("Scrim", root.transform, new Color(0f, 0f, 0f, 0.66f));
             K.Stretch(scrim.rectTransform);
@@ -156,6 +190,7 @@ namespace ItIsYou.EditorTools
             var panel = K.Img("Panel", root.transform, new Color32(0x16, 0x19, 0x1D, 0xFF));
             var panelRt = panel.rectTransform;
             K.Anchor(panelRt, K.V(0.5f, 0.5f), K.V(0.5f, 0.5f), K.V(-240f, -192f), K.V(240f, 192f));
+            UiSkin.Panel(panel, small: true);
 
             var title = K.Text("Title", panelRt, "일시 정지", T.Label, P.Brass, TextAlignmentOptions.Center);
             K.Spaced(title);
@@ -191,6 +226,45 @@ namespace ItIsYou.EditorTools
         }
 
         // ============================================================== 헬퍼
+
+        /// <summary>'타이틀로 돌아가기' 확인 팝업. 설정 창 · 일시 정지 메뉴보다 앞에 뜬다.</summary>
+        private static ConfirmPopupView BuildTitleConfirm(Transform canvasRoot)
+        {
+            var popup = K.UI("TitleConfirmPopup", canvasRoot);
+            K.Stretch(popup.GetComponent<RectTransform>());
+
+            var scrim = K.Img("Scrim", popup.transform, new Color(0f, 0f, 0f, 0.62f));
+            K.Stretch(scrim.rectTransform);
+
+            var panel = K.Img("Panel", popup.transform, new Color32(0x16, 0x19, 0x1D, 0xFF));
+            K.Anchor(panel.rectTransform, K.V(0.5f, 0.5f), K.V(0.5f, 0.5f), K.V(-400f, -170f), K.V(400f, 170f));
+            var outline = panel.gameObject.AddComponent<Outline>();
+            outline.effectColor = P.Alarm;
+            outline.effectDistance = K.V(2f, -2f);
+            UiSkin.Panel(panel, small: true);
+
+            var message = K.Text("Message", panel.rectTransform,
+                "현재까지의 내용은 저장되지 않습니다.\n타이틀로 돌아가시겠습니까?",
+                T.Body, P.Ink, TextAlignmentOptions.Center);
+            message.textWrappingMode = TextWrappingModes.Normal;
+            message.lineSpacing = 10f;
+            K.Anchor(message.rectTransform, K.V(0, 0), K.V(1, 1), K.V(48f, 112f), K.V(-48f, -40f));
+
+            var yes = K.Button("Yes", panel.rectTransform, "타이틀로", T.Choice);
+            K.Anchor(yes.rect, K.V(0.5f, 0), K.V(0.5f, 0), K.V(-236f, 36f), K.V(-16f, 96f));
+            var no = K.Button("No", panel.rectTransform, "취소", T.Choice);
+            K.Anchor(no.rect, K.V(0.5f, 0), K.V(0.5f, 0), K.V(16f, 36f), K.V(236f, 96f));
+
+            var view = popup.AddComponent<ConfirmPopupView>();
+            view.Set("root", popup)
+                .Set("message", message)
+                .Set("yesButton", yes.button)
+                .Set("yesLabel", yes.label)
+                .Set("noButton", no.button)
+                .Set("noLabel", no.label);
+            popup.SetActive(false);
+            return view;
+        }
 
         private static Button Tab(Transform parent, string name, string label)
         {
@@ -259,6 +333,21 @@ namespace ItIsYou.EditorTools
             var valueBg = K.Img("ValueBg", boxRt, P.PanelSunk);
             K.Anchor(valueBg.rectTransform, K.V(0, 0), K.V(1, 1), K.V(56f + L.Unit, 0), K.V(-56f - L.Unit, 0));
             valueBg.raycastTarget = false;
+            if (UiSkin.Art != null && UiSkin.Art.optionPlate != null)
+            {
+                valueBg.sprite = UiSkin.Art.optionPlate; valueBg.type = Image.Type.Sliced; valueBg.color = Color.white;
+            }
+            UiSkin.ArrowIcon(prev.button, next: false, P.Brass);
+            UiSkin.ArrowIcon(next.button, next: true, P.Brass);
+            if (UiSkin.Art != null && UiSkin.Art.iconPrev != null)
+            {
+                // 아이콘은 버튼 가운데 작게.
+                foreach (var r in new[] { prev.rect, next.rect })
+                {
+                    var c = r.anchorMin.x;   // 0 = 왼쪽(‹), 1 = 오른쪽(›)
+                    K.Anchor(r, K.V(c, 0.5f), K.V(c, 0.5f), K.V(c < 0.5f ? 14f : -42f, -14f), K.V(c < 0.5f ? 42f : -14f, 14f));
+                }
+            }
 
             var value = K.Text("Value", valueBg.rectTransform, "", T.Choice, P.Ink, TextAlignmentOptions.Center);
             K.Stretch(value.rectTransform);
@@ -306,6 +395,7 @@ namespace ItIsYou.EditorTools
             slider.minValue = min;
             slider.maxValue = max;
             slider.value = max;
+            UiSkin.Slider(slider);
 
             var value = K.Text("Value", row, "", T.Choice, P.Brass, TextAlignmentOptions.Right);
             K.Anchor(value.rectTransform, K.V(0, 0), K.V(0, 1), K.V(LabelW + ControlW - 80f, 0), K.V(LabelW + ControlW, 0));

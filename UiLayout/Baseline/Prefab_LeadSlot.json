@@ -37,14 +37,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "dcdb5129d74064d4191543daca7bc042",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -128,8 +128,8 @@
                     "y": 0.0
                 },
                 "sizeDelta": {
-                    "x": 6.0,
-                    "y": 6.0
+                    "x": 4.0,
+                    "y": 4.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -139,111 +139,14 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "3db51103748f0534abddc2e23f8c1910",
+                    "type": 3
                 },
                 "imageColor": {
                     "r": 0.7686274647712708,
                     "g": 0.6549019813537598,
                     "b": 0.3607843220233917,
-                    "a": 1.0
-                },
-                "preserveAspect": false,
-                "imageType": 1,
-                "hasText": false,
-                "font": {
-                    "instanceID": 0
-                },
-                "fontSize": 0.0,
-                "textColor": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                },
-                "alignment": 0,
-                "fontStyle": 0,
-                "characterSpacing": 0.0,
-                "lineSpacing": 0.0,
-                "hasLayoutGroup": false,
-                "padding": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "w": 0.0
-                },
-                "spacing": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "cellSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "childAlignment": 0,
-                "hasLayoutElement": false,
-                "minSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "preferredSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "flexibleSize": {
-                    "x": 0.0,
-                    "y": 0.0
-                }
-            },
-            "children": [
-                "Inner"
-            ]
-        },
-        {
-            "path": "(프리팹 맨 위)/PromotedFrame/Inner",
-            "active": true,
-            "hasGroup": false,
-            "groupAlpha": 1.0,
-            "groupInteractable": true,
-            "groupBlocks": true,
-            "values": {
-                "anchorMin": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "anchorMax": {
-                    "x": 1.0,
-                    "y": 1.0
-                },
-                "pivot": {
-                    "x": 0.5,
-                    "y": 0.5
-                },
-                "anchoredPosition": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "sizeDelta": {
-                    "x": -6.0,
-                    "y": -6.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "rotationZ": 0.0,
-                "hasImage": true,
-                "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
-                },
-                "imageColor": {
-                    "r": 0.14901961386203767,
-                    "g": 0.16862745583057404,
-                    "b": 0.1921568661928177,
                     "a": 1.0
                 },
                 "preserveAspect": false,
@@ -426,15 +329,15 @@
                 "rotationZ": 0.0,
                 "hasImage": true,
                 "sprite": {
-                    "fileID": 10905,
-                    "guid": "0000000000000000f000000000000000",
-                    "type": 0
+                    "fileID": 21300000,
+                    "guid": "ddbe9f15b70a4804b966990f6c986a2e",
+                    "type": 3
                 },
                 "imageColor": {
-                    "r": 0.06666667014360428,
-                    "g": 0.07450980693101883,
-                    "b": 0.09019608050584793,
-                    "a": 0.9490196108818054
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
                 },
                 "preserveAspect": false,
                 "imageType": 1,

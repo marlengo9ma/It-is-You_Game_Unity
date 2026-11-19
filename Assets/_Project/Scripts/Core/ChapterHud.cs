@@ -34,6 +34,17 @@ namespace ItIsYou.Core
         [SerializeField] private Image idleFill;
         [SerializeField] private TMP_Text statusLabel;
 
+        [Header("남은 시간 토큰 그림 (UI 스킨)")]
+        [Tooltip("토큰 그림을 나란히 놓을 줄. 비우면 숫자만 보인다.")]
+        [SerializeField] private RectTransform tokenIconRow;
+        [Tooltip("남은 토큰(놋쇠 회중시계).")]
+        [SerializeField] private Sprite tokenFull;
+        [Tooltip("쓴 토큰(빈 테두리).")]
+        [SerializeField] private Sprite tokenUsed;
+        [Tooltip("토큰 그림 하나의 크기(px).")]
+        [SerializeField] private Vector2 tokenIconSize = new Vector2(22f, 28f);
+        [SerializeField] private float tokenIconSpacing = 4f;
+
         [Header("버튼")]
         [SerializeField] private Button endInterrogationButton;
 
@@ -115,6 +126,7 @@ namespace ItIsYou.Core
             {
                 if (tokenLabel != null)
                     tokenLabel.text = session.Untimed ? "—" : $"{session.Tokens.Remaining} / {session.Tokens.Capacity}";
+                PaintTokenIcons(session.Untimed ? 0 : session.Tokens.Capacity, session.Untimed ? 0 : session.Tokens.Remaining);
 
                 // 무반응 게이지. 완성된 게임에서는 초침 소리가 이 역할을 하고,
                 // 이 막대는 지금 규칙이 도는지 눈으로 확인하기 위한 것이다.
@@ -161,8 +173,39 @@ namespace ItIsYou.Core
             _ => string.Empty
         };
 
+        private int _iconCapacity = -1, _iconRemaining = -1;
+
+        /// <summary>토큰 그림을 capacity 개 늘어놓고, 앞의 remaining 개는 '남음', 나머지는 '씀'으로.</summary>
+        private void PaintTokenIcons(int capacity, int remaining)
+        {
+            if (tokenIconRow == null || tokenFull == null) return;
+            if (capacity == _iconCapacity && remaining == _iconRemaining) return;
+            _iconCapacity = capacity; _iconRemaining = remaining;
+
+            while (tokenIconRow.childCount < capacity)
+            {
+                var go = new GameObject("Token", typeof(RectTransform), typeof(Image));
+                go.transform.SetParent(tokenIconRow, false);
+                var img = go.GetComponent<Image>();
+                img.preserveAspect = true; img.raycastTarget = false;
+            }
+            for (int i = 0; i < tokenIconRow.childCount; i++)
+            {
+                var child = (RectTransform)tokenIconRow.GetChild(i);
+                var on = i < capacity;
+                child.gameObject.SetActive(on);
+                if (!on) continue;
+                child.anchorMin = child.anchorMax = new Vector2(0f, 0.5f);
+                child.pivot = new Vector2(0f, 0.5f);
+                child.sizeDelta = tokenIconSize;
+                child.anchoredPosition = new Vector2(i * (tokenIconSize.x + tokenIconSpacing), 0f);
+                child.GetComponent<Image>().sprite = i < remaining ? tokenFull : (tokenUsed != null ? tokenUsed : tokenFull);
+            }
+        }
+
         private void SetTokenVisible(bool visible)
         {
+            if (tokenIconRow != null) tokenIconRow.gameObject.SetActive(visible);
             if (tokenLabel != null) tokenLabel.gameObject.SetActive(visible);
             if (tokenCaption != null) tokenCaption.gameObject.SetActive(visible);
             if (idleFill != null) idleFill.transform.parent.gameObject.SetActive(visible);
