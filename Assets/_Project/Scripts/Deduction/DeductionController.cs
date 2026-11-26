@@ -8,6 +8,14 @@ using UnityEngine;
 
 namespace ItIsYou.Deduction
 {
+    /// <summary>세이브에서 되살릴 추론 상태 — 잉크 · 실패 횟수 · 이미 이어 본 짝.</summary>
+    public class DeductionRestore
+    {
+        public int ink;
+        public int failCount;
+        public System.Collections.Generic.List<string> triedPairs;
+    }
+
     /// <summary>어떻게 추론 페이즈를 떠났는가.</summary>
     public enum DeductionExit
     {
@@ -90,12 +98,24 @@ namespace ItIsYou.Deduction
         /// 진입 대사와 튜토리얼 팝업은 다시 나오지 않는다. canReturn 이면 「돌아가기」를 누를 수 있다.
         /// </summary>
         public void Begin(ChapterDefinition chapter, ClueInventory inventory, bool canReturn = false, bool resume = false)
+            => Begin(chapter, inventory, canReturn, resume, null);
+
+        /// <summary>
+        /// 세이브에서 되살린 추론 상태로 시작한다. restore 가 있으면 잉크 · 실패한 짝을 그 값으로 두고,
+        /// 진입 대사와 튜토리얼 팝업은 다시 나오지 않는다(이미 한 번 들어왔던 추론이므로).
+        /// </summary>
+        public void Begin(ChapterDefinition chapter, ClueInventory inventory, bool canReturn, bool resume, DeductionRestore restore)
         {
             var resuming = resume && CanResume && _chapter == chapter && _inventory == inventory;
             _chapter = chapter;
             _inventory = inventory;
             _canReturn = canReturn;
             if (!resuming) _session = new DeductionSession(chapter, inventory);
+            if (!resuming && restore != null)
+            {
+                _session.Restore(restore.ink, restore.failCount, restore.triedPairs);
+                resuming = true;   // 진입 대사 · 팝업을 건너뛴다
+            }
             _objectPick = null;
             _leadPick = null;
 
@@ -162,6 +182,9 @@ namespace ItIsYou.Deduction
                     yield return dialogue.Play(_chapter.DeductionIntro);
 
                 yield return ShowTutorial(TutorialPopupTrigger.BeforeDeduction);
+
+                if (_chapter.DeductionAfterTutorial != null && !_chapter.DeductionAfterTutorial.IsEmpty)
+                    yield return dialogue.Play(_chapter.DeductionAfterTutorial);
             }
 
             var returned = false;

@@ -189,7 +189,8 @@ namespace ItIsYou.EditorTools
 
             var panel = K.Img("Panel", root.transform, new Color32(0x16, 0x19, 0x1D, 0xFF));
             var panelRt = panel.rectTransform;
-            K.Anchor(panelRt, K.V(0.5f, 0.5f), K.V(0.5f, 0.5f), K.V(-240f, -192f), K.V(240f, 192f));
+            // 2026-11-27 — 저장하기 · 불러오기가 늘어 세로로 키웠다.
+            K.Anchor(panelRt, K.V(0.5f, 0.5f), K.V(0.5f, 0.5f), K.V(-240f, -272f), K.V(240f, 272f));
             UiSkin.Panel(panel, small: true);
 
             var title = K.Text("Title", panelRt, "일시 정지", T.Label, P.Brass, TextAlignmentOptions.Center);
@@ -208,6 +209,8 @@ namespace ItIsYou.EditorTools
             vlg.childAlignment = TextAnchor.UpperCenter;
 
             var resume = MenuButton(listRt, "Resume", "계속하기");
+            var save = MenuButton(listRt, "Save", "저장하기");
+            var load = MenuButton(listRt, "Load", "불러오기");
             var open = MenuButton(listRt, "Settings", "설정");
             var toTitle = MenuButton(listRt, "Title", "타이틀로");
 
@@ -219,10 +222,95 @@ namespace ItIsYou.EditorTools
                  .Set("resumeButton", resume)
                  .Set("settingsButton", open)
                  .Set("titleButton", toTitle)
+                 .Set("saveButton", save)
+                 .Set("loadButton", load)
                  .Set("settings", settings);
 
             root.SetActive(false);
             return pause;
+        }
+
+        // ------------------------------------------------------------ 세이브 칸 (2026-11-27)
+
+        /// <summary>
+        /// 세이브 칸 창 — 자동 저장 1칸 + 수동 저장 4칸. 타이틀(이어하기) · 일시 정지 · 게임오버 · 데모 종료가 같이 쓴다.
+        /// 컴포넌트는 늘 켜져 있는 host 에, 창은 캔버스 아래에. 열릴 때 맨 위로 올라온다.
+        /// </summary>
+        public static SaveSlotView BuildSaveSlots(RectTransform canvasRoot, GameObject host)
+        {
+            const float W = 880f, H = 720f, RowH2 = 88f;
+            var root = K.UI("SaveSlots", canvasRoot);
+            K.Stretch(root.GetComponent<RectTransform>());
+
+            var scrim = K.Img("Scrim", root.transform, new Color(0f, 0f, 0f, 0.72f));
+            K.Stretch(scrim.rectTransform);
+
+            var panel = K.Img("Panel", root.transform, new Color32(0x16, 0x19, 0x1D, 0xFF));
+            var panelRt = panel.rectTransform;
+            K.Anchor(panelRt, K.V(0.5f, 0.5f), K.V(0.5f, 0.5f), K.V(-W / 2f, -H / 2f), K.V(W / 2f, H / 2f));
+            UiSkin.Panel(panel, small: false);
+
+            var title = K.Text("Title", panelRt, "불러오기", T.Display, P.Ink, TextAlignmentOptions.Left);
+            K.Anchor(title.rectTransform, K.V(0, 1), K.V(1, 1), K.V(L.Pad * 2, -L.Unit * 11), K.V(-L.Pad * 2, -L.Pad));
+
+            var rule = K.Img("Rule", panelRt, P.Rule);
+            K.Anchor(rule.rectTransform, K.V(0, 1), K.V(1, 1), K.V(L.Pad * 2, -L.Unit * 12), K.V(-L.Pad * 2, -L.Unit * 12 + 2f));
+            rule.raycastTarget = false;
+            UiSkin.Divider(rule);
+
+            var list = K.UI("List", panelRt);
+            var listRt = list.GetComponent<RectTransform>();
+            K.Anchor(listRt, K.V(0, 0), K.V(1, 1), K.V(L.Pad * 2, L.Unit * 16), K.V(-L.Pad * 2, -L.Unit * 14));
+            var vlg = list.AddComponent<VerticalLayoutGroup>();
+            vlg.spacing = L.Unit * 1.5f;
+            vlg.childControlWidth = true;
+            vlg.childControlHeight = false;
+            vlg.childForceExpandWidth = true;
+            vlg.childForceExpandHeight = false;
+            vlg.childAlignment = TextAnchor.UpperCenter;
+
+            var buttons = new System.Collections.Generic.List<Button>();
+            var names = new System.Collections.Generic.List<TMP_Text>();
+            var details = new System.Collections.Generic.List<TMP_Text>();
+            for (int i = 0; i < ItIsYou.Core.SaveSystem.SlotCount; i++)
+            {
+                var made = K.Button(i == 0 ? "Slot_Auto" : "Slot_" + i, listRt, "", T.Choice);
+                made.rect.sizeDelta = new Vector2(0f, RowH2);
+                made.label.gameObject.SetActive(false);
+                // 버튼 그림(스킨)이 밝아도 글자가 읽히도록 안쪽에 어두운 판을 깐다.
+                var back = K.Img("Back", made.rect, new Color(0f, 0f, 0f, 0.55f));
+                K.Anchor(back.rectTransform, K.V(0, 0), K.V(1, 1), K.V(6f, 6f), K.V(-6f, -6f));
+                back.raycastTarget = false;
+                var strip = K.Img("Strip", made.rect, i == 0 ? P.InkSoft : P.Brass);
+                K.Anchor(strip.rectTransform, K.V(0, 0), K.V(0, 1), Vector2.zero, K.V(L.Unit * 0.5f, 0));
+                strip.raycastTarget = false;
+                var name = K.Text("Name", made.rect, ItIsYou.Core.SaveSystem.SlotName(i), T.Choice, i == 0 ? P.InkSoft : P.Brass, TextAlignmentOptions.Left);
+                K.Anchor(name.rectTransform, K.V(0, 0), K.V(0, 1), K.V(L.Pad, 0), K.V(L.Pad + 160f, 0));
+                var detail = K.Text("Detail", made.rect, "— 비어 있음 —", T.Choice, P.Ink, TextAlignmentOptions.Left);
+                detail.textWrappingMode = TextWrappingModes.Normal;
+                K.Anchor(detail.rectTransform, K.V(0, 0), K.V(1, 1), K.V(L.Pad + 176f, 6f), K.V(-L.Pad, -6f));
+                buttons.Add(made.button);
+                names.Add(name);
+                details.Add(detail);
+            }
+
+            var message = K.Text("Message", panelRt, "", T.Caption, P.Brass, TextAlignmentOptions.Left);
+            message.textWrappingMode = TextWrappingModes.Normal;
+            K.Anchor(message.rectTransform, K.V(0, 0), K.V(1, 0), K.V(L.Pad * 2, L.Unit * 4), K.V(-L.Pad * 2 - 208f, L.Unit * 4 + 56f));
+
+            var close = K.Button("Close", panelRt, "닫기", T.Choice);
+            K.Anchor(close.rect, K.V(1, 0), K.V(1, 0), K.V(-L.Pad * 2 - 192f, L.Unit * 4), K.V(-L.Pad * 2, L.Unit * 4 + 56f));
+
+            var view = host.AddComponent<SaveSlotView>();
+            view.Set("root", root)
+                .Set("title", title)
+                .Set("slotButtons", buttons)
+                .Set("slotNames", names)
+                .Set("slotDetails", details)
+                .Set("message", message)
+                .Set("closeButton", close.button);
+            root.SetActive(false);
+            return view;
         }
 
         // ============================================================== 헬퍼

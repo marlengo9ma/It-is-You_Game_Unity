@@ -138,6 +138,9 @@ namespace ItIsYou.EditorTools
                  .Set("settingsButton", settings)
                  .Set("settings", settingsMenu)
                  .Set("quitButton", quit);
+            // 이어하기 — 세이브 칸 창(불러오기) (2026-11-27)
+            var saveSlots = SettingsUiBuilder.BuildSaveSlots(root, systems);
+            title.Set("slots", saveSlots);
 
             // UI 스킨(아트 세트의 버튼 · 창 그림)을 입힌다.
             UiSkin.ApplyButtons(root);

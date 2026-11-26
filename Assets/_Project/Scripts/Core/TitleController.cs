@@ -26,6 +26,9 @@ namespace ItIsYou.Core
         [Header("설정")]
         [SerializeField] private SettingsMenu settings;
 
+        [Header("이어하기 (2026-11-27 — 세이브 불러오기)")]
+        [SerializeField] private SaveSlotView slots;
+
         [Header("표시")]
         [SerializeField] private TMP_Text versionLabel;
         [SerializeField] private TMP_Text caret;
@@ -49,8 +52,13 @@ namespace ItIsYou.Core
             if (quitButton != null) quitButton.onClick.AddListener(OnQuit);
             if (settingsButton != null) settingsButton.onClick.AddListener(OnSettings);
 
-            // 아직 없는 기능은 눌리지 않게 둔다. 눌러도 아무 일 없는 버튼보다 낫다.
-            if (continueButton != null) continueButton.interactable = false;
+            // 이어하기 — 세이브가 하나라도 있으면 세이브 칸 창(불러오기)을 연다. 없으면 눌리지 않는다.
+            if (continueButton != null)
+            {
+                continueButton.onClick.AddListener(OnContinue);
+                continueButton.interactable = slots != null && SaveSystem.AnyExists;
+            }
+            SaveSystem.CurrentProvider = null;   // 타이틀에서는 저장할 판이 없다
             if (settingsButton != null) settingsButton.interactable = settings != null;
 
             if (versionLabel != null)
@@ -65,6 +73,7 @@ namespace ItIsYou.Core
             if (newGameButton != null) newGameButton.onClick.RemoveListener(OnNewGame);
             if (quitButton != null) quitButton.onClick.RemoveListener(OnQuit);
             if (settingsButton != null) settingsButton.onClick.RemoveListener(OnSettings);
+            if (continueButton != null) continueButton.onClick.RemoveListener(OnContinue);
         }
 
         private void Update()
@@ -103,6 +112,11 @@ namespace ItIsYou.Core
         }
 
         private void OnNewGame() => SceneManager.LoadScene(SceneRoutes.Prologue);
+
+        private void OnContinue()
+        {
+            if (slots != null) slots.Open(SaveSlotView.Mode.Load);
+        }
 
         private void OnSettings()
         {

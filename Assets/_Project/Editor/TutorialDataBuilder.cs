@@ -407,8 +407,10 @@ namespace ItIsYou.EditorTools
                 .Set("noSuspectsLeft", TutorialScript.NoSuspectsLeft())
                    .Set("deductionInkOut", TutorialScript.DeductionInkOut())
                    .Set("deductionIntro", TutorialScript.DeductionIntro())
+                   .Set("deductionAfterTutorial", TutorialScript.DeductionAfterTutorial())
                    .Set("deductionOutro", TutorialScript.DeductionOutro())
-                   .Set("selfLoathingEnding", TutorialScript.SelfLoathingEnding())
+                   // 자기 비하의 [임시] 독백은 게임오버 엔딩 D-2([시안])가 대신한다 (2026-11-27). 다시 쓰려면 아래 줄의 빈 묶음을 TutorialScript.SelfLoathingEnding() 으로.
+                   .Set("selfLoathingEnding", new DialogueSequence())
                    // [임시] 2차 심문 — 공용 타임 토큰 6, 지목 전 대사
                    .Set("secondRoundSelectPrompt", "가설을 들고, 누구에게 다시 물어볼까.")
                    .Set("hypothesisPickPrompt", "어떤 가설로 물어볼까.")
@@ -422,6 +424,39 @@ namespace ItIsYou.EditorTools
                    .Set("defaultAccusationBranch", accDefault);
             // 엔딩 컷씬(#End) — 엔딩 분기 컷씬들 뒤의 마지막 한 장 (2026-10-19 제작자: Scene #6).
             FillArt(chapter, "endingCutscene", "Cutscenes/Scene #6.png");
+
+            // ============================================================ 엔딩 (2026-11-27)
+            // 지목 결과 엔딩 A(세피) · B(고양이), 게임오버 D-1 ~ D-3, 1챕터 인트로. 에셋이 비어 있을 때만 [시안] 대본으로 채운다 —
+            // 인스펙터에서 고친 엔딩은 메뉴 1 · 5 를 다시 돌려도 그대로 남는다. 처음 시안으로 되돌리려면 End_ 에셋을 지우고 메뉴 1.
+            var endA = Ending("End_A1", "부주의 판결", "ENDING  A-1", EndingKind.Normal, "SEPI", null, TutorialScript.EndingA1);
+            var endB = Ending("End_B1", "침입자 퇴장", "ENDING  B-1", EndingKind.Normal, "CAT", null, TutorialScript.EndingB1);
+            var endD1 = Ending("End_D1", "보조 인력 교체 요청", "GAME OVER  D-1", EndingKind.GameOver, null, TutorialScript.EndingD1Message, TutorialScript.EndingD1);
+            var endD2 = Ending("End_D2", "잉크가 마른 밤", "GAME OVER  D-2", EndingKind.GameOver, null, TutorialScript.EndingD2Message, TutorialScript.EndingD2);
+            var endD3 = Ending("End_D3", "엉뚱한 근거", "GAME OVER  D-3", EndingKind.GameOver, null, TutorialScript.EndingD3Message, TutorialScript.EndingD3);
+            var ch1Intro = Ending("End_Ch1Intro", "1챕터 인트로", string.Empty, EndingKind.Interlude, null, null, TutorialScript.ChapterOneIntro);
+            ch1Intro.Set("showTitleCard", false);
+            {
+                var so = new SerializedObject(chapter);
+                var list = so.FindProperty("endings");
+                if (list != null && list.arraySize == 0)
+                {
+                    list.arraySize = 2;
+                    list.GetArrayElementAtIndex(0).objectReferenceValue = endA;
+                    list.GetArrayElementAtIndex(1).objectReferenceValue = endB;
+                }
+                void FillRef(string field, Object value)
+                {
+                    var prop = so.FindProperty(field);
+                    if (prop != null && prop.objectReferenceValue == null) prop.objectReferenceValue = value;
+                }
+                FillRef("trustLostEnding", endD1);
+                FillRef("selfLoathingGameOver", endD2);
+                FillRef("wrongEvidenceEnding", endD3);
+                FillRef("chapterOneIntro", ch1Intro);
+                FillRef("demoEndImage", Art("Cutscenes/Scene_End.png"));   // [임시]
+                so.ApplyModifiedPropertiesWithoutUndo();
+            }
+            Ed.Save(endA, endB, endD1, endD2, endD3, ch1Intro, chapter);
 
             // ============================================================ 색인
 
@@ -523,6 +558,27 @@ namespace ItIsYou.EditorTools
             foreach (var l in fresh.Lines) if (l != null && l.Illustration != null) { has = true; break; }
             if (!has && lineIndex < fresh.Lines.Count) fresh.Lines[lineIndex].Set("illustration", Art(file));
             return fresh;
+        }
+
+        private const string EndingFolder = Root + "/Endings";
+
+        /// <summary>
+        /// 엔딩 에셋. 단계가 하나도 없을 때만(새로 만들었을 때) 대본 시안으로 채운다 — 제작자가 인스펙터에서 고친 엔딩은 건드리지 않는다.
+        /// </summary>
+        private static EndingDefinition Ending(string fileName, string title, string code, EndingKind kind, string suspectId,
+            string gameOverMessage, System.Func<System.Func<string, Sprite>, List<EndingStep>> steps)
+        {
+            var e = Ed.CreateOrLoad<EndingDefinition>(EndingFolder, fileName);
+            if (e.Steps != null && e.Steps.Count > 0) return e;
+            e.Set("id", fileName)
+             .Set("title", title)
+             .Set("code", code ?? string.Empty)
+             .Set("kind", kind)
+             .Set("suspectId", suspectId ?? string.Empty)
+             .Set("gameOverMessage", gameOverMessage ?? string.Empty)
+             .Set("steps", steps(Art));
+            EditorUtility.SetDirty(e);
+            return e;
         }
 
         private static void DeleteIfExists(string path)

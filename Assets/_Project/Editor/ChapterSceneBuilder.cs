@@ -1256,10 +1256,13 @@ namespace ItIsYou.EditorTools
             var goBody = Text("Body", goPanel.rectTransform, "", T.Body, P.Ink, TextAlignmentOptions.Center);
             goBody.textWrappingMode = TextWrappingModes.Normal;
             Anchor(goBody.rectTransform, V(0, 0), V(1, 1), V(L.Pad * 2, L.Unit * 14), V(-L.Pad * 2, -L.Unit * 15));
-            var goRetry = PlainButton("Retry", goPanel.rectTransform, "다시 시도", T.Choice);
-            Anchor(goRetry.Item1, V(0.5f, 0), V(0.5f, 0), V(-300f, L.Unit * 4), V(-20f, L.Unit * 4 + 56f));
+            // 단서 수집부터 다시 · 불러오기 · 타이틀로 (2026-11-27)
+            var goRetry = PlainButton("Retry", goPanel.rectTransform, "단서 수집부터 다시", T.Choice);
+            Anchor(goRetry.Item1, V(0.5f, 0), V(0.5f, 0), V(-336f, L.Unit * 4), V(-120f, L.Unit * 4 + 56f));
+            var goLoad = PlainButton("Load", goPanel.rectTransform, "불러오기", T.Choice);
+            Anchor(goLoad.Item1, V(0.5f, 0), V(0.5f, 0), V(-104f, L.Unit * 4), V(104f, L.Unit * 4 + 56f));
             var goTitleBtn = PlainButton("ToTitle", goPanel.rectTransform, "타이틀로", T.Choice);
-            Anchor(goTitleBtn.Item1, V(0.5f, 0), V(0.5f, 0), V(20f, L.Unit * 4), V(300f, L.Unit * 4 + 56f));
+            Anchor(goTitleBtn.Item1, V(0.5f, 0), V(0.5f, 0), V(120f, L.Unit * 4), V(336f, L.Unit * 4 + 56f));
 
             // ======================================================= 엔딩 화면
             // 엔딩 분기 컷씬(지목 결과마다) → 엔딩 컷씬(#End) — 화면 전체에 한 장씩, 누르면 다음 장.
@@ -1815,11 +1818,47 @@ namespace ItIsYou.EditorTools
                        .Set("noLabel", gateNo.Item1.Find("Label").GetComponent<TMP_Text>());
             gateRoot.SetActive(false);
 
+            // ================================================== 데모 종료 화면 (2026-11-27)
+            // 1챕터 인트로 뒤 — 컷씬(임시) 위에 어두운 상자 + "데모를 플레이해주셔서 감사합니다" + 타이틀로 가기 · 불러오기.
+            // 대사창 위, 설정 · 일시 정지 아래.
+            var demoRoot = UI("DemoEnd", root);
+            Stretch(demoRoot.GetComponent<RectTransform>());
+            var demoBack = Img("Backdrop", demoRoot.transform, new Color32(0x0F, 0x11, 0x14, 0xFF));
+            Stretch(demoBack.rectTransform);
+            var demoImg = Img("Image", demoRoot.transform, Color.white);
+            Stretch(demoImg.rectTransform);
+            demoImg.raycastTarget = false;
+            demoImg.gameObject.AddComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+            var demoBox = UI("Box", demoRoot.transform);
+            Stretch(demoBox.GetComponent<RectTransform>());
+            var demoBoxGroup = demoBox.AddComponent<CanvasGroup>();
+            var demoShade = Img("Shade", demoBox.transform, new Color(0f, 0f, 0f, 0.72f));
+            Anchor(demoShade.rectTransform, V(0.5f, 0.5f), V(0.5f, 0.5f), V(-520f, -200f), V(520f, 200f));
+            var demoText = Text("Message", demoShade.rectTransform, "데모를 플레이해주셔서 감사합니다", T.Display, P.Ink, TextAlignmentOptions.Center);
+            demoText.textWrappingMode = TextWrappingModes.Normal;
+            Anchor(demoText.rectTransform, V(0, 0), V(1, 1), V(L.Pad * 2, L.Unit * 14), V(-L.Pad * 2, -L.Unit * 4));
+            var demoTitleBtn = PlainButton("ToTitle", demoShade.rectTransform, "타이틀로 가기", T.Choice);
+            Anchor(demoTitleBtn.Item1, V(0.5f, 0), V(0.5f, 0), V(-252f, L.Unit * 5), V(-16f, L.Unit * 5 + 60f));
+            var demoLoadBtn = PlainButton("Load", demoShade.rectTransform, "불러오기", T.Choice);
+            Anchor(demoLoadBtn.Item1, V(0.5f, 0), V(0.5f, 0), V(16f, L.Unit * 5), V(252f, L.Unit * 5 + 60f));
+            demoRoot.SetActive(false);
+
             // ---- 설정 / 일시 정지 (막 아래, 다른 팝업 위) ----
             var systems = new GameObject("Systems");
             ItIsYou.EditorTools.UiKit.Prepare();
             var settingsMenu = ItIsYou.EditorTools.SettingsUiBuilder.BuildSettings(root, systems);
             var pauseMenu = ItIsYou.EditorTools.SettingsUiBuilder.BuildPause(root, systems, settingsMenu);
+            // 세이브 칸 창 — 일시 정지 · 게임오버 · 데모 종료가 같이 쓴다 (2026-11-27).
+            var saveSlots = ItIsYou.EditorTools.SettingsUiBuilder.BuildSaveSlots(root, systems);
+            pauseMenu.Set("slots", saveSlots);
+            var demoEndView = systems.AddComponent<DemoEndView>();
+            demoEndView.Set("root", demoRoot)
+                       .Set("background", demoImg)
+                       .Set("box", demoBoxGroup)
+                       .Set("message", demoText)
+                       .Set("titleButton", demoTitleBtn.Item2)
+                       .Set("loadButton", demoLoadBtn.Item2)
+                       .Set("slots", saveSlots);
             settingsMenu.Set("openButtons", new List<Button> { sideSettingsBtn.Item2, gearBtn.Item2 });
 
             // ---- 화면 전환 막 ----
@@ -1903,7 +1942,9 @@ namespace ItIsYou.EditorTools
                         .Set("body", goBody)
                         .Set("retryButton", goRetry.Item2)
                         .Set("retryLabel", goRetry.Item1.Find("Label").GetComponent<TMP_Text>())
-                        .Set("titleButton", goTitleBtn.Item2);
+                        .Set("titleButton", goTitleBtn.Item2)
+                        .Set("loadButton", goLoad.Item2)
+                        .Set("slots", saveSlots);
 
             var flow = systems.AddComponent<GameFlowController>();
             flow.Set("database", db)
@@ -1940,8 +1981,9 @@ namespace ItIsYou.EditorTools
                       .Set("cutB", endCutB)
                       .Set("advanceArea", endAdvance.Item2)
                       .Set("advanceHint", endHint.gameObject)
-                      .Set("resultGroup", endResultGroup);
-            flow.Set("accusation", accusation).Set("ending", endingView);
+                      .Set("resultGroup", endResultGroup)
+                      .Set("overlayBelow", dialoguePanel.rectTransform);
+            flow.Set("accusation", accusation).Set("ending", endingView).Set("demoEnd", demoEndView);
             illuView.Set("flow", flow);
 
             var binder = systems.AddComponent<PhaseScreenBinder>();
@@ -1984,7 +2026,8 @@ namespace ItIsYou.EditorTools
                            GamePhase.Prelude,
                            GamePhase.PreIncidentTalk,
                            GamePhase.Cutscene,
-                           GamePhase.Intro
+                           GamePhase.Intro,
+                           GamePhase.Ending
                        });
 
             var hud = systems.AddComponent<ChapterHud>();

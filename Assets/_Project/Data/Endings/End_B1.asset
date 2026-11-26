@@ -1,0 +1,619 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50686355d0e8d704db211147c83606f0, type: 3}
+  m_Name: End_B1
+  m_EditorClassIdentifier: ItIsYou.Runtime::ItIsYou.Data.EndingDefinition
+  id: End_B1
+  title: "\uCE68\uC785\uC790 \uD1F4\uC7A5"
+  code: ENDING  B-1
+  kind: 0
+  suspectId: CAT
+  steps:
+  - note: "[\uC2DC\uC548] B-1 \u2014 \uC9C0\uBAA9 \uD654\uBA74 \uADF8\uB300\uB85C"
+    screen: 0
+    cut: {fileID: 0}
+    effect: 0
+    talk:
+      note: "[\uC2DC\uC548] B-1 \uC815\uB9AC"
+      lines:
+      - speaker: 1
+        speakerName: 
+        text: "\uC774 \uC18C\uB3D9\uC740 \uC800 \uACE0\uC591\uC774\uAC00 \uAC1D\uC2E4\uC5D0
+          \uB4E4\uC5B4\uC628 \uC21C\uAC04\uC5D0 \uC2DC\uC791\uB410\uC2B5\uB2C8\uB2E4."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 4
+        speakerName: 
+        text: "\u2026\uBA01?"
+        expression: 0
+        stageDirection: "(\uADC0\uB97C \uCAD1\uAE0B)"
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 3
+        speakerName: 
+        text: "\uC5D0\uC774, \uADF8\uAC74 \uB108\uBB34\uD574\uC694! \uC598\uB294
+          \uC544\uC9C1 \uC544\uBB34\uAC83\uB3C4 \uC548 \uD588\uC796\uC544\uC694\u2026!"
+        expression: 3
+        stageDirection: "(\uD654\uB4E4\uC9DD \uB180\uB77C\uBA70)"
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 1
+        speakerName: 
+        text: "\uC544\uBB34\uAC83\uB3C4\uC694? \uCEE4\uD53C\uC794\uC744 \uB2E4\uC2DC
+          \uBCF4\uC2ED\uC2DC\uC624. \uC794\uC740 \uBA40\uCA61\uD55C\uB370 \uB0B4\uC6A9\uBB3C\uB9CC
+          \uC0AC\uBC29\uC73C\uB85C \uD280\uC5C8\uC2B5\uB2C8\uB2E4. \uC0AC\uB78C \uC190\uC774\uC5C8\uB2E4\uBA74
+          \uC794\uBD80\uD130 \uC7A1\uC558\uACA0\uC8E0."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 1
+        speakerName: 
+        text: "\uC790\uC720\uBD84\uBC29\uD558\uACE0, \uBE60\uB974\uAC8C \uC6C0\uC9C1\uC774\uB294
+          \uBB34\uC5B8\uAC00\uC758 \uC9D3\uC785\uB2C8\uB2E4."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      animationId: 
+      stand: 0
+      trustDelta: 0
+      endsInterrogation: 0
+  - note: "[\uC2DC\uC548] B-1 \u2014 \uCEF7 EA#1"
+    screen: 1
+    cut: {fileID: 21300000, guid: 3a876c99defd70949873943f24ac97cc, type: 3}
+    effect: 0
+    talk:
+      note: "[\uC2DC\uC548] B-1 EA#1"
+      lines:
+      - speaker: 1
+        speakerName: 
+        text: "\uC800 \uACE0\uC591\uC774\uB294 \uB4E4\uC5B4\uC624\uC790\uB9C8\uC790
+          \uD14C\uC774\uBE14\uC5D0 \uC62C\uB790\uC2B5\uB2C8\uB2E4. \uBCF4\uC870 \uC218\uC0AC\uAD00\uC740
+          \uADF8\uAC78 \uBCF4\uACE0 \uC788\uC5C8\uACE0\uC694."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      animationId: 
+      stand: 0
+      trustDelta: 0
+      endsInterrogation: 0
+  - note: "[\uC2DC\uC548] B-1 \u2014 \uCEF7 EA#2"
+    screen: 1
+    cut: {fileID: 21300000, guid: 3680ff97c1cb5354c98b56ba352e71c9, type: 3}
+    effect: 0
+    talk:
+      note: "[\uC2DC\uC548] B-1 EA#2"
+      lines:
+      - speaker: 3
+        speakerName: 
+        text: "\u2026\uADF8\uB0E5 \uB9AC\uBCF8\uC73C\uB85C \uC870\uAE08 \uB180\uC544
+          \uC900 \uAC83\uBFD0\uC778\uB370\uC694."
+        expression: 2
+        stageDirection: "(\uC791\uC740 \uBAA9\uC18C\uB9AC\uB85C)"
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      animationId: 
+      stand: 0
+      trustDelta: 0
+      endsInterrogation: 0
+  - note: "[\uC2DC\uC548] B-1 \u2014 \uCEF7 EB#1"
+    screen: 1
+    cut: {fileID: 21300000, guid: 50c30f86fbbc25d48924050443185631, type: 3}
+    effect: 0
+    talk:
+      note: "[\uC2DC\uC548] B-1 EB#1"
+      lines:
+      - speaker: 1
+        speakerName: 
+        text: "\uADF8 \uB208\uC774\uC8E0. \uC0AC\uB0E5\uAC10\uC744 \uBC1C\uACAC\uD55C
+          \uB208."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      animationId: 
+      stand: 0
+      trustDelta: 0
+      endsInterrogation: 0
+  - note: "[\uC2DC\uC548] B-1 \u2014 \uCEF7 EADD#1"
+    screen: 1
+    cut: {fileID: 21300000, guid: a2298c5b0d826d446b087de9c987507b, type: 3}
+    effect: 0
+    talk:
+      note: "[\uC2DC\uC548] B-1 EADD#1"
+      lines:
+      - speaker: 1
+        speakerName: 
+        text: "\uADF8\uB9AC\uACE0 \uD14C\uC774\uBE14 \uC704\uB97C \uB6F0\uC5B4\uB2E4\uB2C8\uB294
+          \uB3D9\uC548, \uC81C \uB9CC\uB144\uD544\uC740 \uC774\uB807\uAC8C \uB410\uC2B5\uB2C8\uB2E4."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 0
+        speakerName: 
+        text: "\uB2F9\uC2E0\uC740 \uC2B9\uBB34\uC6D0\uC744 \uBD80\uB974\uB294 \uC904\uC744
+          \uB2F9\uAE34\uB2E4. \uACE7 \uBB38\uC774 \uC5F4\uB9AC\uACE0, \uC2B9\uBB34\uC6D0\uC774
+          \uACE0\uC591\uC774\uB97C \uB4E4\uC5B4 \uC62C\uB9B0\uB2E4. \uACE0\uC591\uC774\uB294
+          \uB05D\uAE4C\uC9C0 \uB2E4\uB9AC\uC5D0 \uD798\uC744 \uC8FC\uBA70 \uBC84\uD2F0\uB2E4\uAC00
+          \uACB0\uAD6D \uB4E4\uB824 \uC62C\uB77C\uAC04\uB2E4."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 4
+        speakerName: 
+        text: "\uCEAC\uC544\uC545\u2026!"
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      animationId: 
+      stand: 0
+      trustDelta: 0
+      endsInterrogation: 0
+  - note: "[\uC2DC\uC548] B-1 \u2014 \uCEF7 EB#2"
+    screen: 1
+    cut: {fileID: 21300000, guid: 1dc8212e3377494479722f23d277fa9e, type: 3}
+    effect: 0
+    talk:
+      note: "[\uC2DC\uC548] B-1 EB#2 ([\uB178\uC158] 3\uC904 \uD3EC\uD568)"
+      lines:
+      - speaker: 0
+        speakerName: 
+        text: "\uACE0\uC591\uC774\uAC00 \uC788\uB358 \uC790\uB9AC\uC5D0\uB294, \uBD80\uC11C\uC9C4
+          \uB9CC\uB144\uD544 \uC870\uAC01\uC774 \uAE54\uB824 \uC788\uC5C8\uB2E4."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 0
+        speakerName: 
+        text: "\u2026."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 1
+        speakerName: 
+        text: "\uD558\uC544\u2026\uADF8\uB0E5 \uB9D0\uD558\uBA74 \uB410\uB358 \uAC70
+          \uC544\uB2D9\uB2C8\uAE4C\u2026?"
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 3
+        speakerName: 
+        text: "\u2026\uADF8 \uB9CC\uB144\uD544, \uBE44\uC2F8 \uBCF4\uC600\uB294\uAC78\uC694."
+        expression: 5
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 3
+        speakerName: 
+        text: "\u2026\uADF8\uB7F0\uB370 \uC218\uC0AC\uAD00\uB2D8, \uC598\uAC00 \uB9CC\uB144\uD544\uC744
+          \uAE54\uACE0 \uC549\uC544 \uC788\uB294 \uAC83\uAE4C\uC9C0 \uCC98\uC74C\uBD80\uD130
+          \uC544\uC168\uB358 \uAC70\uC608\uC694?"
+        expression: 6
+        stageDirection: "(\uACE0\uC591\uC774\uAC00 \uB098\uAC04 \uBB38 \uCABD\uC744
+          \uD55C\uCC38 \uBCF4\uB2E4\uAC00 \uB3CC\uC544\uC120\uB2E4)"
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 1
+        speakerName: 
+        text: "\uACE0\uC591\uC774\uAC00 \uD55C \uC790\uB9AC\uC5D0\uC11C \uC800\uB807\uAC8C
+          \uC624\uB798 \uBC84\uD2F0\uB294 \uAC74, \uADF8 \uC790\uB9AC\uAC00 \uB9C8\uC74C\uC5D0
+          \uB4E4\uAC70\uB098 \uBB34\uC5B8\uAC00\uB97C \uC9C0\uD0A4\uACE0 \uC788\uAC70\uB098
+          \uB458 \uC911 \uD558\uB098\uC785\uB2C8\uB2E4."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 3
+        speakerName: 
+        text: "\uC640, \uC5ED\uC2DC \uC218\uC0AC\uAD00\uB2D8\uC774\uC2DC\uB124\uC694."
+        expression: 1
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      animationId: 
+      stand: 0
+      trustDelta: 0
+      endsInterrogation: 0
+  - note: "[\uC2DC\uC548] \uACF5\uD1B5 \uB9C8\uBB34\uB9AC B \u2014 \uD654\uBA74 \uC804\uD658(\uBCF5\uB3C4)"
+    screen: 3
+    cut: {fileID: 0}
+    effect: 0
+    talk:
+      note: "[\uC2DC\uC548] \uACF5\uD1B5 \uB9C8\uBB34\uB9AC B \uBCF5\uB3C4"
+      lines:
+      - speaker: 0
+        speakerName: "\uC2B9\uBB34\uC6D0"
+        text: "\uC218\uC0AC\uAD00\uB2D8, \uACE0\uC591\uC774\uB294 \uC800\uD76C \uCE78\uC5D0\uC11C
+          \uB9E1\uC544 \uB450\uACA0\uC2B5\uB2C8\uB2E4."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 3
+        speakerName: 
+        text: "\uC218\uC0AC\uAD00\uB2D8~! \uC7A0\uAE50\uB9CC\uC694!"
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      animationId: 
+      stand: 0
+      trustDelta: 0
+      endsInterrogation: 0
+  - note: "[\uC2DC\uC548] \uACF5\uD1B5 \uB9C8\uBB34\uB9AC B \u2014 \uCEF7 Scene #6"
+    screen: 1
+    cut: {fileID: 21300000, guid: 65aee89b8fef78246896bc26ac8e27fe, type: 3}
+    effect: 0
+    talk:
+      note: "[\uC2DC\uC548] \uACF5\uD1B5 \uB9C8\uBB34\uB9AC B Scene #6"
+      lines:
+      - speaker: 0
+        speakerName: 
+        text: "\uC791\uC740 \uC0C1\uC790\uB97C \uB4E0 \uC18C\uB140\uAC00 \uBCF5\uB3C4\uB97C
+          \uB2EC\uB824\uC628\uB2E4. \uADF8 \uB4A4\uB97C \uAC80\uC740 \uACE0\uC591\uC774\uAC00
+          \uC878\uC878 \uB530\uB978\uB2E4."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 3
+        speakerName: 
+        text: "\uB9E4\uC810\uC5D0 \uB4E4\uB800\uB2E4 \uC654\uC5B4\uC694. \uB9CC\uB144\uD544\uC774
+          \uB531 \uD558\uB098 \uB0A8\uC544 \uC788\uB354\uB77C\uACE0\uC694. \uC81C
+          \uC0AC\uBE44\uC608\uC694!"
+        expression: 1
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 1
+        speakerName: 
+        text: "\u2026\uACE0\uC591\uC774\uB294 \uC65C \uC544\uC9C1 \uAC70\uAE30 \uC788\uC2B5\uB2C8\uAE4C."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 3
+        speakerName: 
+        text: "\uB9C8\uC9C0\uB9C9 \uAE38\uC740 \uC81C\uAC00 \uB370\uB824\uB2E4 \uC8FC\uACE0
+          \uC2F6\uC5B4\uC11C\uC694."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 0
+        speakerName: 
+        text: "\uC2B9\uBB34\uC6D0\uC774 \uACE0\uC591\uC774\uB97C \uC548\uC544 \uB4E0\uB2E4.
+          \uACE0\uC591\uC774\uB294 \uC138\uD53C\uB97C \uD55C \uBC88 \uB3CC\uC544\uBCF4\uACE0,
+          \uC138\uD53C\uB294 \uC791\uAC8C \uC190\uC744 \uD754\uB4E0\uB2E4."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 4
+        speakerName: 
+        text: "\u2026\uC6E8\uC639."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 3
+        speakerName: 
+        text: "\uC798 \uAC00\u2026 \uB2E4\uC74C\uC5D4 \uB9CC\uB144\uD544 \uB9D0\uACE0
+          \uB9AC\uBCF8\uB9CC \uAC00\uC9C0\uACE0 \uB180\uC790."
+        expression: 5
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      - speaker: 2
+        speakerName: 
+        text: "\uC870\uC6A9\uD788 \uAC00\uAE34 \uAE00\uB800\uAD70."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      animationId: 
+      stand: 0
+      trustDelta: 0
+      endsInterrogation: 0
+  - note: "[\uC2DC\uC548] \uACF5\uD1B5 \uB9C8\uBB34\uB9AC B \u2014 \uBE44\uBA85 \u2192
+      [1\uCC55\uD130]"
+    screen: 0
+    cut: {fileID: 0}
+    effect: 1
+    talk:
+      note: "[\uC2DC\uC548] \uACF5\uD1B5 \uB9C8\uBB34\uB9AC B \uBE44\uBA85"
+      lines:
+      - speaker: 0
+        speakerName: 
+        text: "\u2014 \uADF8\uB54C, \uAC1D\uCC28 \uC800\uD3B8\uC5D0\uC11C \uB0A0\uCE74\uB85C\uC6B4
+          \uBE44\uBA85\uC774 \uC6B8\uB824 \uD37C\uC9C4\uB2E4."
+        expression: 0
+        stageDirection: 
+        animationId: 
+        reaction:
+          clueId: 
+          openDelay: 0
+          window: 2.5
+          expression: 3
+          blurredFromRecallDepth: 2
+        illustration: {fileID: 0}
+        bubble: 0
+        stand: 0
+        autoGrantClueId: 
+      animationId: 
+      stand: 0
+      trustDelta: 0
+      endsInterrogation: 0
+  showTitleCard: 1
+  gameOverMessage: 

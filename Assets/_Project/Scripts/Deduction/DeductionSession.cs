@@ -204,6 +204,26 @@ namespace ItIsYou.Deduction
             HypothesesChanged?.Invoke();
         }
 
+        // ------------------------------------------------------------ 세이브
+
+        /// <summary>세이브용 — 잉크 · 실패 횟수 · 이미 이어 본 짝.</summary>
+        public void Capture(out int ink, out int failCount, out List<string> triedPairs)
+        {
+            ink = Ink;
+            failCount = FailCount;
+            triedPairs = new List<string>(_triedPairs);
+        }
+
+        /// <summary>세이브에서 되살린다. 가설은 단서 보관함(Deduced)에 이미 들어 있다.</summary>
+        public void Restore(int ink, int failCount, IEnumerable<string> triedPairs)
+        {
+            Ink = Math.Max(0, Math.Min(InkCapacity, ink));
+            FailCount = Math.Max(0, failCount);
+            _triedPairs.Clear();
+            if (triedPairs != null) foreach (var p in triedPairs) if (!string.IsNullOrEmpty(p)) _triedPairs.Add(p);
+            InkChanged?.Invoke(Ink);
+        }
+
         private static string PairKey(string a, string b)
             => string.CompareOrdinal(a, b) <= 0 ? a + "|" + b : b + "|" + a;
 

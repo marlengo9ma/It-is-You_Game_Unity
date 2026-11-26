@@ -376,9 +376,20 @@ namespace ItIsYou.UI
         public Coroutine Play(DialogueSequence sequence, float recallTextCorruption = 0f, int recallDepth = 0)
         {
             Stop();
-            _playing = StartCoroutine(PlayRoutine(sequence, recallTextCorruption, recallDepth));
+            _playing = StartCoroutine(PlayRoutine(sequence, recallTextCorruption, recallDepth, 0));
             return _playing;
         }
+
+        /// <summary>대사 묶음을 startLine 번째 줄(0부터)부터 재생한다 — 세이브에서 대사 도중을 불러올 때.</summary>
+        public Coroutine PlayFrom(DialogueSequence sequence, int startLine)
+        {
+            Stop();
+            _playing = StartCoroutine(PlayRoutine(sequence, 0f, 0, Mathf.Max(0, startLine)));
+            return _playing;
+        }
+
+        /// <summary>지금 나오고 있는 줄의 번호(0부터). 세이브가 대사 단위로 자리를 적을 때 쓴다.</summary>
+        public int CurrentLineIndex { get; private set; }
 
         public void Stop()
         {
@@ -387,7 +398,7 @@ namespace ItIsYou.UI
             CloseReactionWindow();
         }
 
-        private IEnumerator PlayRoutine(DialogueSequence sequence, float corruption, int recallDepth)
+        private IEnumerator PlayRoutine(DialogueSequence sequence, float corruption, int recallDepth, int startLine)
         {
             if (sequence == null || sequence.IsEmpty)
             {
@@ -399,8 +410,9 @@ namespace ItIsYou.UI
             SequenceStarted?.Invoke(sequence);
 
             var lines = sequence.Lines;
-            for (int i = 0; i < lines.Count; i++)
+            for (int i = Mathf.Min(startLine, lines.Count - 1); i < lines.Count; i++)
             {
+                CurrentLineIndex = i;
                 yield return ShowLine(lines[i], corruption, recallDepth);
             }
 

@@ -55,6 +55,9 @@ namespace ItIsYou.UI
         /// <summary>결과까지 간 추론 선택지. 엔딩 분기 컷씬을 여기서 꺼낸다.</summary>
         public AccusationOption ResultOption { get; private set; }
 
+        /// <summary>반박에서 엉뚱한 단서를 챕터가 정한 횟수만큼 냈다 — 게임오버(D-3). 챕터에서 켰을 때만.</summary>
+        public bool WrongEvidenceGameOver { get; private set; }
+
         private void Awake()
         {
             for (int i = 0; i < cards.Count; i++)
@@ -78,6 +81,8 @@ namespace ItIsYou.UI
             _chapter = chapter;
             _inventory = inventory;
             Accused = null;
+            ResultOption = null;
+            WrongEvidenceGameOver = false;
             BindCards();
             StartCoroutine(Run());
         }
@@ -145,6 +150,12 @@ namespace ItIsYou.UI
                 {
                     yield return dialogue.Play(option.Plea);
                     yield return RefuteLoop(option);
+                    if (WrongEvidenceGameOver)
+                    {
+                        ResultOption = option;
+                        Finished?.Invoke(Accused, string.Empty);
+                        yield break;
+                    }
                 }
 
                 // ---- 5) 결과 ----
@@ -171,6 +182,8 @@ namespace ItIsYou.UI
             clueTray.ClueSelected += OnRefuteClue;
             clueTray.SetSelectionMode(true);
 
+            var wrong = 0;
+            var limit = _chapter != null ? _chapter.WrongRefuteGameOverAt : 0;
             while (true)
             {
                 _refuteClue = null;
@@ -190,6 +203,7 @@ namespace ItIsYou.UI
                 if (option.RefuteWrong != null && !option.RefuteWrong.IsEmpty)
                     yield return dialogue.Play(option.RefuteWrong);
                 clueTray.SetSelection(null, null);
+                if (limit > 0 && ++wrong >= limit) { WrongEvidenceGameOver = true; break; }
             }
 
             clueTray.ClueSelected -= OnRefuteClue;

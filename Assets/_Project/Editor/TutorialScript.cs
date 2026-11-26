@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ItIsYou.Data;
+using UnityEngine;
 
 namespace ItIsYou.EditorTools
 {
@@ -962,14 +963,22 @@ namespace ItIsYou.EditorTools
             A("아,네…", ExpressionId.Nervous));
 
         // ================================================================ [임시] 단서 조합 · 2차 심문
-        // 노션에 단서 조합의 대사와 2차 심문 스크립트는 없다. 아래는 2026-09-23 기획(가설 조합 · 잉크 · 2차 심문 공용 토큰 ·
+        // 추론 진입(DeductionIntro)과 팝업 뒤 잉크 대사(DeductionAfterTutorial)는 노션 원문(2026-11-20).
+        // 그 밖의 조합 반응 · 2차 심문 · 지목은 노션에 아직 없어, 2026-09-23 기획(가설 조합 · 잉크 · 2차 심문 공용 토큰 ·
         // 지목 → 엔딩)을 시험하기 위해 지어 넣은 자리 채우기 텍스트. 원문이 생기면 통째로 교체한다.
 
-        /// <summary>[임시] 조합 페이즈 진입.</summary>
-        public static DialogueSequence DeductionIntro() => Seq("[임시] 조합 진입",
-            N("당신은 수첩을 펼쳤다. 적어 둘 수 있는 잉크는 얼마 남지 않았다."),
-            A("수사관님, 모은 것들을 한번 이어 보죠. 물건 하나, 그리고 그 물건에 얽힌 말이나 표정 하나요.", ExpressionId.Smile),
-            I("..두 개를 잇는다. 이어지면 가설이고, 안 이어지면 잉크만 마른다."));
+        /// <summary>&lt;화면 전환-추론&gt; — 추론 페이즈 진입 대사. 노션 Phase.추론 원문(2026-11-20).</summary>
+        public static DialogueSequence DeductionIntro() => Seq("추론 페이즈 진입",
+            I("이제까지 모은 단서들과 정황들을 추합할 차례야."),
+            N("당신은 앞서 모았던 단서들을 정리해 보았다."),
+            I("앞선 심문을 통해 얻었던 정황 한 가지와 이와 이어지는 수집품이나 기록 한 가지..."),
+            I("두 개를 이어서 하나의 그럴 듯한 [가설]로 추론을 하는거야."));
+
+        /// <summary>추론 튜토리얼 팝업 뒤 '하단 대화창' — 잉크 이야기. 노션 Phase.추론 원문(2026-11-20).</summary>
+        public static DialogueSequence DeductionAfterTutorial() => Seq("추론 — 팝업 뒤 잉크",
+            I("그나저나 여분으로 가지고 있던 만년필은 카트리지 형식이 아니라서 한 번에 쓸 수 있는 잉크가 얼마 되지 않는군."),
+            I("앞으로도 상황을 앞에 두고 잉크를 계속 충전하면서 추론을 적어볼 수는 없는 노릇이니…"),
+            I("가설을 메모할 때에 허투로 잉크를 낭비하지 않도록 주의해야겠어."));
 
         /// <summary>[임시] 실패 회차별 반응. 1회, 2회, 3회 이상.</summary>
         public static List<DialogueSequence> DeductionFailures() => new List<DialogueSequence>
@@ -1297,8 +1306,12 @@ namespace ItIsYou.EditorTools
                 "· 단서 툴팁 팝업 시 - 텍스트 출력 중 및 출력 이후 1~20초 간 타이머 일시 정지\n\n" +
                 ">> 최종적으로 수동으로 페이즈를 종료시키거나, 해당 용의자 캐릭터 마다 할당된 타임 토큰을 전부 소진하게 될 시, 해당 용의자 캐릭터의 페이즈가 자동으로 마무리된다. \n" +
                 ">> 타임 토큰의 소진으로 인해 특정 단서나 주요 증언 등을 못 듣게 될 수 있으며, 이 경우에는 최종적으로 게임 오버로 이어지게 된다."),
-            // ---- [임시] 단서 조합 팝업. 노션에 없어 2026-09-23 기획 규칙을 내 문장으로 적었다. ----
-            Popup("POPUP_4", "단서 조합 페이즈 — 튜토리얼 4", TutorialPopupTrigger.BeforeDeduction,
+            // ---- 추론 팝업. 1쪽은 노션 Phase.추론 원문(2026-11-20). 2쪽 이후는 노션 '세부적인 내용은 시스템에 기재' 자리 —
+            //      시스템 기획 원문이 아직 없어 2026-09-23 기획 규칙을 내 문장으로 적은 [임시]. ----
+            Popup("POPUP_4", "추론 페이즈 — 튜토리얼 4", TutorialPopupTrigger.BeforeDeduction,
+                "추론 페이즈에서는 주인공이 지금까지 얻었던 <수집품/기록> 과 심문 페이즈에서의 <정황>을 가지고 [가설]을 도출하기 위한 추론을 진행합니다.\n\n" +
+                "올바른 <수집품/기록> 한 가지와 <정황>을 한 가지를 선택하여 추론한다면, 제대로된 <가설>이 만들어진다면 우측에 최대 3개(튜토리얼 2개) 저장됩니다.\n\n" +
+                "이 <가설>은 용의자에게 최종 심문을 하기 위해 활용되며, 해석한 가설에 따라서 사건에 대한 진상과 진행되는 스토리가 변화합니다.",
                 "[추론 페이즈]에서는 왼쪽 서류의 [Evidence(물품 증거)] 하나와 오른쪽 서류의 [Leads(정황 증거)] 하나를 골라 잇습니다. " +
                 "두 단서가 이어지면 〈가설〉이 되어 오른쪽 끝의 [가설] 탭에 꽂힙니다.\n\n" +
                 ">>양쪽에서 하나씩 누르면 붉은 선이 이어집니다. 선 위의 [가설 추론]을 누르세요. 항목을 우클릭하면 전문을 읽을 수 있습니다.",
@@ -1311,6 +1324,238 @@ namespace ItIsYou.EditorTools
                 "이미 이어 본 짝은 [가설 추론]이 눌리지 않습니다. 남은 잉크만큼만 더 이어 볼 수 있습니다.\n\n" +
                 ">>2차 심문에서는 인물마다 가설 하나를 들고 들어가고, 지목에서는 가설과 용의자를 골라 추론을 세웁니다. 어떤 가설을 남길지가 곧 어떤 답을 낼 수 있을지입니다."),
         };
+
+        // ================================================================ 엔딩 [시안] (2026-11-27)
+        // 클로드 문서 「엔딩 대본 시안」의 A-1 · B-1 · D-1 ~ D-3 을 옮긴 것. [노션] 표시가 붙은 줄만 노션 원문이고 나머지는 전부 [시안].
+        // [컷 이름] 한 번이 한 단계(EndingStep), [팝업 Evt_#2] 는 바로 다음 줄의 '일러스트' 칸.
+        // 데이터 빌더는 엔딩 에셋(End_*)이 비어 있을 때만 이것으로 채운다 — 인스펙터에서 고친 엔딩은 다시 덮어쓰지 않는다.
+
+        private static EndingStep Step(string note, EndingScreen screen, Sprite cut, EndingEffect effect, DialogueSequence talk)
+        {
+            var step = new EndingStep();
+            step.Set("note", note).Set("screen", screen).Set("cut", cut).Set("effect", effect)
+                .Set("talk", talk ?? new DialogueSequence());
+            return step;
+        }
+
+        private static DialogueLine Pd(string text, string direction, ExpressionId expression = ExpressionId.Neutral)
+            => Line(SpeakerId.Protagonist, text, expression, direction);
+
+        private static DialogueLine WithArt(DialogueLine line, Sprite illustration)
+        {
+            if (illustration != null) line.Set("illustration", illustration);
+            return line;
+        }
+
+        private static DialogueLine WithStand(DialogueLine line, DialogueStand stand)
+        {
+            line.Set("stand", stand);
+            return line;
+        }
+
+        private static DialogueSequence Standing(DialogueSequence seq, DialogueStand stand)
+        {
+            seq.Set("stand", stand);
+            return seq;
+        }
+
+        /// <summary>[시안] 엔딩 A-1 부주의 판결 — 세피를 지목했을 때. 공통 마무리 A 포함.</summary>
+        public static List<EndingStep> EndingA1(System.Func<string, Sprite> art)
+        {
+            var evt = art("Cutscenes/Evt_#2.png");
+            return new List<EndingStep>
+            {
+                Step("[시안] A-1 — 지목 화면 그대로", EndingScreen.Keep, null, EndingEffect.None, Seq("[시안] A-1 정리",
+                    P("정리하죠. 커피를 쏟은 건, 보조 수사관입니다."),
+                    A("네? 제, 제가요?", ExpressionId.Surprised, "(눈이 휘둥그레져서)"),
+                    WithArt(P("테이블 위의 얼룩은 한쪽으로만 튀어 있습니다. 누군가 잔 바로 옆에서 크게 움직였다는 뜻이죠."), evt),
+                    A("아니에요! 저는 커피잔에 손도 안 댔는걸요!", ExpressionId.Flustered, "(두 손을 내저으며)"),
+                    P("손은 안 대셨겠죠. 대신 이건 어떻습니까?"),
+                    N("당신은 커피 자국이 밴 리본을 테이블 위에 내려놓는다."),
+                    P("커피 얼룩에, 고양이 털. 이 리본은 커피가 쏟아질 때 바로 그 자리에 있었습니다."),
+                    A("그, 그건…", ExpressionId.Nervous),
+                    P("그리고 아까 그러셨죠. ‘아까 봤던 것 같긴 한데요.’ 보셨다는 건, 그 자리에 계셨다는 뜻입니다."),
+                    A("…….", ExpressionId.Nervous, "(입술을 꾹 다물고 고양이를 힐끗 본다)"),
+                    I("시선이 또 고양이로 가는군."),
+                    P("정확히는, 고양이를 테이블 위에서 뛰게 만든 사람이 있었다는 거죠."))),
+                Step("[시안] A-1 — 컷 EA#1", EndingScreen.Cut, art("Cutscenes/EA#1.png"), EndingEffect.None, Seq("[시안] A-1 EA#1",
+                    A("…처음엔 그냥 구경만 하려고 했어요.", ExpressionId.Sad, "(작은 목소리로)"))),
+                Step("[시안] A-1 — 컷 EA#2", EndingScreen.Cut, art("Cutscenes/EA#2.png"), EndingEffect.None, Seq("[시안] A-1 EA#2",
+                    A("리본을 살짝 흔들었더니, 얘가 너무 좋아해서…", ExpressionId.Sad))),
+                Step("[시안] A-1 — 컷 EA#3", EndingScreen.Cut, art("Cutscenes/EA#3.png"), EndingEffect.None, Seq("[시안] A-1 EA#3",
+                    A("안아 올린 순간에 꼬리가 잔을 쳤어요. 커피가 쏟아지고, 서류가 젖고…", ExpressionId.Sad))),
+                Step("[시안] A-1 — 컷 EA#4", EndingScreen.Cut, art("Cutscenes/EA#4.png"), EndingEffect.None, Seq("[시안] A-1 EA#4",
+                    A("얘가 놀라서 튀어나가더니…", ExpressionId.Sad))),
+                Step("[시안] A-1 — 컷 EADD#1", EndingScreen.Cut, art("Cutscenes/EADD#1.png"), EndingEffect.None, Seq("[시안] A-1 EADD#1",
+                    A("…수사관님 만년필이, 바닥에.", ExpressionId.Sad),
+                    P("그래서, 지금 그 만년필은."),
+                    N("당신이 고양이 쪽으로 손을 뻗자, 고양이가 마지못해 몸을 일으킨다."))),
+                Step("[시안] A-1 — 컷 EB#2", EndingScreen.Cut, art("Cutscenes/EB#2.png"), EndingEffect.None, Seq("[시안] A-1 EB#2",
+                    C("…먀옹."),
+                    A("죄송해요! 조각이라도 모아 두려던 참에 얘가 그 위에 앉아 버려서… 말씀드릴 타이밍을 놓쳤어요.", ExpressionId.Flustered),
+                    Pd("하아… 본부 보고서에는 한 줄만 적겠습니다. ‘현장에서의 짐 관리 미숙.’", "(미간을 문지르며)"),
+                    A("…그 과목, 진짜로 있는 거예요?", ExpressionId.Surprised),
+                    P("방금 생겼습니다."),
+                    A("제가 처음에 얼버무린 것도… 처음부터 다 보고 계셨던 거죠?", ExpressionId.Smile, "(풉, 하고 웃음을 참으며)"),
+                    A("와, 역시 수사관님이시네요.", ExpressionId.Smile))),
+                // ---- 공통 마무리 — A ----
+                Step("[시안] 공통 마무리 A — 화면 전환(복도)", EndingScreen.Black, null, EndingEffect.None, Seq("[시안] 공통 마무리 A 복도",
+                    N("잠시 뒤. 당신은 복도 창밖을 보며 빈 만년필 자리를 손끝으로 두드린다."),
+                    A("수사관님~! 이거 받으세요!", ExpressionId.Smile))),
+                Step("[시안] 공통 마무리 A — 컷 Scene #6", EndingScreen.Cut, art("Cutscenes/Scene #6.png"), EndingEffect.None, Seq("[시안] 공통 마무리 A Scene #6",
+                    N("작은 상자를 든 소녀가 복도를 달려온다. 그 뒤를 검은 고양이가 졸졸 따른다."),
+                    A("매점에 만년필이 딱 하나 남아 있더라고요. 원래 것만큼은 아니겠지만… 제 사비예요!", ExpressionId.Smile),
+                    P("…어느 쪽이 상사인지 모르겠군요."),
+                    A("헤헤. 그럼 이걸로 작은 사건은 해결이죠?", ExpressionId.Smile),
+                    I("조용히 가긴 글렀군."))),
+                Step("[시안] 공통 마무리 A — 비명 → [1챕터]", EndingScreen.Keep, null, EndingEffect.Shake, Seq("[시안] 공통 마무리 A 비명",
+                    N("— 그때, 객차 저편에서 날카로운 비명이 울려 퍼진다."),
+                    N("당신과 세피가 동시에 고개를 돌린다."))),
+            };
+        }
+
+        /// <summary>[시안] 엔딩 B-1 침입자 퇴장 — 고양이를 지목했을 때(고양이는 객차에서 내보내진다). 공통 마무리 B 포함.</summary>
+        public static List<EndingStep> EndingB1(System.Func<string, Sprite> art)
+        {
+            return new List<EndingStep>
+            {
+                Step("[시안] B-1 — 지목 화면 그대로", EndingScreen.Keep, null, EndingEffect.None, Seq("[시안] B-1 정리",
+                    P("이 소동은 저 고양이가 객실에 들어온 순간에 시작됐습니다."),
+                    K("…먁?", "(귀를 쫑긋)"),
+                    A("에이, 그건 너무해요! 얘는 아직 아무것도 안 했잖아요…!", ExpressionId.Flustered, "(화들짝 놀라며)"),
+                    P("아무것도요? 커피잔을 다시 보십시오. 잔은 멀쩡한데 내용물만 사방으로 튀었습니다. 사람 손이었다면 잔부터 잡았겠죠."),
+                    P("자유분방하고, 빠르게 움직이는 무언가의 짓입니다."))),
+                Step("[시안] B-1 — 컷 EA#1", EndingScreen.Cut, art("Cutscenes/EA#1.png"), EndingEffect.None, Seq("[시안] B-1 EA#1",
+                    P("저 고양이는 들어오자마자 테이블에 올랐습니다. 보조 수사관은 그걸 보고 있었고요."))),
+                Step("[시안] B-1 — 컷 EA#2", EndingScreen.Cut, art("Cutscenes/EA#2.png"), EndingEffect.None, Seq("[시안] B-1 EA#2",
+                    A("…그냥 리본으로 조금 놀아 준 것뿐인데요.", ExpressionId.Nervous, "(작은 목소리로)"))),
+                Step("[시안] B-1 — 컷 EB#1", EndingScreen.Cut, art("Cutscenes/EB#1.png"), EndingEffect.None, Seq("[시안] B-1 EB#1",
+                    P("그 눈이죠. 사냥감을 발견한 눈."))),
+                Step("[시안] B-1 — 컷 EADD#1", EndingScreen.Cut, art("Cutscenes/EADD#1.png"), EndingEffect.None, Seq("[시안] B-1 EADD#1",
+                    P("그리고 테이블 위를 뛰어다니는 동안, 제 만년필은 이렇게 됐습니다."),
+                    N("당신은 승무원을 부르는 줄을 당긴다. 곧 문이 열리고, 승무원이 고양이를 들어 올린다. 고양이는 끝까지 다리에 힘을 주며 버티다가 결국 들려 올라간다."),
+                    C("캬아악…!"))),
+                // 아래 세 줄의 [노션] 표시 줄은 노션 원문. 노션의 "진짜 못 봤는데 …" 는 화자와 뒷말이 정해지지 않아 넣지 않았다.
+                Step("[시안] B-1 — 컷 EB#2", EndingScreen.Cut, art("Cutscenes/EB#2.png"), EndingEffect.None, Seq("[시안] B-1 EB#2 ([노션] 3줄 포함)",
+                    N("고양이가 있던 자리에는, 부서진 만년필 조각이 깔려 있었다."),
+                    N("…."),                                                 // [노션]
+                    P("하아…그냥 말하면 됐던 거 아닙니까…?"),                 // [노션]
+                    A("…그 만년필, 비싸 보였는걸요.", ExpressionId.Sad),       // [노션]
+                    A("…그런데 수사관님, 얘가 만년필을 깔고 앉아 있는 것까지 처음부터 아셨던 거예요?", ExpressionId.Surprised, "(고양이가 나간 문 쪽을 한참 보다가 돌아선다)"),
+                    P("고양이가 한 자리에서 저렇게 오래 버티는 건, 그 자리가 마음에 들거나 무언가를 지키고 있거나 둘 중 하나입니다."),
+                    A("와, 역시 수사관님이시네요.", ExpressionId.Smile))),
+                // ---- 공통 마무리 — B ----
+                Step("[시안] 공통 마무리 B — 화면 전환(복도)", EndingScreen.Black, null, EndingEffect.None, Seq("[시안] 공통 마무리 B 복도",
+                    Who("승무원", SpeakerId.Narration, "수사관님, 고양이는 저희 칸에서 맡아 두겠습니다."),
+                    A("수사관님~! 잠깐만요!"))),
+                Step("[시안] 공통 마무리 B — 컷 Scene #6", EndingScreen.Cut, art("Cutscenes/Scene #6.png"), EndingEffect.None, Seq("[시안] 공통 마무리 B Scene #6",
+                    N("작은 상자를 든 소녀가 복도를 달려온다. 그 뒤를 검은 고양이가 졸졸 따른다."),
+                    A("매점에 들렀다 왔어요. 만년필이 딱 하나 남아 있더라고요. 제 사비예요!", ExpressionId.Smile),
+                    P("…고양이는 왜 아직 거기 있습니까."),
+                    A("마지막 길은 제가 데려다 주고 싶어서요."),
+                    N("승무원이 고양이를 안아 든다. 고양이는 세피를 한 번 돌아보고, 세피는 작게 손을 흔든다."),
+                    C("…웨옹."),
+                    A("잘 가… 다음엔 만년필 말고 리본만 가지고 놀자.", ExpressionId.Sad),
+                    I("조용히 가긴 글렀군."))),
+                Step("[시안] 공통 마무리 B — 비명 → [1챕터]", EndingScreen.Keep, null, EndingEffect.Shake, Seq("[시안] 공통 마무리 B 비명",
+                    N("— 그때, 객차 저편에서 날카로운 비명이 울려 퍼진다."))),
+            };
+        }
+
+        public const string EndingD1Message = "보조 수사관의 신뢰를 잃었습니다.";
+        public const string EndingD2Message = "아무것도 잇지 못했습니다.";
+        public const string EndingD3Message = "엉뚱한 근거로 신뢰를 잃었습니다.";
+
+        /// <summary>[시안] 게임오버 D-1 보조 인력 교체 요청 — 심문 중 신뢰를 잃었을 때. 객실 배경 + 세피 스탠드.</summary>
+        public static List<EndingStep> EndingD1(System.Func<string, Sprite> art)
+        {
+            return new List<EndingStep>
+            {
+                Step("[시안] D-1 — 객실", EndingScreen.Room, null, EndingEffect.None, Standing(Seq("[시안] D-1 교체 요청서",
+                    N("타자기 소리만 탁, 탁, 울린다."),
+                    P("…보조 수사관."),
+                    A("잠시만요. 이것만 마저 칠게요.", ExpressionId.Neutral, "(돌아보지 않고)"),
+                    A("다음 역에서 본부로 보낼 전보예요. 보조 인력 교체 요청서."),
+                    P("……."),
+                    A("아까 말씀드렸죠. 그렇게 의심스러우시면 바꾸시는 게 맞다고. 수사관님이 안 하시니까, 제가 하는 거예요.", ExpressionId.Sad),
+                    N("세피가 마지막 줄을 치고 종이를 뽑는다. 그리고 타자기 덮개를 닫아 테이블 위에 가지런히 올려 둔다."),
+                    A("이건 두고 갈게요. 제가 받을 만한 선물은 아니었던 것 같아서요.", ExpressionId.Sad),
+                    K("…….", "(하품)"),
+                    WithStand(N("세피가 객실 문을 닫는다. 철컥."), DialogueStand.None),
+                    I("…이름이 뭐라고 했더라. 세라였나, 베라였나."),
+                    I("끝내 제대로 불러 보지도 못했군.")), DialogueStand.Sepi)),
+                Step("[시안] D-1 — 어두워짐", EndingScreen.Keep, null, EndingEffect.Darken, Seq("[시안] D-1 끝",
+                    N("멈춘 타자기 위로 화면이 어두워진다."))),
+            };
+        }
+
+        /// <summary>[시안] 게임오버 D-2 잉크가 마른 밤 — 잉크가 다 마르도록 가설을 잇지 못했을 때(자기 비하). 컷씬#1의 거울(scene_#1E).</summary>
+        public static List<EndingStep> EndingD2(System.Func<string, Sprite> art)
+        {
+            return new List<EndingStep>
+            {
+                Step("[시안] D-2 — 추론 화면 그대로", EndingScreen.Keep, null, EndingEffect.None, Seq("[시안] D-2 추론 화면",
+                    N("마지막 잉크 방울이 마른다. 수첩에는 이었다 지운 선들만 겨우 남아 있다."),
+                    I("…허투로 낭비하지 않겠다고 했건만."),
+                    A("수사관님…? 정리, 다 되셨어요?", ExpressionId.Nervous, "(조심스럽게)"),
+                    P("…잠시 자리 좀 비우겠습니다."),
+                    A("아… 네.", ExpressionId.Sad),
+                    K("…….", "(가만히 당신을 올려다본다)"))),
+                Step("[시안] D-2 — 컷 scene_#1E (화장실 거울)", EndingScreen.Cut, art("Cutscenes/scene_#1E.png"), EndingEffect.None, Seq("[시안] D-2 거울",
+                    N("당신은 다시 세면대 거울 앞에 선다. 몇 시간 전과 같은 자리다."),
+                    I("무언가 높은 사람의 뒷배라도 있는 건가. 그렇게 생각했었지."),
+                    I("하지만 의심해야 할 건 그 소녀의 이력이 아니었다."),
+                    I("표정을 읽는다는 내가, 소녀 하나와 고양이 한 마리의 얼굴도 읽지 못했다."))),
+                Step("[시안] D-2 — 거울이 흐려진다", EndingScreen.Keep, null, EndingEffect.Darken, Seq("[시안] D-2 흐려짐",
+                    N("거울 속 얼굴이 천천히 흐려진다. 기억 짐작처럼, 한 번씩 더."),
+                    I("…지금 이 얼굴은, 무슨 표정이지."),
+                    N("그 질문에 답할 수 없다는 것이, 당신에게는 무엇보다 더 낯선 일이었다."))),
+                Step("[시안] D-2 — 까만 화면", EndingScreen.Black, null, EndingEffect.None, Seq("[시안] D-2 끝",
+                    N("거울이 완전히 흐려지며 화면이 어두워진다."))),
+            };
+        }
+
+        /// <summary>[시안] 게임오버 D-3 엉뚱한 근거 — 지목의 반박에서 관계없는 단서를 냈을 때(오늘자 신문의 예). 챕터에서 켤 때만 나온다.</summary>
+        public static List<EndingStep> EndingD3(System.Func<string, Sprite> art)
+        {
+            var evt = art("Cutscenes/Evt_#2.png");
+            return new List<EndingStep>
+            {
+                Step("[시안] D-3 — 지목 화면 그대로", EndingScreen.Keep, null, EndingEffect.None, Seq("[시안] D-3 신문",
+                    P("이 신문을 보십시오."),
+                    A("…신문이요?", ExpressionId.Surprised),
+                    P("여기 커피 얼룩이 있습니다. 범인이 남긴 흔적입니다."),
+                    A("그 얼룩은… 수사관님이 기차역에서 커피를 리필하시면서 흘리신 거잖아요.", ExpressionId.Thinking, "(고개를 갸웃하며)"),
+                    A("그게 만년필이랑 무슨 상관인데요?", ExpressionId.Thinking),
+                    K("…먁.", "(눈을 감고 늘어지게 하품한다)"),
+                    I("…아니, 이게 아닌데."),
+                    P("상관이 있습니다. 범인은 처음부터—"),
+                    WithArt(A("…수사관님.", ExpressionId.Angry, "(표정이 천천히 식는다)"), evt),
+                    A("본부 기록에 쓰여 있던 거, 반은 맞네요. 수사할 때 사람이 바뀐다는 거.", ExpressionId.Sad),
+                    A("…와, 역시 수사관님이시네요.", ExpressionId.Sad, "(짧게 한숨을 쉬며)"),
+                    N("세피는 더 이상 당신을 보지 않고, 테이블 위의 리본을 주워 고양이 앞에 놓는다."),
+                    A("가자. 여기 있어봐야 혼나기만 하겠다.", ExpressionId.Sad),
+                    N("고양이가 자리에서 일어난다. 그 밑에서 부서진 만년필 조각이 드러났지만, 세피는 돌아보지 않는다."),
+                    I("…그런 데에 있었군."))),
+                Step("[시안] D-3 — 어두워짐", EndingScreen.Keep, null, EndingEffect.Darken, Seq("[시안] D-3 끝",
+                    N("화면이 어두워진다."))),
+            };
+        }
+
+        /// <summary>
+        /// [임시] 1챕터 인트로 — 엔딩 뒤 별도 대화 장면 → 컷씬. 제작자가 대화 약 30줄을 넣을 자리(2026-11-27).
+        /// 컷은 임시로 Scene_End. 데모 종료 화면이 이 컷 위에 어두운 상자를 올린다.
+        /// </summary>
+        public static List<EndingStep> ChapterOneIntro(System.Func<string, Sprite> art)
+        {
+            return new List<EndingStep>
+            {
+                Step("[임시] 1챕터 인트로 — 대화 장면 (약 30줄 들어갈 자리)", EndingScreen.Room, null, EndingEffect.None, Standing(Seq("[임시] 1챕터 인트로 대화",
+                    N("[임시] 1챕터 인트로 대화가 들어갈 자리입니다."),
+                    N("[임시] 챕터 에셋 › 1챕터 인트로(End_Ch1Intro) › 단계 1 › 대사에 넣어 주세요.")), DialogueStand.SepiAndCat)),
+                Step("[임시] 1챕터 인트로 — 컷씬", EndingScreen.Cut, art("Cutscenes/Scene_End.png"), EndingEffect.None, new DialogueSequence()),
+            };
+        }
 
         // ============================================================== 헬퍼
         // 화자별로 짧은 이름을 둔 이유는, 원문을 옮겨 적을 때

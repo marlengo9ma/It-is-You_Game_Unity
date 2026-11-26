@@ -24,6 +24,11 @@ namespace ItIsYou.UI
         [SerializeField] private Button titleButton;
         [SerializeField] private SettingsMenu settings;
 
+        [Header("세이브 (2026-11-27)")]
+        [SerializeField] private Button saveButton;
+        [SerializeField] private Button loadButton;
+        [SerializeField] private SaveSlotView slots;
+
         private bool _open;
         private bool _wired;
 
@@ -54,7 +59,12 @@ namespace ItIsYou.UI
             if (resumeButton != null) resumeButton.onClick.AddListener(Close);
             if (settingsButton != null) settingsButton.onClick.AddListener(OpenSettings);
             if (titleButton != null) titleButton.onClick.AddListener(ToTitle);
+            if (saveButton != null) saveButton.onClick.AddListener(() => slots?.Open(SaveSlotView.Mode.Save));
+            if (loadButton != null) loadButton.onClick.AddListener(() => slots?.Open(SaveSlotView.Mode.Load));
         }
+
+        /// <summary>씬을 넘길 때 정지 상태를 푼다 (세이브 불러오기 등).</summary>
+        public static void ForceUnpause() => IsPaused = false;
 
         private void Update()
         {
@@ -63,6 +73,7 @@ namespace ItIsYou.UI
 
             // 설정 창이나 타이틀 확인 팝업이 떠 있으면 그쪽이 먼저 닫힌다.
             if (settings != null && (settings.IsOpen || settings.IsTitleConfirmOpen)) return;
+            if (SaveSlotView.AnyOpen) return;   // 세이브 칸 창이 먼저 닫힌다
 
             if (_open) Close();
             else Open();
@@ -75,6 +86,8 @@ namespace ItIsYou.UI
             _open = true;
             IsPaused = true;
             if (root != null) root.SetActive(true);
+            if (saveButton != null) saveButton.interactable = SaveSystem.CanSaveNow;
+            if (loadButton != null) loadButton.interactable = SaveSystem.AnyExists;
             PauseChanged?.Invoke(true);
         }
 

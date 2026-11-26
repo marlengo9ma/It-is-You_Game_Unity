@@ -123,6 +123,53 @@ namespace ItIsYou.Core
             return false;
         }
 
+        // ------------------------------------------------------------ 세이브
+
+        /// <summary>판 상태를 세이브에 적는다. 단서는 수집 순서대로.</summary>
+        public void CaptureInto(SaveData data)
+        {
+            data.clues = new List<string>(Clues.OrderedIds);
+            data.readClues = new List<string>();
+            data.promotedClues = new List<string>();
+            foreach (var id in Clues.OrderedIds)
+            {
+                if (Clues.HasBeenRead(id)) data.readClues.Add(id);
+                var c = Clues.Get(id);
+                if (c != null && c.Kind == ClueKind.Object && Clues.IsPromoted(id)) data.promotedClues.Add(id);
+            }
+            data.trust = Trust;
+            data.friendly = ToneCount(ChoiceTone.Friendly);
+            data.aggressive = ToneCount(ChoiceTone.Aggressive);
+            data.seenCutscenes = new List<string>(_seenCutsceneIds);
+            data.craftedRecipes = new List<string>(_craftedRecipeIds);
+            data.accusedId = AccusedSuspectId;
+        }
+
+        /// <summary>세이브에서 판 상태를 되살린다. 단서는 database 에서 id 로 찾는다(못 찾은 id 는 건너뛴다).</summary>
+        public void RestoreFrom(SaveData data, GameDatabase database)
+        {
+            if (data == null) return;
+            var owned = new List<ClueDefinition>();
+            if (data.clues != null && database != null)
+                foreach (var id in data.clues)
+                {
+                    var c = database.GetClue(id);
+                    if (c != null) owned.Add(c);
+                    else Debug.LogWarning($"[It is You] 세이브의 단서 '{id}' 를 데이터에서 찾지 못해 건너뜁니다.");
+                }
+            Clues.Restore(owned, data.readClues, data.promotedClues);
+            Trust = data.trust;
+            _toneCounts.Clear();
+            if (data.friendly > 0) _toneCounts[ChoiceTone.Friendly] = data.friendly;
+            if (data.aggressive > 0) _toneCounts[ChoiceTone.Aggressive] = data.aggressive;
+            _seenCutsceneIds.Clear();
+            if (data.seenCutscenes != null) foreach (var id in data.seenCutscenes) _seenCutsceneIds.Add(id);
+            _craftedRecipeIds.Clear();
+            if (data.craftedRecipes != null) foreach (var id in data.craftedRecipes) _craftedRecipeIds.Add(id);
+            AccusedSuspectId = string.IsNullOrEmpty(data.accusedId) ? null : data.accusedId;
+            GameOver = GameOverKind.None;
+        }
+
         public void Reset()
         {
             Clues.Clear();

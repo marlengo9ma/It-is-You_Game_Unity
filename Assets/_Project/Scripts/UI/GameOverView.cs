@@ -23,6 +23,9 @@ namespace ItIsYou.UI
         [SerializeField] private Button retryButton;
         [SerializeField] private TMP_Text retryLabel;
         [SerializeField] private Button titleButton;
+        [Tooltip("세이브 칸 창을 여는 '불러오기'. 비워도 된다.")]
+        [SerializeField] private Button loadButton;
+        [SerializeField] private SaveSlotView slots;
 
         private bool _showRequested;
 
@@ -33,22 +36,28 @@ namespace ItIsYou.UI
         {
             if (!_showRequested && root != null && root != gameObject) root.SetActive(false);
             if (retryButton != null) retryButton.onClick.AddListener(() => RetryRequested?.Invoke());
-            if (titleButton != null) titleButton.onClick.AddListener(() => SceneManager.LoadScene(SceneRoutes.Title));
+            if (titleButton != null) titleButton.onClick.AddListener(() => { PauseMenu.ForceUnpause(); SceneManager.LoadScene(SceneRoutes.Title); });
+            if (loadButton != null) loadButton.onClick.AddListener(() => slots?.Open(SaveSlotView.Mode.Load));
         }
 
-        public void Show(GameOverKind kind, bool allowRetry, string retryText)
+        public void Show(GameOverKind kind, bool allowRetry, string retryText) => Show(kind, allowRetry, retryText, null);
+
+        /// <summary>message 가 있으면(엔딩 에셋의 게임오버 문장) 그것을 본문에 쓴다.</summary>
+        public void Show(GameOverKind kind, bool allowRetry, string retryText, string message)
         {
             _showRequested = true;
             if (root != null) root.SetActive(true);
 
             if (title != null) title.text = "게임 오버";
-            if (body != null)
+            if (body != null && !string.IsNullOrEmpty(message)) body.text = message;
+            else if (body != null)
                 body.text = kind == GameOverKind.SelfLoathing
                     ? "단서가 모자라 사건을 추합하지 못했다.\n(컷씬 #GameOver — 자기 비하 · 아트 대기)"
                     : "신뢰를 잃었다. 이 상태로는 어떤 진술도 받아낼 수 없다.\n(컷씬 #GameOver — 통상 · 아트 대기)";
 
             if (retryButton != null) retryButton.gameObject.SetActive(allowRetry);
             if (retryLabel != null) retryLabel.text = retryText ?? "다시 시도";
+            if (loadButton != null) loadButton.interactable = SaveSystem.AnyExists;
         }
 
         public void Hide()

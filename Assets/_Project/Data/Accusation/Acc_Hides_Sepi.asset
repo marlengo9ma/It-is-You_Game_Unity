@@ -231,6 +231,7 @@ MonoBehaviour:
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 0
+    ending: {fileID: 0}
     endingCutscenes:
     - {fileID: 21300000, guid: 3a876c99defd70949873943f24ac97cc, type: 3}
     - {fileID: 21300000, guid: 3680ff97c1cb5354c98b56ba352e71c9, type: 3}
@@ -343,6 +344,7 @@ MonoBehaviour:
       trustDelta: 0
       endsInterrogation: 0
     returnsToSelection: 0
+    ending: {fileID: 0}
     endingCutscenes:
     - {fileID: 21300000, guid: 3a876c99defd70949873943f24ac97cc, type: 3}
     - {fileID: 21300000, guid: 3680ff97c1cb5354c98b56ba352e71c9, type: 3}

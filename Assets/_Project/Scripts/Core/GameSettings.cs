@@ -153,6 +153,13 @@ namespace ItIsYou.Core
         /// <summary>창 모드와 해상도를 실제 화면에 적용한다.</summary>
         public static void ApplyDisplay()
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // 웹: 창 크기는 웹 페이지가 정한다. 해상도는 건드리지 않고 전체 화면만 켜고 끈다
+            // (브라우저는 클릭한 순간에만 전체 화면을 허락하므로 '적용' 버튼에서 부를 때 켜진다).
+            Screen.fullScreen = DisplayMode == DisplayModeOption.Fullscreen;
+            DisplayChanged?.Invoke();
+            return;
+#endif
             var mode = DisplayMode == DisplayModeOption.Windowed
                 ? FullScreenMode.Windowed
                 : FullScreenMode.FullScreenWindow;

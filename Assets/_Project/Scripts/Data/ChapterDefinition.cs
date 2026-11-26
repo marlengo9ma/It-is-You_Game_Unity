@@ -187,11 +187,44 @@ namespace ItIsYou.Data
         [Tooltip("맞는 쌍이 없을 때 쓰는 기본 갈래.")]
         [SerializeField] private AccusationBranch defaultAccusationBranch;
 
-        [Tooltip("엔딩 컷씬(#End) — 지목 결과의 엔딩 분기 컷씬들 뒤에 마지막으로 보이는 한 장. 비우면 생략.")]
+        [Tooltip("엔딩 컷씬(#End) — 엔딩(End_) 에셋이 없을 때만 쓰는 예전 방식. 지목 결과의 엔딩 분기 컷씬들 뒤에 마지막으로 보이는 한 장. 비우면 생략.")]
         [SerializeField] private Sprite endingCutscene;
+
+        [Header("엔딩 (2026-11-27)")]
+        [Tooltip("지목 결과 엔딩들. 엔딩마다 '지목한 용의자' 칸이 맞는 것이 나온다. 지목 선택지에 엔딩을 직접 지정하면 그쪽이 먼저다.")]
+        [SerializeField] private List<EndingDefinition> endings = new List<EndingDefinition>();
+
+        [Tooltip("맞는 엔딩이 없을 때 쓰는 엔딩.")]
+        [SerializeField] private EndingDefinition defaultEnding;
+
+        [Tooltip("게임오버 — 심문 중 신뢰를 잃었을 때 (통상 게임오버, D-1).")]
+        [SerializeField] private EndingDefinition trustLostEnding;
+
+        [Tooltip("게임오버 — 잉크가 다 마르도록 가설을 잇지 못했을 때 (자기 비하, D-2).")]
+        [SerializeField] private EndingDefinition selfLoathingGameOver;
+
+        [Tooltip("게임오버 — 지목의 반박에서 엉뚱한 단서를 거듭 냈을 때 (D-3).")]
+        [SerializeField] private EndingDefinition wrongEvidenceEnding;
+
+        [Tooltip("지목의 반박에서 엉뚱한 단서를 이만큼 내면 게임오버(D-3). 0 이면 꺼짐 — 맞는 단서를 낼 때까지 계속 고른다(2026-09-23 확정 규칙).")]
+        [SerializeField] private int wrongRefuteGameOverAt = 0;
+
+        [Header("1챕터 인트로 · 데모 종료")]
+        [Tooltip("일반 엔딩이 끝난 뒤 이어지는 1챕터 인트로 — 대화 장면 → 컷씬. 엔딩과 같은 방식(단계)으로 만든다.")]
+        [SerializeField] private EndingDefinition chapterOneIntro;
+
+        [Tooltip("데모 종료 화면의 배경 그림. [임시]")]
+        [SerializeField] private Sprite demoEndImage;
+
+        [Tooltip("데모 종료 화면의 어두운 상자 안 문장.")]
+        [TextArea(1, 4)]
+        [SerializeField] private string demoEndMessage = "데모를 플레이해주셔서 감사합니다";
 
         [Tooltip("조합 페이즈에 들어갈 때의 대사.")]
         [SerializeField] private DialogueSequence deductionIntro = new DialogueSequence();
+
+        [Tooltip("추론 튜토리얼 팝업이 닫힌 뒤의 대사(노션 '하단 대화창'). 처음 들어올 때만.")]
+        [SerializeField] private DialogueSequence deductionAfterTutorial = new DialogueSequence();
 
         [Tooltip("필요한 추론을 다 만들었을 때의 대사. 이 뒤에 2차 심문으로 넘어간다.")]
         [SerializeField] private DialogueSequence deductionOutro = new DialogueSequence();
@@ -226,6 +259,7 @@ namespace ItIsYou.Data
         public DialogueSequence NoSuspectsLeft => noSuspectsLeft;
         public DialogueSequence DeductionInkOut => deductionInkOut;
         public DialogueSequence DeductionIntro => deductionIntro;
+        public DialogueSequence DeductionAfterTutorial => deductionAfterTutorial;
         public DialogueSequence DeductionOutro => deductionOutro;
         public DialogueSequence SelfLoathingEnding => selfLoathingEnding;
 
@@ -293,6 +327,50 @@ namespace ItIsYou.Data
         public IReadOnlyList<FlashbackScene> Flashbacks => flashbacks;
         public DialogueSequence AfterFlashbackTalk => afterFlashbackTalk;
         public Sprite EndingCutscene => endingCutscene;
+        public IReadOnlyList<EndingDefinition> Endings => endings;
+        public EndingDefinition DefaultEnding => defaultEnding;
+        public EndingDefinition ChapterOneIntro => chapterOneIntro;
+        public Sprite DemoEndImage => demoEndImage;
+        public string DemoEndMessage => demoEndMessage;
+        public int WrongRefuteGameOverAt => Mathf.Max(0, wrongRefuteGameOverAt);
+
+        /// <summary>
+        /// 지목 결과에 맞는 엔딩. 선택지에 지정된 것 → 지목한 용의자가 같은 것 → 기본 엔딩. 없으면 null(예전 방식으로 컷만 보인다).
+        /// </summary>
+        public EndingDefinition FindEnding(AccusationOption option, string accusedId)
+        {
+            if (option != null && option.Ending != null) return option.Ending;
+            if (endings != null && !string.IsNullOrEmpty(accusedId))
+                for (int i = 0; i < endings.Count; i++)
+                    if (endings[i] != null && endings[i].SuspectId == accusedId) return endings[i];
+            return defaultEnding;
+        }
+
+        /// <summary>게임오버 종류에 맞는 엔딩. 없으면 null(게임오버 화면만 뜬다).</summary>
+        public EndingDefinition FindGameOverEnding(GameOverKind kind) => kind switch
+        {
+            GameOverKind.Standard => trustLostEnding,
+            GameOverKind.SelfLoathing => selfLoathingGameOver,
+            GameOverKind.WrongEvidence => wrongEvidenceEnding,
+            _ => null
+        };
+
+        /// <summary>id 로 엔딩을 찾는다 — 세이브에서 엔딩 도중을 불러올 때.</summary>
+        public EndingDefinition FindEndingById(string endingId)
+        {
+            if (string.IsNullOrEmpty(endingId)) return null;
+            foreach (var e in new[] { defaultEnding, trustLostEnding, selfLoathingGameOver, wrongEvidenceEnding, chapterOneIntro })
+                if (e != null && e.Id == endingId) return e;
+            if (endings != null)
+                for (int i = 0; i < endings.Count; i++)
+                    if (endings[i] != null && endings[i].Id == endingId) return endings[i];
+            if (accusationBranches != null)
+                foreach (var b in accusationBranches)
+                    if (b != null && b.Options != null)
+                        foreach (var o in b.Options)
+                            if (o != null && o.Ending != null && o.Ending.Id == endingId) return o.Ending;
+            return null;
+        }
         public IReadOnlyList<GuideStep> CollectionGuide => collectionGuide;
         public string CollectionWarnQuestion => collectionWarnQuestion;
         public DialogueSequence Intro => intro;

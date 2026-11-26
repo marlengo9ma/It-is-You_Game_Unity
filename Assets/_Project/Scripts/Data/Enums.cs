@@ -139,6 +139,8 @@
         /// <summary>통상 게임오버 — 비정상적 심문, 엉뚱한 근거 제시로 신뢰 상실.</summary>
         Standard = 1,
         /// <summary>자기 비하 엔딩 — 단서 부족으로 조합 불가.</summary>
-        SelfLoathing = 2
+        SelfLoathing = 2,
+        /// <summary>엉뚱한 근거 — 지목의 반박에서 관계없는 단서를 거듭 냈다 (D-3, 챕터에서 켤 때만).</summary>
+        WrongEvidence = 3
     }
 }
